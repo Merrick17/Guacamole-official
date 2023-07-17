@@ -161,12 +161,10 @@ export const SelectCoin = ({
   }
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        <div>
-          <Coin tokenInfo={tokenInfo} />
-        </div>
-      </DialogTrigger>
+    <Dialog open={visible} onOpenChange={() => setVisible(false)}>
+      <div className="w-max cursor-pointer" onClick={() => setVisible(true)}>
+        <Coin tokenInfo={tokenInfo} />
+      </div>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

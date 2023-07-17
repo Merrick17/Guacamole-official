@@ -34,13 +34,14 @@ export const Slippage = ({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        <div className="flex flex-row items-center">
-          <HiAdjustments className="mr-2 w-3 rotate-90" />
-          <span className="text-xs"> {slippage / 10} %</span>
-        </div>
-      </DialogTrigger>
+    <Dialog open={visible} onOpenChange={() => setVisible(false)}>
+      <div
+        className="flex flex-row items-center w-max cursor-pointer"
+        onClick={() => setVisible(true)}
+      >
+        <HiAdjustments className="mr-2 w-3 rotate-90" />
+        <span className="text-xs"> {slippage / 10} %</span>
+      </div>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

@@ -66,12 +66,10 @@ export const RpcSettings = ({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Button className="mr-2 rounded-xl">
-          <HiCog className="w-5 text-white" />
-        </Button>
-      </DialogTrigger>
+    <Dialog open={visible} onOpenChange={() => setVisible(false)}>
+      <Button className="mr-2 rounded-xl" onClick={() => setVisible(true)}>
+        <HiCog className="w-5 text-white" />
+      </Button>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
