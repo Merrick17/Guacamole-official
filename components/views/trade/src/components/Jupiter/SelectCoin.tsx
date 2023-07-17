@@ -165,7 +165,7 @@ export const SelectCoin = ({
       <div className="w-max cursor-pointer" onClick={() => setVisible(true)}>
         <Coin tokenInfo={tokenInfo} />
       </div>
-      <DialogContent>
+      <DialogContent closeBtn={false}>
         <DialogHeader>
           <DialogTitle>
             <input
