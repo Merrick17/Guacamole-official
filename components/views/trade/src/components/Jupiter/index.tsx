@@ -16,7 +16,7 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui';
-import { PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
+import { PublicKey, Transaction, VersionedTransaction, sendAndConfirmTransaction } from '@solana/web3.js';
 import { useInterval, useLocalStorageState } from 'ahooks';
 import { nanoid } from 'nanoid';
 import React, {
@@ -42,7 +42,7 @@ export const OUTPUT_MINT_ADDRESS = FIDA_MINT; // FIDA
 import { useJupiterApiContext } from '../../contexts';
 import { Button } from '@/components/ui/button';
 
-interface IJupiterFormProps {}
+interface IJupiterFormProps { }
 
 const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
   const toastId = useRef(nanoid());
@@ -103,8 +103,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
         if (data) {
           setHasRoute(
             data.length > 0 &&
-              !!data[0].outAmount &&
-              Number(data[0].outAmount) > 0
+            !!data[0].outAmount &&
+            Number(data[0].outAmount) > 0
           );
           setRoutes(data);
         }
@@ -175,9 +175,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       wSol && solBalance
         ? solBalance.uiAmount
         : tokenAccount?.decimals
-        ? Number(tokenAccount?.account.amount) /
+          ? Number(tokenAccount?.account.amount) /
           Math.pow(10, tokenAccount?.decimals)
-        : null;
+          : null;
 
     if (!userBalances) {
       // showNotification({
@@ -225,8 +225,17 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
           const { blockhash } = await connection.getLatestBlockhash();
           feeTx.feePayer = publicKey;
           feeTx.recentBlockhash = blockhash;
-          const sig = await sendTransaction(feeTx, connection);
-          await connection.confirmTransaction(sig, 'processed');
+          const txId = await sendTransaction(feeTx, connection, { skipPreflight: true, maxRetries: 5 }); 
+          console.log("FEE",txId); 
+          // sendAndConfirmTransaction(connection,feeTx)
+          // const sig = await sendTransaction(feeTx, connection);
+          // const latestBlockHash = await connection.getLatestBlockhash(); 
+          // await connection.confirmTransaction({
+          //   blockhash: latestBlockHash.blockhash,
+          //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          //   signature: sig,
+          // })
+          //await connection.confirmTransaction(sig, 'confirmed');
         }
 
         const { swapTransaction } = await api.v4SwapPost({
@@ -234,23 +243,33 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             route: selectedRoute,
             userPublicKey: publicKey.toBase58(),
             feeAccount: feeAccount.toBase58(),
+            computeUnitPriceMicroLamports: 1000
+
           },
         });
 
-        const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
-        var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
 
-        await signAllTransactions([transaction]);
-        const rawTransaction = transaction.serialize();
-        const txid = await retry(async () => {
-          const tx = await connection.sendRawTransaction(rawTransaction, {
-            skipPreflight: true,
-            maxRetries: 2,
-          });
-          await connection.confirmTransaction(tx);
-          console.log(`https://solscan.io/tx/${tx}`);
-          return tx;
-        });
+
+        if (swapTransaction) {
+          console.log("HERE",swapTransaction); 
+          const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+          var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+          //await signAllTransactions([transaction]);
+          const txid = await sendTransaction(transaction, connection)
+          // const rawTransaction = transaction.serialize()
+          // const txid = await connection.sendRawTransaction(rawTransaction, {
+          //   skipPreflight: true,
+          //   maxRetries: 5
+          // });
+          // const latestBlockHash = await connection.getLatestBlockhash();
+          // await connection.confirmTransaction({
+          //   blockhash: latestBlockHash.blockhash,
+          //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          //   signature: txid,
+          // })
+          //await connection.confirmTransaction(txid);
+          console.log(`https://solscan.io/tx/${txid}`);
+        }
       }
     } catch (e) {
       console.error('Error', e);
