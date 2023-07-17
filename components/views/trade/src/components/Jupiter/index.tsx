@@ -1,0 +1,692 @@
+'use client';
+import {
+  FIDA_MINT,
+  retry,
+  useSolBalance,
+  useTokenAccounts,
+} from '@bonfida/hooks';
+import { GrRefresh } from 'react-icons/gr';
+import { HiOutlineSwitchVertical } from 'react-icons/hi';
+
+import { InlineResponse200MarketInfos } from '@jup-ag/api';
+import { NATIVE_MINT } from '@solana/spl-token';
+import { TokenInfo } from '@solana/spl-token-registry';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import {
+  WalletModalProvider,
+  WalletMultiButton,
+} from '@solana/wallet-adapter-react-ui';
+import { PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
+import { useInterval, useLocalStorageState } from 'ahooks';
+import { nanoid } from 'nanoid';
+import React, {
+  FunctionComponent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import emoji from '../../assets/no-route.png';
+import { getFeeAddress } from '../../utils/fees';
+import Loading from '../Loading';
+import { SwapRoute } from '../SwapRoute';
+import { Balance } from './Balance';
+import { SelectCoin } from './SelectCoin';
+import { Slippage } from './Slippage';
+import { Buffer } from 'buffer';
+// Token Mints
+export const INPUT_MINT_ADDRESS =
+  'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'; // USDC
+export const OUTPUT_MINT_ADDRESS = FIDA_MINT; // FIDA
+
+import { useJupiterApiContext } from '../../contexts';
+import { Button } from '@/components/ui/button';
+
+interface IJupiterFormProps {}
+
+const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
+  const toastId = useRef(nanoid());
+  const [firstLoad, setFirstLoad] = useState(false);
+  const { connected, publicKey, signAllTransactions, sendTransaction } =
+    useWallet();
+  const { connection } = useConnection();
+  const { tokenMap, routeMap, loaded, api } = useJupiterApiContext();
+  const [routes, setRoutes] = useState<Awaited<ReturnType<any>>['data']>([]);
+
+  const [slippage, setSlippage] = useLocalStorageState('slippage', {
+    defaultValue: 1,
+  });
+  const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
+  const [inputTokenInfo, setInputTokenInfo] = useState<
+    TokenInfo | null | undefined
+  >(tokenMap.get(INPUT_MINT_ADDRESS) as TokenInfo);
+  const [outputTokenInfo, setOutputTokenInfo] = useState<
+    TokenInfo | null | undefined
+  >(tokenMap.get(OUTPUT_MINT_ADDRESS) as TokenInfo);
+  const [hasRoute, setHasRoute] = useState(false);
+  const [swapping, setSwapping] = useState(false);
+  const [loadingRoute, setLoadingRoute] = useState(true); // Loading by default
+  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
+    connection,
+    publicKey
+  );
+  const [inputAmout, setInputAmount] = useState('1');
+  const { data: solBalance, refresh: refreshSol } = useSolBalance(
+    connection,
+    publicKey
+  );
+
+  useMemo(() => {
+    setInputTokenInfo(tokenMap.get(INPUT_MINT_ADDRESS) as TokenInfo);
+    setOutputTokenInfo(tokenMap.get(OUTPUT_MINT_ADDRESS) as TokenInfo);
+  }, [tokenMap]);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.Buffer = Buffer;
+    }
+  }, [typeof window]);
+  // Good to add debounce here to avoid multiple calls
+  const fetchRoute = React.useCallback(() => {
+    if (!inputTokenInfo || !outputTokenInfo) return;
+    setLoadingRoute(true);
+    api
+      .v4QuoteGet({
+        amount: (
+          parseFloat(inputAmout) * Math.pow(10, inputTokenInfo?.decimals)
+        ).toString(),
+        inputMint: inputTokenInfo?.address,
+        outputMint: outputTokenInfo?.address,
+
+        feeBps: 50,
+      })
+      .then(({ data }) => {
+        if (data) {
+          setHasRoute(
+            data.length > 0 &&
+              !!data[0].outAmount &&
+              Number(data[0].outAmount) > 0
+          );
+          setRoutes(data);
+        }
+      })
+      .finally(() => {
+        setLoadingRoute(false);
+      });
+  }, [api, inputAmout, inputTokenInfo, outputTokenInfo]);
+
+  useEffect(() => {
+    fetchRoute();
+  }, [fetchRoute]);
+
+  const bestRoute = routes?.[0];
+
+  useEffect(() => {
+    if (!firstLoad && bestRoute) {
+      setSelectedRoute(bestRoute);
+      setFirstLoad(true);
+    }
+  }, [loaded, bestRoute]);
+
+  useEffect(() => {
+    setFirstLoad(false);
+  }, [inputTokenInfo, outputTokenInfo, loadingRoute]);
+
+  // ensure outputMint can be swapable to inputMint
+  useEffect(() => {
+    if (inputTokenInfo) {
+      const possibleOutputs = routeMap.get(inputTokenInfo.address);
+
+      if (
+        possibleOutputs &&
+        !possibleOutputs?.includes(outputTokenInfo?.address || '')
+      ) {
+        setHasRoute(false);
+      }
+    } else {
+      setHasRoute(false);
+    }
+  }, [inputTokenInfo, outputTokenInfo]);
+  const handleSwap = async () => {
+    if (!outputTokenInfo?.address) return;
+
+    const wSol = inputTokenInfo?.address === NATIVE_MINT.toBase58();
+
+    const parsedAmount = parseFloat(inputAmout);
+    if (
+      !parsedAmount ||
+      isNaN(parsedAmount) ||
+      !isFinite(parsedAmount) ||
+      !inputTokenInfo?.address
+    ) {
+      // showNotification({
+      //   title: <span>Error</span>,
+      //   message: <span>Invalid amount</span>,
+      //   color: 'red',
+      //   loading: false,
+      // });
+      // return toast.info(<p className="text-xs font-bold">Invalid amount</p>);
+    }
+
+    const tokenAccount = tokenAccounts?.getByMint(
+      new PublicKey(inputTokenInfo?.address as string)
+    );
+
+    const userBalances =
+      wSol && solBalance
+        ? solBalance.uiAmount
+        : tokenAccount?.decimals
+        ? Number(tokenAccount?.account.amount) /
+          Math.pow(10, tokenAccount?.decimals)
+        : null;
+
+    if (!userBalances) {
+      // showNotification({
+      //   title: <span>Error</span>,
+      //   message: <span>Could not find user balances</span>,
+      //   color: 'red',
+      //   loading: false,
+      // });
+      // return toast.info(
+      //   <p className="text-xs font-bold">Could not find user balances</p>
+      // );
+    }
+
+    // if (userBalances < parsedAmount) {
+    // showNotification({
+    //   title: <span>Error</span>,
+    //   message: <span> Not enough balances (only have {userBalances.toFixed(2)})
+    //     {inputTokenInfo.symbol})</span>,
+    //   color: 'red',
+    //   loading: false,
+    // });
+    //return <div></div>;
+    // return toast.info(
+    //   <p className="text-xs font-bold">
+    //     Not enough balances (only have {round(userBalances, 2)}
+    //     {inputTokenInfo.symbol})
+    //   </p>
+    // );
+    // }
+
+    const txids: string[] = [];
+    try {
+      if (!loadingRoute && selectedRoute && publicKey && signAllTransactions) {
+        setSwapping(true);
+
+        const { pubkey: feeAccount, ix } = await getFeeAddress(
+          connection,
+          new PublicKey(outputTokenInfo.address),
+          publicKey
+        );
+
+        let feeTx: Transaction | undefined = undefined;
+        if (ix) {
+          feeTx = new Transaction().add(ix);
+          const { blockhash } = await connection.getLatestBlockhash();
+          feeTx.feePayer = publicKey;
+          feeTx.recentBlockhash = blockhash;
+          const sig = await sendTransaction(feeTx, connection);
+          await connection.confirmTransaction(sig, 'processed');
+        }
+
+        const { swapTransaction } = await api.v4SwapPost({
+          body: {
+            route: selectedRoute,
+            userPublicKey: publicKey.toBase58(),
+            feeAccount: feeAccount.toBase58(),
+          },
+        });
+
+        const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+        var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+
+        await signAllTransactions([transaction]);
+        const rawTransaction = transaction.serialize();
+        const txid = await retry(async () => {
+          const tx = await connection.sendRawTransaction(rawTransaction, {
+            skipPreflight: true,
+            maxRetries: 2,
+          });
+          await connection.confirmTransaction(tx);
+          console.log(`https://solscan.io/tx/${tx}`);
+          return tx;
+        });
+      }
+    } catch (e) {
+      console.error('Error', e);
+      const isError = e instanceof Error;
+      if (isError && e.message.includes('Transaction simulation')) {
+        // toast.update(toastId.current, {
+        //   type: toast.TYPE.INFO,
+        //   autoClose: 5_000,
+        //   render: () => (
+        //     <RenderUpdate
+        //       updateText="Transaction simulation failed"
+        //       load={false}
+        //     />
+        //   ),
+        // });
+      } else if (isError && e.message.includes('blockhash')) {
+        // toast.update(toastId.current, {
+        //   type: toast.TYPE.INFO,
+        //   autoClose: 5_000,
+        //   render: () => (
+        //     <RenderUpdate updateText="Blockhash not found" load={false} />
+        //   ),
+        //   toastId: toastId.current,
+        // });
+      } else if (
+        isError &&
+        e.message.includes('Transaction was not confirmed') &&
+        txids.length > 0
+      ) {
+        // toast.update(toastId.current, {
+        //   type: toast.TYPE.INFO,
+        //   autoClose: 5_000,
+        //   render: () => (
+        //     <RenderUpdate
+        //       updateText="Transaction failed to confirm. Inspect it on the explorer"
+        //       load={false}
+        //       signatures={txids}
+        //     />
+        //   ),
+        // });
+      } else if (
+        isError &&
+        e.message.includes('Transaction was not confirmed')
+      ) {
+        // toast.update(toastId.current, {
+        //   type: toast.TYPE.INFO,
+        //   autoClose: 5_000,
+        //   render: () => (
+        //     <RenderUpdate
+        //       updateText="Transaction failed to confirm"
+        //       load={false}
+        //     />
+        //   ),
+        // });
+      } else {
+        // toast.update(toastId.current, {
+        //   type: toast.TYPE.ERROR,
+        //   autoClose: 5_000,
+        //   render: () => (
+        //     <RenderUpdate updateText="Transaction failed 🤯" load={false} />
+        //   ),
+        // });
+      }
+    }
+    refreshToken();
+    refreshSol();
+    setSwapping(false);
+  };
+  // const handleSwap = async () => {
+  //   if (!outputTokenInfo?.address) return;
+
+  //   const wSol = inputTokenInfo?.address === NATIVE_MINT.toBase58();
+
+  //   const parsedAmount = parseFloat(inputAmout);
+  //   if (
+  //     !parsedAmount ||
+  //     isNaN(parsedAmount) ||
+  //     !isFinite(parsedAmount) ||
+  //     !inputTokenInfo?.address
+  //   ) {
+  //     return toast.info(<p className="text-xs font-bold">Invalid amount</p>);
+  //   }
+
+  //   const tokenAccount = tokenAccounts?.getByMint(
+  //     new PublicKey(inputTokenInfo?.address)
+  //   );
+  //   console.log('Accounts', accounts);
+
+  //   const userBalances =
+  //     wSol && solBalance
+  //       ? solBalance.uiAmount
+  //       : tokenAccount?.decimals
+  //         ? Number(tokenAccount?.account.amount) /
+  //         Math.pow(10, tokenAccount?.decimals)
+  //         : null;
+
+  //   if (!userBalances) {
+  //     return toast.info(
+  //       <p className="text-xs font-bold">Could not find user balances</p>
+  //     );
+  //   }
+
+  //   if (userBalances < parsedAmount) {
+  //     return toast.info(
+  //       <p className="text-xs font-bold">
+  //         Not enough balances (only have {round(userBalances, 2)}
+  //         {inputTokenInfo.symbol})
+  //       </p>
+  //     );
+  //   }
+
+  //   const txids: string[] = [];
+  //   try {
+  //     if (!loadingRoute && selectedRoute && publicKey && signAllTransactions) {
+  //       setSwapping(true);
+  //       toast(<RenderUpdate updateText="Preparing transaction" load={true} />, {
+  //         type: toast.TYPE.INFO,
+  //         autoClose: false,
+  //         toastId: toastId.current,
+  //       });
+
+  //       // Fee are in output token
+  //       const { pubkey: feeAccount, ix } = await getFeeAddress(
+  //         connection,
+  //         new PublicKey(outputTokenInfo.address),
+  //         publicKey
+  //       );
+
+  //       let feeTx: Transaction | undefined = undefined;
+  //       if (ix) {
+  //         feeTx = new Transaction().add(ix);
+  //         const { blockhash } = await connection.getLatestBlockhash();
+  //         feeTx.feePayer = publicKey;
+  //         feeTx.recentBlockhash = blockhash;
+  //         const sig = await sendTransaction(feeTx, connection);
+  //         await connection.confirmTransaction(sig, 'processed');
+  //       }
+
+  //       const { swapTransaction, setupTransaction, cleanupTransaction } =
+  //         await api.v1SwapPost({
+  //           body: {
+  //             route: selectedRoute,
+  //             userPublicKey: publicKey.toBase58(),
+  //             feeAccount: feeAccount.toBase58(),
+  //           },
+  //         });
+  //       const transactions = (
+  //         [setupTransaction, swapTransaction, cleanupTransaction].filter(
+  //           Boolean
+  //         ) as string[]
+  //       ).map((tx) => {
+  //         return Transaction.from(Buffer.from(tx, 'base64'));
+  //       });
+
+  //       toast.update(toastId.current, {
+  //         type: toast.TYPE.INFO,
+  //         autoClose: false,
+  //         render: () => (
+  //           <RenderUpdate updateText="Sending transaction" load={true} />
+  //         ),
+  //         toastId: toastId.current,
+  //       });
+
+  //       await signAllTransactions(transactions);
+
+  //       let c = 1;
+  //       const len = transactions.length;
+  //       for (let transaction of transactions) {
+  //         console.log(`Sending tx ${c}/${len}`);
+
+  //         const txid = await retry(async () => {
+  //           const sig = await sendRawTransaction(
+  //             [connection],
+  //             transaction
+  //           );
+  //           await connection.confirmTransaction(sig, 'processed');
+  //           return sig;
+  //         });
+
+  //         txids.push(txid);
+
+  //         console.log(txid);
+  //         c += 1;
+  //       }
+
+  //       toast.update(toastId.current, {
+  //         type: toast.TYPE.SUCCESS,
+  //         autoClose: 5_000,
+  //         render: () => (
+  //           <RenderUpdate
+  //             updateText="Transaction confirmed 👌"
+  //             signatures={txids}
+  //             load={true}
+  //           />
+  //         ),
+  //         toastId: toastId.current,
+  //       });
+  //     }
+  //   } catch (e) {
+  //     console.error('Error', e);
+  //     const isError = e instanceof Error;
+  //     if (isError && e.message.includes('Transaction simulation')) {
+  //       toast.update(toastId.current, {
+  //         type: toast.TYPE.INFO,
+  //         autoClose: 5_000,
+  //         render: () => (
+  //           <RenderUpdate
+  //             updateText="Transaction simulation failed"
+  //             load={false}
+  //           />
+  //         ),
+  //       });
+  //     } else if (isError && e.message.includes('blockhash')) {
+  //       toast.update(toastId.current, {
+  //         type: toast.TYPE.INFO,
+  //         autoClose: 5_000,
+  //         render: () => (
+  //           <RenderUpdate updateText="Blockhash not found" load={false} />
+  //         ),
+  //         toastId: toastId.current,
+  //       });
+  //     } else if (
+  //       isError &&
+  //       e.message.includes('Transaction was not confirmed') &&
+  //       txids.length > 0
+  //     ) {
+  //       toast.update(toastId.current, {
+  //         type: toast.TYPE.INFO,
+  //         autoClose: 5_000,
+  //         render: () => (
+  //           <RenderUpdate
+  //             updateText="Transaction failed to confirm. Inspect it on the explorer"
+  //             load={false}
+  //             signatures={txids}
+  //           />
+  //         ),
+  //       });
+  //     } else if (
+  //       isError &&
+  //       e.message.includes('Transaction was not confirmed')
+  //     ) {
+  //       toast.update(toastId.current, {
+  //         type: toast.TYPE.INFO,
+  //         autoClose: 5_000,
+  //         render: () => (
+  //           <RenderUpdate
+  //             updateText="Transaction failed to confirm"
+  //             load={false}
+  //           />
+  //         ),
+  //       });
+  //     } else {
+  //       toast.update(toastId.current, {
+  //         type: toast.TYPE.ERROR,
+  //         autoClose: 5_000,
+  //         render: () => (
+  //           <RenderUpdate updateText="Transaction failed 🤯" load={false} />
+  //         ),
+  //       });
+  //     }
+  //   }
+  //   refreshToken();
+  //   refreshSol();
+  //   setSwapping(false);
+  // };
+
+  const handleSwitch = () => {
+    const _ = { ...inputTokenInfo } as TokenInfo;
+    setInputTokenInfo(outputTokenInfo);
+    setOutputTokenInfo(_);
+  };
+
+  const outputAmount =
+    bestRoute &&
+    (bestRoute.outAmount || 0) / Math.pow(10, outputTokenInfo?.decimals || 1);
+
+  const refresh = async () => {
+    if (swapping) return;
+    fetchRoute();
+    refreshToken();
+    refreshSol();
+  };
+
+  useInterval(() => {
+    refresh();
+  }, 15_000);
+
+  return (
+    <>
+      <div className="mb-5 mt-3 w-full rounded-[15px] bg-white  sm:w-[450px]">
+        <div className=" flex flex-row items-center justify-between bg-white">
+          <Slippage slippage={slippage || 0} setSlippage={setSlippage} />
+          <div
+            onClick={() => !loadingRoute && refresh()}
+            className=" h-8 w-8 cursor-pointer rounded-xl !bg-[#E5E7EB] p-2 text-black"
+            color="white"
+          >
+            <GrRefresh className="h-full  " />
+          </div>
+        </div>
+
+        <div className="flex flex-col justify-between">
+          <div className="my-5 flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
+            <div className="flex flex-row justify-between">
+              <span className="font-bold text-black">You pay</span>
+              <Balance
+                tokenAccounts={tokenAccounts}
+                token={inputTokenInfo}
+                setInput={setInputAmount}
+                solBalance={solBalance}
+              />
+            </div>
+            <div className="flex w-full flex-row items-center  gap-2 rounded-lg bg-white  text-black">
+              <div className=" w-full rounded-xl">
+                <SelectCoin
+                  tokenInfo={inputTokenInfo}
+                  setCoin={setInputTokenInfo}
+                />
+              </div>
+              <input
+                value={inputAmout}
+                type="number"
+                onChange={(e) => setInputAmount(e.target.value.trim())}
+                className="w-full rounded-xl border-none bg-transparent text-right text-xl font-bold  outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex w-full flex-row justify-center">
+            <div className="h-[32px] w-[32px] cursor-pointer rounded-lg border border-[#E5E7EB] bg-[#E5E7EB] p-1">
+              <HiOutlineSwitchVertical
+                onClick={handleSwitch}
+                className=" h-full w-full rotate-45 text-black  "
+              />
+            </div>
+          </div>
+          <div className="my-5 flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
+            <div className="flex flex-row justify-between">
+              <span className="font-bold text-black">You receive</span>
+              <Balance
+                tokenAccounts={tokenAccounts}
+                token={outputTokenInfo}
+                solBalance={solBalance}
+              />
+            </div>
+            <div className="flex w-full flex-row items-center gap-2 rounded-lg bg-white ">
+              <div className="w-full  rounded-xl">
+                <SelectCoin
+                  tokenInfo={outputTokenInfo}
+                  setCoin={setOutputTokenInfo}
+                />
+              </div>
+              <div className="w-full  rounded-xl border-none bg-transparent text-right text-xl font-bold  outline-none">
+                {outputAmount}
+              </div>
+            </div>
+          </div>
+          {loadingRoute && (
+            <div className="h-[216px]">
+              <progress className="progress h-[72px] w-full"></progress>
+              <progress className="progress h-[72px] w-full"></progress>
+              <progress className="progress h-[72px] w-full"></progress>
+            </div>
+          )}
+          {!hasRoute && !loadingRoute && (
+            <div className="flex flex-row justify-center">
+              <span className="mr-2 text-lg font-bold">No route found</span>
+              <img className="h-[30px] w-[30px]" src={emoji} />
+            </div>
+          )}
+          {!loadingRoute &&
+            !!bestRoute &&
+            !!bestRoute.marketInfos &&
+            !!outputAmount &&
+            !!hasRoute && (
+              <button onClick={() => setSelectedRoute(bestRoute)}>
+                <SwapRoute
+                  isBestRoute={true}
+                  route={bestRoute.marketInfos}
+                  tokenMap={tokenMap}
+                  selected={bestRoute === selectedRoute}
+                  amount={outputAmount}
+                />
+              </button>
+            )}
+          {!loadingRoute &&
+            hasRoute &&
+            routes
+              ?.slice(1)
+              ?.filter((e) => !!e.marketInfos && !!e.outAmount)
+              .map((r, idx) => {
+                return (
+                  <button
+                    onClick={() => setSelectedRoute(r)}
+                    key={`route-${idx}`}
+                  >
+                    <SwapRoute
+                      route={r.marketInfos as InlineResponse200MarketInfos[]}
+                      tokenMap={tokenMap}
+                      amount={
+                        (r.outAmount as number) /
+                        Math.pow(10, outputTokenInfo?.decimals || 0)
+                      }
+                      selected={r === selectedRoute}
+                    />
+                  </button>
+                );
+              })}
+          {connected ? (
+            <div className="mt-4">
+              <Button
+                onClick={handleSwap}
+                disabled={swapping || !loaded || !hasRoute}
+                className="h-[50px] w-full rounded-xl bg-black p-2 font-bold uppercase"
+              >
+                {swapping ? (
+                  <div className="flex flex-row justify-center text-black">
+                    <span className="mr-2 ">Swapping</span>
+                    <Loading />
+                  </div>
+                ) : (
+                  'Swap'
+                )}
+              </Button>
+            </div>
+          ) : (
+            <div className="mt-4 flex flex-row justify-center">
+              <WalletModalProvider>
+                <WalletMultiButton />
+              </WalletModalProvider>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default JupiterForm;
