@@ -7,7 +7,7 @@ import {
 } from '@bonfida/hooks';
 import { GrRefresh } from 'react-icons/gr';
 import { HiOutlineSwitchVertical } from 'react-icons/hi';
-
+import round from 'lodash/round';
 import { InlineResponse200MarketInfos } from '@jup-ag/api';
 import { NATIVE_MINT } from '@solana/spl-token';
 import { TokenInfo } from '@solana/spl-token-registry';
@@ -16,7 +16,12 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui';
-import { PublicKey, Transaction, VersionedTransaction, sendAndConfirmTransaction } from '@solana/web3.js';
+import {
+  PublicKey,
+  Transaction,
+  VersionedTransaction,
+  sendAndConfirmTransaction,
+} from '@solana/web3.js';
 import { useInterval, useLocalStorageState } from 'ahooks';
 import { nanoid } from 'nanoid';
 import React, {
@@ -41,8 +46,10 @@ export const OUTPUT_MINT_ADDRESS = FIDA_MINT; // FIDA
 
 import { useJupiterApiContext } from '../../contexts';
 import { Button } from '@/components/ui/button';
+import { toast } from 'react-toastify';
+import { RenderUpdate } from '../../utils/notifications';
 
-interface IJupiterFormProps { }
+interface IJupiterFormProps {}
 
 const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
   const toastId = useRef(nanoid());
@@ -103,8 +110,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
         if (data) {
           setHasRoute(
             data.length > 0 &&
-            !!data[0].outAmount &&
-            Number(data[0].outAmount) > 0
+              !!data[0].outAmount &&
+              Number(data[0].outAmount) > 0
           );
           setRoutes(data);
         }
@@ -158,13 +165,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       !isFinite(parsedAmount) ||
       !inputTokenInfo?.address
     ) {
-      // showNotification({
-      //   title: <span>Error</span>,
-      //   message: <span>Invalid amount</span>,
-      //   color: 'red',
-      //   loading: false,
-      // });
-      // return toast.info(<p className="text-xs font-bold">Invalid amount</p>);
+      return toast.info(<p className="text-xs font-bold">Invalid amount</p>);
     }
 
     const tokenAccount = tokenAccounts?.getByMint(
@@ -175,38 +176,24 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       wSol && solBalance
         ? solBalance.uiAmount
         : tokenAccount?.decimals
-          ? Number(tokenAccount?.account.amount) /
+        ? Number(tokenAccount?.account.amount) /
           Math.pow(10, tokenAccount?.decimals)
-          : null;
+        : null;
 
     if (!userBalances) {
-      // showNotification({
-      //   title: <span>Error</span>,
-      //   message: <span>Could not find user balances</span>,
-      //   color: 'red',
-      //   loading: false,
-      // });
-      // return toast.info(
-      //   <p className="text-xs font-bold">Could not find user balances</p>
-      // );
+      return toast.info(
+        <p className="text-xs font-bold">Could not find user balances</p>
+      );
     }
 
-    // if (userBalances < parsedAmount) {
-    // showNotification({
-    //   title: <span>Error</span>,
-    //   message: <span> Not enough balances (only have {userBalances.toFixed(2)})
-    //     {inputTokenInfo.symbol})</span>,
-    //   color: 'red',
-    //   loading: false,
-    // });
-    //return <div></div>;
-    // return toast.info(
-    //   <p className="text-xs font-bold">
-    //     Not enough balances (only have {round(userBalances, 2)}
-    //     {inputTokenInfo.symbol})
-    //   </p>
-    // );
-    // }
+    if (userBalances < parsedAmount) {
+      return toast.info(
+        <p className="text-xs font-bold">
+          Not enough balances (only have {round(userBalances, 2)}
+          {inputTokenInfo.symbol})
+        </p>
+      );
+    }
 
     const txids: string[] = [];
     try {
@@ -225,11 +212,14 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
           const { blockhash } = await connection.getLatestBlockhash();
           feeTx.feePayer = publicKey;
           feeTx.recentBlockhash = blockhash;
-          const txId = await sendTransaction(feeTx, connection, { skipPreflight: true, maxRetries: 5 }); 
-          console.log("FEE",txId); 
+          const txId = await sendTransaction(feeTx, connection, {
+            skipPreflight: true,
+            maxRetries: 5,
+          });
+          console.log('FEE', txId);
           // sendAndConfirmTransaction(connection,feeTx)
           // const sig = await sendTransaction(feeTx, connection);
-          // const latestBlockHash = await connection.getLatestBlockhash(); 
+          // const latestBlockHash = await connection.getLatestBlockhash();
           // await connection.confirmTransaction({
           //   blockhash: latestBlockHash.blockhash,
           //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
@@ -243,19 +233,17 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             route: selectedRoute,
             userPublicKey: publicKey.toBase58(),
             feeAccount: feeAccount.toBase58(),
-            computeUnitPriceMicroLamports: 1000
-
+            computeUnitPriceMicroLamports: 1000,
           },
         });
 
-
-
         if (swapTransaction) {
-          console.log("HERE",swapTransaction); 
+          console.log('HERE', swapTransaction);
           const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
-          var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+          var transaction =
+            VersionedTransaction.deserialize(swapTransactionBuf);
           //await signAllTransactions([transaction]);
-          const txid = await sendTransaction(transaction, connection)
+          const txid = await sendTransaction(transaction, connection);
           // const rawTransaction = transaction.serialize()
           // const txid = await connection.sendRawTransaction(rawTransaction, {
           //   skipPreflight: true,
@@ -275,266 +263,69 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       console.error('Error', e);
       const isError = e instanceof Error;
       if (isError && e.message.includes('Transaction simulation')) {
-        // toast.update(toastId.current, {
-        //   type: toast.TYPE.INFO,
-        //   autoClose: 5_000,
-        //   render: () => (
-        //     <RenderUpdate
-        //       updateText="Transaction simulation failed"
-        //       load={false}
-        //     />
-        //   ),
-        // });
+        toast.update(toastId.current, {
+          type: toast.TYPE.INFO,
+          autoClose: 5_000,
+          render: () => (
+            <RenderUpdate
+              updateText="Transaction simulation failed"
+              load={false}
+            />
+          ),
+        });
       } else if (isError && e.message.includes('blockhash')) {
-        // toast.update(toastId.current, {
-        //   type: toast.TYPE.INFO,
-        //   autoClose: 5_000,
-        //   render: () => (
-        //     <RenderUpdate updateText="Blockhash not found" load={false} />
-        //   ),
-        //   toastId: toastId.current,
-        // });
+        toast.update(toastId.current, {
+          type: toast.TYPE.INFO,
+          autoClose: 5_000,
+          render: () => (
+            <RenderUpdate updateText="Blockhash not found" load={false} />
+          ),
+          toastId: toastId.current,
+        });
       } else if (
         isError &&
         e.message.includes('Transaction was not confirmed') &&
         txids.length > 0
       ) {
-        // toast.update(toastId.current, {
-        //   type: toast.TYPE.INFO,
-        //   autoClose: 5_000,
-        //   render: () => (
-        //     <RenderUpdate
-        //       updateText="Transaction failed to confirm. Inspect it on the explorer"
-        //       load={false}
-        //       signatures={txids}
-        //     />
-        //   ),
-        // });
+        toast.update(toastId.current, {
+          type: toast.TYPE.INFO,
+          autoClose: 5_000,
+          render: () => (
+            <RenderUpdate
+              updateText="Transaction failed to confirm. Inspect it on the explorer"
+              load={false}
+              signatures={txids}
+            />
+          ),
+        });
       } else if (
         isError &&
         e.message.includes('Transaction was not confirmed')
       ) {
-        // toast.update(toastId.current, {
-        //   type: toast.TYPE.INFO,
-        //   autoClose: 5_000,
-        //   render: () => (
-        //     <RenderUpdate
-        //       updateText="Transaction failed to confirm"
-        //       load={false}
-        //     />
-        //   ),
-        // });
+        toast.update(toastId.current, {
+          type: toast.TYPE.INFO,
+          autoClose: 5_000,
+          render: () => (
+            <RenderUpdate
+              updateText="Transaction failed to confirm"
+              load={false}
+            />
+          ),
+        });
       } else {
-        // toast.update(toastId.current, {
-        //   type: toast.TYPE.ERROR,
-        //   autoClose: 5_000,
-        //   render: () => (
-        //     <RenderUpdate updateText="Transaction failed 🤯" load={false} />
-        //   ),
-        // });
+        toast.update(toastId.current, {
+          type: toast.TYPE.ERROR,
+          autoClose: 5_000,
+          render: () => (
+            <RenderUpdate updateText="Transaction failed 🤯" load={false} />
+          ),
+        });
       }
     }
     refreshToken();
     refreshSol();
     setSwapping(false);
   };
-  // const handleSwap = async () => {
-  //   if (!outputTokenInfo?.address) return;
-
-  //   const wSol = inputTokenInfo?.address === NATIVE_MINT.toBase58();
-
-  //   const parsedAmount = parseFloat(inputAmout);
-  //   if (
-  //     !parsedAmount ||
-  //     isNaN(parsedAmount) ||
-  //     !isFinite(parsedAmount) ||
-  //     !inputTokenInfo?.address
-  //   ) {
-  //     return toast.info(<p className="text-xs font-bold">Invalid amount</p>);
-  //   }
-
-  //   const tokenAccount = tokenAccounts?.getByMint(
-  //     new PublicKey(inputTokenInfo?.address)
-  //   );
-  //   console.log('Accounts', accounts);
-
-  //   const userBalances =
-  //     wSol && solBalance
-  //       ? solBalance.uiAmount
-  //       : tokenAccount?.decimals
-  //         ? Number(tokenAccount?.account.amount) /
-  //         Math.pow(10, tokenAccount?.decimals)
-  //         : null;
-
-  //   if (!userBalances) {
-  //     return toast.info(
-  //       <p className="text-xs font-bold">Could not find user balances</p>
-  //     );
-  //   }
-
-  //   if (userBalances < parsedAmount) {
-  //     return toast.info(
-  //       <p className="text-xs font-bold">
-  //         Not enough balances (only have {round(userBalances, 2)}
-  //         {inputTokenInfo.symbol})
-  //       </p>
-  //     );
-  //   }
-
-  //   const txids: string[] = [];
-  //   try {
-  //     if (!loadingRoute && selectedRoute && publicKey && signAllTransactions) {
-  //       setSwapping(true);
-  //       toast(<RenderUpdate updateText="Preparing transaction" load={true} />, {
-  //         type: toast.TYPE.INFO,
-  //         autoClose: false,
-  //         toastId: toastId.current,
-  //       });
-
-  //       // Fee are in output token
-  //       const { pubkey: feeAccount, ix } = await getFeeAddress(
-  //         connection,
-  //         new PublicKey(outputTokenInfo.address),
-  //         publicKey
-  //       );
-
-  //       let feeTx: Transaction | undefined = undefined;
-  //       if (ix) {
-  //         feeTx = new Transaction().add(ix);
-  //         const { blockhash } = await connection.getLatestBlockhash();
-  //         feeTx.feePayer = publicKey;
-  //         feeTx.recentBlockhash = blockhash;
-  //         const sig = await sendTransaction(feeTx, connection);
-  //         await connection.confirmTransaction(sig, 'processed');
-  //       }
-
-  //       const { swapTransaction, setupTransaction, cleanupTransaction } =
-  //         await api.v1SwapPost({
-  //           body: {
-  //             route: selectedRoute,
-  //             userPublicKey: publicKey.toBase58(),
-  //             feeAccount: feeAccount.toBase58(),
-  //           },
-  //         });
-  //       const transactions = (
-  //         [setupTransaction, swapTransaction, cleanupTransaction].filter(
-  //           Boolean
-  //         ) as string[]
-  //       ).map((tx) => {
-  //         return Transaction.from(Buffer.from(tx, 'base64'));
-  //       });
-
-  //       toast.update(toastId.current, {
-  //         type: toast.TYPE.INFO,
-  //         autoClose: false,
-  //         render: () => (
-  //           <RenderUpdate updateText="Sending transaction" load={true} />
-  //         ),
-  //         toastId: toastId.current,
-  //       });
-
-  //       await signAllTransactions(transactions);
-
-  //       let c = 1;
-  //       const len = transactions.length;
-  //       for (let transaction of transactions) {
-  //         console.log(`Sending tx ${c}/${len}`);
-
-  //         const txid = await retry(async () => {
-  //           const sig = await sendRawTransaction(
-  //             [connection],
-  //             transaction
-  //           );
-  //           await connection.confirmTransaction(sig, 'processed');
-  //           return sig;
-  //         });
-
-  //         txids.push(txid);
-
-  //         console.log(txid);
-  //         c += 1;
-  //       }
-
-  //       toast.update(toastId.current, {
-  //         type: toast.TYPE.SUCCESS,
-  //         autoClose: 5_000,
-  //         render: () => (
-  //           <RenderUpdate
-  //             updateText="Transaction confirmed 👌"
-  //             signatures={txids}
-  //             load={true}
-  //           />
-  //         ),
-  //         toastId: toastId.current,
-  //       });
-  //     }
-  //   } catch (e) {
-  //     console.error('Error', e);
-  //     const isError = e instanceof Error;
-  //     if (isError && e.message.includes('Transaction simulation')) {
-  //       toast.update(toastId.current, {
-  //         type: toast.TYPE.INFO,
-  //         autoClose: 5_000,
-  //         render: () => (
-  //           <RenderUpdate
-  //             updateText="Transaction simulation failed"
-  //             load={false}
-  //           />
-  //         ),
-  //       });
-  //     } else if (isError && e.message.includes('blockhash')) {
-  //       toast.update(toastId.current, {
-  //         type: toast.TYPE.INFO,
-  //         autoClose: 5_000,
-  //         render: () => (
-  //           <RenderUpdate updateText="Blockhash not found" load={false} />
-  //         ),
-  //         toastId: toastId.current,
-  //       });
-  //     } else if (
-  //       isError &&
-  //       e.message.includes('Transaction was not confirmed') &&
-  //       txids.length > 0
-  //     ) {
-  //       toast.update(toastId.current, {
-  //         type: toast.TYPE.INFO,
-  //         autoClose: 5_000,
-  //         render: () => (
-  //           <RenderUpdate
-  //             updateText="Transaction failed to confirm. Inspect it on the explorer"
-  //             load={false}
-  //             signatures={txids}
-  //           />
-  //         ),
-  //       });
-  //     } else if (
-  //       isError &&
-  //       e.message.includes('Transaction was not confirmed')
-  //     ) {
-  //       toast.update(toastId.current, {
-  //         type: toast.TYPE.INFO,
-  //         autoClose: 5_000,
-  //         render: () => (
-  //           <RenderUpdate
-  //             updateText="Transaction failed to confirm"
-  //             load={false}
-  //           />
-  //         ),
-  //       });
-  //     } else {
-  //       toast.update(toastId.current, {
-  //         type: toast.TYPE.ERROR,
-  //         autoClose: 5_000,
-  //         render: () => (
-  //           <RenderUpdate updateText="Transaction failed 🤯" load={false} />
-  //         ),
-  //       });
-  //     }
-  //   }
-  //   refreshToken();
-  //   refreshSol();
-  //   setSwapping(false);
-  // };
 
   const handleSwitch = () => {
     const _ = { ...inputTokenInfo } as TokenInfo;
@@ -637,7 +428,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
           {!hasRoute && !loadingRoute && (
             <div className="flex flex-row justify-center">
               <span className="mr-2 text-lg font-bold">No route found</span>
-              <img className="h-[30px] w-[30px]" src={emoji} />
+              <img className="h-[30px] w-[30px]" src={emoji.src} />
             </div>
           )}
           {!loadingRoute &&
@@ -659,8 +450,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             hasRoute &&
             routes
               ?.slice(1)
-              ?.filter((e) => !!e.marketInfos && !!e.outAmount)
-              .map((r, idx) => {
+              ?.filter((e: any) => !!e.marketInfos && !!e.outAmount)
+              .map((r: any, idx: number) => {
                 return (
                   <button
                     onClick={() => setSelectedRoute(r)}

@@ -16,9 +16,11 @@ interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
   return (
-    <div className="sticky top-0 bg-white px-10 py-4 flex flex-row items-center justify-between ">
-      <HeaderLeft />
-      <HeaderRight />
+    <div className="sticky top-0 bg-white px-10 py-4 ">
+      <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
+        <HeaderLeft />
+        <HeaderRight />
+      </div>
     </div>
   );
 };

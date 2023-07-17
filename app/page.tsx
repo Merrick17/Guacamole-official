@@ -4,7 +4,7 @@ import HomeList from '@/components/views/home/home-list';
 
 export default function Home() {
   return (
-    <main className="container mx-auto flex flex-col gap-14 px-16 py-12">
+    <main className="container mx-auto flex flex-col gap-14 px-16 py-12  max-w-[1440px]">
       <HomeContent />
       <HomeList />
       <ColorBlocks className="ml-auto" />

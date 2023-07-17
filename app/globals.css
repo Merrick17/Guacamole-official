@@ -5,13 +5,14 @@
 @tailwind utilities;
 
 body {
-  @apply font-body bg-body;
+  @apply font-body bg-body bg-body-image bg-auto 	 bg-no-repeat;
 }
 
 .wallet-adapter-button {
   background-color: black !important;
   @apply !rounded-full;
 }
-.bungee {
-  font-family: 'Bungee', cursive;
+
+.text-shadow {
+  text-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }

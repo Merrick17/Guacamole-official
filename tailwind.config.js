@@ -24,6 +24,9 @@ module.exports = {
         body: ['Kanit', 'monospace'],
         bungee: ['Bungee', 'monospace'],
       },
+      backgroundImage: {
+        'body-image': "url('/images/body-background.png')",
+      },
 
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',

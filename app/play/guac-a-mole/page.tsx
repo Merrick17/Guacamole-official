@@ -1,12 +1,23 @@
 import { Button } from '@/components/ui/button';
 import Featured from '@/components/views/play/featured';
 import RecentPlay from '@/components/views/play/recent-play';
+import { cn } from '@/lib/utils';
+import { Bungee } from 'next/font/google';
 import Image from 'next/image';
+const bungee = Bungee({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 const Guacamole = () => {
   return (
-    <main className="container mx-auto flex flex-col items-center gap-14 px-16 py-12">
-      <h1 className="font-bungee  text-[64px]">GUAC-A-MOLE</h1>
+    <main
+      className={cn(
+        'container mx-auto flex flex-col items-center gap-14 px-16 py-1  max-w-[1440px]',
+        bungee.className
+      )}
+    >
+      <h1 className="font-bungee text-[64px]">GUAC-A-MOLE</h1>
       <div className="flex w-full flex-col items-center gap-6">
         <p className="text-center text-2xl font-semibold">
           Select an avocado to SMASH:
