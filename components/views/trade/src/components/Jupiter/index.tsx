@@ -47,7 +47,7 @@ export const OUTPUT_MINT_ADDRESS = FIDA_MINT; // FIDA
 import { useJupiterApiContext } from '../../contexts';
 import { Button } from '@/components/ui/button';
 import { toast } from 'react-toastify';
-import { RenderUpdate } from '../../utils/notifications';
+import { RenderUpdate } from '@/components/ui/RenderUpdate';
 
 interface IJupiterFormProps {}
 
@@ -428,7 +428,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
           {!hasRoute && !loadingRoute && (
             <div className="flex flex-row justify-center">
               <span className="mr-2 text-lg font-bold">No route found</span>
-              <img className="h-[30px] w-[30px]" src={emoji.src} />
+              <img className="h-[30px] w-[30px]" src={'/images/no-route.png'} />
             </div>
           )}
           {!loadingRoute &&

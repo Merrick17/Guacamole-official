@@ -1,7 +1,6 @@
-import solscan from '../../assets/solscan.png';
-import { abbreviate } from '../../utils/abbreviate';
+import { abbreviate } from '../views/trade/src/utils/abbreviate';
 import { PublicKey } from '@solana/web3.js';
-import Urls from '../../settings/urls';
+import Urls from '../views/trade/src/settings/urls';
 
 export const ExplorerButton = ({
   pubkey,
@@ -20,7 +19,7 @@ export const ExplorerButton = ({
       }
     >
       {abbreviate(pubkey || (tx as string), 4)}
-      <img src={solscan} className="ml-1 mt-1 h-4" />
+      <img src={'/images/solscan.png'} className="ml-1 mt-1 h-4" />
     </a>
   );
 };

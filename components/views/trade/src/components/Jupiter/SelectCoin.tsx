@@ -3,7 +3,6 @@ import { useJupiterApiContext } from '../../contexts';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useVirtualList } from 'ahooks';
 import { BiChevronDown, BiLink } from 'react-icons/bi';
-import defaultCoin from '../../assets/default-coin.png';
 import { Link } from '../Link';
 import Urls from '../../settings/urls';
 import { Button } from '@/components/ui/button';
@@ -13,7 +12,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 
 const Row = ({
@@ -36,7 +34,7 @@ const Row = ({
           <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
-              currentTarget.src = defaultCoin.src;
+              currentTarget.src = '/images/default-coin.png';
             }}
             src={info.logoURI as string}
             width={20}
@@ -50,7 +48,7 @@ const Row = ({
           <span className="text-sm opacity-80">{info.name}</span>
         </div>
       </div>
-      <Link className="z-1  " href={Urls.solscanAddress + info.address}>
+      <Link className="z-1" href={Urls.solscanAddress + info.address}>
         <Button className="!pl-4 !pr-4 rounded-xl">
           <BiLink className="h-[20px]" />
         </Button>
@@ -66,7 +64,7 @@ const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
         src={tokenInfo?.logoURI as string}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null; // prevents looping
-          currentTarget.src = defaultCoin.src;
+          currentTarget.src = '/images/default-coin.png';
         }}
         width={20}
         height={20}

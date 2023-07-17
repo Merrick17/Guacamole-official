@@ -1,5 +1,5 @@
-import Loading from '../../components/Loading';
-import { ExplorerButton } from '../../components/Buttons';
+import { ExplorerButton } from '@/components/ui/ExplorerButton';
+import Loading from '../views/trade/src/components/Loading';
 
 export const RenderUpdate = ({
   updateText,

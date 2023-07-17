@@ -7,45 +7,30 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useSmallScreen, useSolanaCongested } from '../../../hooks';
 import { Logo } from './Logo';
 import { RpcSettings } from '../../RpcSettings';
-import { Congested } from './Congested';
 import clsx from 'clsx';
 
 const TopBar = ({ setCustomRpc }: { setCustomRpc: (url: string) => void }) => {
   const { connected } = useWallet();
   const smallScreen = useSmallScreen();
-  const { data: congested } = useSolanaCongested();
 
   if (smallScreen) {
     return (
       <div className="relative mb-8 h-[40px] bg-white">
         {/* <Congested congested={!!congested} /> */}
-        <div
-          className={clsx(
-            'absolute left-4',
-            congested ? 'top-[30px]' : 'top-5'
-          )}
-        >
-          {!congested && <Logo />}
+        <div className={clsx()}>
+          <Logo />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative mb-10 h-[40px] bg-white">
+    <div className="relative mb-10 w-full  flex flex-row items-center justify-between gap-2 bg-white">
       {/* <Congested congested={!!congested} /> */}
-      <div
-        className={clsx('absolute left-4', congested ? 'top-[30px]' : 'top-5')}
-      >
+      <div>
         <Logo />
       </div>
-      <div
-        className={clsx(
-          'absolute right-4 flex flex-row',
-          congested ? 'top-[30px]' : 'top-3',
-          congested ? undefined : 'mt-3'
-        )}
-      >
+      <div className="flex flex-row items-center">
         <RpcSettings setCustomRpc={setCustomRpc} />
         <WalletModalProvider>
           {connected ? <WalletDisconnectButton /> : <WalletMultiButton />}
