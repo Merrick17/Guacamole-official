@@ -9,14 +9,10 @@ interface PlayProps {}
 
 const Play: FC<PlayProps> = () => {
   return (
-    <main className="container mx-auto flex flex-col gap-14 px-16 py-12 max-w-[1440px]  ">
-      <div className="flex flex-col items-center gap-7 ">
-        <Ready />
-        <Banner />
-        <Featured />
-        <RecentPlay />
-      </div>
-    </main>
+    <>
+      <Ready />
+      <Banner />
+    </>
   );
 };
 

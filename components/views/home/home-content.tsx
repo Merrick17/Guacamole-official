@@ -6,10 +6,10 @@ interface HomeContentProps {}
 
 const HomeContent: FC<HomeContentProps> = () => {
   return (
-    <div className="flex max-w-3xl flex-col gap-10 rounded-lg bg-white px-14 py-10">
+    <div className="flex  lg:max-w-3xl flex-col gap-10 rounded-lg bg-white px-14 py-10">
       <header className="flex flex-col gap-6">
         <ColorBlocks />
-        <h1 className="text-[64px] font-medium leading-[72px] text-black">
+        <h1 className="text-xl sm:text-6xl lg:text-[64px] font-medium lg:leading-[72px] text-black">
           A Fresh And Simple Way To Trade, Earn, Create, And Play!
         </h1>
       </header>
@@ -18,7 +18,7 @@ const HomeContent: FC<HomeContentProps> = () => {
         effortlessly, while enjoying a seamless and user-friendly experience.
         Get started and unlock a world of possibilities!
       </p>
-      <Button className="w-[220px] text-2xl font-medium text-white">
+      <Button className=" sm:max-w-[220px] text-2xl font-medium text-white">
         Get Started
       </Button>
     </div>

@@ -3,7 +3,10 @@ const routes = {
   swap: '/trade',
   play: '/play',
   tools: '/tools',
-  guacamole: 'play/guac-a-mole',
+  guacamole: '/play/guac-a-mole',
+  coinFlip: '/play/coin-flip',
+  nft: '/nft',
+  createSplToken: '/nft/create-spl-token',
 };
 
 export default routes;

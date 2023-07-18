@@ -1,7 +1,5 @@
 'use client';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import Image from 'next/image';
-import Link from 'next/link';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 import { Links } from '@/config/links';
@@ -34,18 +32,25 @@ const HeaderLeft: FC = () => {
         </div>
         <h1 className="text-2xl font-medium text-black">Guacamole</h1>
       </div>
-      <nav>
-        <ul className="flex flex-row items-center gap-8 text-[#4B5563] text-base font-medium capitalize">
-          {Links.map((link, index) => (
-            <NavItem key={index} {...link} />
-          ))}
-        </ul>
-      </nav>
+      <Navigation />
     </div>
   );
 };
+
 const HeaderRight: FC = () => {
   return <WalletMultiButtonDynamic className="rounded-full" />;
+};
+
+const Navigation: FC = () => {
+  return (
+    <nav className="hidden lg:block">
+      <ul className="flex flex-row items-center gap-8 text-[#4B5563] text-base font-medium capitalize">
+        {Links.map((link, index) => (
+          <NavItem key={index} {...link} />
+        ))}
+      </ul>
+    </nav>
+  );
 };
 
 export default Header;

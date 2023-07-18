@@ -23,6 +23,26 @@ export const Links = [
 
         href: routes.guacamole,
       },
+      {
+        name: 'Coin Flip',
+
+        href: routes.coinFlip,
+      },
+    ],
+  },
+  {
+    name: 'Nft',
+    href: routes.nft,
+    dropdownItems: [
+      {
+        name: 'Explore',
+        href: routes.nft,
+      },
+      {
+        name: 'create spl token',
+
+        href: routes.createSplToken,
+      },
     ],
   },
 

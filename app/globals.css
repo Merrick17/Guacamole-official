@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 body {
-  @apply font-body bg-body bg-body-image bg-auto 	 bg-no-repeat;
+  @apply font-body bg-body bg-body-image bg-auto 	 bg-no-repeat antialiased;
 }
 
 .wallet-adapter-button {

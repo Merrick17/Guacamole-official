@@ -1,12 +1,14 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { FC } from 'react';
+import { usePathname } from 'next/navigation';
 
-type FeaturedProps = {
-  variant?: 'normal' | 'compact';
-};
-const Featured: FC<FeaturedProps> = ({ variant = 'normal' }) => {
+type FeaturedProps = {};
+const Featured: FC<FeaturedProps> = () => {
+  const pathname = usePathname();
   return (
     <div className="flex w-[512px] flex-col gap-4 rounded-lg bg-white px-5 py-7">
       <header className="flex items-center gap-1">
@@ -17,7 +19,11 @@ const Featured: FC<FeaturedProps> = ({ variant = 'normal' }) => {
       </header>
       <div className="flex flex-row gap-[10px] overflow-auto ">
         {Games.map((game, index) => (
-          <FeaturedGame variant={variant} key={index} {...game} />
+          <FeaturedGame
+            variant={pathname === '/play' ? 'normal' : 'compact'}
+            key={index}
+            {...game}
+          />
         ))}
       </div>
     </div>
