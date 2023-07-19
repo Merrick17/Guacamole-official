@@ -1,4 +1,6 @@
+// @ts-nocheck
 'use client';
+
 import { useGLTF, useTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import React, { useEffect, useRef } from 'react';

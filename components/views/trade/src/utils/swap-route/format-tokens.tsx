@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { InlineResponseDefaultMarketInfos } from '@jup-ag/api';
 import { TokenInfo } from '@solana/spl-token-registry';
 

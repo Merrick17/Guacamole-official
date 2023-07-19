@@ -25,8 +25,9 @@ const CoverImage = styled.div`
   background-position: center;
 `;
 
-export default function Play({ shortName = '' }: { shortName: string }) {
+export default function Play({ params }: { params: { shortName: string } }) {
   const navigate = useRouter();
+  const { shortName } = params;
   const game = useMemo(
     () => GAMES.find((x) => x.short_name === shortName),
     [shortName]

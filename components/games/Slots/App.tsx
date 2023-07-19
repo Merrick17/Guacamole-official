@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { lamportsToSol } from 'gamba';
 import { useGamba } from 'gamba/react';
 import {

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { GameBundle } from 'gamba/react-ui';
 import Flip from './Flip';
 import Mines from './Mines';

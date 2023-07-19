@@ -8,7 +8,8 @@ const bungee = Bungee({
   weight: '400',
   subsets: ['latin'],
 });
-const Guacamole = () => {
+
+export default function Page() {
   return (
     <div
       className={cn(
@@ -57,6 +58,4 @@ const Guacamole = () => {
       </div>
     </div>
   );
-};
-
-export default Guacamole;
+}
