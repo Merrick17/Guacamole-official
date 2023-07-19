@@ -10,10 +10,10 @@ import {
 import React, { Fragment, useMemo } from 'react';
 import { FaArrowRight, FaDice, FaList } from 'react-icons/fa';
 import styled from 'styled-components';
-import { Card } from '../../components/common/Card';
-import { Slider } from '../../components/common/Slider';
-import { Banner, Section, StylelessButton } from '@/components/styles';
-import { GAMES } from '../../components/games';
+import { Card } from '../../../components/common/Card';
+import { Slider } from '../../../components/common/Slider';
+import { Banner, Section, StylelessButton } from '../../../components/styles';
+import { GAMES } from '../../../components/games';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -25,13 +25,15 @@ const CoverImage = styled.div`
   background-position: center;
 `;
 
-export default function Play({ shortName = '' }: { shortName: string }) {
+export default function Page({ params }: { params: { shortName: string } }) {
   const navigate = useRouter();
+  const { shortName } = params;
   const game = useMemo(
     () => GAMES.find((x) => x.short_name === shortName),
     [shortName]
   );
-  const play = false;
+  const play = true;
+  console.log({ GAMES, shortName: shortName });
   return (
     <>
       <Banner size={play ? 'big' : shortName ? 'medium' : 'default'}>
@@ -95,6 +97,7 @@ export default function Play({ shortName = '' }: { shortName: string }) {
 }
 
 function Details({ game }: { game?: GameBundle }) {
+  console.log(game);
   const navigate = useRouter();
   return (
     <>

@@ -4,7 +4,7 @@ const routes = {
   play: '/play',
   tools: '/tools',
   guacamole: '/play/guac-a-mole',
-  coinFlip: '/play/coin-flip',
+  coinFlip: '/play/flip',
   nft: '/nft',
   createSplToken: '/nft/create-spl-token',
 };

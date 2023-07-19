@@ -1,7 +1,11 @@
+'use client';
 import { Kanit } from 'next/font/google';
-import Header from '@/components/ui/header';
 import Featured from '@/components/views/play/featured';
 import RecentPlay from '@/components/views/play/recent-play';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyle, theme } from '@/components/styles';
+import { Gamba } from 'gamba/react';
+import { GambaUi } from 'gamba/react-ui';
 
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -14,12 +18,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="container mx-auto flex flex-col gap-14 px-16 py-12 max-w-[1440px]  ">
-      <div className="flex flex-col items-center gap-7 ">
-        {children}
-        <Featured />
-        <RecentPlay />
-      </div>
-    </main>
+    <>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Gamba
+          connection={{
+            endpoint:
+              'https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943',
+            config: {
+              wsEndpoint:
+                'wss://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943',
+            },
+          }}
+        >
+          <GambaUi>{children}</GambaUi>
+        </Gamba>
+      </ThemeProvider>
+
+      <Featured />
+      <RecentPlay />
+    </>
   );
 }
