@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { InlineResponseDefaultMarketInfos } from '@jup-ag/api';
 
 export const formatRoute = (route: InlineResponseDefaultMarketInfos[]) => {

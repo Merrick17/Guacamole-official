@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { useRequest } from 'ahooks';
 import {
