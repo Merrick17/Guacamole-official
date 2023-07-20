@@ -1,21 +1,37 @@
 'use client';
-import {
-  Button,
-  GameBundle,
-  GameView,
-  RecentPlays,
-  Svg,
-  useGambaUi,
-} from 'gamba/react-ui';
-import React, { Fragment, useMemo } from 'react';
+import { Banner, Section, StylelessButton } from '@/components/styles';
+import dynamic from 'next/dynamic';
+//import {Svg} from 'gamba/react-ui'
+const Button = dynamic(() => import('gamba/react-ui').then((mod) => mod.Button), {
+  ssr: false, // Disable SSR for Button
+});
+
+//@ts-ignore
+const GameBundle = dynamic(() => import('gamba/react-ui').then((mod) => mod.GameBundle), {
+  ssr: false, // Disable SSR for GameBundle
+});
+
+//@ts-ignore
+const GameView = dynamic(() => import('gamba/react-ui').then((mod) => mod.GameView), {
+  ssr: false, // Disable SSR for GameView
+});
+
+//@ts-ignore
+const RecentPlays = dynamic(() => import('gamba/react-ui').then((mod) => mod.RecentPlays), {
+  ssr: false, // Disable SSR for RecentPlays
+});
+//@ts-ignore
+const Svg = dynamic(() => import('gamba/react-ui').then((mod) => mod.Svg), {
+  ssr: false, // Disable SSR for RecentPlays
+});
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { Fragment, useEffect, useMemo } from 'react';
 import { FaArrowRight, FaDice, FaList } from 'react-icons/fa';
 import styled from 'styled-components';
 import { Card } from '../../components/common/Card';
 import { Slider } from '../../components/common/Slider';
-import { Banner, Section, StylelessButton } from '@/components/styles';
 import { GAMES } from '../../components/games';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 const CoverImage = styled.div`
   transition: background-image 0.2s ease;
@@ -25,13 +41,16 @@ const CoverImage = styled.div`
   background-position: center;
 `;
 
-export default function Play({ params }: { params: { shortName: string } }) {
+const Play = ({ params }: { params: { shortName: string } }) => {
   const navigate = useRouter();
   const { shortName } = params;
   const game = useMemo(
     () => GAMES.find((x) => x.short_name === shortName),
     [shortName]
   );
+  useEffect(() => {
+
+  }, [typeof window !== "undefined"]);
   const play = false;
   return (
     <>
@@ -52,7 +71,7 @@ export default function Play({ params }: { params: { shortName: string } }) {
                   style={{ color: 'white', fontSize: '20px' }}
                   onClick={() => navigate.push('/play/' + game.short_name)}
                 >
-                  <Svg.Close />
+                  {/* <Svg.Close /> */}
                 </StylelessButton>
               </div>
             </div>
@@ -95,7 +114,7 @@ export default function Play({ params }: { params: { shortName: string } }) {
   );
 }
 
-function Details({ game }: { game?: GameBundle }) {
+function Details({ game }: { game?:any }) {
   const navigate = useRouter();
   return (
     <>
@@ -118,7 +137,7 @@ function Details({ game }: { game?: GameBundle }) {
               style={{ color: 'white', fontSize: '20px' }}
               onClick={() => navigate.push('/')}
             >
-              <Svg.Close />
+              {/* <Svg.Close /> */}
             </StylelessButton>
           </div>
         </Section>
@@ -164,7 +183,11 @@ function Details({ game }: { game?: GameBundle }) {
               .
             </div>
             <div style={{ display: 'flex', gap: '20px' }}>
-              <Button onClick={() => window.open('https://gamba.so', '_blank')}>
+              <Button onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.open('https://gamba.so', '_blank')
+                }
+              }}>
                 Read More
               </Button>
             </div>
@@ -174,3 +197,5 @@ function Details({ game }: { game?: GameBundle }) {
     </>
   );
 }
+
+export default Play; 

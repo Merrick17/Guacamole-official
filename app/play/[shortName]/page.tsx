@@ -1,21 +1,29 @@
 'use client';
-import {
-  Button,
-  GameBundle,
-  GameView,
-  RecentPlays,
-  Svg,
-  useGambaUi,
-} from 'gamba/react-ui';
-import React, { Fragment, useMemo } from 'react';
+const Button = dynamic(() => import('gamba/react-ui').then((mod) => mod.Button), {
+  ssr: false, // Disable SSR for Button
+});
+
+import {GameBundle,Svg} from 'gamba/react-ui'
+
+const GameView = dynamic(() => import('gamba/react-ui').then((mod) => mod.GameView), {
+  ssr: false, // Disable SSR for GameView
+});
+
+const RecentPlays = dynamic(() => import('gamba/react-ui').then((mod) => mod.RecentPlays), {
+  ssr: false, // Disable SSR for RecentPlays
+});
+
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { Fragment, useEffect, useMemo } from 'react';
 import { FaArrowRight, FaDice, FaList } from 'react-icons/fa';
 import styled from 'styled-components';
 import { Card } from '../../../components/common/Card';
 import { Slider } from '../../../components/common/Slider';
-import { Banner, Section, StylelessButton } from '../../../components/styles';
 import { GAMES } from '../../../components/games';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { Banner, Section, StylelessButton } from '../../../components/styles';
+import dynamic from 'next/dynamic';
 
 const CoverImage = styled.div`
   transition: background-image 0.2s ease;
@@ -26,6 +34,9 @@ const CoverImage = styled.div`
 `;
 
 export default function Page({ params }: { params: { shortName: string } }) {
+  useEffect(()=>{
+
+  },[typeof window!=="undefined"])
   const navigate = useRouter();
   const { shortName } = params;
   const game = useMemo(
@@ -58,7 +69,8 @@ export default function Page({ params }: { params: { shortName: string } }) {
               </div>
             </div>
           ) : (
-            <Details game={game} />
+            
+             <Details game={game} />
           )}
         </Fragment>
       </Banner>
@@ -96,7 +108,7 @@ export default function Page({ params }: { params: { shortName: string } }) {
   );
 }
 
-function Details({ game }: { game?: GameBundle }) {
+function Details({ game }: { game?: any }) {
   console.log(game);
   const navigate = useRouter();
   return (
@@ -166,7 +178,11 @@ function Details({ game }: { game?: GameBundle }) {
               .
             </div>
             <div style={{ display: 'flex', gap: '20px' }}>
-              <Button onClick={() => window.open('https://gamba.so', '_blank')}>
+              <Button onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.open('https://gamba.so', '_blank')
+                }
+              }}>
                 Read More
               </Button>
             </div>

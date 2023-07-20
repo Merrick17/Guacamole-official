@@ -140,7 +140,7 @@ export function useDebouncedEffect(fn: Function, deps: any[], time: number) {
 }
 
 export function splitIntoChunks<T>(array: T[], size: number): T[][] {
-  return Array.apply<number, T[], T[][]>(
+  return Array.apply(
     0,
     new Array(Math.ceil(array.length / size))
   ).map((_, index) => array.slice(index * size, (index + 1) * size));
