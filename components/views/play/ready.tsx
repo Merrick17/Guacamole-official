@@ -1,3 +1,4 @@
+'use client';
 import ColorBlocks from '@/components/common/color-block';
 
 const Ready = () => {

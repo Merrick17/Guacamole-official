@@ -4,8 +4,16 @@ import Featured from '@/components/views/play/featured';
 import RecentPlay from '@/components/views/play/recent-play';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, theme } from '@/components/styles';
-import { Gamba } from 'gamba/react';
-import { GambaUi } from 'gamba/react-ui';
+const Gamba = dynamic(() => import('gamba/react').then((mod) => mod.Gamba), {
+  ssr: false, // Disable SSR for the component
+});
+
+// Dynamic import for 'gamba/react-ui'
+const GambaUi = dynamic(() => import('gamba/react-ui').then((mod) => mod.GambaUi), {
+  ssr: false, // Disable SSR for the component
+});
+import React from 'react';
+import dynamic from 'next/dynamic';
 
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],

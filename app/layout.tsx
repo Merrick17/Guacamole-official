@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Kanit } from 'next/font/google';
 import Header from '@/components/ui/header';
+import React from 'react';
 
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],

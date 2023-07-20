@@ -1,6 +1,7 @@
-import Image from 'next/image';
+'use client';
+import React from 'react';
 import { FC } from 'react';
-
+import Image from 'next/image'
 const RecentPlay = () => {
   return (
     <div className="flex w-[512px] flex-col gap-4 rounded-lg bg-white px-5 py-7">

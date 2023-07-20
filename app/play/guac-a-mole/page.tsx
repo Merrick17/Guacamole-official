@@ -1,15 +1,19 @@
+"use client"
 import { Button } from '@/components/ui/button';
-import Featured from '@/components/views/play/featured';
-import RecentPlay from '@/components/views/play/recent-play';
 import { cn } from '@/lib/utils';
 import { Bungee } from 'next/font/google';
 import Image from 'next/image';
+import React from 'react';
+import { useEffect } from 'react';
 const bungee = Bungee({
   weight: '400',
   subsets: ['latin'],
 });
 
-export default function Page() {
+const Page = () => {
+  useEffect(() => {
+
+  }, [typeof window!=="undefined"]); 
   return (
     <div
       className={cn(
@@ -59,3 +63,6 @@ export default function Page() {
     </div>
   );
 }
+
+
+export default Page
