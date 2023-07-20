@@ -2,12 +2,7 @@
 
 import { lamportsToSol } from 'gamba';
 import { useGamba } from 'gamba/react';
-import {
-  ActionBar,
-  Button,
-  ResponsiveSize,
-  formatLamports,
-} from 'gamba/react-ui';
+import { Button, ResponsiveSize, formatLamports } from 'gamba/react-ui';
 import React, { useMemo, useState } from 'react';
 import * as Tone from 'tone';
 import { Results } from './Results';
@@ -22,6 +17,7 @@ const createSound = (url: string) => new Tone.Player({ url }).toDestination();
 import chipSrc from './chip.wav';
 import diceSrc from './dice.wav';
 import winSrc from './win.wav';
+import { ActionBar } from '@/components/common/ActionBar';
 
 export const soundChip = createSound(chipSrc);
 export const soundDice = createSound(diceSrc);
@@ -80,14 +76,7 @@ export default function Roulette() {
   return (
     <>
       <ResponsiveSize>
-        <div
-          style={{
-            display: 'grid',
-            gap: '20px',
-            alignItems: 'center',
-            padding: '200px',
-          }}
-        >
+        <div className="bg-white p-5  grid gap-5">
           <div
             style={{
               textAlign: 'center',

@@ -2,12 +2,7 @@
 
 import { solToLamports } from 'gamba';
 import { useGamba } from 'gamba/react';
-import {
-  ActionBar,
-  Button,
-  ResponsiveSize,
-  formatLamports,
-} from 'gamba/react-ui';
+import { Button, ResponsiveSize, formatLamports } from 'gamba/react-ui';
 import React, { useMemo, useState } from 'react';
 import * as Tone from 'tone';
 import { Dropdown } from '../../common/Dropdown';
@@ -15,7 +10,8 @@ import { Cell, Container, Grid, Overlay, OverlayText } from './styles';
 import winSrc from './win.mp3';
 import tickSrc from './tick.mp3';
 import loseSrc from './lose.mp3';
-import {GambaConnectButton} from 'gamba/react-ui'
+import { GambaConnectButton } from 'gamba/react-ui';
+import { ActionBar } from '@/components/common/ActionBar';
 
 const GRID_SIZE = 25;
 const MINE_COUNT = 5;
@@ -161,7 +157,6 @@ function Mines() {
             <Dropdown
               value={wager}
               format={(value) => formatLamports(value)}
-              label="Wager"
               onChange={setWager}
               options={WAGER_AMOUNTS.map((value) => ({
                 label: formatLamports(value),
@@ -171,7 +166,6 @@ function Mines() {
             <Dropdown
               value={mines}
               format={(value) => value + ' Mines'}
-              label="Mines"
               onChange={setMines}
               options={MINE_SELECT.map((value) => ({
                 label: value + ' SOL',
@@ -193,7 +187,7 @@ function Mines() {
         <Button disabled={!needsReset} onClick={resetGame}>
           Reset
         </Button>
-        <GambaConnectButton/>
+        <GambaConnectButton />
       </ActionBar>
     </>
   );

@@ -2,12 +2,7 @@
 
 import { lamportsToSol } from 'gamba';
 import { useGamba } from 'gamba/react';
-import {
-  ActionBar,
-  Button,
-  ResponsiveSize,
-  formatLamports,
-} from 'gamba/react-ui';
+import { Button, ResponsiveSize, formatLamports } from 'gamba/react-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import * as Tone from 'tone';
 import { Dropdown } from '../../common/Dropdown';
@@ -20,6 +15,7 @@ import spinStartSrc from './spinstart.mp3';
 import { SlotContainer, SlotWindowContainer, WinPopup } from './styles';
 import unicornSelectSrc from './unicornselect.mp3';
 import winSrc from './win.mp3';
+import { ActionBar } from '@/components/common/ActionBar';
 
 // Constants
 const INITIAL_WAGER = 50000000;

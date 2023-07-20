@@ -2,13 +2,8 @@
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import { solToLamports } from 'gamba';
-import { useGamba, } from 'gamba/react';
-import {
-  ActionBar,
-  Button,
-  ResponsiveSize,
-  formatLamports, useGambaUi
-} from 'gamba/react-ui';
+import { useGamba } from 'gamba/react';
+import { ResponsiveSize, formatLamports, useGambaUi } from 'gamba/react-ui';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import { FaEquals, FaHandPointDown, FaHandPointUp } from 'react-icons/fa';
@@ -18,6 +13,8 @@ import cardSrc from './card.mp3';
 import { RANKS } from './constants';
 import { Card, Container, Option, Overlay, OverlayText } from './styles';
 import winSrc from './win.wav';
+import { ActionBar } from '@/components/common/ActionBar';
+import { Button } from '@/components/ui/button';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -76,8 +73,8 @@ export default function HiLo() {
   );
 
   useEffect(() => {
-    console.log("COnnected", connected)
-  }, [typeof window == "undefined", connected])
+    console.log('COnnected', connected);
+  }, [typeof window == 'undefined', connected]);
   const hasClaimableBalance = gamba.balances.user > 0;
 
   const resetGame = async () => {
@@ -142,7 +139,11 @@ export default function HiLo() {
       <ResponsiveSize>
         <Container>
           {currentRank !== 0 ? (
-            <Option $selected={option === 'lo'} onClick={() => setOption('lo')}>
+            <Option
+              className="flex flex-col items-center justify-center"
+              $selected={option === 'lo'}
+              onClick={() => setOption('lo')}
+            >
               <div>
                 <FaHandPointDown />
               </div>
@@ -150,6 +151,7 @@ export default function HiLo() {
             </Option>
           ) : (
             <Option
+              className="flex flex-col items-center justify-center"
               $selected={option === 'same'}
               onClick={() => setOption('same')}
             >
@@ -164,7 +166,11 @@ export default function HiLo() {
             <div className="suit"></div>
           </Card>
           {currentRank !== RANKS - 1 ? (
-            <Option $selected={option === 'hi'} onClick={() => setOption('hi')}>
+            <Option
+              className="flex flex-col items-center justify-center"
+              $selected={option === 'hi'}
+              onClick={() => setOption('hi')}
+            >
               <div>
                 <FaHandPointUp />
               </div>
@@ -172,6 +178,7 @@ export default function HiLo() {
             </Option>
           ) : (
             <Option
+              className="flex flex-col items-center justify-center"
               $selected={option === 'same'}
               onClick={() => setOption('same')}
             >
@@ -194,7 +201,6 @@ export default function HiLo() {
             <Dropdown
               value={wager}
               format={(value) => formatLamports(value)}
-              label="Wager"
               onChange={setWager}
               options={WAGER_AMOUNTS.map((value) => ({
                 label: formatLamports(value),
@@ -218,17 +224,18 @@ export default function HiLo() {
         >
           PLAY {option}
         </Button>
-        <Button disabled={!needsReset} onClick={resetGame}>
+        <Button variant="secondary" disabled={!needsReset} onClick={resetGame}>
           Reset
         </Button>
-        {
-          connected && publicKey && <Button onClick={() => {
-            setModal(true);
-          }}>
+        {connected && publicKey && (
+          <Button
+            onClick={() => {
+              setModal(true);
+            }}
+          >
             Account
           </Button>
-        }
-
+        )}
       </ActionBar>
     </>
   );

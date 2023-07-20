@@ -34,7 +34,6 @@ const CoverImage = styled.div`
 `;
 
 export default function Page({ params }: { params: { shortName: string } }) {
-  useEffect(() => {}, [typeof window !== 'undefined']);
   const navigate = useRouter();
   const { shortName } = params;
   const game = useMemo(
@@ -74,8 +73,6 @@ export default function Page({ params }: { params: { shortName: string } }) {
           )}
         </Fragment>
       </Banner>
-      <Featured />
-      <RecentPlay />
     </>
   );
 }

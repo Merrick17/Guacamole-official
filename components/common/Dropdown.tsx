@@ -42,8 +42,8 @@ const Label = styled.div`
 `;
 
 const StyledDropdown = styled.button<{ $active?: boolean }>`
-  background: var(--bg-light-color);
-  border-radius: var(--border-radius);
+  background: black;
+  border-radius: 5px;
   color: white;
   border: none;
   margin: 0;
@@ -51,6 +51,7 @@ const StyledDropdown = styled.button<{ $active?: boolean }>`
   width: 100%;
   height: 40px;
   padding: 10px 20px;
+
   ${({ $active }) =>
     $active &&
     `
@@ -72,7 +73,7 @@ const StyledPopup = styled.div`
   left: 0;
   border: none;
   max-width: 100%;
-  background: var(--bg-light-color);
+  background: white;
   color: white;
   border-radius: var(--border-radius);
   margin-bottom: 20px;
@@ -83,7 +84,7 @@ const StyledPopup = styled.div`
     width: 20px;
     height: 20px;
     transform: rotate(-45deg);
-    background: var(--bg-light-color);
+    background: white;
     position: absolute;
     z-index: -1;
     bottom: -10px;
@@ -98,22 +99,26 @@ const StyledOption = styled.button<{ $selected?: boolean }>`
   width: 100%;
   text-align: left;
   background: none;
-  color: white;
+  color: black;
   padding: 5px;
   & > div {
     padding: 10px 20px;
     border-radius: var(--border-radius);
+    border: black 1px solid;
+    background-color: white;
   }
   ${({ $selected }) =>
     $selected &&
     `
     & > div {
       background: #1e2029;
+      color:white;
     }
   `}
   &:hover {
     & > div {
       background: #2e323f;
+      color: white;
     }
   }
 `;

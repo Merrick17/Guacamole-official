@@ -1,13 +1,14 @@
 // styles.ts
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 200px;
-`
+  padding: 40px 100px;
+  background-color: white;
+`;
 
 export const Grid = styled.div`
   display: grid;
@@ -16,11 +17,11 @@ export const Grid = styled.div`
   gap: 8px;
   width: 300px;
   height: 300px;
-`
+`;
 
 interface CellProps {
-  hasMine: boolean
-  status: 'hidden' | 'gold' | 'mine'
+  hasMine: boolean;
+  status: 'hidden' | 'gold' | 'mine';
 }
 
 export const Cell = styled.button<CellProps>`
@@ -59,7 +60,7 @@ export const Cell = styled.button<CellProps>`
   &:hover {
     background-color: #ddd;
   }
-`
+`;
 
 export const Overlay = styled.div`
   position: absolute;
@@ -70,9 +71,9 @@ export const Overlay = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`
+`;
 
 export const OverlayText = styled.div`
   font-size: 1.5rem;
   color: red;
-`
+`;

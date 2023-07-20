@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components';
 
 export const SlotContainer = styled.div`
   display: flex;
@@ -7,21 +7,22 @@ export const SlotContainer = styled.div`
   font-size: 5rem; // Adjust as needed
   padding: 20px;
   border-radius: 10px;
+  background-color: white;
   span {
     text-shadow: 5px 20px 4px rgba(0, 0, 0, 0.5);
     color: #000000;
   }
-`
+`;
 
 const lightUpKeyframes = keyframes`
   0% { box-shadow: 0 0 3px #ffec63, 0 0 5px #ffec63, 0 0 8px #ffec63, 0 0 10px #ffec63; }
   50% { box-shadow: 0 0 5px #ffec63, 0 0 10px #ffec63, 0 0 15px #ffec63, 0 0 20px #ffec63; }
   100% { box-shadow: 0 0 3px #ffec63, 0 0 5px #ffec63, 0 0 8px #ffec63, 0 0 10px #ffec63; }
-`
+`;
 
 export const lightUp = css`
   animation: ${lightUpKeyframes} 2s infinite;
-`
+`;
 
 export const SlotWindowContainer = styled.div`
   display: flex;
@@ -37,7 +38,7 @@ export const SlotWindowContainer = styled.div`
   &.light-up {
     ${lightUp}
   }
-`
+`;
 
 const moneyIncrease = keyframes`
   0% {
@@ -48,7 +49,7 @@ const moneyIncrease = keyframes`
     transform: translateY(0);
     opacity: 1;
   }
-`
+`;
 
 const flash = keyframes`
   0%, 100% {
@@ -59,7 +60,7 @@ const flash = keyframes`
     background-color: #333;
     color: #ffec63;
   }
-`
+`;
 
 export const WinPopup = styled.div`
   position: absolute;
@@ -87,4 +88,4 @@ export const WinPopup = styled.div`
     z-index: -1;
     opacity: 0.6;
   }
-`
+`;
