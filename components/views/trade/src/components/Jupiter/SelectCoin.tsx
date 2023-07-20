@@ -158,7 +158,6 @@ export const SelectCoin = ({
   if (!tokenInfo) {
     return null;
   }
-
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div className="w-max cursor-pointer" onClick={() => setVisible(true)}>

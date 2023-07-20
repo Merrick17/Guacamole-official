@@ -14,6 +14,9 @@ import { Button } from '@/components/ui/button';
 import { GrFormClose } from 'react-icons/gr';
 import SwapSettingButton from '../SwapRoute/SwapSettingButton';
 import { formatNumber } from '../../misc/utils';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 const OPTIONS = [1, 5, 10];
 
 export const Slippage = ({
@@ -42,10 +45,7 @@ export const Slippage = ({
         <HiAdjustments className="mr-2 w-3 rotate-90" />
         <span className="text-xs"> {slippage / 10} %</span>
       </div>
-      <DialogContent
-        closeBtn={false}
-        className="h-[70vh] max-h-[70vh] overflow-auto"
-      >
+      <DialogContent closeBtn={false} className="overflow-auto">
         <DialogHeader>
           <DialogTitle className="text-black flex flex-row items-center justify-between">
             <h2 className="text-base capitalize font-medium ">
@@ -89,14 +89,14 @@ export const Slippage = ({
                   })}
                 </div>
                 <div className="mt-5">
+                  <p className="text-black/50 text-xs">or set manually:</p>
                   <div
-                    className={clsx(
-                      'relative',
-                      custom && 'bg-[#E5E7EB] text-black',
+                    className={cn(
+                      ' relative text-black  bg-[#E5E7EB]',
                       'h-[50px] rounded-[6px] p-[2px]'
                     )}
                   >
-                    <input
+                    <Input
                       onChange={(e) =>
                         setInput(10 * parseFloat(e.target.value.trim()))
                       }
@@ -104,7 +104,7 @@ export const Slippage = ({
                       value={(input || 0) / 10}
                       max={100}
                       min={0}
-                      className="bg-neutral h-full w-full rounded-[5px] pr-10 text-right text-lg font-bold focus:outline-none"
+                      className="bg-transparent h-full w-full rounded-[5px] pr-10 text-right text-lg font-bold focus:outline-none"
                     />
                     <span className="absolute right-5 top-3 text-lg font-bold">
                       %

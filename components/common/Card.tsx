@@ -1,76 +1,32 @@
-import React, { PropsWithChildren } from 'react'
-import styled from 'styled-components'
-
-const StyledCard = styled.div<{width: number, height: number}>`
-  color: white;
-  position: relative;
-  background: #ffffff;
-  &:hover {
-    & > .background {
-      transform: scale(1.1, 1.1)
-    }
-    & > div:last-child {
-      opacity: 1;
-    }
-  }
-  border-radius: var(--border-radius);
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  ${({ width, height }) => `
-    width: ${width}px;
-    height: ${height}px;
-  `}
-  transition: height .25s ease;
-  max-height: 100%;
-  overflow: hidden;
-  flex-grow: 0;
-  flex-shrink: 0;
-  & > .background {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    transition: transform .2s ease;
-  }
-  & > div {
-    &:last-child {
-      transition: opacity .2s;
-      opacity: 0;
-      backdrop-filter: blur(50px);
-      padding: 10px;
-      text-align: center;
-      background: #000000CC;
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      transition-delay: .1s;
-      user-select: none;
-    }
-  }
-`
-
+import React, { PropsWithChildren } from 'react';
 interface Props extends PropsWithChildren {
-  backgroundImage?: string
-  backgroundColor?: string
-  width?: number
-  height?: number
+  backgroundImage?: string;
+  backgroundColor?: string;
+  width?: number;
+  height?: number;
 }
 
-export function Card({ backgroundImage, backgroundColor, children, width = 150, height = 200 }: Props) {
+export function Card({
+  backgroundImage,
+  backgroundColor,
+  children,
+  width = 150,
+  height = 200,
+}: Props) {
   return (
-    <StyledCard width={width} height={height} style={{ backgroundColor }}>
+    <div
+      className="group relative bg-white rounded-[10px] flex flex-col justify-end max-h-full transition-[height] duration-200 ease-in-out overflow-hidden flex-grow-0 flex-shrink-0"
+      style={{ backgroundColor, width, height }}
+    >
       {backgroundImage && (
         <div
-          className="background"
+          className="group-hover:scale-110 absolute top-0 left-0 w-full h-full bg-cover bg-center transition-transform duration-200 ease-in-out"
           style={{ backgroundImage: 'url(' + backgroundImage + ')' }}
         />
       )}
-      <div className="content">{children}</div>
-    </StyledCard>
-  )
+      <div className="opacity-0  group-hover:opacity-100 absolute text-center w-[90%] px-5 py-1 bottom-2 left-1/2 -translate-x-1/2 bg-black text-white rounded-[5px] font-semibold text-sm transition-opacity duration-200 ease-in-out">
+        {children}
+      </div>
+    </div>
+  );
 }

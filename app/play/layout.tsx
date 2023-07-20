@@ -9,9 +9,12 @@ const Gamba = dynamic(() => import('gamba/react').then((mod) => mod.Gamba), {
 });
 
 // Dynamic import for 'gamba/react-ui'
-const GambaUi = dynamic(() => import('gamba/react-ui').then((mod) => mod.GambaUi), {
-  ssr: false, // Disable SSR for the component
-});
+const GambaUi = dynamic(
+  () => import('gamba/react-ui').then((mod) => mod.GambaUi),
+  {
+    ssr: false, // Disable SSR for the component
+  }
+);
 import React from 'react';
 import dynamic from 'next/dynamic';
 
@@ -39,12 +42,15 @@ export default function RootLayout({
             },
           }}
         >
-          <GambaUi>{children}</GambaUi>
+          <GambaUi>
+            <main className="container mx-auto flex flex-col items-center gap-7 px-16 py-12  max-w-[1440px] text-black">
+              {children}
+              <Featured />
+              <RecentPlay />
+            </main>
+          </GambaUi>
         </Gamba>
       </ThemeProvider>
-
-      <Featured />
-      <RecentPlay />
     </>
   );
 }

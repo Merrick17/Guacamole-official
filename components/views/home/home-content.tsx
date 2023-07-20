@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import ColorBlocks from '@/components/common/color-block';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface HomeContentProps {}
 
@@ -18,9 +19,11 @@ const HomeContent: FC<HomeContentProps> = () => {
         effortlessly, while enjoying a seamless and user-friendly experience.
         Get started and unlock a world of possibilities!
       </p>
-      <Button className=" sm:max-w-[220px] text-2xl font-medium text-white">
-        Get Started
-      </Button>
+      <Link href={'/trade'}>
+        <Button className=" px-12 py-6 sm:max-w-[220px] text-2xl font-medium text-white  rounded-[36px]">
+          Get Started
+        </Button>
+      </Link>
     </div>
   );
 };

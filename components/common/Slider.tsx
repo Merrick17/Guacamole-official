@@ -1,7 +1,8 @@
-import React, { PropsWithChildren, useRef } from 'react'
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
-import styled from 'styled-components'
-import { StylelessButton } from '../games/Roulette/styles'
+import React, { PropsWithChildren, useRef } from 'react';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import styled from 'styled-components';
+import { StylelessButton } from '../games/Roulette/styles';
+import Image from 'next/image';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -9,9 +10,9 @@ export const Wrapper = styled.div`
   width: 100%;
   overflow: scroll visible;
   scroll-snap-type: x mandatory;
-  transition: height .25s ease;
+  transition: height 0.25s ease;
   &::-webkit-scrollbar {
-    height: .4em;
+    height: 0.4em;
   }
   &::-webkit-scrollbar-thumb {
     background-color: #cccccc33;
@@ -19,30 +20,42 @@ export const Wrapper = styled.div`
   & > * {
     scroll-snap-align: start;
   }
-`
+`;
 
-export function Slider({ children, title }: PropsWithChildren<{title: any}>) {
-  const ref = useRef<HTMLDivElement>(null!)
+export function Slider({ children }: PropsWithChildren) {
+  const ref = useRef<HTMLDivElement>(null!);
   const scrll = (x: number) => {
-    ref.current.scrollBy({ left: 1 * x, behavior: 'smooth' })
-  }
+    ref.current.scrollBy({ left: 1 * x, behavior: 'smooth' });
+  };
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {title}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        className="text-black"
+      >
+        <header className="flex items-center gap-1">
+          <div className="relative aspect-square w-6">
+            <Image src="/icons/featured-games.svg" fill alt="play" />
+          </div>
+          <h1 className="text-2xl   text-black">Featured Games</h1>
+        </header>
+
         <div style={{ display: 'flex', gap: '20px' }}>
-          <StylelessButton style={{ color: 'white' }} onClick={() => scrll(-1)}>
+          <StylelessButton onClick={() => scrll(-1)}>
             <FaArrowLeft />
           </StylelessButton>
-          <StylelessButton style={{ color: 'white' }} onClick={() => scrll(1)}>
+          <StylelessButton onClick={() => scrll(1)}>
             <FaArrowRight />
           </StylelessButton>
         </div>
       </div>
-      <Wrapper ref={ref}>
-        {children}
-      </Wrapper>
+
+      <Wrapper ref={ref}>{children}</Wrapper>
     </>
-  )
+  );
 }

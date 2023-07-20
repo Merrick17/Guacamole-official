@@ -13,8 +13,8 @@ import { NATIVE_MINT } from '@solana/spl-token';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
+  WalletDisconnectButton,
   WalletModalProvider,
-  WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui';
 import {
   PublicKey,
@@ -42,7 +42,8 @@ import { Buffer } from 'buffer';
 // Token Mints
 export const INPUT_MINT_ADDRESS =
   'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'; // USDC
-export const OUTPUT_MINT_ADDRESS = FIDA_MINT; // FIDA
+export const OUTPUT_MINT_ADDRESS =
+  'AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR'; // Guac
 
 import { useJupiterApiContext } from '../../contexts';
 import { Button } from '@/components/ui/button';
@@ -51,6 +52,8 @@ import { RenderUpdate } from '@/components/ui/RenderUpdate';
 import dynamic from 'next/dynamic';
 import { SwapRoutes } from './swap-routes';
 import Details from './details';
+import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -85,7 +88,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
     connection,
     publicKey
   );
-  const [inputAmout, setInputAmount] = useState('1');
+  const [inputAmout, setInputAmount] = useState('10');
   const { data: solBalance, refresh: refreshSol } = useSolBalance(
     connection,
     publicKey
@@ -358,19 +361,37 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
 
   return (
     <>
-      <div className="mt-5 w-full rounded-[15px] bg-white  sm:w-[450px] ">
-        <div className=" flex flex-row items-center justify-end gap-1 h-7">
-          <div
-            onClick={() => !loadingRoute && refresh()}
-            className=" h-full aspect-square flex items-center justify-center cursor-pointer rounded-xl !bg-[#E5E7EB] p-2 text-black"
-            color="white"
-          >
-            <GrRefresh className="h-full  " />
+      <div className="w-full rounded-[15px] bg-white  sm:w-[450px] ">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1 !h-7">
+            <Button className=" h-full rounded-lg text-sm">Swap</Button>
+            <Button
+              disabled
+              variant="secondary"
+              className="h-full rounded-lg text-sm"
+            >
+              TWAMM
+            </Button>
           </div>
-          <Slippage slippage={slippage || 0} setSlippage={setSlippage} />
-        </div>
+          <div className=" flex flex-row items-center justify-end gap-1 h-7">
+            <div
+              onClick={() => !loadingRoute && refresh()}
+              className=" h-full aspect-square flex items-center justify-center cursor-pointer rounded-xl !bg-[#E5E7EB] p-2 text-black"
+              color="white"
+            >
+              <GrRefresh className="h-full  " />
+            </div>
+            <Slippage slippage={slippage || 0} setSlippage={setSlippage} />
 
-        <div className="my-5 flex flex-col justify-between gap-[5px]">
+            <WalletMultiButtonDynamic
+              startIcon={undefined}
+              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm "
+            />
+          </div>
+        </div>
+        <Separator className="mt-5" />
+
+        <div className="mt-4 flex flex-col justify-between gap-[5px]">
           <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
             <div className="flex w-full flex-row items-center  gap-2 rounded-lg bg-white  text-black">
               <div className=" w-full rounded-xl">
@@ -379,11 +400,11 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                   setCoin={setInputTokenInfo}
                 />
               </div>
-              <input
+              <Input
                 value={inputAmout}
                 type="number"
                 onChange={(e) => setInputAmount(e.target.value.trim())}
-                className="w-full rounded-xl border-none bg-transparent text-right text-xl font-bold  outline-none"
+                className="w-full rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none"
               />
             </div>
 
@@ -394,7 +415,6 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
               solBalance={solBalance}
             />
           </div>
-
           <div className="flex w-full flex-row justify-center">
             <div className="h-[32px] w-[32px] cursor-pointer rounded-lg border border-[#E5E7EB] bg-[#E5E7EB] p-2">
               <HiOutlineSwitchVertical
@@ -403,7 +423,6 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
               />
             </div>
           </div>
-
           <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
             <div className="flex w-full flex-row items-center gap-2 rounded-lg bg-white ">
               <div className="w-full  rounded-xl">
@@ -412,7 +431,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                   setCoin={setOutputTokenInfo}
                 />
               </div>
-              <div className="w-full  rounded-xl border-none bg-transparent text-right text-xl font-bold  outline-none">
+              <div className="w-full  rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
                 {outputAmount}
               </div>
             </div>
@@ -434,7 +453,6 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             setSelectedRoute={setSelectedRoute}
             tokenMap={tokenMap}
           />
-
           {connected ? (
             <div className="mt-4">
               <Button

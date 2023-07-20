@@ -54,10 +54,7 @@ export const SwapRoutes = ({
         </div>
         using <span>{selectedRoute?.marketInfos?.[0]?.label}</span>
       </div>
-      <DialogContent
-        closeBtn={false}
-        className="h-[70vh] max-h-[70vh] overflow-auto"
-      >
+      <DialogContent closeBtn={false} className="overflow-auto">
         <DialogHeader>
           <DialogTitle className="relative">
             <h2 className="text-base  text-black text-center ">Select Route</h2>

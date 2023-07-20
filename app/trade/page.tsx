@@ -16,8 +16,7 @@ const TradePage: FC<TradeProps> = () => {
   return (
     <main className="container mx-auto flex flex-col items-center gap-14 px-16 py-12  max-w-[1440px]">
       <div className="flex w-full max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7">
-        <div className="border-b border-dashed border-gray-200 pb-5 dark:border-gray-800 xs:mb-7 xs:pb-6">
-          <Tabs defaultValue="swap" value={menuValue} className="w-full">
+        {/* <Tabs defaultValue="swap" value={menuValue} className="w-full">
             <div className="flex flex-row justify-between items-center">
               <TabsList>
                 <TabsTrigger value="swap" onClick={() => setMenuValue('swap')}>
@@ -32,12 +31,11 @@ const TradePage: FC<TradeProps> = () => {
               </TabsList>
               <WalletMultiButtonDynamic className="rounded-full" />
             </div>
-            <TabsContent value="swap">
-              <Trade />
-            </TabsContent>
+            <TabsContent value="swap"> */}
+        <Trade />
+        {/* </TabsContent>
             <TabsContent value="twamm">Comming Soon</TabsContent>
-          </Tabs>
-        </div>
+          </Tabs> */}
       </div>
     </main>
   );

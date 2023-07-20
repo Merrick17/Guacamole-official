@@ -28,18 +28,7 @@ export const GlobalStyle = createGlobalStyle`
   #root, html, body {
     height: 100%;
   }
-  :root {
-    ${({ theme }) => `
-      --border-radius: 10px;
-      --text-color: ${theme.palette.textColor};
-      --primary-color: ${theme.palette.primary};
-      --header-bg-color: ${theme.palette.background}EE;
-      --gamba-modal-bg: ${theme.palette.backgroundLight};
-      --gamba-modal-text: ${theme.palette.textColor};
-      --bg-color: ${theme.palette.background};
-      --bg-light-color: ${theme.palette.backgroundLight};
-    `}
-  }
+
   html, body {
     overflow-x: hidden;
   }

@@ -5,6 +5,7 @@ import { PublicKey } from '@solana/web3.js';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { NATIVE_MINT } from '@solana/spl-token';
 import { BiWallet } from 'react-icons/bi';
+import { Button } from '@/components/ui/button';
 export const Balance = ({
   token,
   tokenAccounts,
@@ -50,18 +51,15 @@ export const Balance = ({
 
       {setInput && !!balance && (
         <>
-          <div
+          <Button
+            className="h-5"
             onClick={() => setInput((balance / 2).toString())}
-            className=" w-[50px] cursor-pointer rounded-[20px] border-[2px] border-solid border-sky-500 text-center text-xs font-bold uppercase"
           >
             Half
-          </div>
-          <div
-            onClick={() => setInput(balance.toString())}
-            className="w-[50px] cursor-pointer rounded-[20px] border-[2px] border-solid border-sky-500 text-center text-xs font-bold uppercase"
-          >
+          </Button>
+          <Button className="h-5" onClick={() => setInput(balance.toString())}>
             Max
-          </div>
+          </Button>
         </>
       )}
     </div>

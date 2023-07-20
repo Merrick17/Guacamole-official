@@ -1,11 +1,12 @@
 import React from 'react';
-import image from './image.png';
 
-export default {
+const game = {
   name: 'HiLo',
   short_name: 'hilo',
   description: '',
   creator: 'DwRFGbjKbsEhUMe5at3qWvH7i8dAJyhhwdnFoZMnLVRV',
-  image: image.src,
+  image: '/images/hilo.png',
   app: React.lazy(() => import('./App')),
 };
+
+export default game;
