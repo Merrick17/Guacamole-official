@@ -1,44 +1,8 @@
-import styled, { css, keyframes } from 'styled-components';
-
 import { formatLamports, useGambaUi } from 'gamba/react-ui';
 import { useGamba } from 'gamba/react';
 import { RecentPlayEvent, solToLamports } from 'gamba';
 import { Time } from './Time';
-
-const PlayCSS = css`
-  padding: 10px;
-  display: flex;
-  gap: 5px;
-  grid-template-columns: auto;
-  text-align: left;
-  background: var(--bg-light-color);
-  border-radius: var(--border-radius);
-  height: 40px;
-  justify-content: space-between;
-`;
-
-const StyledRecentPlay = styled.div`
-  ${PlayCSS}
-`;
-
-const skeletonAnimation = keyframes`
-  0% {
-    background-color: hsla(200, 20%, 80%, .4);
-  }
-  100% {
-    background-color: hsla(200, 20%, 95%, .5);
-  }
-`;
-
-const Skeleton = styled.div`
-  ${PlayCSS}
-  animation: ${skeletonAnimation} .5s linear infinite alternate;
-  color: transparent;
-`;
-
-const Amount = styled.span<{ $win: boolean }>`
-  color: ${({ $win }) => ($win ? '#4E8341' : '#A63B3D')};
-`;
+import { Skeleton } from '../ui/skeleton';
 
 function RecentPlay({ event }: { event: RecentPlayEvent }) {
   const { wallet } = useGamba();
@@ -55,7 +19,13 @@ function RecentPlay({ event }: { event: RecentPlayEvent }) {
       return (
         <>
           {who} bet {formatLamports(event.wager)} and{' '}
-          <Amount $win>{multiplier}x</Amount>
+          <span
+            style={{
+              color: win ? '#4E8341' : '#A63B3D',
+            }}
+          >
+            {multiplier}x
+          </span>
         </>
       );
     }
@@ -73,13 +43,19 @@ function RecentPlay({ event }: { event: RecentPlayEvent }) {
     return (
       <>
         {who} {win ? 'won' : 'lost'}{' '}
-        <Amount $win={profit >= 0}>{formatLamports(Math.abs(profit))}</Amount>
+        <span
+          style={{
+            color: profit >= 0 ? '#4E8341' : '#A63B3D',
+          }}
+        >
+          {formatLamports(Math.abs(profit))}
+        </span>
       </>
     );
   })();
 
   return (
-    <div className="p-[10px] border border-solid border-[#E5E7EB] rounded-[5px] flex flex-row items-center justify-between ">
+    <div className="p-[10px] border border-solid border-[#E5E7EB] rounded-[5px] flex flex-row items-center justify-between gap-1 h-10 ">
       <div>{content}</div>
       <span>
         <a
@@ -102,11 +78,13 @@ export function RecentPlays() {
       {!recentPlays.length ? (
         <>
           {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} />
+            <Skeleton className="h-40 w-full" key={i} />
           ))}
         </>
       ) : (
-        recentPlays.map((event, i) => <RecentPlay key={i} event={event} />)
+        recentPlays
+          .slice(0, 10)
+          .map((event, i) => <RecentPlay key={i} event={event} />)
       )}
       <div style={{ opacity: 0.5, fontSize: 12 }}>
         Some transactions may be too old to load
