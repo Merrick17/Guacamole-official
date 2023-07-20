@@ -4,7 +4,11 @@ import Featured from '@/components/views/play/featured';
 import RecentPlay from '@/components/views/play/recent-play';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, theme } from '@/components/styles';
+//import {GambaProvider} from 'gamba/react'
 const Gamba = dynamic(() => import('gamba/react').then((mod) => mod.Gamba), {
+  ssr: false, // Disable SSR for the component
+});
+const GambaProvider = dynamic(() => import('gamba/react').then((mod) => mod.GambaProvider), {
   ssr: false, // Disable SSR for the component
 });
 
@@ -17,6 +21,8 @@ const GambaUi = dynamic(
 );
 import React from 'react';
 import dynamic from 'next/dynamic';
+
+import { PublicKey } from '@solana/web3.js';
 
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -32,16 +38,9 @@ export default function RootLayout({
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Gamba
-          connection={{
-            endpoint:
-              'https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943',
-            config: {
-              wsEndpoint:
-                'wss://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943',
-            },
-          }}
-        >
+        <GambaProvider creator={new PublicKey("Hx5oruS1xKhHVjdHnbvLPQnJwyCAwd6QzzJ6yPnoqgP8")}>
+
+
           <GambaUi>
             <main className="container mx-auto flex flex-col items-center gap-7 px-16 py-12  max-w-[1440px] text-black">
               {children}
@@ -49,7 +48,7 @@ export default function RootLayout({
               <RecentPlay />
             </main>
           </GambaUi>
-        </Gamba>
+        </GambaProvider>
       </ThemeProvider>
     </>
   );
