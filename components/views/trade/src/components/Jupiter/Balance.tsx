@@ -52,12 +52,17 @@ export const Balance = ({
       {setInput && !!balance && (
         <>
           <Button
-            className="h-5"
+            className="h-5 bg-[#E5E7EB]"
+            variant="secondary"
             onClick={() => setInput((balance / 2).toString())}
           >
             Half
           </Button>
-          <Button className="h-5" onClick={() => setInput(balance.toString())}>
+          <Button
+            variant="secondary"
+            className="h-5 bg-[#E5E7EB]"
+            onClick={() => setInput(balance.toString())}
+          >
             Max
           </Button>
         </>

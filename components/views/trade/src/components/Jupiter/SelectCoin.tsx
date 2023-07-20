@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo, useState, Suspense } from 'react';
 import { useJupiterApiContext } from '../../contexts';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useVirtualList } from 'ahooks';
@@ -14,6 +14,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
+import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Row = ({
   info,
@@ -141,8 +143,6 @@ export const SelectCoin = ({
     [search, tokenInfo]
   );
 
-  const topList = originalList.filter((e) => TOP_COINS.includes(e.address));
-
   const [list, scrollTo] = useVirtualList(originalList, {
     containerTarget: containerRef,
     wrapperTarget: wrapperRef,
@@ -214,6 +214,13 @@ export const SelectCoin = ({
                     />
                   ))}
                 </div>
+                {!wrapperRef.current && (
+                  <div className="flex  flex-col gap-1">
+                    {Array.from({ length: 10 }).map((_, idx) => (
+                      <Skeleton key={idx} className="h-16 w-full rounded-xl" />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </DialogDescription>
