@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { HiAdjustments, HiOutlineInformationCircle } from 'react-icons/hi';
 
 import clsx from 'clsx';
@@ -11,7 +11,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-
+import { GrFormClose } from 'react-icons/gr';
+import SwapSettingButton from '../SwapRoute/SwapSettingButton';
+import { formatNumber } from '../../misc/utils';
 const OPTIONS = [1, 5, 10];
 
 export const Slippage = ({
@@ -27,42 +29,62 @@ export const Slippage = ({
   const custom = !OPTIONS.includes(input || -1);
 
   const canSubmit = !custom || (custom && input && input > 0 && input < 500);
-
   const handleSave = () => {
     input && setSlippage(input);
     setVisible(false);
   };
-
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className="flex flex-row items-center w-max cursor-pointer"
+        className="flex flex-row items-center w-max cursor-pointer text-black bg-[#E5E7EB] rounded-xl px-2 py-1 h-full"
         onClick={() => setVisible(true)}
       >
         <HiAdjustments className="mr-2 w-3 rotate-90" />
         <span className="text-xs"> {slippage / 10} %</span>
       </div>
-      <DialogContent>
+      <DialogContent
+        closeBtn={false}
+        className="h-[70vh] max-h-[70vh] overflow-auto"
+      >
         <DialogHeader>
-          <DialogTitle>
-            <h2 className="mb-2 text-lg font-bold text-black">
-              Slippage settings
+          <DialogTitle className="text-black flex flex-row items-center justify-between">
+            <h2 className="text-base capitalize font-medium ">
+              Slippage Settings
             </h2>
+            <GrFormClose
+              className=" w-4 h-4  cursor-pointer"
+              onClick={() => setVisible(false)}
+            />
           </DialogTitle>
           <DialogDescription>
             <>
               <div className="bg-white">
                 <div className="mt-5 grid w-full grid-cols-3 gap-2">
-                  {OPTIONS.map((e) => {
+                  {OPTIONS.map((item, idx) => {
+                    const displayText =
+                      formatNumber.format(Number(item / 10)) + '%';
+
                     return (
-                      <Button
-                        key={`slippage-option-${e}`}
-                        onClick={() => setInput(e)}
-                        className=" h-[50px] w-full border border-[#E5E7EB] bg-[#E5E7EB] p-2 font-bold  uppercase rounded-xl"
-                        color="primary"
+                      <SwapSettingButton
+                        key={idx}
+                        idx={idx}
+                        itemsCount={OPTIONS.length}
+                        className="h-full"
+                        roundBorder={
+                          idx === 0
+                            ? 'left'
+                            : idx === OPTIONS.length - 1
+                            ? 'right'
+                            : undefined
+                        }
+                        highlighted={item === slippage}
+                        onClick={() => {
+                          setSlippage(item);
+                          setInput(item);
+                        }}
                       >
-                        {e / 10}%
-                      </Button>
+                        {displayText}
+                      </SwapSettingButton>
                     );
                   })}
                 </div>
@@ -70,7 +92,7 @@ export const Slippage = ({
                   <div
                     className={clsx(
                       'relative',
-                      custom && 'bg-gradient-to-r from-green-400 to-blue-500',
+                      custom && 'bg-[#E5E7EB] text-black',
                       'h-[50px] rounded-[6px] p-[2px]'
                     )}
                   >
@@ -80,7 +102,6 @@ export const Slippage = ({
                       }
                       placeholder="0.00 %"
                       value={(input || 0) / 10}
-                      type="number"
                       max={100}
                       min={0}
                       className="bg-neutral h-full w-full rounded-[5px] pr-10 text-right text-lg font-bold focus:outline-none"
@@ -90,25 +111,25 @@ export const Slippage = ({
                     </span>
                   </div>
                 </div>
+
                 {!canSubmit && (
                   <div className="mt-5 flex flex-col items-center">
                     <div className="flex flex-row items-center">
                       <HiOutlineInformationCircle className="mr-2 h-[15px] text-orange-300" />
-                      <span className="text-sm text-white">
+                      <span className="text-sm text-black/50">
                         Slippage must be between 0 and 50
                       </span>
                     </div>
                   </div>
                 )}
               </div>
-
               <Button
                 onClick={handleSave}
                 disabled={!canSubmit}
-                className="mt-5 h-[50px] w-full bg-[#E5E7EB] p-2 font-bold uppercase rounded-xl"
+                className="mt-5 h-[50px] w-full  p-2 font-bold uppercase rounded-xl"
                 color="primary"
               >
-                Save settings
+                Save Custom
               </Button>
             </>
           </DialogDescription>

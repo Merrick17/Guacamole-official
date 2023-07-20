@@ -10,7 +10,7 @@ body {
 
 .wallet-adapter-button {
   background-color: black !important;
-  @apply !rounded-full;
+  @apply rounded-full;
 }
 
 .text-shadow {

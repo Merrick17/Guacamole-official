@@ -17,9 +17,6 @@ const TopBar = ({ setCustomRpc }: { setCustomRpc: (url: string) => void }) => {
     return (
       <div className="relative mb-8 h-[40px] bg-white">
         {/* <Congested congested={!!congested} /> */}
-        <div className={clsx()}>
-          <Logo />
-        </div>
       </div>
     );
   }
@@ -27,9 +24,7 @@ const TopBar = ({ setCustomRpc }: { setCustomRpc: (url: string) => void }) => {
   return (
     <div className="relative mb-10 w-full  flex flex-row items-center justify-between gap-2 bg-white">
       {/* <Congested congested={!!congested} /> */}
-      <div>
-        <Logo />
-      </div>
+
       <div className="flex flex-row items-center">
         <RpcSettings setCustomRpc={setCustomRpc} />
         <WalletModalProvider>

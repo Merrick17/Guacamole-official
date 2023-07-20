@@ -7,11 +7,6 @@ import { useLocalStorageState } from 'ahooks';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-// Override @solana/wallet-adapter-react-ui/styles.css
-// import './wallet.css';
-
-// window.Buffer = Buffer;
-
 const Trade = () => {
   const [customRpc, setCustomRpc] = useLocalStorageState<string>('customRpc');
 
@@ -19,7 +14,7 @@ const Trade = () => {
     <>
       <JupiterApiProvider>
         <div className="bg-white w-full">
-          <TopBar setCustomRpc={setCustomRpc} />
+          {/* <TopBar setCustomRpc={setCustomRpc} /> */}
           <div className="flex  flex-col items-center justify-center bg-white">
             <JupiterForm />
           </div>

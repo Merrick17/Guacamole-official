@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 const Row = ({
   info,
@@ -48,11 +49,11 @@ const Row = ({
           <span className="text-sm opacity-80">{info.name}</span>
         </div>
       </div>
-      <Link className="z-1" href={Urls.solscanAddress + info.address}>
+      {/* <Link className="z-1" href={Urls.solscanAddress + info.address}>
         <Button className="!pl-4 !pr-4 rounded-xl">
           <BiLink className="h-[20px]" />
         </Button>
-      </Link>
+      </Link> */}
     </button>
   );
 };
@@ -163,25 +164,33 @@ export const SelectCoin = ({
       <div className="w-max cursor-pointer" onClick={() => setVisible(true)}>
         <Coin tokenInfo={tokenInfo} />
       </div>
-      <DialogContent closeBtn={false}>
+      <DialogContent
+        closeBtn={false}
+        className="h-[70vh] max-h-[70vh] overflow-auto"
+      >
         <DialogHeader>
-          <DialogTitle>
-            <input
-              value={search || ''}
-              onChange={(e) => {
-                setSearch(e.target.value.trim());
-                scrollTo(0);
-              }}
-              type="text"
-              id="search-token"
-              placeholder="Search"
-              className=" mb-3  w-full rounded-xl !border-none !bg-[#E5E7EB] text-xs font-bold !outline-none sm:text-lg p-2"
-              spellCheck={false}
+          <DialogTitle className="relative">
+            <h2 className="text-base  text-black text-center ">Select Route</h2>
+            <AiOutlineArrowLeft
+              className=" absolute w-4 h-4 top-1/2 -left-2 -translate-y-1/2 cursor-pointer"
+              onClick={() => setVisible(false)}
             />
           </DialogTitle>
-          <DialogDescription>
-            <div className="h-[70vh] max-h-[70vh]  overflow-auto">
-              <div className="flex flex-row flex-wrap justify-start">
+          <DialogDescription className="!mt-4">
+            <div className="">
+              <input
+                value={search || ''}
+                onChange={(e) => {
+                  setSearch(e.target.value.trim());
+                  scrollTo(0);
+                }}
+                type="text"
+                id="search-token"
+                placeholder="Search"
+                className=" mb-3  w-full rounded-xl !border-none !bg-[#E5E7EB] text-black text-xs placeholder:text-black/50 !outline-none sm:text-lg p-2"
+                spellCheck={false}
+              />
+              {/* <div className="flex flex-row flex-wrap justify-start">
                 {topList.map((e, idx) => (
                   <TopCoin
                     key={`top-coin-${idx}`}
@@ -189,7 +198,7 @@ export const SelectCoin = ({
                     token={e}
                   />
                 ))}
-              </div>
+              </div> */}
 
               <div className="mt-2 border-[0.5px] border-[#E4E9EE] border-opacity-50" />
 

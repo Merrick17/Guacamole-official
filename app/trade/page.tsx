@@ -1,34 +1,43 @@
 'use client';
-import Trade from '@/components/views/trade/src/App';
+import Trade from '@/components/views/trade/src/Trade';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import dynamic from 'next/dynamic';
 
 interface TradeProps {}
-
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+  { ssr: false }
+);
 const TradePage: FC<TradeProps> = () => {
-  const { connected } = useWallet();
+  const [menuValue, setMenuValue] = useState<'swap' | 'twamm'>('swap');
   return (
     <main className="container mx-auto flex flex-col items-center gap-14 px-16 py-12  max-w-[1440px]">
       <div className="flex w-full max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7">
-        {connected ? (
-          <div className="mb-5 border-b border-dashed border-gray-200 pb-5 dark:border-gray-800 xs:mb-7 xs:pb-6">
-            <Tabs defaultValue="swap" className="w-full">
+        <div className="border-b border-dashed border-gray-200 pb-5 dark:border-gray-800 xs:mb-7 xs:pb-6">
+          <Tabs defaultValue="swap" value={menuValue} className="w-full">
+            <div className="flex flex-row justify-between items-center">
               <TabsList>
-                <TabsTrigger value="swap">Swap</TabsTrigger>
-                <TabsTrigger value="twamm">Twamm</TabsTrigger>
+                <TabsTrigger value="swap" onClick={() => setMenuValue('swap')}>
+                  Swap
+                </TabsTrigger>
+                <TabsTrigger
+                  value="twamm"
+                  onClick={() => setMenuValue('twamm')}
+                >
+                  Twamm
+                </TabsTrigger>
               </TabsList>
-              <TabsContent value="swap">
-                <Trade />
-              </TabsContent>
-              <TabsContent value="twamm">Comming Soon</TabsContent>
-            </Tabs>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-5">
-            <h1>Please connect your wallet first</h1>
-          </div>
-        )}
+              <WalletMultiButtonDynamic className="rounded-full" />
+            </div>
+            <TabsContent value="swap">
+              <Trade />
+            </TabsContent>
+            <TabsContent value="twamm">Comming Soon</TabsContent>
+          </Tabs>
+        </div>
       </div>
     </main>
   );

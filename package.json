@@ -13,6 +13,7 @@
     "@headlessui/react": "^1.7.15",
     "@hookform/resolvers": "^3.1.1",
     "@jup-ag/api": "^4.0.1-alpha.0",
+    "@jup-ag/math": "4.0.0-beta.21",
     "@jup-ag/react-hook": "4.0.0-beta.17",
     "@pythnetwork/client": "^2.19.0",
     "@radix-ui/react-dialog": "^1.0.4",
