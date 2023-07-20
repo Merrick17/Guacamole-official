@@ -28,7 +28,7 @@ const HeaderLeft: FC = () => {
     <div className="flex flex-row items-center gap-16">
       <div className="flex items-center gap-2">
         <div className="w-8 aspect-square relative">
-          <Image src="/logo.png" alt="logo" layout="fill" />d
+          <Image src="/logo.png" alt="logo" fill />
         </div>
         <h1 className="text-2xl font-medium text-black">Guacamole</h1>
       </div>

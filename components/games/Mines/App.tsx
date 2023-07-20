@@ -15,6 +15,7 @@ import { Cell, Container, Grid, Overlay, OverlayText } from './styles';
 import winSrc from './win.mp3';
 import tickSrc from './tick.mp3';
 import loseSrc from './lose.mp3';
+import {GambaConnectButton} from 'gamba/react-ui'
 
 const GRID_SIZE = 25;
 const MINE_COUNT = 5;
@@ -192,6 +193,7 @@ function Mines() {
         <Button disabled={!needsReset} onClick={resetGame}>
           Reset
         </Button>
+        <GambaConnectButton/>
       </ActionBar>
     </>
   );

@@ -1,21 +1,28 @@
 // @ts-nocheck
 
+import { useWallet } from '@solana/wallet-adapter-react';
 import { solToLamports } from 'gamba';
-import { useGamba } from 'gamba/react';
+import { useGamba, } from 'gamba/react';
 import {
   ActionBar,
   Button,
   ResponsiveSize,
-  formatLamports,
+  formatLamports, useGambaUi
 } from 'gamba/react-ui';
-import React, { useMemo, useState } from 'react';
-import { FaHandPointDown, FaHandPointUp, FaEquals } from 'react-icons/fa';
+import dynamic from 'next/dynamic';
+import { useEffect, useMemo, useState } from 'react';
+import { FaEquals, FaHandPointDown, FaHandPointUp } from 'react-icons/fa';
+import * as Tone from 'tone';
 import { Dropdown } from '../../common/Dropdown';
+import cardSrc from './card.mp3';
 import { RANKS } from './constants';
 import { Card, Container, Option, Overlay, OverlayText } from './styles';
-import * as Tone from 'tone';
-import cardSrc from './card.mp3';
 import winSrc from './win.wav';
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+  { ssr: false }
+);
 
 const createSound = (url: string) => new Tone.Player({ url }).toDestination();
 
@@ -27,6 +34,8 @@ const WAGER_AMOUNTS = [0.05, 0.1, 0.25, 0.5, 1, 2].map(solToLamports);
 
 export default function HiLo() {
   const gamba = useGamba();
+  const { setModal } = useGambaUi();
+  const { connected, publicKey } = useWallet();
   const [cards, setCards] = useState([randomRank()]);
   const [loading, setLoading] = useState(false);
   const [claiming, setClaiming] = useState(false);
@@ -66,6 +75,9 @@ export default function HiLo() {
     [currentRank]
   );
 
+  useEffect(() => {
+    console.log("COnnected", connected)
+  }, [typeof window == "undefined", connected])
   const hasClaimableBalance = gamba.balances.user > 0;
 
   const resetGame = async () => {
@@ -209,6 +221,14 @@ export default function HiLo() {
         <Button disabled={!needsReset} onClick={resetGame}>
           Reset
         </Button>
+        {
+          connected && publicKey && <Button onClick={() => {
+            setModal(true);
+          }}>
+            Account
+          </Button>
+        }
+
       </ActionBar>
     </>
   );
