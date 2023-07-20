@@ -1,13 +1,9 @@
 'use client';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { RecentPlays } from '@/components/common/recent-plays';
 //@ts-ignore
-const RecentPlays = dynamic(
-  () => import('gamba/react-ui').then((mod) => mod.RecentPlays),
-  {
-    ssr: false, // Disable SSR for RecentPlays
-  }
-);
+
 const RecentPlay = () => {
   return (
     <div className="flex w-[512px] flex-col gap-4 rounded-lg bg-white px-5 py-7">

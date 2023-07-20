@@ -20,13 +20,11 @@ import { useRouter } from 'next/navigation';
 import React, { Fragment, useEffect, useMemo } from 'react';
 import { FaArrowRight, FaDice, FaList } from 'react-icons/fa';
 import styled from 'styled-components';
-import { Card } from '../../../components/common/Card';
-import { Slider } from '../../../components/common/Slider';
-import { GAMES } from '../../../components/games';
-import { Banner, Section, StylelessButton } from '../../../components/styles';
+import { GAMES } from '@/components/games';
+import { Banner, Section, StylelessButton } from '@/components/styles';
 import dynamic from 'next/dynamic';
+import Featured from '@/components/views/play/featured';
 import RecentPlay from '@/components/views/play/recent-play';
-
 const CoverImage = styled.div`
   transition: background-image 0.2s ease;
   background-image: url('');
@@ -76,6 +74,8 @@ export default function Page({ params }: { params: { shortName: string } }) {
           )}
         </Fragment>
       </Banner>
+      <Featured />
+      <RecentPlay />
     </>
   );
 }

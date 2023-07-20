@@ -1,7 +1,5 @@
 'use client';
 import { Kanit } from 'next/font/google';
-import Featured from '@/components/views/play/featured';
-import RecentPlay from '@/components/views/play/recent-play';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, theme } from '@/components/styles';
 const Gamba = dynamic(() => import('gamba/react').then((mod) => mod.Gamba), {
@@ -45,8 +43,6 @@ export default function RootLayout({
           <GambaUi>
             <main className="container mx-auto flex flex-col items-center gap-7 px-16 py-12  max-w-[1440px] text-black">
               {children}
-              <Featured />
-              <RecentPlay />
             </main>
           </GambaUi>
         </Gamba>

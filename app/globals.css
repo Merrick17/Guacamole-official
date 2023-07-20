@@ -17,7 +17,7 @@
 
 }
 body {
-  @apply font-body bg-body bg-body-image bg-auto 	 bg-no-repeat antialiased;
+  @apply font-body bg-body bg-body-image bg-cover 	 bg-no-repeat antialiased;
 }
 
 .wallet-adapter-button {
@@ -28,15 +28,7 @@ body {
 .text-shadow {
   text-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }
-.fKQKaX {
-  border: #E5E7EB 1px solid !important;
-}
-.fKQKaX > div > span:first-child{
-  color :black !important;
-}
-.kqgPjV{
-  color :#4E8341 !important;
-}
+
 
 
 input::-webkit-outer-spin-button,
