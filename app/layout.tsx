@@ -12,8 +12,9 @@ const kanit = Kanit({
 });
 
 export const metadata: Metadata = {
-  title: 'Cuagamole',
-  description: 'Cuagamole is a decentralized exchange for Solana.',
+  title: 'A Fresh Solana Experience | Guacamole',
+  description:
+    'Experience a fresh take on Solana DeFi with Guacamole. Trade, earn, and play effortlessly, while enjoying a seamless and user-friendly experience. Get started and unlock a world of possibilities with GUAC!.',
 };
 
 export default function RootLayout({
