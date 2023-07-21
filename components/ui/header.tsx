@@ -49,6 +49,8 @@ const HeaderRight: FC = () => {
       <div className="sm:flex items-center justify-end gap-8 hidden">
         <Link
           href="https://docs.guacamole.gg/"
+          rel="noopener noreferrer"
+          target="_blank"
           className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
         >
           <Image
@@ -60,6 +62,8 @@ const HeaderRight: FC = () => {
         </Link>
         <Link
           href="https://discord.com/invite/guac"
+          rel="noopener noreferrer"
+          target="_blank"
           className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
         >
           <BsDiscord color="#7289DA" className="w-full h-full" />
