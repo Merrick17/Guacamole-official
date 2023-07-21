@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import { lamportsToSol } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { Button, ResponsiveSize, formatLamports } from 'gamba/react-ui';
+import { formatLamports, useGambaUi } from 'gamba/react-ui';
 import React, { useMemo, useState } from 'react';
 import * as Tone from 'tone';
 import { Results } from './Results';
@@ -11,6 +9,7 @@ import { CHIPS, NAMED_BETS } from './constants';
 import { useRoulette } from './store';
 import { Chip, StylelessButton } from './styles';
 import { NamedBet } from './types';
+import { RiAccountCircleLine } from 'react-icons/ri';
 
 const createSound = (url: string) => new Tone.Player({ url }).toDestination();
 
@@ -18,6 +17,9 @@ import chipSrc from './chip.wav';
 import diceSrc from './dice.wav';
 import winSrc from './win.wav';
 import { ActionBar } from '@/components/common/ActionBar';
+import { ResponsiveSize } from '@/components/common/ResponsiveSize';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Button } from '@/components/ui/button';
 
 export const soundChip = createSound(chipSrc);
 export const soundDice = createSound(diceSrc);
@@ -33,6 +35,8 @@ export default function Roulette() {
   );
   const addResult = useRoulette((state) => state.addResult);
   const [loading, setLoading] = useState(false);
+  const { setModal } = useGambaUi();
+  const { connected, publicKey } = useWallet();
 
   const distributedBet = useMemo(
     () =>
@@ -76,7 +80,7 @@ export default function Roulette() {
   return (
     <>
       <ResponsiveSize>
-        <div className="bg-white p-5  grid gap-5">
+        <div className=" grid gap-5">
           <div
             style={{
               textAlign: 'center',
@@ -119,6 +123,15 @@ export default function Roulette() {
         </div>
       </ResponsiveSize>
       <ActionBar>
+        {connected && publicKey && (
+          <Button
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            <RiAccountCircleLine />
+          </Button>
+        )}
         <Button disabled={!wager} onClick={clearChips}>
           Clear
         </Button>

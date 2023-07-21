@@ -68,7 +68,7 @@ const StyledDropdown = styled.button<{ $active?: boolean }>`
 
 const StyledPopup = styled.div`
   position: absolute;
-  bottom: 100%;
+  top: 100%;
   z-index: 10000;
   left: 0;
   border: none;
@@ -79,7 +79,8 @@ const StyledPopup = styled.div`
   margin-bottom: 20px;
   width: 100%;
   padding: 5px;
-  &:after {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* &:after {
     content: '';
     width: 20px;
     height: 20px;
@@ -89,7 +90,7 @@ const StyledPopup = styled.div`
     z-index: -1;
     bottom: -10px;
     left: calc(50% - 10px);
-  }
+  } */
 `;
 
 const StyledOption = styled.button<{ $selected?: boolean }>`

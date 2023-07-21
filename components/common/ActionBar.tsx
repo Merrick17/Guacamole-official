@@ -5,48 +5,20 @@ import { useGamba, useGambaEvent } from 'gamba/react';
 import { ProvablyFair, Svg } from 'gamba/react-ui';
 import { Button } from '../ui/button';
 
-const Container = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  z-index: 1;
-  padding: 10px;
-`;
-
-const Wrapper = styled.div`
-  padding: 20px;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 20px;
-  & > div {
-    display: flex;
-    gap: 20px;
-  }
-  & .seperator {
-    width: 1px;
-    background: #ffffff33;
-  }
-  background: white;
-  border-radius: var(--border-radius);
-  backdrop-filter: blur(50px);
-`;
-
 const StyledPopup = styled.div`
   position: absolute;
   bottom: 100%;
   z-index: 10000;
-  left: 0;
-  background: var(--bg-light-color);
-  color: white;
+  left: 50%;
+  background: white;
+  color: black;
   border-radius: var(--border-radius);
   margin-bottom: 40px;
   padding: 10px;
   transform: translateX(-50%);
   display: grid;
   gap: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   &:after {
     content: '';
     width: 20px;
@@ -103,10 +75,9 @@ export function ActionBar({ children }: Props) {
 
   return (
     <>
-      <Container>
-        <Wrapper>
-          <div>{children}</div>
-          <div className="seperator" />
+      <div className=" max-w-[512px]  w-full z-10  ">
+        <div className="  w-full p-5 flex flex-wrap items-center gap-1 justify-evenly bg-white rounded-lg backdrop:blur-[50px]">
+          {children}
           <div>
             <div style={{ position: 'relative' }}>
               {proof && rngSeedHashed && (
@@ -122,8 +93,8 @@ export function ActionBar({ children }: Props) {
               </Button>
             </div>
           </div>
-        </Wrapper>
-      </Container>
+        </div>
+      </div>
     </>
   );
 }

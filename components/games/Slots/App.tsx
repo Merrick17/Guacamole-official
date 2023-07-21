@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import { lamportsToSol } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { Button, ResponsiveSize, formatLamports } from 'gamba/react-ui';
+import { formatLamports, useGambaUi } from 'gamba/react-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import * as Tone from 'tone';
 import { Dropdown } from '../../common/Dropdown';
@@ -16,6 +14,10 @@ import { SlotContainer, SlotWindowContainer, WinPopup } from './styles';
 import unicornSelectSrc from './unicornselect.mp3';
 import winSrc from './win.mp3';
 import { ActionBar } from '@/components/common/ActionBar';
+import { ResponsiveSize } from '@/components/common/ResponsiveSize';
+import { RiAccountCircleLine } from 'react-icons/ri';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Button } from '@/components/ui/button';
 
 // Constants
 const INITIAL_WAGER = 50000000;
@@ -58,6 +60,8 @@ const Slots: React.FC = () => {
   const [displayWinAmount, setDisplayWinAmount] = useState<number>(0);
   const [wager, setWager] = useState<number>(INITIAL_WAGER);
   const [lightUp, setLightUp] = useState<boolean[]>([false, false, false]);
+  const { connected, publicKey } = useWallet();
+  const { setModal } = useGambaUi();
 
   const updateSlot = useCallback(
     (i: number, newValue: string, light: boolean) => {
@@ -184,16 +188,26 @@ const Slots: React.FC = () => {
   return (
     <>
       <ResponsiveSize>
-        <SlotContainer>
+        <div className="w-full flex justify-center gap-5 text-[5rem] rounded-lg  h-full p-5 ">
           {slots.map((slot, index) => (
             <SlotWindow emoji={slot} isLightUp={lightUp[index]} key={index} />
           ))}
-        </SlotContainer>
+        </div>
         {winAmount > 0 && (
           <WinPopup>Payout: {displayWinAmount.toFixed(4)} </WinPopup>
         )}
       </ResponsiveSize>
+
       <ActionBar>
+        {connected && publicKey && (
+          <Button
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            <RiAccountCircleLine />
+          </Button>
+        )}
         <Button onClick={play}>Spin</Button>
         <Dropdown
           value={wager}

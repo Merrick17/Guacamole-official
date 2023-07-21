@@ -7,7 +7,8 @@ export const SlotContainer = styled.div`
   font-size: 5rem; // Adjust as needed
   padding: 20px;
   border-radius: 10px;
-  background-color: white;
+  background-color: red;
+
   span {
     text-shadow: 5px 20px 4px rgba(0, 0, 0, 0.5);
     color: #000000;
@@ -28,8 +29,8 @@ export const SlotWindowContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 8rem;
-  height: 12rem;
+  width: 128px;
+  height: 192px;
   border-radius: 10px;
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.3);

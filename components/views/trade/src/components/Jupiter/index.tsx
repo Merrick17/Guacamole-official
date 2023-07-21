@@ -103,6 +103,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       window.Buffer = Buffer;
     }
   }, [typeof window]);
+
   // Good to add debounce here to avoid multiple calls
   const fetchRoute = React.useCallback(() => {
     if (!inputTokenInfo || !outputTokenInfo) return;
@@ -359,6 +360,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
     refresh();
   }, 15_000);
 
+  if (!bestRoute) return <Loading />;
+
   return (
     <>
       <div className="w-full rounded-[15px] bg-white  sm:w-[450px] ">
@@ -385,7 +388,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
 
             <WalletMultiButtonDynamic
               startIcon={undefined}
-              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm "
+              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden sm:flex "
             />
           </div>
         </div>
@@ -431,7 +434,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                   setCoin={setOutputTokenInfo}
                 />
               </div>
-              <div className="w-full  rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
+              <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
                 {outputAmount}
               </div>
             </div>

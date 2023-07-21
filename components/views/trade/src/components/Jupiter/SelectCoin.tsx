@@ -75,9 +75,7 @@ const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
         alt="coin logo"
       />
       <div className="flex flex-row items-center">
-        <span className="ml-4 text-lg font-bold text-black">
-          {tokenInfo.symbol}
-        </span>
+        <span className="ml-4 text-base  text-black">{tokenInfo.symbol}</span>
         <BiChevronDown className="text-grey ml-2 w-[20px]" />
       </div>
     </div>

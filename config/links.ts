@@ -1,18 +1,21 @@
 import routes from './routes';
-
+import { GoHome, GoArrowSwitch, GoHourglass } from 'react-icons/go';
 export const Links = [
   {
     name: 'Home',
     href: routes.home,
+    Icon: GoHome,
   },
   {
     name: 'Trade',
     href: routes.swap,
+    Icon: GoArrowSwitch,
   },
 
   {
     name: 'Play',
     href: routes.play,
+    Icon: GoHourglass,
     // dropdownItems: [
     //   {
     //     name: 'Explore',

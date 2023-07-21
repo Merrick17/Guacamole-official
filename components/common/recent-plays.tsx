@@ -77,8 +77,8 @@ export function RecentPlays() {
     <>
       {!recentPlays.length ? (
         <>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton className="h-40 w-full" key={i} />
+          {Array.from({ length: 10 }).map((_, i) => (
+            <Skeleton className="h-10 w-full" key={i} />
           ))}
         </>
       ) : (

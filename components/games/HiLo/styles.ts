@@ -10,7 +10,6 @@ export const Container = styled.div`
   grid-template-columns: 1fr auto 1fr;
   gap: 40px;
   justify-content: center;
-  background-color: white;
   place-items: center;
   width: 469px;
   height: 280px;

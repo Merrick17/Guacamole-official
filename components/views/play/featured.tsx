@@ -16,7 +16,7 @@ type FeaturedProps = {};
 const Featured: FC<FeaturedProps> = () => {
   const pathname = usePathname();
   return (
-    <div className="flex w-[512px] flex-col gap-4 rounded-lg bg-white ">
+    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-white ">
       <div className="flex flex-row gap-[10px] overflow-auto ">
         {GAMES.length > 1 && (
           <Section>

@@ -129,7 +129,7 @@ export const Banner = styled.div<{ size: 'big' | 'medium' | 'default' }>`
       height: 75vh!important;
     }
   `}
-  & > div {
+  /* & > div {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -143,7 +143,7 @@ export const Banner = styled.div<{ size: 'big' | 'medium' | 'default' }>`
       flex-direction: column;
       justify-content: space-between;
     }
-  }
+  } */
   &:after {
     content: '';
     width: 100%;

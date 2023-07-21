@@ -1,7 +1,10 @@
 'use client';
 import Link from 'next/link';
 import { FC, useState } from 'react';
+import { IconType } from 'react-icons';
 import { MdExpandMore } from 'react-icons/md';
+import { Button } from './button';
+import { cn } from '@/lib/utils';
 type DropdownItemProps = {
   name: string;
   href: string;
@@ -10,11 +13,18 @@ type DropdownItemProps = {
 interface NavItemProps {
   name?: string;
   href: string;
+  Icon?: IconType;
   dropdownItems?: DropdownItemProps[];
   isActive?: boolean;
 }
 
-const NavItem: FC<NavItemProps> = ({ name, href, dropdownItems, isActive }) => {
+const NavItem: FC<NavItemProps> = ({
+  name,
+  href,
+  dropdownItems,
+  isActive,
+  Icon,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -42,7 +52,7 @@ const NavItem: FC<NavItemProps> = ({ name, href, dropdownItems, isActive }) => {
             {dropdownItems.map((item, index) => (
               <li key={index} className="relative p-2">
                 <Link
-                  className={`inline-flex items-center w-full text-base font-medium transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 ${
+                  className={`flex items-center w-full text-base font-medium transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 ${
                     isActive && 'text-gray-800 dark:text-gray-100'
                   }`}
                   href={item.href}
@@ -56,12 +66,32 @@ const NavItem: FC<NavItemProps> = ({ name, href, dropdownItems, isActive }) => {
       ) : (
         <li className="relative cursor-pointer">
           <Link
-            className={`inline-flex items-center w-full text-base font-medium transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 ${
-              isActive && 'text-gray-800 dark:text-gray-100'
-            }`}
+            className={` hidden sm:flex  px-4 py-3 font-normal text-xs
+               items-center w-full sm:px-0 sm:py-0 sm:text-base sm:font-medium transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 ${
+                 isActive && 'text-gray-800 dark:text-gray-100'
+               }`}
             href={href}
           >
             <span>{name}</span>
+          </Link>
+
+          <Link
+            href={href}
+            className={cn('flex items-center justify-start gap-4 sm:hidden ')}
+          >
+            <Button
+              className={cn(
+                'w-full  h-12 justify-start gap-4 !m-0 bg-white text-black font-normal',
+                isActive && 'bg-black text-white'
+              )}
+            >
+              {Icon && (
+                <div className="block sm:hidden text-base">
+                  <Icon />
+                </div>
+              )}
+              <span>{name}</span>
+            </Button>
           </Link>
         </li>
       )}

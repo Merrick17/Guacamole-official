@@ -20,6 +20,9 @@ module.exports = {
       colors: {
         body: '#E1F5DA',
       },
+      boxShadow: {
+        openMenuShadow: '0px 6px 18px 0px rgba(0, 0, 0, 0.04)',
+      },
       fontFamily: {
         body: ['Kanit', 'monospace'],
         bungee: ['Bungee', 'monospace'],

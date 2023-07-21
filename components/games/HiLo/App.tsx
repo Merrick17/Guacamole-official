@@ -1,9 +1,7 @@
-// @ts-nocheck
-
 import { useWallet } from '@solana/wallet-adapter-react';
 import { solToLamports } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { ResponsiveSize, formatLamports, useGambaUi } from 'gamba/react-ui';
+import { formatLamports, useGambaUi } from 'gamba/react-ui';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import { FaEquals, FaHandPointDown, FaHandPointUp } from 'react-icons/fa';
@@ -15,11 +13,8 @@ import { Card, Container, Option, Overlay, OverlayText } from './styles';
 import winSrc from './win.wav';
 import { ActionBar } from '@/components/common/ActionBar';
 import { Button } from '@/components/ui/button';
-const WalletMultiButtonDynamic = dynamic(
-  async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
-  { ssr: false }
-);
+import { RiAccountCircleLine } from 'react-icons/ri';
+import { ResponsiveSize } from '@/components/common/ResponsiveSize';
 
 const createSound = (url: string) => new Tone.Player({ url }).toDestination();
 
@@ -196,46 +191,52 @@ export default function HiLo() {
         </Container>
       </ResponsiveSize>
       <ActionBar>
-        {firstPlay ? (
-          <>
-            <Dropdown
-              value={wager}
-              format={(value) => formatLamports(value)}
-              onChange={setWager}
-              options={WAGER_AMOUNTS.map((value) => ({
-                label: formatLamports(value),
-                value,
-              }))}
-            />
-          </>
-        ) : (
+        <>
+          {connected && publicKey && (
+            <Button
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              <RiAccountCircleLine />
+            </Button>
+          )}
+          {firstPlay ? (
+            <>
+              <Dropdown
+                value={wager}
+                format={(value) => formatLamports(value)}
+                onChange={setWager}
+                options={WAGER_AMOUNTS.map((value) => ({
+                  label: formatLamports(value),
+                  value,
+                }))}
+              />
+            </>
+          ) : (
+            <Button
+              loading={claiming}
+              disabled={newSession || claiming || loading || needsReset}
+              onClick={resetGame}
+            >
+              CASHOUT {formatLamports(gamba.balances.user)}
+            </Button>
+          )}
           <Button
-            loading={claiming}
-            disabled={newSession || claiming || loading || needsReset}
+            loading={loading}
+            disabled={!option || needsReset}
+            onClick={play}
+          >
+            PLAY {option}
+          </Button>
+          <Button
+            variant="secondary"
+            disabled={!needsReset}
             onClick={resetGame}
           >
-            CASHOUT {formatLamports(gamba.balances.user)}
+            Reset
           </Button>
-        )}
-        <Button
-          loading={loading}
-          disabled={!option || needsReset}
-          onClick={play}
-        >
-          PLAY {option}
-        </Button>
-        <Button variant="secondary" disabled={!needsReset} onClick={resetGame}>
-          Reset
-        </Button>
-        {connected && publicKey && (
-          <Button
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            Account
-          </Button>
-        )}
+        </>
       </ActionBar>
     </>
   );

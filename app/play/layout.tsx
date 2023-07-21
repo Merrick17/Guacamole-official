@@ -1,14 +1,10 @@
 'use client';
-import { Kanit } from 'next/font/google';
-import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, theme } from '@/components/styles';
-//import {GambaProvider} from 'gamba/react'
-const Gamba = dynamic(() => import('gamba/react').then((mod) => mod.Gamba), {
-  ssr: false, // Disable SSR for the component
-});
-const GambaProvider = dynamic(() => import('gamba/react').then((mod) => mod.GambaProvider), {
-  ssr: false, // Disable SSR for the component
-});
+const GambaProvider = dynamic(
+  () => import('gamba/react').then((mod) => mod.GambaProvider),
+  {
+    ssr: false, // Disable SSR for the component
+  }
+);
 
 // Dynamic import for 'gamba/react-ui'
 const GambaUi = dynamic(
@@ -22,30 +18,22 @@ import dynamic from 'next/dynamic';
 
 import { PublicKey } from '@solana/web3.js';
 
-const kanit = Kanit({
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-});
-
-export default function RootLayout({
+export default function PlayLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <GambaProvider creator={new PublicKey("Hx5oruS1xKhHVjdHnbvLPQnJwyCAwd6QzzJ6yPnoqgP8")}>
-
-
-          <GambaUi>
-            <main className="container mx-auto flex flex-col items-center gap-7 px-16 py-12  max-w-[1440px] text-black">
-              {children}
-            </main>
-          </GambaUi>
-        </GambaProvider>
-      </ThemeProvider>
+      <GambaProvider
+        creator={new PublicKey('Hx5oruS1xKhHVjdHnbvLPQnJwyCAwd6QzzJ6yPnoqgP8')}
+      >
+        <GambaUi>
+          <main className="container mx-auto flex flex-col items-center gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+            {children}
+          </main>
+        </GambaUi>
+      </GambaProvider>
     </>
   );
 }

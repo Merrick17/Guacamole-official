@@ -39,9 +39,6 @@ export const SwapRoutes = ({
   hasRoute: any;
 }) => {
   const [visible, setVisible] = useState(false);
-
-  console.log('routes', routes);
-  console.log('selectedRoute', selectedRoute);
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div

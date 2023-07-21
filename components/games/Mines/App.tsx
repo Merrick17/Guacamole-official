@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import { solToLamports } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { Button, ResponsiveSize, formatLamports } from 'gamba/react-ui';
+import { formatLamports, useGambaUi } from 'gamba/react-ui';
 import React, { useMemo, useState } from 'react';
 import * as Tone from 'tone';
 import { Dropdown } from '../../common/Dropdown';
@@ -12,6 +10,11 @@ import tickSrc from './tick.mp3';
 import loseSrc from './lose.mp3';
 import { GambaConnectButton } from 'gamba/react-ui';
 import { ActionBar } from '@/components/common/ActionBar';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { RiAccountCircleLine } from 'react-icons/ri';
+import { ResponsiveSize } from '@/components/common/ResponsiveSize';
 
 const GRID_SIZE = 25;
 const MINE_COUNT = 5;
@@ -118,7 +121,8 @@ function Mines() {
       setLoading(false);
     }
   };
-
+  const { setModal } = useGambaUi();
+  const { connected, publicKey } = useWallet();
   const needsReset = firstPlay && hasClaimableBalance;
 
   return (
@@ -154,8 +158,18 @@ function Mines() {
       <ActionBar>
         {firstPlay ? (
           <>
+            {connected && publicKey && (
+              <Button
+                onClick={() => {
+                  setModal(true);
+                }}
+              >
+                <RiAccountCircleLine />
+              </Button>
+            )}
             <Dropdown
               value={wager}
+              label=""
               format={(value) => formatLamports(value)}
               onChange={setWager}
               options={WAGER_AMOUNTS.map((value) => ({
@@ -164,6 +178,7 @@ function Mines() {
               }))}
             />
             <Dropdown
+              label=""
               value={mines}
               format={(value) => value + ' Mines'}
               onChange={setMines}
@@ -176,10 +191,12 @@ function Mines() {
         ) : (
           <div>
             <Button
-              loading={claiming}
               disabled={firstPlay || claiming || loading}
               onClick={() => resetGame()}
             >
+              {(firstPlay || claiming || loading) && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Claim {formatLamports(gamba.balances.user)}
             </Button>
           </div>
@@ -187,7 +204,6 @@ function Mines() {
         <Button disabled={!needsReset} onClick={resetGame}>
           Reset
         </Button>
-        <GambaConnectButton />
       </ActionBar>
     </>
   );

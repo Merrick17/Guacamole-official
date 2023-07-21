@@ -7,6 +7,7 @@ import Decimal from 'decimal.js';
 import JSBI from 'jsbi';
 import { ZERO } from '@jup-ag/math';
 import ExchangeRate from './ExchangeRate';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Details = ({
   selectRoute,
@@ -49,6 +50,7 @@ const Details = ({
     }
     return '-';
   }, [selectRoute]);
+
   return (
     <div className={cn('mt-4 space-y-4 border border-black/5 rounded-xl p-3')}>
       <div className="flex items-center justify-between text-xs">
