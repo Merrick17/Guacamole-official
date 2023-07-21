@@ -47,7 +47,8 @@ export const Wallet: FC<WalletProps> = ({ children }) => {
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
       new BackpackWalletAdapter(),
-      // new SlopeWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      //new SlopeWalletAdapter(),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [network]
