@@ -1,6 +1,6 @@
 import { solToLamports } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { formatLamports, useGambaUi } from 'gamba/react-ui';
+import { formatLamports } from 'gamba/react-ui';
 import React, { useMemo, useState } from 'react';
 import * as Tone from 'tone';
 import { Dropdown } from '../../common/Dropdown';
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { ResponsiveSize } from '@/components/common/ResponsiveSize';
+import { useGambaUi } from '@/context/gamba-ui';
 
 const GRID_SIZE = 25;
 const MINE_COUNT = 5;

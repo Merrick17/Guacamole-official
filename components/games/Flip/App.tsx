@@ -102,7 +102,7 @@ export default function Flip() {
         <Dropdown
           value={wager}
           format={(value) => formatLamports(value)}
-          label="Wager"
+          label=""
           onChange={setWager}
           options={WAGER_AMOUNTS.map((value) => ({
             label: formatLamports(value),

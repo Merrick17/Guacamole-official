@@ -14,7 +14,7 @@ const WalletMultiButtonDynamic = dynamic(
 const TradePage: FC<TradeProps> = () => {
   const [menuValue, setMenuValue] = useState<'swap' | 'twamm'>('swap');
   return (
-    <main className="container mx-auto flex flex-col items-center gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+    <main className="container mx-auto min-h-screen justify-center flex flex-col items-center gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
       <div className="flex w-full max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7">
         {/* <Tabs defaultValue="swap" value={menuValue} className="w-full">
             <div className="flex flex-row justify-between items-center">

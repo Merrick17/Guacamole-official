@@ -18,12 +18,8 @@ const Play = () => {
       }
       <div
         className={cn(
-          'grid place-items-center',
-          'grid-cols-1',
-          'md:grid-cols-2',
-          'gap-4',
-          'px-4',
-          'py-4'
+          'grid place-items-center  gap-4 px-4 py-4 grid-cols-1',
+          'md:grid-cols-2'
         )}
       >
         {GAMES.length > 1 &&

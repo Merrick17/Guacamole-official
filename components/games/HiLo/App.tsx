@@ -1,7 +1,7 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import { solToLamports } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { formatLamports, useGambaUi } from 'gamba/react-ui';
+import { formatLamports } from 'gamba/react-ui';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import { FaEquals, FaHandPointDown, FaHandPointUp } from 'react-icons/fa';
@@ -15,6 +15,7 @@ import { ActionBar } from '@/components/common/ActionBar';
 import { Button } from '@/components/ui/button';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { ResponsiveSize } from '@/components/common/ResponsiveSize';
+import { useGambaUi } from '@/context/gamba-ui';
 
 const createSound = (url: string) => new Tone.Player({ url }).toDestination();
 

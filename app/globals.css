@@ -17,7 +17,7 @@
 
 }
 body {
-  @apply font-body bg-body bg-body-image bg-cover min-h-screen	 bg-no-repeat antialiased overflow-x-hidden flex items-center justify-center;
+  @apply font-body bg-body bg-body-image bg-cover min-h-screen	 bg-no-repeat antialiased overflow-x-hidden ;
 }
 
 .wallet-adapter-button {

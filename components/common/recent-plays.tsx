@@ -1,8 +1,9 @@
-import { formatLamports, useGambaUi } from 'gamba/react-ui';
+import { formatLamports } from 'gamba/react-ui';
 import { useGamba } from 'gamba/react';
 import { RecentPlayEvent, solToLamports } from 'gamba';
 import { Time } from './Time';
 import { Skeleton } from '../ui/skeleton';
+import { useGambaUi } from '@/context/gamba-ui';
 
 function RecentPlay({ event }: { event: RecentPlayEvent }) {
   const { wallet } = useGamba();

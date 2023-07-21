@@ -7,16 +7,17 @@ const GambaProvider = dynamic(
 );
 
 // Dynamic import for 'gamba/react-ui'
-const GambaUi = dynamic(
-  () => import('gamba/react-ui').then((mod) => mod.GambaUi),
-  {
-    ssr: false, // Disable SSR for the component
-  }
-);
+// const GambaUi = dynamic(
+//   () => import('gamba/react-ui').then((mod) => mod.GambaUi),
+//   {
+//     ssr: false, // Disable SSR for the component
+//   }
+// );
 import React from 'react';
 import dynamic from 'next/dynamic';
 
 import { PublicKey } from '@solana/web3.js';
+import { GambaUi } from '@/components/views/play/Provider';
 
 export default function PlayLayout({
   children,

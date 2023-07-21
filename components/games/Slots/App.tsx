@@ -1,6 +1,6 @@
 import { lamportsToSol } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { formatLamports, useGambaUi } from 'gamba/react-ui';
+import { formatLamports } from 'gamba/react-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import * as Tone from 'tone';
 import { Dropdown } from '../../common/Dropdown';
@@ -18,6 +18,7 @@ import { ResponsiveSize } from '@/components/common/ResponsiveSize';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button } from '@/components/ui/button';
+import { useGambaUi } from '@/context/gamba-ui';
 
 // Constants
 const INITIAL_WAGER = 50000000;
@@ -188,7 +189,7 @@ const Slots: React.FC = () => {
   return (
     <>
       <ResponsiveSize>
-        <div className="w-full flex justify-center gap-5 text-[5rem] rounded-lg  h-full p-5 ">
+        <div className="w-full flex justify-center gap-5 text-[5rem] rounded-lg  h-full p-5  ">
           {slots.map((slot, index) => (
             <SlotWindow emoji={slot} isLightUp={lightUp[index]} key={index} />
           ))}
@@ -212,7 +213,7 @@ const Slots: React.FC = () => {
         <Dropdown
           value={wager}
           format={formatLamports}
-          label="Wager"
+          label=""
           onChange={setWager}
           options={WAGER_AMOUNTS.map((value) => ({
             label: formatLamports(value),

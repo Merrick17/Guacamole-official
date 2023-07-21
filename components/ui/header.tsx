@@ -33,7 +33,9 @@ const HeaderLeft: FC = () => {
         <div className="w-8 aspect-square relative">
           <Image src="/logo.png" alt="logo" fill />
         </div>
-        <h1 className="text-2xl font-medium text-black">Guacamole</h1>
+        <h1 className="hidden sm:block text-2xl font-medium text-black">
+          Guacamole
+        </h1>
       </div>
       <div className="hidden sm:block">
         <Navigation />
@@ -46,7 +48,7 @@ const HeaderRight: FC = () => {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <div className="sm:flex items-center justify-end gap-8 hidden">
+      <div className="sm:flex  items-center justify-end gap-8 hidden">
         <Link
           href="https://docs.guacamole.gg/"
           rel="noopener noreferrer"
@@ -70,7 +72,29 @@ const HeaderRight: FC = () => {
         </Link>
         <WalletMultiButtonDynamic className="rounded-full" />
       </div>
-      <div className="sm:hidden block">
+
+      <div className="sm:hidden flex items-center justify-end gap-2">
+        <Link
+          href="https://docs.guacamole.gg/"
+          rel="noopener noreferrer"
+          target="_blank"
+          className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+        >
+          <Image
+            src="/images/documentation.png"
+            alt="search"
+            width={25}
+            height={25}
+          />
+        </Link>
+        <Link
+          href="https://discord.com/invite/guac"
+          rel="noopener noreferrer"
+          target="_blank"
+          className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+        >
+          <BsDiscord color="#7289DA" className="w-full h-full" />
+        </Link>
         <div
           onClick={() => setOpen((prev) => !prev)}
           className="focus:outline-none cursor-pointer p-2 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-10 aspect-square"

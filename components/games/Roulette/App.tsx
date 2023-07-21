@@ -1,6 +1,6 @@
 import { lamportsToSol } from 'gamba';
 import { useGamba } from 'gamba/react';
-import { formatLamports, useGambaUi } from 'gamba/react-ui';
+import { formatLamports } from 'gamba/react-ui';
 import React, { useMemo, useState } from 'react';
 import * as Tone from 'tone';
 import { Results } from './Results';
@@ -20,6 +20,7 @@ import { ActionBar } from '@/components/common/ActionBar';
 import { ResponsiveSize } from '@/components/common/ResponsiveSize';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button } from '@/components/ui/button';
+import { useGambaUi } from '@/context/gamba-ui';
 
 export const soundChip = createSound(chipSrc);
 export const soundDice = createSound(diceSrc);
