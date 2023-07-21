@@ -1,25 +1,18 @@
 'use client';
-const GambaProvider = dynamic(
-  () => import('gamba/react').then((mod) => mod.GambaProvider),
-  {
-    ssr: false, // Disable SSR for the component
-  }
-);
-
-// Dynamic import for 'gamba/react-ui'
-// const GambaUi = dynamic(
-//   () => import('gamba/react-ui').then((mod) => mod.GambaUi),
-//   {
-//     ssr: false, // Disable SSR for the component
-//   }
-// );
 import React from 'react';
 import dynamic from 'next/dynamic';
 const DynamicGambaUi = dynamic(
   async () => (await import('@/components/views/play/Provider')).GambaUi,
   { ssr: false }
 );
+const GambaProvider = dynamic(
+  () => import('gamba/react').then((mod) => mod.GambaProvider),
+  {
+    ssr: false, // Disable SSR for the component
+  }
+);
 import { PublicKey } from '@solana/web3.js';
+import { Metadata } from 'next';
 
 export default function PlayLayout({
   children,
