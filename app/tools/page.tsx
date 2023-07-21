@@ -8,7 +8,7 @@ interface ToolsProps {}
 const Tools: FC<ToolsProps> = () => {
   const { connected } = useWallet();
   return (
-    <main className="container mx-auto flex flex-col gap-14 px-16 py-12">
+    <main className="container mx-auto flex flex-col gap-14 px-16 py-12  max-w-[1440px]">
       {connected ? (
         <div className={' mx-auto grid max-w-6xl grid-cols-3 gap-x-6 gap-y-6'}>
           {tools.map((tool, index) => (

@@ -28,7 +28,7 @@ export const Wallet: FC<WalletProps> = ({ children }) => {
   // You can also provide a custom RPC endpoint.
   // const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const endpoint =
-    'https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943';
+    'https://evocative-weathered-morning.solana-mainnet.discover.quiknode.pro/a9cfb3ea797366765149bc848d94e74b0dec54e8/';
 
   const wallets = useMemo(
     () => [
@@ -47,7 +47,8 @@ export const Wallet: FC<WalletProps> = ({ children }) => {
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
       new BackpackWalletAdapter(),
-      new SlopeWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      //new SlopeWalletAdapter(),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [network]

@@ -1,24 +1,41 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { FC } from 'react';
+import { usePathname } from 'next/navigation';
+import { GAMES } from '@/components/games';
+import { Slider } from '@/components/common/Slider';
+import { FaArrowRight, FaDice, FaList } from 'react-icons/fa';
+import Link from 'next/link';
+import { Card } from '@/components/common/Card';
+import { Section } from '@/components/styles';
 
-type FeaturedProps = {
-  variant?: 'normal' | 'compact';
-};
-const Featured: FC<FeaturedProps> = ({ variant = 'normal' }) => {
+type FeaturedProps = {};
+const Featured: FC<FeaturedProps> = () => {
+  const pathname = usePathname();
   return (
-    <div className="flex w-[512px] flex-col gap-4 rounded-lg bg-white px-5 py-7">
-      <header className="flex items-center gap-1">
-        <div className="relative aspect-square w-6">
-          <Image src="/icons/featured-games.svg" fill alt="play" />
-        </div>
-        <h1 className="text-2xl   text-black">Featured Games</h1>
-      </header>
+    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-white ">
       <div className="flex flex-row gap-[10px] overflow-auto ">
-        {Games.map((game, index) => (
-          <FeaturedGame variant={variant} key={index} {...game} />
-        ))}
+        {GAMES.length > 1 && (
+          <Section>
+            <Slider>
+              {GAMES.map((game: any) => (
+                <Link key={game.short_name} href={`/play/${game.short_name}`}>
+                  <Card
+                    width={150}
+                    height={150}
+                    backgroundImage={game.image}
+                    backgroundColor={game.theme_color}
+                  >
+                    {game.name}
+                  </Card>
+                </Link>
+              ))}
+            </Slider>
+          </Section>
+        )}
       </div>
     </div>
   );

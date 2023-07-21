@@ -5,7 +5,7 @@ interface HomeListProps {}
 
 const HomeList: FC<HomeListProps> = () => {
   return (
-    <div className="flex  flex-row items-center justify-between gap-10 rounded-lg bg-white px-14 py-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 rounded-lg bg-white px-14 py-6">
       {listItems.map((item, index) => (
         <ListItem key={index} {...item} />
       ))}
@@ -22,7 +22,7 @@ type ListItemProps = {
 };
 const ListItem: FC<ListItemProps> = ({ title, description, image }) => {
   return (
-    <div className="flex max-w-[224px] flex-col gap-2">
+    <div className=" max-w-[322px] flex-col gap-2">
       <header>
         <Image src={image} alt={title} width={36} height={36} />
       </header>
