@@ -435,7 +435,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                 />
               </div>
               <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
-                {outputAmount}
+                {outputAmount.toLocaleString(undefined, {
+                  maximumFractionDigits: 6,
+                })}
               </div>
             </div>
 

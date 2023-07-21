@@ -6,7 +6,8 @@ import { Links } from '@/config/links';
 import NavItem from './nav-item';
 import { GrClose, GrMenu } from 'react-icons/gr';
 import { usePathname } from 'next/navigation';
-
+import Link from 'next/link';
+import { BsDiscord } from 'react-icons/bs';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -16,7 +17,7 @@ interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
   return (
-    <div className="sticky top-0 bg-white px-10 py-4 z-50 w-full">
+    <div className="fixed top-0 bg-white px-10 py-4 z-50 w-full">
       <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
         <HeaderLeft />
         <HeaderRight />
@@ -45,7 +46,24 @@ const HeaderRight: FC = () => {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <div className="sm:block hidden">
+      <div className="sm:flex items-center justify-end gap-8 hidden">
+        <Link
+          href="https://docs.guacamole.gg/"
+          className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+        >
+          <Image
+            src="/images/documentation.png"
+            alt="search"
+            width={25}
+            height={25}
+          />
+        </Link>
+        <Link
+          href="https://discord.com/invite/guac"
+          className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+        >
+          <BsDiscord color="#7289DA" className="w-full h-full" />
+        </Link>
         <WalletMultiButtonDynamic className="rounded-full" />
       </div>
       <div className="sm:hidden block">

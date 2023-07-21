@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Kanit } from 'next/font/google';
 import Header from '@/components/ui/header';
 import React from 'react';
+import Disclaimer from '@/components/ui/disclaimer';
 
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -23,9 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={kanit.className}>
+        <Disclaimer />
         <Wallet>
           <Header />
-          {children}
+          <div className="mt-20">{children}</div>
         </Wallet>
       </body>
     </html>
