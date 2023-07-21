@@ -22,7 +22,7 @@ type ListItemProps = {
 };
 const ListItem: FC<ListItemProps> = ({ title, description, image }) => {
   return (
-    <div className=" max-w-[224px] flex-col gap-2">
+    <div className=" max-w-[322px] flex-col gap-2">
       <header>
         <Image src={image} alt={title} width={36} height={36} />
       </header>

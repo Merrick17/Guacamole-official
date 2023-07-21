@@ -20,27 +20,24 @@ export const SwapRoute = ({
     <div
       className={clsx(
         'relative',
-        selected && 'bg-[#97D19C]',
-        'rounded-[6px] p-[2px]',
-        'animate-gradient-x'
+        selected && 'bg-black border-2 border-black border-solid ',
+        'rounded-xl '
       )}
     >
       {/* Badge */}
       {isBestRoute && (
-        <div className="absolute right-0 top-[-11px] rounded-[5px] bg-[#97D19C] px-2 py-[1px] text-sm font-bold text-white">
+        <div className="absolute left-0 top-[-11px] rounded-[5px] bg-black px-2 py-[1px] text-sm font-bold text-white">
           Best price
         </div>
       )}
 
-      <div className="flex flex-row items-center justify-between rounded-[5px] bg-[#E5E7EB] p-3">
-        <div className="flex flex-col">
-          <span className="font-bold text-black">{formatRoute(route)}</span>
-          <span className="text-sm font-bold opacity-80">
+      <div className="flex flex-row items-center justify-between  bg-[#E5E7EB] px-4 py-5 rounded-xl">
+        <span className="font-normal text-xs">{formatRoute(route)}</span>
+        {/* <span className="text-sm font-bold opacity-80">
             {formatTokens(tokenMap, route)}
-          </span>
-        </div>
+          </span> */}
         {/* Output amount */}
-        <div className="text-xl font-bold">{amount}</div>
+        <div className="text-sm font-medium  text-black">{amount}</div>
       </div>
     </div>
   );

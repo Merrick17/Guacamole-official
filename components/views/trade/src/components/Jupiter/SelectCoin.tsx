@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo, useState, Suspense } from 'react';
 import { useJupiterApiContext } from '../../contexts';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useVirtualList } from 'ahooks';
@@ -13,6 +13,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
+import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Row = ({
   info,
@@ -48,11 +51,11 @@ const Row = ({
           <span className="text-sm opacity-80">{info.name}</span>
         </div>
       </div>
-      <Link className="z-1" href={Urls.solscanAddress + info.address}>
+      {/* <Link className="z-1" href={Urls.solscanAddress + info.address}>
         <Button className="!pl-4 !pr-4 rounded-xl">
           <BiLink className="h-[20px]" />
         </Button>
-      </Link>
+      </Link> */}
     </button>
   );
 };
@@ -72,9 +75,7 @@ const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
         alt="coin logo"
       />
       <div className="flex flex-row items-center">
-        <span className="ml-4 text-lg font-bold text-black">
-          {tokenInfo.symbol}
-        </span>
+        <span className="ml-4 text-base  text-black">{tokenInfo.symbol}</span>
         <BiChevronDown className="text-grey ml-2 w-[20px]" />
       </div>
     </div>
@@ -140,8 +141,6 @@ export const SelectCoin = ({
     [search, tokenInfo]
   );
 
-  const topList = originalList.filter((e) => TOP_COINS.includes(e.address));
-
   const [list, scrollTo] = useVirtualList(originalList, {
     containerTarget: containerRef,
     wrapperTarget: wrapperRef,
@@ -157,31 +156,38 @@ export const SelectCoin = ({
   if (!tokenInfo) {
     return null;
   }
-
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div className="w-max cursor-pointer" onClick={() => setVisible(true)}>
         <Coin tokenInfo={tokenInfo} />
       </div>
-      <DialogContent closeBtn={false}>
+      <DialogContent
+        closeBtn={false}
+        className="h-[70vh] max-h-[70vh] overflow-auto"
+      >
         <DialogHeader>
-          <DialogTitle>
-            <input
-              value={search || ''}
-              onChange={(e) => {
-                setSearch(e.target.value.trim());
-                scrollTo(0);
-              }}
-              type="text"
-              id="search-token"
-              placeholder="Search"
-              className=" mb-3  w-full rounded-xl !border-none !bg-[#E5E7EB] text-xs font-bold !outline-none sm:text-lg p-2"
-              spellCheck={false}
+          <DialogTitle className="relative">
+            <h2 className="text-base  text-black text-center ">Select Route</h2>
+            <AiOutlineArrowLeft
+              className=" absolute w-4 h-4 top-1/2 -left-2 -translate-y-1/2 cursor-pointer"
+              onClick={() => setVisible(false)}
             />
           </DialogTitle>
-          <DialogDescription>
-            <div className="h-[70vh] max-h-[70vh]  overflow-auto">
-              <div className="flex flex-row flex-wrap justify-start">
+          <DialogDescription className="!mt-4">
+            <div className="">
+              <input
+                value={search || ''}
+                onChange={(e) => {
+                  setSearch(e.target.value.trim());
+                  scrollTo(0);
+                }}
+                type="text"
+                id="search-token"
+                placeholder="Search"
+                className=" mb-3  w-full rounded-xl !border-none !bg-[#E5E7EB] text-black text-xs placeholder:text-black/50 !outline-none sm:text-lg p-2"
+                spellCheck={false}
+              />
+              {/* <div className="flex flex-row flex-wrap justify-start">
                 {topList.map((e, idx) => (
                   <TopCoin
                     key={`top-coin-${idx}`}
@@ -189,7 +195,7 @@ export const SelectCoin = ({
                     token={e}
                   />
                 ))}
-              </div>
+              </div> */}
 
               <div className="mt-2 border-[0.5px] border-[#E4E9EE] border-opacity-50" />
 
@@ -206,6 +212,13 @@ export const SelectCoin = ({
                     />
                   ))}
                 </div>
+                {!wrapperRef.current && (
+                  <div className="flex  flex-col gap-1">
+                    {Array.from({ length: 10 }).map((_, idx) => (
+                      <Skeleton key={idx} className="h-16 w-full rounded-xl" />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </DialogDescription>

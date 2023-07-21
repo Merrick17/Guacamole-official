@@ -13,8 +13,8 @@ import { NATIVE_MINT } from '@solana/spl-token';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
+  WalletDisconnectButton,
   WalletModalProvider,
-  WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui';
 import {
   PublicKey,
@@ -42,12 +42,23 @@ import { Buffer } from 'buffer';
 // Token Mints
 export const INPUT_MINT_ADDRESS =
   'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'; // USDC
-export const OUTPUT_MINT_ADDRESS = FIDA_MINT; // FIDA
+export const OUTPUT_MINT_ADDRESS =
+  'AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR'; // Guac
 
 import { useJupiterApiContext } from '../../contexts';
 import { Button } from '@/components/ui/button';
 import { toast } from 'react-toastify';
 import { RenderUpdate } from '@/components/ui/RenderUpdate';
+import dynamic from 'next/dynamic';
+import { SwapRoutes } from './swap-routes';
+import Details from './details';
+import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+  { ssr: false }
+);
 
 interface IJupiterFormProps {}
 
@@ -77,7 +88,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
     connection,
     publicKey
   );
-  const [inputAmout, setInputAmount] = useState('1');
+  const [inputAmout, setInputAmount] = useState('10');
   const { data: solBalance, refresh: refreshSol } = useSolBalance(
     connection,
     publicKey
@@ -92,6 +103,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       window.Buffer = Buffer;
     }
   }, [typeof window]);
+
   // Good to add debounce here to avoid multiple calls
   const fetchRoute = React.useCallback(() => {
     if (!inputTokenInfo || !outputTokenInfo) return;
@@ -348,31 +360,42 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
     refresh();
   }, 15_000);
 
+  if (!bestRoute) return <Loading />;
+
   return (
     <>
-      <div className="mb-5 mt-3 w-full rounded-[15px] bg-white  sm:w-[450px]">
-        <div className=" flex flex-row items-center justify-between bg-white">
-          <Slippage slippage={slippage || 0} setSlippage={setSlippage} />
-          <div
-            onClick={() => !loadingRoute && refresh()}
-            className=" h-8 w-8 cursor-pointer rounded-xl !bg-[#E5E7EB] p-2 text-black"
-            color="white"
-          >
-            <GrRefresh className="h-full  " />
+      <div className="w-full rounded-[15px] bg-white  sm:w-[450px] ">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1 !h-7">
+            <Button className=" h-full rounded-lg text-sm">Swap</Button>
+            <Button
+              disabled
+              variant="secondary"
+              className="h-full rounded-lg text-sm"
+            >
+              TWAMM
+            </Button>
+          </div>
+          <div className=" flex flex-row items-center justify-end gap-1 h-7">
+            <div
+              onClick={() => !loadingRoute && refresh()}
+              className=" h-full aspect-square flex items-center justify-center cursor-pointer rounded-xl !bg-[#E5E7EB] p-2 text-black"
+              color="white"
+            >
+              <GrRefresh className="h-full  " />
+            </div>
+            <Slippage slippage={slippage || 0} setSlippage={setSlippage} />
+
+            <WalletMultiButtonDynamic
+              startIcon={undefined}
+              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden sm:flex "
+            />
           </div>
         </div>
+        <Separator className="mt-5" />
 
-        <div className="flex flex-col justify-between">
-          <div className="my-5 flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
-            <div className="flex flex-row justify-between">
-              <span className="font-bold text-black">You pay</span>
-              <Balance
-                tokenAccounts={tokenAccounts}
-                token={inputTokenInfo}
-                setInput={setInputAmount}
-                solBalance={solBalance}
-              />
-            </div>
+        <div className="mt-4 flex flex-col justify-between gap-[5px]">
+          <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
             <div className="flex w-full flex-row items-center  gap-2 rounded-lg bg-white  text-black">
               <div className=" w-full rounded-xl">
                 <SelectCoin
@@ -380,32 +403,30 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                   setCoin={setInputTokenInfo}
                 />
               </div>
-              <input
+              <Input
                 value={inputAmout}
                 type="number"
                 onChange={(e) => setInputAmount(e.target.value.trim())}
-                className="w-full rounded-xl border-none bg-transparent text-right text-xl font-bold  outline-none"
+                className="w-full rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none"
               />
             </div>
-          </div>
 
+            <Balance
+              tokenAccounts={tokenAccounts}
+              token={inputTokenInfo}
+              setInput={setInputAmount}
+              solBalance={solBalance}
+            />
+          </div>
           <div className="flex w-full flex-row justify-center">
-            <div className="h-[32px] w-[32px] cursor-pointer rounded-lg border border-[#E5E7EB] bg-[#E5E7EB] p-1">
+            <div className="h-[32px] w-[32px] cursor-pointer rounded-lg border border-[#E5E7EB] bg-[#E5E7EB] p-2">
               <HiOutlineSwitchVertical
                 onClick={handleSwitch}
                 className=" h-full w-full rotate-45 text-black  "
               />
             </div>
           </div>
-          <div className="my-5 flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
-            <div className="flex flex-row justify-between">
-              <span className="font-bold text-black">You receive</span>
-              <Balance
-                tokenAccounts={tokenAccounts}
-                token={outputTokenInfo}
-                solBalance={solBalance}
-              />
-            </div>
+          <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
             <div className="flex w-full flex-row items-center gap-2 rounded-lg bg-white ">
               <div className="w-full  rounded-xl">
                 <SelectCoin
@@ -413,62 +434,30 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                   setCoin={setOutputTokenInfo}
                 />
               </div>
-              <div className="w-full  rounded-xl border-none bg-transparent text-right text-xl font-bold  outline-none">
-                {outputAmount}
+              <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
+                {outputAmount.toLocaleString(undefined, {
+                  maximumFractionDigits: 6,
+                })}
               </div>
             </div>
+
+            <Balance
+              tokenAccounts={tokenAccounts}
+              token={outputTokenInfo}
+              solBalance={solBalance}
+            />
           </div>
-          {loadingRoute && (
-            <div className="h-[216px]">
-              <progress className="progress h-[72px] w-full"></progress>
-              <progress className="progress h-[72px] w-full"></progress>
-              <progress className="progress h-[72px] w-full"></progress>
-            </div>
-          )}
-          {!hasRoute && !loadingRoute && (
-            <div className="flex flex-row justify-center">
-              <span className="mr-2 text-lg font-bold">No route found</span>
-              <img className="h-[30px] w-[30px]" src={'/images/no-route.png'} />
-            </div>
-          )}
-          {!loadingRoute &&
-            !!bestRoute &&
-            !!bestRoute.marketInfos &&
-            !!outputAmount &&
-            !!hasRoute && (
-              <button onClick={() => setSelectedRoute(bestRoute)}>
-                <SwapRoute
-                  isBestRoute={true}
-                  route={bestRoute.marketInfos}
-                  tokenMap={tokenMap}
-                  selected={bestRoute === selectedRoute}
-                  amount={outputAmount}
-                />
-              </button>
-            )}
-          {!loadingRoute &&
-            hasRoute &&
-            routes
-              ?.slice(1)
-              ?.filter((e: any) => !!e.marketInfos && !!e.outAmount)
-              .map((r: any, idx: number) => {
-                return (
-                  <button
-                    onClick={() => setSelectedRoute(r)}
-                    key={`route-${idx}`}
-                  >
-                    <SwapRoute
-                      route={r.marketInfos as InlineResponse200MarketInfos[]}
-                      tokenMap={tokenMap}
-                      amount={
-                        (r.outAmount as number) /
-                        Math.pow(10, outputTokenInfo?.decimals || 0)
-                      }
-                      selected={r === selectedRoute}
-                    />
-                  </button>
-                );
-              })}
+          <SwapRoutes
+            bestRoute={bestRoute}
+            hasRoute={hasRoute}
+            loadingRoute={loadingRoute}
+            outputAmount={outputAmount}
+            outputTokenInfo={outputTokenInfo}
+            routes={routes}
+            selectedRoute={selectedRoute}
+            setSelectedRoute={setSelectedRoute}
+            tokenMap={tokenMap}
+          />
           {connected ? (
             <div className="mt-4">
               <Button
@@ -488,10 +477,23 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             </div>
           ) : (
             <div className="mt-4 flex flex-row justify-center">
-              <WalletModalProvider>
-                <WalletMultiButton />
-              </WalletModalProvider>
+              <WalletMultiButtonDynamic
+                startIcon={undefined}
+                className="h-full flex items-center justify-center w-full "
+                style={{ borderRadius: '12px' }}
+              >
+                Connect Wallet
+              </WalletMultiButtonDynamic>
             </div>
+          )}
+          {outputTokenInfo && inputTokenInfo && (
+            <Details
+              selectRoute={selectedRoute}
+              toTokenInfo={outputTokenInfo}
+              fromTokenInfo={inputTokenInfo}
+              loading={loadingRoute}
+              routes={routes}
+            />
           )}
         </div>
       </div>

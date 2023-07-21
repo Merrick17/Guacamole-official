@@ -4,15 +4,40 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+
+    --border-radius: 10px;
+    --text-color: ${theme.palette.textColor};
+    --primary-color: ${theme.palette.primary};
+    --header-bg-color: ${theme.palette.background}EE;
+    --gamba-modal-bg: ${theme.palette.backgroundLight};
+    --gamba-modal-text: ${theme.palette.textColor};
+    --bg-color: ${theme.palette.background};
+    --bg-light-color: white;
+
+}
 body {
-  @apply font-body bg-body bg-body-image bg-auto 	 bg-no-repeat antialiased;
+  @apply font-body bg-body bg-body-image bg-cover min-h-screen	 bg-no-repeat antialiased overflow-x-hidden ;
 }
 
 .wallet-adapter-button {
   background-color: black !important;
-  @apply !rounded-full;
+  @apply rounded-full;
 }
 
 .text-shadow {
   text-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

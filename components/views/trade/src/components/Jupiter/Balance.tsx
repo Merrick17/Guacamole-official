@@ -4,7 +4,8 @@ import round from 'lodash/round';
 import { PublicKey } from '@solana/web3.js';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { NATIVE_MINT } from '@solana/spl-token';
-
+import { BiWallet } from 'react-icons/bi';
+import { Button } from '@/components/ui/button';
 export const Balance = ({
   token,
   tokenAccounts,
@@ -41,26 +42,29 @@ export const Balance = ({
       : 0;
 
   return (
-    <div className="mr-1 flex flex-row items-center">
-      <span className="mr-1 text-sm font-bold text-black">Balance: </span>
-      <span className="mr-1 text-sm font-bold text-black opacity-40">
-        {round(wSol ? solBalance?.uiAmount || 0 : balance, 2)}
+    <div className=" flex flex-row items-center text-black/50 text-xs gap-1">
+      <span>
+        <BiWallet />
       </span>
+      <span>{round(wSol ? solBalance?.uiAmount || 0 : balance, 6)}</span>
+      <span>{wSol ? ' SOL' : ` ${token?.symbol}`}</span>
 
       {setInput && !!balance && (
         <>
-          <div
+          <Button
+            className="h-5 bg-[#E5E7EB]"
+            variant="secondary"
             onClick={() => setInput((balance / 2).toString())}
-            className="mr-1 w-[50px] cursor-pointer rounded-[20px] border-[2px] border-solid border-sky-500 text-center text-xs font-bold uppercase"
           >
             Half
-          </div>
-          <div
+          </Button>
+          <Button
+            variant="secondary"
+            className="h-5 bg-[#E5E7EB]"
             onClick={() => setInput(balance.toString())}
-            className="w-[50px] cursor-pointer rounded-[20px] border-[2px] border-solid border-sky-500 text-center text-xs font-bold uppercase"
           >
             Max
-          </div>
+          </Button>
         </>
       )}
     </div>

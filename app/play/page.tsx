@@ -1,19 +1,14 @@
-import Banner from '@/components/views/play/banner';
-import Featured from '@/components/views/play/featured';
-import Ready from '@/components/views/play/ready';
-import RecentPlay from '@/components/views/play/recent-play';
+import Play from '@/components/views/play';
+import { Metadata } from 'next';
 
-import { FC } from 'react';
-
-interface PlayProps {}
-
-const Play: FC<PlayProps> = () => {
-  return (
-    <>
-      <Ready />
-      <Banner />
-    </>
-  );
+export const metadata: Metadata = {
+  title: "Let's Play Some Games | Guacamole",
+  description:
+    'Take a chance in fun games where you can win some Solana and some of your favorite coins and tokens. Flips, mines, and more await for you to play on Guacamole!',
 };
 
-export default Play;
+const Page = () => {
+  return <Play />;
+};
+
+export default Page;
