@@ -45,9 +45,9 @@ export const Wallet: FC<WalletProps> = ({ children }) => {
        * in the npm package `@solana/wallet-adapter-wallets`.
        */
       new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
+  
       new BackpackWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
+    
       //new SlopeWalletAdapter(),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

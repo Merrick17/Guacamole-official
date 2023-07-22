@@ -22,7 +22,7 @@ export default function PlayLayout({
   return (
     <>
       <GambaProvider
-        creator={new PublicKey('Hx5oruS1xKhHVjdHnbvLPQnJwyCAwd6QzzJ6yPnoqgP8')}
+        creator={'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC'}
       >
         <DynamicGambaUi>
           <main className="container mx-auto flex flex-col items-center gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
