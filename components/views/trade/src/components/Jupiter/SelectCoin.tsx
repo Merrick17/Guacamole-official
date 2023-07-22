@@ -1,11 +1,9 @@
-import { useRef, useMemo, useState, Suspense } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { useJupiterApiContext } from '../../contexts';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useVirtualList } from 'ahooks';
-import { BiChevronDown, BiLink } from 'react-icons/bi';
-import { Link } from '../Link';
-import Urls from '../../settings/urls';
-import { Button } from '@/components/ui/button';
+import { BiChevronDown } from 'react-icons/bi';
+
 import {
   Dialog,
   DialogContent,
@@ -14,7 +12,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
-import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Row = ({
@@ -51,11 +48,6 @@ const Row = ({
           <span className="text-sm opacity-80">{info.name}</span>
         </div>
       </div>
-      {/* <Link className="z-1" href={Urls.solscanAddress + info.address}>
-        <Button className="!pl-4 !pr-4 rounded-xl">
-          <BiLink className="h-[20px]" />
-        </Button>
-      </Link> */}
     </button>
   );
 };
@@ -79,41 +71,6 @@ const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
         <BiChevronDown className="text-grey ml-2 w-[20px]" />
       </div>
     </div>
-  );
-};
-
-const TOP_COINS = [
-  'EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp', // FIDA
-  'SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt', // SRM
-  '9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E', // BTC
-  'So11111111111111111111111111111111111111112', // wSOL
-  '4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R', // RAY
-  'MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac', // Mango
-  'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', // USDT
-  'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', // USDC
-  'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So', // mSOL
-];
-
-const TopCoin = ({
-  token,
-  handleSelect,
-}: {
-  token: TokenInfo;
-  handleSelect: (e: TokenInfo) => void;
-}) => {
-  return (
-    <button
-      type="button"
-      onClick={() => handleSelect(token)}
-      className="m-1 flex cursor-pointer flex-row rounded-[5px] border border-[#E4E9EE] border-opacity-50 p-2  "
-    >
-      <img
-        className="mr-2 h-[18px] w-[18px]"
-        src={token.logoURI as string}
-        alt="Token logo"
-      />
-      <span className="text-xs font-bold text-black">{token.symbol}</span>
-    </button>
   );
 };
 
@@ -156,6 +113,7 @@ export const SelectCoin = ({
   if (!tokenInfo) {
     return null;
   }
+  console.log({ tokenInfo, tokenMap });
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div className="w-max cursor-pointer" onClick={() => setVisible(true)}>
@@ -204,12 +162,16 @@ export const SelectCoin = ({
                 className="h-full min-h-[200px] overflow-scroll overscroll-contain"
               >
                 <div ref={wrapperRef}>
-                  {list.map((e) => (
+                  {/* {list.map((e) => (
                     <Row
                       key={e.index}
                       info={e.data}
                       handleSelect={handleSelect}
                     />
+                  ))} */}
+
+                  {originalList.map((e) => (
+                    <Row key={e.address} info={e} handleSelect={handleSelect} />
                   ))}
                 </div>
                 {!wrapperRef.current && (

@@ -101,10 +101,10 @@ const ExchangeRate = ({
             1 {fromTokenInfo.symbol} ≈
             <div className="flex ml-0.5">
               {rate.gt(0.000_01) ? (
-                `${formatNumber.format(rate.toNumber())} ${toTokenInfo.symbol}`
+                `${formatNumber.format(rate.toNumber())} ${toTokenInfo.symbol} `
               ) : (
                 <>
-                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />{' '}
+                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />
                   {toTokenInfo.symbol}
                 </>
               )}
@@ -120,7 +120,7 @@ const ExchangeRate = ({
                 }`
               ) : (
                 <>
-                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />{' '}
+                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />
                   {fromTokenInfo.symbol}
                 </>
               )}

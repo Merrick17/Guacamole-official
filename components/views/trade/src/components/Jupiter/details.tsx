@@ -22,11 +22,9 @@ const Details = ({
   selectRoute: any;
   toTokenInfo: TokenInfo;
 }) => {
-  const rate = useMemo(() => '1 USDC ≈ 190,473,598.5433853 GUAC', []);
-
   const rateParams = {
     inAmount: selectRoute?.inAmount || routes?.[0]?.inAmount || ZERO, // If there's no selectedRoute, we will use first route value to temporarily calculate
-    inputDecimal: fromTokenInfo.decimals,
+    inputDecimal: fromTokenInfo.decimals || 0,
     outAmount: selectRoute?.outAmount || routes?.[0]?.outAmount || ZERO, // If there's no selectedRoute, we will use first route value to temporarily calculate
     outputDecimal: toTokenInfo?.decimals || 0,
   };

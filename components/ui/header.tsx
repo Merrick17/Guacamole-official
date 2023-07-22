@@ -8,6 +8,7 @@ import { GrClose, GrMenu } from 'react-icons/gr';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { BsDiscord } from 'react-icons/bs';
+import { useRouter } from 'next/navigation';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -46,6 +47,11 @@ const HeaderLeft: FC = () => {
 
 const HeaderRight: FC = () => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const changePage = (path: string) => {
+    setOpen(false);
+    router.push(path);
+  };
   return (
     <div>
       <div className="sm:flex  items-center justify-end gap-8 hidden">
@@ -105,7 +111,7 @@ const HeaderRight: FC = () => {
         {open && (
           <div className="absolute top-0 right-0 mt-14 bg-white rounded-lg shadow-lg p-4 w-full">
             <div className="flex flex-col gap-4">
-              <Navigation />
+              <Navigation changePage={changePage} />
               <WalletMultiButtonDynamic
                 startIcon={undefined}
                 className="h-full flex items-center justify-center w-full "
@@ -119,14 +125,22 @@ const HeaderRight: FC = () => {
   );
 };
 
-const Navigation: FC = () => {
+type NavigationProps = {
+  changePage?: (path: string) => void;
+};
+const Navigation: FC<NavigationProps> = ({ changePage }) => {
   const pathname = usePathname();
 
   return (
     <nav>
       <ul className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-8 text-[#4B5563] text-base font-medium capitalize">
         {Links.map((link, index) => (
-          <NavItem key={index} {...link} isActive={pathname === link.href} />
+          <NavItem
+            changePage={changePage}
+            key={index}
+            {...link}
+            isActive={pathname === link.href}
+          />
         ))}
       </ul>
     </nav>

@@ -16,6 +16,8 @@ interface NavItemProps {
   Icon?: IconType;
   dropdownItems?: DropdownItemProps[];
   isActive?: boolean;
+
+  changePage?: (path: string) => void;
 }
 
 const NavItem: FC<NavItemProps> = ({
@@ -24,6 +26,7 @@ const NavItem: FC<NavItemProps> = ({
   dropdownItems,
   isActive,
   Icon,
+  changePage,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -75,8 +78,7 @@ const NavItem: FC<NavItemProps> = ({
             <span>{name}</span>
           </Link>
 
-          <Link
-            href={href}
+          <div
             className={cn('flex items-center justify-start gap-4 sm:hidden ')}
           >
             <Button
@@ -84,6 +86,7 @@ const NavItem: FC<NavItemProps> = ({
                 'w-full  h-12 justify-start gap-4 !m-0 bg-white text-black font-normal',
                 isActive && 'bg-black text-white'
               )}
+              onClick={() => changePage(href)}
             >
               {Icon && (
                 <div className="block sm:hidden text-base">
@@ -92,7 +95,7 @@ const NavItem: FC<NavItemProps> = ({
               )}
               <span>{name}</span>
             </Button>
-          </Link>
+          </div>
         </li>
       )}
     </>
