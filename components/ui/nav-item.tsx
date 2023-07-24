@@ -67,10 +67,10 @@ const NavItem: FC<NavItemProps> = ({
           </ul>
         </li>
       ) : (
-        <li className="relative cursor-pointer">
+        <li className="relative cursor-pointer  ">
           <Link
-            className={` hidden sm:flex  px-4 py-3 font-normal text-xs
-               items-center w-full sm:px-0 sm:py-0 sm:text-base sm:font-medium transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 ${
+            className={` hidden lg:flex  px-4 py-3 font-normal text-xs
+               items-center w-full lg:px-0 lg:py-0 lg:text-base lg:font-medium transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 ${
                  isActive && 'text-gray-800 dark:text-gray-100'
                }`}
             href={href}
@@ -79,17 +79,17 @@ const NavItem: FC<NavItemProps> = ({
           </Link>
 
           <div
-            className={cn('flex items-center justify-start gap-4 sm:hidden ')}
+            className={cn('flex items-center justify-start gap-4 lg:hidden ')}
           >
             <Button
               className={cn(
-                'w-full  h-12 justify-start gap-4 !m-0 bg-white text-black font-normal',
+                'w-full  h-12 justify-start gap-4 !m-0 bg-white text-black font-normal ',
                 isActive && 'bg-black text-white'
               )}
               onClick={() => changePage(href)}
             >
               {Icon && (
-                <div className="block sm:hidden text-base">
+                <div className="block lg:hidden text-base">
                   <Icon />
                 </div>
               )}

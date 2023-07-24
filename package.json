@@ -45,7 +45,7 @@
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
     "file-loader": "^6.2.0",
-    "gamba": "^0.7.3",
+    "gamba": "^0.7.4",
     "jsbi": "^4.3.0",
     "lodash": "^4.17.21",
     "lokijs": "1.x",
