@@ -33,24 +33,35 @@ export const Links = [
     //   },
     // ],
   },
+  // {
+  //   name: 'Nft',
+  //   href: routes.nft,
+
+  // },
+
   {
-    name: 'Nft',
-    href: routes.nft,
+    name: 'Tools',
+    href: routes.tools,
     dropdownItems: [
       {
         name: 'Explore',
-        href: routes.nft,
+        href: routes.tools,
       },
       {
         name: 'create spl token',
 
         href: routes.createSplToken,
       },
-    ],
-  },
+      {
+        name: 'token multi sender',
 
-  {
-    name: 'Tools',
-    href: routes.tools,
+        href: routes.tokenMultiSender,
+      },
+      {
+        name: 'burn nft',
+
+        href: routes.burnNft,
+      },
+    ],
   },
 ];

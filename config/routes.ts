@@ -6,7 +6,9 @@ const routes = {
   guacamole: '/play/guac-a-mole',
   coinFlip: '/play/flip',
   nft: '/nft',
-  createSplToken: '/nft/create-spl-token',
+  createSplToken: '/tools/create-spl-token',
+  burnNft: '/tools/burn-nft',
+  tokenMultiSender: '/tools/token-multi-sender',
   others: {
     discord: 'https://discord.com/invite/guac',
     docs: 'https://docs.guacamole.gg/',
