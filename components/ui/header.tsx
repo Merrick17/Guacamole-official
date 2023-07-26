@@ -134,7 +134,7 @@ const Navigation: FC<NavigationProps> = ({ changePage }) => {
   const pathname = usePathname();
   return (
     <nav>
-      <ul className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-8 text-[#4B5563] text-base font-medium capitalize">
+      <ul className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-8 text-[#4B5563]  font-medium capitalize">
         {Links.map((link, index) => (
           <NavItem
             changePage={changePage}

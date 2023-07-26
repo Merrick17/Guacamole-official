@@ -16,12 +16,12 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
   return (
     <header
       className={cn(
-        'flex flex-row items-center justify-between  capitalize',
+        'flex flex-col gap-4 md:flex-row items-center justify-between  capitalize',
         className
       )}
     >
       <h1 className="font-medium text-base text-[#4B5563]">{title}</h1>
-      <div className="flex flex-row items-center gap-5">
+      <div className="flex  flex-col gap-4 sm:flex-row  items-center sm:gap-5">
         {burnAll && (
           <Button
             size="sm"

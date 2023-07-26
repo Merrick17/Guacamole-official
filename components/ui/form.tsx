@@ -81,7 +81,7 @@ const FormItem = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          'space-y-2 border border-solid border-[#E5E7EB] rounded-lg p-3',
+          'space-y-[6px] border border-solid border-[#E5E7EB] rounded-lg p-3',
           className
         )}
         {...props}
