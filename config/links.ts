@@ -62,6 +62,20 @@ export const Links = [
 
         href: routes.burnNft,
       },
+      {
+        name: 'emergency send tool',
+
+        href: routes.emergencySend,
+      },
+      {
+        name: 'token multi sender CSV',
+
+        href: routes.tokenMultiSenderCsv,
+      },
+      {
+        name: 'Token to many wallets',
+        href: routes.tokenToManyWallets,
+      },
     ],
   },
 ];
