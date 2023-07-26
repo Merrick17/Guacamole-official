@@ -54,6 +54,8 @@ import { SwapRoutes } from './swap-routes';
 import Details from './details';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import axios from 'axios';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -360,7 +362,16 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
     refresh();
   }, 15_000);
 
-  if (!bestRoute) return <Loading />;
+  const [inputPrice, setInputPrice] = useState(0);
+  const [outputPrice, setOutputPrice] = useState(0);
+  // useEffect(() => {
+  //   const getPrice = async () => {
+  //     const res = await axios.get('https://price.jup.ag/v4/price?ids=SOl');
+  //     const data = res.data;
+  //     console.log(data);
+  //   };
+  //   getPrice();
+  // }, [inputAmout, inputTokenInfo, outputTokenInfo, loadingRoute]);
 
   return (
     <>
@@ -388,76 +399,99 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
 
             <WalletMultiButtonDynamic
               startIcon={undefined}
-              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden sm:flex "
+              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex "
             />
           </div>
         </div>
         <Separator className="mt-5" />
 
         <div className="mt-4 flex flex-col justify-between gap-[5px]">
-          <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
-            <div className="flex w-full flex-row items-center  gap-2 rounded-lg bg-white  text-black">
-              <div className=" w-full rounded-xl">
-                <SelectCoin
-                  tokenInfo={inputTokenInfo}
-                  setCoin={setInputTokenInfo}
+          {inputTokenInfo ? (
+            <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
+              <div className="flex flex-col w-full sm:flex-row items-center  gap-2 rounded-lg bg-white  text-black">
+                <div className=" w-full rounded-xl">
+                  <SelectCoin
+                    tokenInfo={inputTokenInfo}
+                    setCoin={setInputTokenInfo}
+                  />
+                </div>
+                <Input
+                  value={inputAmout}
+                  type="number"
+                  onChange={(e) => setInputAmount(e.target.value.trim())}
+                  className="w-full rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none"
                 />
               </div>
-              <Input
-                value={inputAmout}
-                type="number"
-                onChange={(e) => setInputAmount(e.target.value.trim())}
-                className="w-full rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none"
-              />
-            </div>
-
-            <Balance
-              tokenAccounts={tokenAccounts}
-              token={inputTokenInfo}
-              setInput={setInputAmount}
-              solBalance={solBalance}
-            />
-          </div>
-          <div className="flex w-full flex-row justify-center">
-            <div className="h-[32px] w-[32px] cursor-pointer rounded-lg border border-[#E5E7EB] bg-[#E5E7EB] p-2">
-              <HiOutlineSwitchVertical
-                onClick={handleSwitch}
-                className=" h-full w-full rotate-45 text-black  "
-              />
-            </div>
-          </div>
-          <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
-            <div className="flex w-full flex-row items-center gap-2 rounded-lg bg-white ">
-              <div className="w-full  rounded-xl">
-                <SelectCoin
-                  tokenInfo={outputTokenInfo}
-                  setCoin={setOutputTokenInfo}
+              <div className="flex items-center justify-between">
+                <Balance
+                  tokenAccounts={tokenAccounts}
+                  token={inputTokenInfo}
+                  setInput={setInputAmount}
+                  solBalance={solBalance}
+                  amount={Number(inputAmout)}
                 />
               </div>
-              <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
-                {outputAmount.toLocaleString(undefined, {
-                  maximumFractionDigits: 6,
-                })}
-              </div>
             </div>
-
-            <Balance
-              tokenAccounts={tokenAccounts}
-              token={outputTokenInfo}
-              solBalance={solBalance}
-            />
+          ) : (
+            <Skeleton className="h-[116px] w-full  rounded-xl border border-[#E5E7EB]" />
+          )}
+          <div className="flex w-full flex-row justify-center ">
+            <div
+              className="h-[32px] w-[32px] cursor-pointer rounded-lg border border-[#E5E7EB] bg-[#E5E7EB] p-2"
+              onClick={handleSwitch}
+            >
+              <HiOutlineSwitchVertical className=" h-full w-full rotate-45 text-black  " />
+            </div>
           </div>
-          <SwapRoutes
-            bestRoute={bestRoute}
-            hasRoute={hasRoute}
-            loadingRoute={loadingRoute}
-            outputAmount={outputAmount}
-            outputTokenInfo={outputTokenInfo}
-            routes={routes}
-            selectedRoute={selectedRoute}
-            setSelectedRoute={setSelectedRoute}
-            tokenMap={tokenMap}
-          />
+          {outputTokenInfo ? (
+            <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
+              <div className=" flex w-full flex-col sm:flex-row items-center gap-2 rounded-lg bg-white ">
+                <div className="w-full  rounded-xl">
+                  <SelectCoin
+                    tokenInfo={outputTokenInfo}
+                    setCoin={setOutputTokenInfo}
+                  />
+                </div>
+
+                <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
+                  {(outputAmount &&
+                    outputAmount.toLocaleString(undefined, {
+                      maximumFractionDigits: 6,
+                    })) ||
+                    '0'}
+                </div>
+              </div>
+
+              <Balance
+                tokenAccounts={tokenAccounts}
+                token={outputTokenInfo}
+                solBalance={solBalance}
+                amount={Number(outputAmount)}
+              />
+            </div>
+          ) : (
+            <Skeleton className="h-[116px] w-full  rounded-xl border border-[#E5E7EB]" />
+          )}
+          {outputTokenInfo &&
+          bestRoute &&
+          routes &&
+          !loadingRoute &&
+          outputTokenInfo &&
+          tokenMap ? (
+            <SwapRoutes
+              bestRoute={bestRoute}
+              hasRoute={hasRoute}
+              loadingRoute={loadingRoute}
+              outputAmount={outputAmount}
+              outputTokenInfo={outputTokenInfo}
+              routes={routes}
+              selectedRoute={selectedRoute}
+              setSelectedRoute={setSelectedRoute}
+              tokenMap={tokenMap}
+            />
+          ) : (
+            <Skeleton className="h-6 w-full  " />
+          )}
           {connected ? (
             <div className="mt-4">
               <Button
@@ -486,7 +520,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
               </WalletMultiButtonDynamic>
             </div>
           )}
-          {outputTokenInfo && inputTokenInfo && (
+          {outputTokenInfo && inputTokenInfo && !loadingRoute ? (
             <Details
               selectRoute={selectedRoute}
               toTokenInfo={outputTokenInfo}
@@ -494,6 +528,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
               loading={loadingRoute}
               routes={routes}
             />
+          ) : (
+            <Skeleton className="mt-4 h-[106px] w-full  border border-black/5 rounded-xl  " />
           )}
         </div>
       </div>

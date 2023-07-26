@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,19 +26,28 @@ const formSchema = z.object({
   tokenSupply: z.string().min(2, {
     message: 'token supply must be at least 2 characters.',
   }),
-  description: z.string().min(2, {
-    message: 'description must be at least 2 characters.',
-  }),
+  description: z
+    .string()
+    .min(10, {
+      message: 'Description must be at least 10 characters.',
+    })
+    .max(160, {
+      message: 'Description must not be longer than 30 characters.',
+    }),
   authority: z.boolean(),
 });
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Checkbox } from '@/components/ui/checkbox';
+import UploadToken from './upload-token';
 
 interface CreateSplTokenFormProps {}
 
 const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
-  // 1. Define your form.
+  // 1- form.
+  const [tokenIcon, setTokenIcon] = useState<File | null>(null);
+  // 2- form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,12 +64,13 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    if (!tokenIcon || !form.formState.isValid) return;
     console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 pb-6">
         <FormField
           control={form.control}
           name="tokenName"
@@ -142,11 +151,37 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </FormItem>
           )}
         />
-
-        <Button type="submit" className=" w-full">
-          Create My Token
-        </Button>
+        <UploadToken tokenIcon={tokenIcon} setTokenIcon={setTokenIcon} />
+        <FormField
+          control={form.control}
+          name="authority"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="uppercase">Update authority</FormLabel>
+              <FormControl>
+                <label className="flex items-center gap-2 cursor-pointer selection:bg-transparent">
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                  <p className="font-medium text-sm ">
+                    Enable Freeze Authority
+                  </p>
+                </label>
+              </FormControl>
+            </FormItem>
+          )}
+        />
       </form>
+      <hr className="border-dashed border-[#E5E7EB]" />
+      <Button type="submit" className=" w-full">
+        Create My Token
+      </Button>
+      <p className="text-center text-black/50 text-sm ">
+        This interface makes creating your own SPL token easy! Make sure to
+        follow the tutorial attached if this is your first time so that you
+        understand all possible settings!
+      </p>
     </Form>
   );
 };

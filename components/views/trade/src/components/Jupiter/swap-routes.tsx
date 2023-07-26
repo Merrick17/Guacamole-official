@@ -1,21 +1,16 @@
 import { useState } from 'react';
-import { HiAdjustments, HiOutlineInformationCircle } from 'react-icons/hi';
 
-import clsx from 'clsx';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { RiRouteFill } from 'react-icons/ri';
 import { SwapRoute } from '../SwapRoute';
 import { InlineResponse200MarketInfos } from '@jup-ag/api';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
-const OPTIONS = [1, 5, 10];
 
 export const SwapRoutes = ({
   routes,
@@ -43,13 +38,20 @@ export const SwapRoutes = ({
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
         className="flex flex-row items-center w-max cursor-pointer text-black/50 text-xs gap-1"
-        onClick={() => setVisible(true)}
+        onClick={() => hasRoute && setVisible(true)}
       >
         <div className="flex items-center gap-1 bg-[#E5E7EB] text-black rounded-xl px-2 py-1">
-          <span>{routes.length}</span>
+          <span>{hasRoute ? routes.length : 0}</span>
           <RiRouteFill className="-rotate-90" />
         </div>
-        using <span>{selectedRoute?.marketInfos?.[0]?.label}</span>
+        {hasRoute ? (
+          <>
+            {' '}
+            using <span>{selectedRoute?.marketInfos?.[0]?.label}</span>
+          </>
+        ) : (
+          <>No route found</>
+        )}
       </div>
       <DialogContent closeBtn={false} className="overflow-auto">
         <DialogHeader>

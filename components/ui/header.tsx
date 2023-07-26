@@ -8,6 +8,7 @@ import { GrClose, GrMenu } from 'react-icons/gr';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { BsDiscord } from 'react-icons/bs';
+import { useRouter } from 'next/navigation';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -17,10 +18,12 @@ interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
   return (
-    <div className="fixed top-0 bg-white px-10 py-4 z-50 w-full">
-      <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
-        <HeaderLeft />
-        <HeaderRight />
+    <div className="relative w-scree ">
+      <div className="fixed top-0 bg-white px-10 py-4 z-50 w-full ">
+        <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
+          <HeaderLeft />
+          <HeaderRight />
+        </div>
       </div>
     </div>
   );
@@ -31,13 +34,13 @@ const HeaderLeft: FC = () => {
     <div className="flex flex-row items-center gap-16">
       <div className="flex items-center gap-2">
         <div className="w-8 aspect-square relative">
-          <Image src="/logo.png" alt="logo" fill />
+          <Image src="/images/logo.png" alt="logo" fill />
         </div>
-        <h1 className="hidden sm:block text-2xl font-medium text-black">
+        <h1 className="hidden lg:block text-2xl font-medium text-black">
           Guacamole
         </h1>
       </div>
-      <div className="hidden sm:block">
+      <div className="hidden lg:block">
         <Navigation />
       </div>
     </div>
@@ -46,9 +49,14 @@ const HeaderLeft: FC = () => {
 
 const HeaderRight: FC = () => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const changePage = (path: string) => {
+    setOpen(false);
+    router.push(path);
+  };
   return (
     <div>
-      <div className="sm:flex  items-center justify-end gap-8 hidden">
+      <div className="lg:flex  items-center justify-end gap-8 hidden">
         <Link
           href="https://docs.guacamole.gg/"
           rel="noopener noreferrer"
@@ -73,7 +81,7 @@ const HeaderRight: FC = () => {
         <WalletMultiButtonDynamic className="rounded-full" />
       </div>
 
-      <div className="sm:hidden flex items-center justify-end gap-2">
+      <div className="lg:hidden flex items-center justify-end gap-2">
         <Link
           href="https://docs.guacamole.gg/"
           rel="noopener noreferrer"
@@ -103,9 +111,9 @@ const HeaderRight: FC = () => {
         </div>
 
         {open && (
-          <div className="absolute top-0 right-0 mt-14 bg-white rounded-lg shadow-lg p-4 w-full">
+          <div className="absolute top-full w-screen left-0 bg-white rounded-lg shadow-lg p-4 ">
             <div className="flex flex-col gap-4">
-              <Navigation />
+              <Navigation changePage={changePage} />
               <WalletMultiButtonDynamic
                 startIcon={undefined}
                 className="h-full flex items-center justify-center w-full "
@@ -119,14 +127,21 @@ const HeaderRight: FC = () => {
   );
 };
 
-const Navigation: FC = () => {
+type NavigationProps = {
+  changePage?: (path: string) => void;
+};
+const Navigation: FC<NavigationProps> = ({ changePage }) => {
   const pathname = usePathname();
-
   return (
     <nav>
-      <ul className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-8 text-[#4B5563] text-base font-medium capitalize">
+      <ul className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-8 text-[#4B5563] text-base font-medium capitalize">
         {Links.map((link, index) => (
-          <NavItem key={index} {...link} isActive={pathname === link.href} />
+          <NavItem
+            changePage={changePage}
+            key={index}
+            {...link}
+            isActive={pathname === link.href}
+          />
         ))}
       </ul>
     </nav>

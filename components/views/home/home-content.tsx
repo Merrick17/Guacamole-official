@@ -20,7 +20,7 @@ const HomeContent: FC<HomeContentProps> = () => {
         Get started and unlock a world of possibilities!
       </p>
       <Link href={'/trade'}>
-        <Button className="px-6 py-3 md:px-12 md:py-6 sm:max-w-[220px] text-lg md:text-2xl font-medium text-white  rounded-[36px]">
+        <Button className="px-6 py-3 md:px-12 md:py-6 sm:max-w-[220px] text-lg md:text-2xl font-medium text-white  rounded-[36px] whitespace-nowrap">
           Get Started
         </Button>
       </Link>

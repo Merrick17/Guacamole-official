@@ -17,7 +17,8 @@
 
 }
 body {
-  @apply font-body bg-body bg-body-image bg-cover min-h-screen	 bg-no-repeat antialiased overflow-x-hidden ;
+  @apply  bg-body bg-body-image bg-cover min-h-screen	 bg-no-repeat antialiased overflow-x-hidden ;
+  font-family: 'Kanit', sans-serif;
 }
 
 .wallet-adapter-button {
