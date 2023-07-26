@@ -1,12 +1,21 @@
 'use client';
-import { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-
-const UploadToken = () => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {}, []);
+type UploadTokenProps = {
+  tokenIcon: File | null;
+  setTokenIcon: (file: File | null) => void;
+};
+const UploadToken: FC<UploadTokenProps> = ({ tokenIcon, setTokenIcon }) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setTokenIcon(acceptedFiles[0]);
+  }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     maxFiles: 1,
+    accept: {
+      'image/jpeg': [],
+      'image/png': [],
+    },
   });
   return (
     <div

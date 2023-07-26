@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,13 +26,18 @@ const formSchema = z.object({
   tokenSupply: z.string().min(2, {
     message: 'token supply must be at least 2 characters.',
   }),
-  description: z.string().min(2, {
-    message: 'description must be at least 2 characters.',
-  }),
+  description: z
+    .string()
+    .min(10, {
+      message: 'Description must be at least 10 characters.',
+    })
+    .max(160, {
+      message: 'Description must not be longer than 30 characters.',
+    }),
   authority: z.boolean(),
 });
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
 import UploadToken from './upload-token';
@@ -41,7 +45,9 @@ import UploadToken from './upload-token';
 interface CreateSplTokenFormProps {}
 
 const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
-  // 1. Define your form.
+  // 1- form.
+  const [tokenIcon, setTokenIcon] = useState<File | null>(null);
+  // 2- form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,6 +64,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    if (!tokenIcon || !form.formState.isValid) return;
     console.log(values);
   }
 
@@ -144,7 +151,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </FormItem>
           )}
         />
-        <UploadToken />
+        <UploadToken tokenIcon={tokenIcon} setTokenIcon={setTokenIcon} />
         <FormField
           control={form.control}
           name="authority"

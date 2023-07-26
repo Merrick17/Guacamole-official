@@ -1,15 +1,9 @@
 import { Wallet } from '@/context/wallet';
 import './globals.css';
 import type { Metadata } from 'next';
-import { Kanit } from 'next/font/google';
 import Header from '@/components/ui/header';
 import React from 'react';
 import Disclaimer from '@/components/ui/disclaimer';
-
-const kanit = Kanit({
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'A Fresh Solana Experience | Guacamole',
@@ -24,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={kanit.className}>
+      <body>
         <Disclaimer />
         <Wallet>
           <Header />
