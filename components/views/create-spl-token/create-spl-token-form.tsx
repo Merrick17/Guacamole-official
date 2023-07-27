@@ -34,6 +34,7 @@ const formSchema = z.object({
     .max(160, {
       message: 'Description must not be longer than 30 characters.',
     }),
+  metadataUrl: z.string().optional(),
   authority: z.boolean(),
 });
 
@@ -56,6 +57,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
       tokenDecimals: '',
       tokenSupply: '',
       description: '',
+      metadataUrl: '',
       authority: false,
     },
   });
@@ -126,6 +128,19 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
               <FormLabel className="uppercase">Number of decimals</FormLabel>
               <FormControl>
                 <Input placeholder="0" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="metadataUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="uppercase">Metadata URL</FormLabel>
+              <FormControl>
+                <Input placeholder="Url" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
