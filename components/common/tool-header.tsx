@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 interface ToolHeaderProps {
   className?: string;
   burnAll?: boolean;
+  closeAll?: boolean;
   title: string;
 }
 
@@ -12,6 +13,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
   className,
   title,
   burnAll,
+  closeAll,
 }) => {
   return (
     <header
@@ -29,6 +31,15 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
             className="text-sm font-medium capitalize py-[6px]"
           >
             <span className="text-sm font-medium ">Burn All Selected</span>
+          </Button>
+        )}
+        {closeAll && (
+          <Button
+            size="sm"
+            variant="destructive"
+            className="text-sm font-medium capitalize py-[6px]"
+          >
+            <span className="text-sm font-medium ">Close All Selected</span>
           </Button>
         )}
         <Button size="sm" className="text-sm font-medium capitalize py-[6px]">

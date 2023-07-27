@@ -13,19 +13,19 @@ const TokenMultiSender = () => {
             title="1 Token To Multiple Wallets"
             image="/images/token-to-multiple-wallets.png"
             btnClassName="min-w-[258px]"
-            path={routes.tokenToManyWallets}
+            path={routes.inPageLinks.tokenMultiSender.tokenToManyWallets}
           />
           <Banner
             title="Upload csv for airdrop"
             image="/images/upload-csv-for-airdrop.png"
             btnClassName="min-w-[258px]"
-            path={routes.tokenMultiSenderCsv}
+            path={routes.inPageLinks.tokenMultiSender.csv}
           />
           <Banner
             title="Emergency send all"
             image="/images/emergency-send-all.png"
             btnClassName="min-w-[258px]"
-            path={routes.emergencySend}
+            path={routes.inPageLinks.tokenMultiSender.emergencySend}
           />
         </div>
 

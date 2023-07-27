@@ -139,6 +139,7 @@ const formSchema = z
 
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { SelectToken } from './select-token';
 
 interface TokenToManyWalletsFormProps {}
 
@@ -174,6 +175,8 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
 
   return (
     <Form {...form}>
+      <SelectToken />
+
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 pb-6">
         <div className="flex items-center  flex-col gap-2 md:flex-row md:justify-between md:gap-8 ">
           <FormField
@@ -181,7 +184,7 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
             name="reciverWallet1"
             render={({ field }) => (
               <FormItem className="w-full md:w-2/3">
-                <FormLabel className="uppercase">
+                <FormLabel className=" uppercase">
                   Reciver 1 Wallet Address
                 </FormLabel>
                 <FormControl>

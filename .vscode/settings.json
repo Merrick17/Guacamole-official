@@ -9,6 +9,7 @@
     "**/node_modules": true,
     "**/*.Identifier": true,
     "**/.history": true,
-    "**/*.Zone.Identifier": true
+    "**/*.Zone.Identifier": true,
+    "**/*.next": true
   }
 }

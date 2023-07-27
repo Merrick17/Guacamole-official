@@ -1,6 +1,4 @@
 import ToolHeader from '@/components/common/tool-header';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import CreateSplTokenForm from '@/components/views/create-spl-token/create-spl-token-form';
 
 const CreateSplToken = () => {

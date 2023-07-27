@@ -18,7 +18,7 @@ interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
   return (
-    <div className="relative w-scree ">
+    <div className="relative w-screen ">
       <div className="fixed top-0 bg-white px-10 py-4 z-50 w-full ">
         <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
           <HeaderLeft />

@@ -2,15 +2,13 @@ import Trade from '@/components/views/trade/src/Trade';
 import { Metadata } from 'next';
 import { FC } from 'react';
 
-export const metadata:Metadata = {
+export const metadata: Metadata = {
   title: 'Easily Swap Solana Based Tokens | Guacamole',
-  description:'Guacamole Swap allows you to trade any tokens on Solana in just a few clicks with no hassle and the best fees.'
-  
-}
+  description:
+    'Guacamole Swap allows you to trade any tokens on Solana in just a few clicks with no hassle and the best fees.',
+};
 
-interface TradeProps {}
-
-const TradePage: FC<TradeProps> = () => {
+const Page: FC = () => {
   return (
     <main className="container mx-auto min-h-[calc(100vh-80px)] justify-center flex flex-col items-center gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
       <div className="flex w-full max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7">
@@ -39,4 +37,4 @@ const TradePage: FC<TradeProps> = () => {
   );
 };
 
-export default TradePage;
+export default Page;

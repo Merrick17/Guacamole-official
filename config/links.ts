@@ -1,6 +1,15 @@
+import { IconType } from 'react-icons';
 import routes from './routes';
 import { GoHome, GoArrowSwitch, GoHourglass } from 'react-icons/go';
-export const Links = [
+export const Links: {
+  name: string;
+  href: string;
+  Icon: IconType;
+  dropdownItems?: {
+    name: string;
+    href: string;
+  }[];
+}[] = [
   {
     name: 'Home',
     href: routes.home,
@@ -8,73 +17,106 @@ export const Links = [
   },
   {
     name: 'Trade',
-    href: routes.swap,
+    href: routes.swap.root,
     Icon: GoArrowSwitch,
+    dropdownItems: [
+      {
+        name: 'Swap',
+        href: routes.swap.root,
+      },
+      {
+        name: 'DCA / TWAP',
+        href: '',
+      },
+      {
+        name: 'Limit',
+        href: '',
+      },
+      {
+        name: 'Liquidity',
+        href: '',
+      },
+      {
+        name: 'Bridge',
+        href: '',
+      },
+    ],
   },
 
   {
     name: 'Play',
-    href: routes.play,
+    href: routes.play.root,
     Icon: GoHourglass,
-    // dropdownItems: [
-    //   {
-    //     name: 'Explore',
-    //     href: routes.play,
-    //   },
-    // {
-    //   name: 'Guac-a-Mole',
+    dropdownItems: [
+      {
+        name: 'Explore All Games',
+        href: routes.play.root,
+      },
+      // {
+      //   name: 'Guac-a-Mole',
 
-    //   href: routes.guacamole,
-    // },
-    //   {
-    //     name: 'Coin Flip',
-
-    //     href: routes.coinFlip,
-    //   },
-    // ],
+      //   href: routes.play.guacamole,
+      // },
+      // {
+      //   name: 'Coin Flip',
+      //   href: routes.play.coinFlip,
+      // },
+      {
+        name: 'Roulette',
+        href: routes.play.roulette,
+      },
+      {
+        name: 'Slots',
+        href: routes.play.slots,
+      },
+      {
+        name: 'HiLo',
+        href: routes.play.hilo,
+      },
+      {
+        name: 'Mines',
+        href: routes.play.mines,
+      },
+    ],
   },
-  // {
-  //   name: 'Nft',
-  //   href: routes.nft,
-
-  // },
 
   {
     name: 'Tools',
-    href: routes.tools,
+    href: routes.tools.root,
+    Icon: GoHourglass,
+
     dropdownItems: [
       {
-        name: 'Explore',
-        href: routes.tools,
+        name: 'Explore All Tools',
+        href: routes.tools.root,
       },
       {
-        name: 'create spl token',
+        name: 'Create Your Own Token',
 
-        href: routes.createSplToken,
+        href: routes.tools.createSplToken,
       },
       {
-        name: 'token multi sender',
+        name: 'Multi-Sender & Airdrops',
 
-        href: routes.tokenMultiSender,
+        href: routes.tools.tokenMultiSender,
       },
       {
-        name: 'burn nft',
+        name: 'Burn Unwanted NFTs',
 
-        href: routes.burnNft,
+        href: routes.tools.burnNftToken,
       },
       {
-        name: 'emergency send tool',
+        name: 'Burn Unwanted Tokens',
 
-        href: routes.emergencySend,
+        href: routes.tools.burnSplToken,
       },
       {
-        name: 'token multi sender CSV',
-
-        href: routes.tokenMultiSenderCsv,
+        name: 'Close Token Accounts',
+        href: routes.tools.closeTokenAccounts,
       },
       {
-        name: 'Token to many wallets',
-        href: routes.tokenToManyWallets,
+        name: 'Emergency Send All',
+        href: routes.tools.emergencySend,
       },
     ],
   },
