@@ -3,7 +3,7 @@ import {
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
   MintLayout,
-} from "@solana/spl-token";
+} from "@solana/spl-token-v1";
 import {
   Connection,
   PublicKey,
@@ -68,7 +68,7 @@ export async function createSPLToken(
 
     let InitMint: TransactionInstruction;
 
-    const [metadataPDA] = PublicKey.findProgramAddressSync(
+    const [metadataPDA] = await PublicKey.findProgramAddress(
       [
         Buffer.from("metadata"),
         PROGRAM_ID.toBuffer(),
@@ -158,7 +158,7 @@ export async function createSPLToken(
       );
 
       const createATAInstruction =
-        Token.createAssociatedTokenAccountInstruction(
+        await Token.createAssociatedTokenAccountInstruction(
           ASSOCIATED_TOKEN_PROGRAM_ID,
           TOKEN_PROGRAM_ID,
           mint_account.publicKey,
@@ -167,7 +167,7 @@ export async function createSPLToken(
           owner
         );
 
-      const mintInstruction = Token.createMintToInstruction(
+      const mintInstruction = await Token.createMintToInstruction(
         TOKEN_PROGRAM_ID,
         mint_account.publicKey,
         associatedTokenAccount,
