@@ -27,8 +27,7 @@ export const Wallet: FC<WalletProps> = ({ children }) => {
 
   // You can also provide a custom RPC endpoint.
   // const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-  const endpoint =
-    'https://evocative-weathered-morning.solana-mainnet.discover.quiknode.pro/a9cfb3ea797366765149bc848d94e74b0dec54e8/';
+  const endpoint ='https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7';
 
   const wallets = useMemo(
     () => [
