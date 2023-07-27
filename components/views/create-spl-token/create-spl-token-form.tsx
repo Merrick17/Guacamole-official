@@ -20,11 +20,11 @@ const formSchema = z.object({
   tokenSymbol: z.string().min(2, {
     message: 'token symbol must be at least 2 characters.',
   }),
-  tokenDecimals: z.string().min(2, {
-    message: 'token decimals must be at least 2 characters.',
+  tokenDecimals: z.number().min(0, {
+    message: 'token decimals must be at least 0 .',
   }),
-  tokenSupply: z.string().min(2, {
-    message: 'token supply must be at least 2 characters.',
+  tokenSupply: z.number().min(0, {
+    message: 'token supply must be at least 0 .',
   }),
   description: z
     .string()
@@ -42,11 +42,22 @@ import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
 import UploadToken from './upload-token';
-
+import { uploadMetaData } from '@/lib/tokens/upload-token-metadata';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { createSPLToken } from '@/lib/tokens/create-spl-token';
 interface CreateSplTokenFormProps {}
 
 const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
-  // 1- form.
+  // web 3
+  const wallet = useWallet();
+  const { publicKey } = wallet;
+  const { connection } = useConnection();
+  // state
+  const [isCreating, setIsCreating] = useState<boolean>(false);
+  const [tokenAddresss, setTokenAddresss] = useState<string>('');
+  const [signature, setSignature] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  // 1- .
   const [tokenIcon, setTokenIcon] = useState<File | null>(null);
   // 2- form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,8 +65,8 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
     defaultValues: {
       tokenName: '',
       tokenSymbol: '',
-      tokenDecimals: '',
-      tokenSupply: '',
+      tokenDecimals: 0,
+      tokenSupply: 0,
       description: '',
       metadataUrl: '',
       authority: false,
@@ -63,11 +74,36 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     if (!tokenIcon || !form.formState.isValid) return;
-    console.log(values);
+    const uri = await uploadMetaData(
+      wallet,
+      connection,
+      tokenIcon,
+      values.tokenName,
+      values.description,
+      values.tokenSymbol
+    );
+    const res = await createSPLToken(
+      publicKey,
+      wallet,
+      connection,
+      values.tokenSupply,
+      values.tokenDecimals,
+      values.authority,
+      values.tokenName,
+      values.tokenSymbol,
+      uri,
+      values.description,
+      undefined,
+      'url',
+      setIsCreating,
+      setTokenAddresss,
+      setSignature,
+      setError
+    );
   }
 
   return (
