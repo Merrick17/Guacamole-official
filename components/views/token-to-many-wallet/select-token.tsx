@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,48 +11,48 @@ import {
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { TokenInfo } from '@solana/spl-token-registry';
 import Link from 'next/link';
-import { getToken } from '@bonfida/hooks';
+import useWalletTokens from '@/lib/tokens/useWalletTokens';
+import { useWallet } from '@solana/wallet-adapter-react';
 const Row = ({
   info,
   handleSelect,
+  setOpen,
 }: {
-  info: TokenInfo;
-  handleSelect: (e: TokenInfo) => void;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  info: any;
+  handleSelect: (e: any) => void;
 }) => {
   return (
     <button
-      key={info.address}
-      onClick={() => handleSelect(info)}
+      onClick={() => {
+        handleSelect(info.token);
+        setOpen(false);
+      }}
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 hover:bg-[#E5E7EB] "
     >
       <img
-        src={info.logoURI as string}
-        alt={info.name}
+        src={info.token.logoURI as string}
+        alt={info.token.name}
         className="h-[24px] w-[24px] "
       />
       <div className=" flex flex-col items-start text-black ">
-        <div className="flex items-center gap-2">
-          <h1 className="text-sm">{info.symbol}</h1>
-          <Link
-            href={`https://explorer.solana.com/address/${info.address}`}
-            rel="noopener noreferrer"
-            target="_blank"
-            className="text-xs flex items-center bg-black/50 text-white  rounded-[4px] px-2 py-1 "
-          >
-            <span className="  max-w-[44px] text-ellipsis overflow-hidden">
-              {info.address}
-            </span>
-          </Link>
-        </div>
-        <span className="text-sm opacity-80">{info.name}</span>
+        <span className="text-sm opacity-80">{info.token.symbol}</span>
       </div>
     </button>
   );
 };
 
-export const SelectToken = ({}: {}) => {
+export const SelectToken = ({
+  handleSelect,
+  selectedToken,
+}: {
+  handleSelect: (token: any) => void;
+  selectedToken: any;
+}) => {
   const [open, setOpen] = useState(false);
-
+  const { connected } = useWallet();
+  const walletTokens = useWalletTokens();
+  console.log('walletTokens', walletTokens);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full cursor-pointer ">
@@ -61,7 +61,7 @@ export const SelectToken = ({}: {}) => {
             Select A Token
           </p>
           <p className="text-black font-medium text-sm">
-            Select token from dropdown
+            {selectedToken ? selectedToken.name : 'Select token from dropdown'}
           </p>
         </div>
       </DialogTrigger>
@@ -78,7 +78,22 @@ export const SelectToken = ({}: {}) => {
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div></div>
+        <div>
+          {!connected ? (
+            <p>Please Connect Your Wallet</p>
+          ) : (
+            <>
+              {walletTokens.map((info, idx) => (
+                <Row
+                  key={idx}
+                  info={info}
+                  handleSelect={handleSelect}
+                  setOpen={setOpen}
+                />
+              ))}
+            </>
+          )}{' '}
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -145,7 +145,7 @@ interface TokenToManyWalletsFormProps {}
 
 const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
   // 1- form.
-  const [tokenIcon, setTokenIcon] = useState<File | null>(null);
+  const [selectedToken, setSelectedToken] = useState<any>(null);
   // 2- form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -169,13 +169,16 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    if (!tokenIcon || !form.formState.isValid) return;
+    if (!form.formState.isValid) return;
     console.log(values);
   }
 
   return (
     <Form {...form}>
-      <SelectToken />
+      <SelectToken
+        handleSelect={(token: any) => setSelectedToken(token)}
+        selectedToken={selectedToken}
+      />
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 pb-6">
         <div className="flex items-center  flex-col gap-2 md:flex-row md:justify-between md:gap-8 ">

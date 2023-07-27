@@ -7,13 +7,15 @@ interface ToolHeaderProps {
   burnAll?: boolean;
   closeAll?: boolean;
   title: string;
+  handleBurn?: () => void;
 }
 
 const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
   className,
   title,
-  burnAll,
   closeAll,
+  burnAll,
+  handleBurn,
 }) => {
   return (
     <header
@@ -29,6 +31,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
             size="sm"
             variant="destructive"
             className="text-sm font-medium capitalize py-[6px]"
+            onClick={handleBurn}
           >
             <span className="text-sm font-medium ">Burn All Selected</span>
           </Button>
