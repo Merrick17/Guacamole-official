@@ -1,6 +1,12 @@
 import { IconType } from 'react-icons';
 import routes from './routes';
-import { GoHome, GoArrowSwitch, GoHourglass } from 'react-icons/go';
+import {
+  GoHome,
+  GoArrowSwitch,
+  GoHourglass,
+  GoTools,
+  GoInfo,
+} from 'react-icons/go';
 export const Links: {
   name: string;
   href: string;
@@ -83,7 +89,7 @@ export const Links: {
   {
     name: 'Tools',
     href: routes.tools.root,
-    Icon: GoHourglass,
+    Icon: GoTools,
 
     dropdownItems: [
       {
@@ -119,5 +125,10 @@ export const Links: {
         href: routes.tools.emergencySend,
       },
     ],
+  },
+  {
+    name: 'Info',
+    href: routes.info.root,
+    Icon: GoInfo,
   },
 ];

@@ -1,7 +1,7 @@
 'use client';
 import ToolHeader from '@/components/common/tool-header';
 import TokenMultiSenderCsvForm from '@/components/views/token-multi-sender-csv/token-multi-sender-csv-form';
-import Tool from '@/components/views/tools/tool';
+import Tool from '@/components/common/info-card';
 import { useWallet } from '@solana/wallet-adapter-react';
 const TokenMultiSenderCSV = () => {
   const { connected } = useWallet();

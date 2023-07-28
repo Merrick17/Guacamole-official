@@ -29,7 +29,7 @@ import { BN, utils } from '@coral-xyz/anchor';
 import { useEffect, useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
-import Tool from '@/components/views/tools/tool';
+import Tool from '@/components/common/info-card';
 import Loading from '@/components/views/trade/src/components/Loading';
 
 const BurnNftToken = () => {

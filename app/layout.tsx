@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description:
     'Experience a fresh take on Solana DeFi with Guacamole. Trade, earn, and play effortlessly, while enjoying a seamless and user-friendly experience. Get started and unlock a world of possibilities with GUAC!.',
 };
+import { Toaster } from '@/components/ui/toaster';
 
 export default function RootLayout({
   children,
@@ -24,6 +25,7 @@ export default function RootLayout({
           <Header />
           <div className="mt-20">{children}</div>
         </Wallet>
+        <Toaster />
       </body>
     </html>
   );

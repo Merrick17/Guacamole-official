@@ -27,13 +27,17 @@ const Row = ({
       }}
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 hover:bg-[#E5E7EB] "
     >
-      {info && info.token && <img
-        src={info.token.logoURI as string}
-        alt={info.token.name}
-        className="h-[24px] w-[24px] "
-      />}
+      {info && info.token && (
+        <img
+          src={info.token.logoURI as string}
+          alt={info.token.name}
+          className="h-[24px] w-[24px] "
+        />
+      )}
       <div className=" flex flex-col items-start text-black ">
-        {info && info.token && <span className="text-sm opacity-80">{info.token.symbol}</span>}
+        {info && info.token && (
+          <span className="text-sm opacity-80">{info.token.symbol}</span>
+        )}
       </div>
     </button>
   );
@@ -50,8 +54,8 @@ export const SelectToken = ({
   const { connected } = useWallet();
   const walletTokens = useWalletTokens();
   useEffect(() => {
-    console.log("Wallet Tokens", walletTokens);
-  }, [walletTokens])
+    console.log('Wallet Tokens', walletTokens);
+  }, [walletTokens]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full cursor-pointer ">
@@ -79,7 +83,7 @@ export const SelectToken = ({
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div>
+        <div className="h-[50vh] max-h-[50vh] overflow-auto">
           {!connected ? (
             <p>Please Connect Your Wallet</p>
           ) : (

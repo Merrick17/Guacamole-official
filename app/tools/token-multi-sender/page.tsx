@@ -4,7 +4,7 @@ import ToolHeader from '@/components/common/tool-header';
 import Banner from '@/components/views/play/banner';
 import routes from '@/config/routes';
 import { useWallet } from '@solana/wallet-adapter-react';
-import Tool from '@/components/views/tools/tool';
+import Tool from '@/components/common/info-card';
 const TokenMultiSender = () => {
   const { connected } = useWallet();
 

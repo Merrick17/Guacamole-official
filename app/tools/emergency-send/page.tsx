@@ -1,7 +1,7 @@
 'use client';
 import ToolHeader from '@/components/common/tool-header';
 import EmergencySendForm from '@/components/views/emergency-send/emergency-send-form';
-import Tool from '@/components/views/tools/tool';
+import Tool from '@/components/common/info-card';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 const EmergencySend = () => {

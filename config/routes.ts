@@ -26,6 +26,9 @@ const routes = {
     emergencySend: '/tools/emergency-send',
     closeTokenAccounts: '/tools/close-token-accounts',
   },
+  info: {
+    root: '/info',
+  },
   inPageLinks: {
     tokenMultiSender: {
       root: '/tools/token-multi-sender',
@@ -34,6 +37,7 @@ const routes = {
       emergencySend: '/tools/emergency-send',
     },
   },
+
   others: {
     discord: 'https://discord.com/invite/guac',
     docs: 'https://docs.guacamole.gg/',

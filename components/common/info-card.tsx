@@ -1,3 +1,4 @@
+'use client';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { FC } from 'react';
@@ -8,14 +9,14 @@ const WalletMultiButtonDynamic = dynamic(
   { ssr: false }
 );
 
-interface ToolProps {
+interface InfoCardProps {
   image: string;
   name: string;
   description: string;
   connectWallet?: boolean;
 }
 
-const Tool: FC<ToolProps> = ({
+const InfoCard: FC<InfoCardProps> = ({
   image,
   name,
   description,
@@ -44,4 +45,4 @@ const Tool: FC<ToolProps> = ({
   );
 };
 
-export default Tool;
+export default InfoCard;

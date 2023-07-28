@@ -1,6 +1,4 @@
-'use client';
-import Tool from '@/components/views/tools/tool';
-import { useWallet } from '@solana/wallet-adapter-react';
+import InfoCard from '@/components/common/info-card';
 import { FC } from 'react';
 
 interface ToolsProps {}
@@ -8,9 +6,13 @@ interface ToolsProps {}
 const Tools: FC<ToolsProps> = () => {
   return (
     <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      <div className={' mx-auto grid max-w-6xl grid-cols-3 gap-x-6 gap-y-6'}>
+      <div
+        className={
+          ' mx-auto grid grid-cols-1 sm:grid-cols-2 max-w-6xl lg:grid-cols-3 gap-x-6 gap-y-6'
+        }
+      >
         {tools.map((tool, index) => (
-          <Tool key={index} {...tool} />
+          <InfoCard key={index} {...tool} />
         ))}
       </div>
     </main>
