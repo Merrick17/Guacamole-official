@@ -3,14 +3,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
-import { TokenInfo } from '@solana/spl-token-registry';
-import Link from 'next/link';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
 import { useWallet } from '@solana/wallet-adapter-react';
 const Row = ({
@@ -25,7 +22,7 @@ const Row = ({
   return (
     <button
       onClick={() => {
-        handleSelect(info.token);
+        handleSelect(info);
         setOpen(false);
       }}
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 hover:bg-[#E5E7EB] "
@@ -52,7 +49,6 @@ export const SelectToken = ({
   const [open, setOpen] = useState(false);
   const { connected } = useWallet();
   const walletTokens = useWalletTokens();
-  console.log('walletTokens', walletTokens);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full cursor-pointer ">
@@ -61,7 +57,9 @@ export const SelectToken = ({
             Select A Token
           </p>
           <p className="text-black font-medium text-sm">
-            {selectedToken ? selectedToken.name : 'Select token from dropdown'}
+            {selectedToken
+              ? selectedToken.token.name
+              : 'Select token from dropdown'}
           </p>
         </div>
       </DialogTrigger>

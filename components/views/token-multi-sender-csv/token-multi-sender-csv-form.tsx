@@ -15,11 +15,13 @@ import { Input } from '@/components/ui/input';
 
 import { FC, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { SelectToken } from '@/components/common/select-token';
 
 interface TokenMultiSenderCsvFormProps {}
 
 const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [selectedToken, setSelectedToken] = useState<any>(null);
 
   const onDropAccepted = useCallback((acceptedFiles: any) => {
     // Do something with the files
@@ -30,7 +32,7 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
     console.error('please select only one file of type CSV');
   }, []);
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     onDropAccepted,
     onDropRejected,
@@ -46,14 +48,21 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6 pb-6">
-      <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
-        <Button className="w-full py-4 font-medium">
-          Select File To Upload
-        </Button>
-      </div>
-    </form>
+    <>
+      <SelectToken
+        handleSelect={(token: any) => setSelectedToken(token)}
+        selectedToken={selectedToken}
+      />
+
+      <form onSubmit={onSubmit} className="space-y-6 pb-6">
+        <div {...getRootProps({ className: 'dropzone' })}>
+          <input {...getInputProps()} />
+          <Button className="w-full py-4 font-medium">
+            Select File To Upload
+          </Button>
+        </div>
+      </form>
+    </>
   );
 };
 

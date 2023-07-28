@@ -26,10 +26,13 @@ const formSchema = z.object({
 
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { SelectToken } from '@/components/common/select-token';
 
 interface EmergencySendFormProps {}
 
 const EmergencySendForm: FC<EmergencySendFormProps> = () => {
+  const [selectedToken, setSelectedToken] = useState<any>(null);
+
   // ^- form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,6 +51,10 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
 
   return (
     <Form {...form}>
+      <SelectToken
+        handleSelect={(token: any) => setSelectedToken(token)}
+        selectedToken={selectedToken}
+      />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pb-6">
         <FormField
           control={form.control}

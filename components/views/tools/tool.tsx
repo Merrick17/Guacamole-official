@@ -32,7 +32,12 @@ const Tool: FC<ToolProps> = ({
         </h1>
         <p className="text-center text-sm leading-7">{description}</p>
       </div>
-      {connectWallet && <WalletMultiButtonDynamic className="rounded-full" />}
+      {connectWallet && (
+        <WalletMultiButtonDynamic
+          className="rounded-full"
+          startIcon={undefined}
+        />
+      )}
     </div>
   );
 };

@@ -2,13 +2,15 @@
 import Image from 'next/image';
 import { FC, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Links } from '@/config/links';
-import NavItem from './nav-item';
-import { GrClose, GrMenu } from 'react-icons/gr';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { BsDiscord } from 'react-icons/bs';
-import { useRouter } from 'next/navigation';
+import { useIsMounted } from 'usehooks-ts';
+import { useBreakpoint } from '@/hooks/use-breakpoint';
+import { Logo } from '../views/trade/src/components/navigation-frame/TopBar/Logo';
+import Hamburger from './hamburger';
+import { MenuItems } from './menu-items';
+import { DrawerMenu } from './drawer-menu';
+
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -17,46 +19,74 @@ const WalletMultiButtonDynamic = dynamic(
 interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const openDrawer = () => {
+    setIsOpen(true);
+  };
+  const closeDrawer = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <div className="relative w-screen ">
-      <div className="fixed top-0 bg-white px-10 py-4 z-50 w-full ">
+    <>
+      {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
+      <nav className="fixed top-0 bg-white px-10 py-4 z-40 w-full ">
         <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
-          <HeaderLeft />
-          <HeaderRight />
+          <HeaderLeftArea
+            isOpen={isOpen}
+            openDrawer={openDrawer}
+            closeDrawer={closeDrawer}
+          />
+          <HeaderRightArea
+            isOpen={isOpen}
+            openDrawer={openDrawer}
+            closeDrawer={closeDrawer}
+          />
         </div>
-      </div>
-    </div>
+      </nav>
+    </>
   );
 };
-
-const HeaderLeft: FC = () => {
+const HeaderLeftArea = ({
+  isOpen,
+  openDrawer,
+  closeDrawer,
+}: {
+  isOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+}) => {
+  const breakpoint = useBreakpoint();
+  const isMounted = useIsMounted();
   return (
-    <div className="flex flex-row items-center gap-16">
-      <div className="flex items-center gap-2">
-        <div className="w-8 aspect-square relative">
-          <Image src="/images/logo.png" alt="logo" fill />
-        </div>
+    <div className="flex items-center">
+      <div className="flex items-center gap-2 mr-16">
+        <Logo />
         <h1 className="hidden lg:block text-2xl font-medium text-black">
           Guacamole
         </h1>
       </div>
-      <div className="hidden lg:block">
-        <Navigation />
+      <div className={'hidden lg:block'}>
+        <MenuItems />
       </div>
     </div>
   );
 };
 
-const HeaderRight: FC = () => {
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
-  const changePage = (path: string) => {
-    setOpen(false);
-    router.push(path);
-  };
+function HeaderRightArea({
+  isOpen,
+  openDrawer,
+  closeDrawer,
+}: {
+  isOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+}) {
   return (
-    <div>
-      <div className="lg:flex  items-center justify-end gap-8 hidden">
+    <div className="order-last flex shrink-0 items-center">
+      <div className="ltr:mr-3.5 rtl:ml-3.5 ltr:sm:mr-5 rtl:sm:ml-5 xl:hidden"></div>
+
+      <div className="hidden gap-6 lg:flex 2xl:gap-8">
         <Link
           href="https://docs.guacamole.gg/"
           rel="noopener noreferrer"
@@ -78,10 +108,15 @@ const HeaderRight: FC = () => {
         >
           <BsDiscord color="#7289DA" className="w-full h-full" />
         </Link>
-        <WalletMultiButtonDynamic className="rounded-full" />
+        <WalletMultiButtonDynamic
+          className={
+            'bg-primary rounded-full px-4 py-2 font-bold text-white hover:bg-blue-700 '
+          }
+          startIcon={undefined}
+        />
       </div>
 
-      <div className="lg:hidden flex items-center justify-end gap-2">
+      <div className="flex items-center gap-2 lg:hidden ">
         <Link
           href="https://docs.guacamole.gg/"
           rel="noopener noreferrer"
@@ -103,49 +138,15 @@ const HeaderRight: FC = () => {
         >
           <BsDiscord color="#7289DA" className="w-full h-full" />
         </Link>
-        <div
-          onClick={() => setOpen((prev) => !prev)}
-          className="focus:outline-none cursor-pointer p-2 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-10 aspect-square"
-        >
-          {open ? <GrClose /> : <GrMenu />}
-        </div>
 
-        {open && (
-          <div className="absolute top-full w-screen left-0 bg-white rounded-lg shadow-lg p-4 ">
-            <div className="flex flex-col gap-4">
-              <Navigation changePage={changePage} />
-              <WalletMultiButtonDynamic
-                startIcon={undefined}
-                className="h-full flex items-center justify-center w-full "
-                style={{ borderRadius: '12px' }}
-              />
-            </div>
-          </div>
-        )}
+        <Hamburger
+          isOpen={isOpen}
+          onClick={() => (isOpen ? closeDrawer() : openDrawer())}
+          color="white"
+        />
       </div>
     </div>
   );
-};
-
-type NavigationProps = {
-  changePage?: (path: string) => void;
-};
-const Navigation: FC<NavigationProps> = ({ changePage }) => {
-  const pathname = usePathname();
-  return (
-    <nav>
-      <ul className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-8 text-[#4B5563]  font-medium capitalize">
-        {Links.map((link, index) => (
-          <NavItem
-            changePage={changePage}
-            key={index}
-            {...link}
-            isActive={pathname === link.href}
-          />
-        ))}
-      </ul>
-    </nav>
-  );
-};
+}
 
 export default Header;

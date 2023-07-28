@@ -37,7 +37,10 @@ const TopBar = ({ setCustomRpc }: { setCustomRpc: (url: string) => void }) => {
           {connected ? (
             <WalletDisconnectButton className="rounded-full" />
           ) : (
-            <WalletMultiButtonDynamic className="rounded-full" />
+            <WalletMultiButtonDynamic
+              className="rounded-full"
+              startIcon={undefined}
+            />
           )}
         </WalletModalProvider>
       </div>

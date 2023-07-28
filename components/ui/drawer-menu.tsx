@@ -1,3 +1,4 @@
+'use client';
 import { Links } from '@/config/links';
 import { Logo } from '../views/trade/src/components/navigation-frame/TopBar/Logo';
 import { Button } from './button';
@@ -5,6 +6,7 @@ import { GrClose } from 'react-icons/gr';
 import MenuItem from './menu-item';
 import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -12,6 +14,8 @@ const WalletMultiButtonDynamic = dynamic(
   { ssr: false }
 );
 export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
+  const pathname = usePathname();
+
   return (
     <div className={cn('fixed w-full h-full top-0 z-50 ')}>
       <div
@@ -27,20 +31,18 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
               Guacamole
             </h1>
           </div>
-          <Button
-            title="Close"
-            className="rounded-full aspect-square w-10 "
-            variant="ghost"
-            onClick={closeDrawer}
+          <div
+            onClick={() => closeDrawer()}
+            className="focus:outline-none cursor-pointer p-2 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-10 aspect-square"
           >
-            <GrClose className="h-full w-full" />
-          </Button>
+            <GrClose />
+          </div>
         </div>
         <div
-          className="overflow-y-auto mt-2"
+          className="overflow-y-auto"
           style={{ height: 'calc(100% - 96px)' }}
         >
-          <div className="px-6">
+          <div className="px-6 py-2">
             {Links.map((item, index) => (
               <MenuItem
                 key={item.name + index}
@@ -48,6 +50,7 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
                 href={item.href}
                 Icon={item.Icon}
                 dropdownItems={item.dropdownItems}
+                isActive={pathname === item.href}
               />
             ))}
           </div>
@@ -58,7 +61,6 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
             startIcon={undefined}
           />
         </div>
-        d
       </div>
     </div>
   );

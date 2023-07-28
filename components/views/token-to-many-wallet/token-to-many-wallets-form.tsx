@@ -139,7 +139,7 @@ const formSchema = z
 
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { SelectToken } from './select-token';
+import { SelectToken } from '../../common/select-token';
 
 interface TokenToManyWalletsFormProps {}
 

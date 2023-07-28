@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import React from 'react';
 import Disclaimer from '@/components/ui/disclaimer';
-import Header from '@/components/ui/header-2';
+import Header from '@/components/ui/header';
 
 export const metadata: Metadata = {
   title: 'A Fresh Solana Experience | Guacamole',

@@ -36,6 +36,7 @@ const MenuItem: FC<MenuItemProps> = ({
   const [ref, { height }] = useMeasure<HTMLUListElement>();
   const isChildrenActive =
     dropdownItems && dropdownItems.some((item) => item.href === pathname);
+  console.log({ pathname, isChildrenActive, href });
   useEffect(() => {
     if (isChildrenActive) {
       setIsOpen(true);
@@ -43,23 +44,23 @@ const MenuItem: FC<MenuItemProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="mb-2 min-h-[48px] list-none last:mb-0">
+    <div className="mb-2 min-h-[48px] list-none last:mb-0 text-[#6B7280] text-sm">
       {dropdownItems?.length ? (
         <>
           <div
             className={cn(
               'relative flex h-12 cursor-pointer items-center justify-between whitespace-nowrap  rounded-lg px-4 text-sm transition-all',
-              isChildrenActive
+              isActive
                 ? 'text-white'
                 : 'text-gray-500 hover:text-brand dark:hover:text-white'
             )}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className="z-[1] flex items-center ">
+            <span className="z-[1] flex items-center  gap-3 ">
               <span className={cn()}>
                 <Icon />
               </span>
-              {name}
+              <p>{name}</p>
             </span>
             <span
               className={`z-[1] transition-transform duration-200 ${
@@ -69,9 +70,9 @@ const MenuItem: FC<MenuItemProps> = ({
               <BsChevronDown />
             </span>
 
-            {isChildrenActive && (
+            {isActive && (
               <motion.span
-                className="absolute bottom-0 left-0 right-0 h-full w-full rounded-lg bg-brand shadow-large"
+                className="absolute bottom-0 left-0 right-0 h-full w-full rounded-lg bg-black text-white shadow-large"
                 layoutId="menu-item-active-indicator"
               />
             )}
@@ -83,20 +84,23 @@ const MenuItem: FC<MenuItemProps> = ({
             }}
             className="ease-[cubic-bezier(0.33, 1, 0.68, 1)] overflow-hidden transition-all duration-[350ms]"
           >
-            <ul ref={ref}>
+            <ul ref={ref} className="px-4 ">
               {dropdownItems.map((item, index) => (
-                <li className="first:pt-2" key={index}>
-                  <Button
-                    variant={isChildrenActive ? 'default' : 'ghost'}
+                <li
+                  key={index}
+                  className="px-1 py-2 hover:bg-slate-50 transition-colors duration-300 ease-in-out rounded-lg cursor-pointer"
+                >
+                  <div
                     onClick={() => {
                       isOpen && setIsOpen(false);
                       router.push(item.href);
                     }}
-                    className="flex items-center rounded-lg p-3 text-sm text-gray-500 transition-all before:h-1 before:w-1 before:rounded-full before:bg-gray-500 hover:text-brand ltr:pl-6 before:ltr:mr-5 rtl:pr-6 before:rtl:ml-5 dark:hover:text-white"
+                    className="w-full justify-start gap-2 flex items-center "
                     // activeClassName="!text-brand dark:!text-white dark:before:!bg-white before:!bg-brand before:!w-2 before:!h-2 before:-ml-0.5 before:ltr:!mr-[18px] before:rtl:!ml-[18px] !font-medium"
                   >
-                    {item.name}
-                  </Button>
+                    <div className="w-1 h-1 bg-[#6B7280] rounded-full " />
+                    <p>{item.name}</p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -106,19 +110,16 @@ const MenuItem: FC<MenuItemProps> = ({
         <Link
           href={href}
           className={cn(
-            'relative flex h-12 items-center whitespace-nowrap rounded-lg px-4 text-sm text-gray-500 transition-all hover:text-brand dark:hover:text-white',
+            'relative flex gap-3 h-12 items-center whitespace-nowrap rounded-lg px-4 text-sm text-gray-500 transition-all hover:text-brand dark:hover:text-white',
             {
-              'bg-brand !text-white': isActive,
+              'bg-black !text-white': isActive,
             }
           )}
         >
           <span
             className={cn(
               'relative z-[1] duration-100 before:absolute before:-right-3 before:top-[50%] before:h-1 before:w-1 before:-translate-y-2/4 before:rounded-full before:bg-none ltr:mr-3 rtl:ml-3',
-              {
-                'text-white': isActive,
-                'text-gray-500': !isActive && !name,
-              }
+              {}
             )}
           >
             <Icon />
@@ -127,7 +128,7 @@ const MenuItem: FC<MenuItemProps> = ({
 
           {href === pathname && (
             <motion.span
-              className="absolute bottom-0 left-0 right-0 h-full w-full rounded-lg bg-brand shadow-large"
+              className="absolute bottom-0 left-0 right-0 h-full w-full rounded-lg bg-black text-white shadow-large"
               layoutId="menu-item-active-indicator"
             />
           )}
