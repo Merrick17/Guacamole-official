@@ -6,25 +6,13 @@ import { FC } from 'react';
 interface ToolsProps {}
 
 const Tools: FC<ToolsProps> = () => {
-  const { connected } = useWallet();
   return (
     <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      {connected ? (
-        <div className={' mx-auto grid max-w-6xl grid-cols-3 gap-x-6 gap-y-6'}>
-          {tools.map((tool, index) => (
-            <Tool key={index} {...tool} />
-          ))}
-        </div>
-      ) : (
-        <div className="flex items-center justify-center">
-          <Tool
-            name="Please connect your wallet"
-            description="You will need to connect a supported Solana wallet to continue! Press the button below to explore the options."
-            image="/images/connect-wallet-tool.png"
-            connectWallet
-          />
-        </div>
-      )}
+      <div className={' mx-auto grid max-w-6xl grid-cols-3 gap-x-6 gap-y-6'}>
+        {tools.map((tool, index) => (
+          <Tool key={index} {...tool} />
+        ))}
+      </div>
     </main>
   );
 };

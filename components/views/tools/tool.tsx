@@ -34,9 +34,11 @@ const Tool: FC<ToolProps> = ({
       </div>
       {connectWallet && (
         <WalletMultiButtonDynamic
-          className="rounded-full"
+          className="rounded-full uppercase"
           startIcon={undefined}
-        />
+        >
+          Connect Wallet
+        </WalletMultiButtonDynamic>
       )}
     </div>
   );

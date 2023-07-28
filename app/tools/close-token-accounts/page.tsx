@@ -29,6 +29,7 @@ import { BN, utils } from '@coral-xyz/anchor';
 import { useEffect, useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
+import Tool from '@/components/views/tools/tool';
 
 const CloseTokenAccount = () => {
   const { connection } = useConnection();
@@ -378,26 +379,42 @@ const CloseTokenAccount = () => {
   };
   return (
     <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5">
-        <ToolHeader
-          title="Close Token Accounts"
-          burnAll
-          handleBurn={BurnTokens}
-        />
-        <hr className="border-dashed border-[#E5E7EB]" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
-          {userNFT &&
-            userNFT.map((token, index) => (
-              <NftCard
-                key={token.mint + index}
-                title="<Insert NFT Name>"
-                image=""
-                token={token}
-                SelectButton={<SelectButton token={token} key={token.mint} />}
-              />
-            ))}
+      {wallet.connected ? (
+        <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5">
+          <ToolHeader
+            title="Close Token Accounts"
+            burnAll
+            handleBurn={BurnTokens}
+          />
+          <hr className="border-dashed border-[#E5E7EB]" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
+            {userNFT &&
+              userNFT.map((token, index) => (
+                <NftCard
+                  key={token.mint + index}
+                  title="<Insert NFT Name>"
+                  image=""
+                  token={token}
+                  SelectButton={<SelectButton token={token} key={token.mint} />}
+                />
+              ))}
+            {userNFT && userNFT.length === 0 && (
+              <p className="text-gray-400 text-sm mt-4">
+                You don`t have any accounts yet
+              </p>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-center justify-center">
+          <Tool
+            name="Please connect your wallet"
+            description="You will need to connect a supported Solana wallet to continue! Press the button below to explore the options."
+            image="/images/connect-wallet-tool.png"
+            connectWallet
+          />
+        </div>
+      )}
     </main>
   );
 };
