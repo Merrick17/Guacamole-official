@@ -1,9 +1,16 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@bonfida/hooks':
     specifier: ^0.0.16
     version: 0.0.16(@pythnetwork/client@2.19.0)(@solana/spl-token@0.3.8)(@solana/web3.js@1.78.0)(ahooks@3.7.8)(axios@1.4.0)(react@18.2.0)
+  '@bonfida/spl-name-service':
+    specifier: ^1.0.7
+    version: 1.0.7(@solana/web3.js@1.78.0)(encoding@0.1.13)
   '@coral-xyz/anchor':
     specifier: 0.28.1-beta.1
     version: 0.28.1-beta.1(encoding@0.1.13)
@@ -28,6 +35,9 @@ dependencies:
   '@metaplex-foundation/mpl-token-metadata':
     specifier: ^2.13.0
     version: 2.13.0(encoding@0.1.13)
+  '@onsol/tldparser':
+    specifier: ^0.5.3
+    version: 0.5.3(@solana/web3.js@1.78.0)(bn.js@5.2.1)(borsh@0.7.0)(buffer@6.0.1)(encoding@0.1.13)
   '@pythnetwork/client':
     specifier: ^2.19.0
     version: 2.19.0(@solana/web3.js@1.78.0)(encoding@0.1.13)
@@ -1722,6 +1732,30 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@bonfida/spl-name-service@1.0.7(@solana/web3.js@1.78.0)(encoding@0.1.13):
+    resolution: {integrity: sha512-awghF0UiBT7SHwE0EGpouoCakQa0EdNEC/87EgkmcaIT/xdDhOifPI2hs+4BDQsyjqxNyWi94qIzp5C+v4/roA==}
+    peerDependencies:
+      '@solana/web3.js': ^1.75.0
+    dependencies:
+      '@ethersproject/sha2': 5.7.0
+      '@pythnetwork/client': 2.19.0(@solana/web3.js@1.78.0)(encoding@0.1.13)
+      '@solana/buffer-layout': 4.0.1
+      '@solana/spl-token': 0.3.7(@solana/web3.js@1.78.0)(encoding@0.1.13)
+      '@solana/web3.js': 1.78.0(encoding@0.1.13)
+      bech32-buffer: 0.2.1
+      bn.js: 5.2.1
+      borsh: 0.7.0
+      buffer: 6.0.3
+      ipaddr.js: 2.1.0
+      punycode: 2.3.0
+      tweetnacl: 1.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
+
   /@bundlr-network/client@0.8.9(debug@4.3.4)(encoding@0.1.13):
     resolution: {integrity: sha512-SJ7BAt/KhONeFQ0+nbqrw2DUWrsev6y6cmlXt+3x7fPCkw7OJwudtxV/h2nBteZd65NXjqw8yzkmLiLfZ7CCRA==}
     hasBin: true
@@ -3237,6 +3271,28 @@ packages:
       fastq: 1.15.0
     dev: false
 
+  /@onsol/tldparser@0.5.3(@solana/web3.js@1.78.0)(bn.js@5.2.1)(borsh@0.7.0)(buffer@6.0.1)(encoding@0.1.13):
+    resolution: {integrity: sha512-rICUDhYPwDuO81wo4HI7QSCf6kQiaM0mSv3HKBJPrRxliIvgwanAoU5H0p54HEdAKeS3pmeLi5wB6ROpGxTZ/A==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@solana/web3.js': ^1.67.0
+      bn.js: ^5.2.1
+      borsh: ^0.7.0
+      buffer: 6.0.1
+    dependencies:
+      '@ethersproject/sha2': 5.7.0
+      '@metaplex-foundation/beet-solana': 0.4.0(encoding@0.1.13)
+      '@solana/web3.js': 1.78.0(encoding@0.1.13)
+      bn.js: 5.2.1
+      borsh: 0.7.0
+      buffer: 6.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
+
   /@particle-network/auth@0.5.6:
     resolution: {integrity: sha512-QhRr76BamasIatyWc68Whk/JpjomKUFbxT4KoHxrSWD8lmyWTOP5T8Jo8hQliyjtO2Iuzv9KLpuJ55w7mgaC/A==}
     dependencies:
@@ -4459,6 +4515,23 @@ packages:
       buffer: 6.0.3
       buffer-layout: 1.2.2
       dotenv: 10.0.0
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /@solana/spl-token@0.3.7(@solana/web3.js@1.78.0)(encoding@0.1.13):
+    resolution: {integrity: sha512-bKGxWTtIw6VDdCBngjtsGlKGLSmiu/8ghSt/IOYJV24BsymRbgq7r12GToeetpxmPaZYLddKwAz7+EwprLfkfg==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@solana/web3.js': ^1.47.4
+    dependencies:
+      '@solana/buffer-layout': 4.0.1
+      '@solana/buffer-layout-utils': 0.2.0(encoding@0.1.13)
+      '@solana/web3.js': 1.78.0(encoding@0.1.13)
+      buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -6807,6 +6880,11 @@ packages:
   /base64url@3.0.1:
     resolution: {integrity: sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==}
     engines: {node: '>=6.0.0'}
+    dev: false
+
+  /bech32-buffer@0.2.1:
+    resolution: {integrity: sha512-fCG1TyZuCN48Sdw97p/IR39fvqpFlWDVpG7qnuU1Uc3+Xtc/0uqAp8U7bMW/bGuVF5CcNVIXwxQsWwUr6un6FQ==}
+    engines: {node: '>=8'}
     dev: false
 
   /bech32@1.1.4:
@@ -9409,6 +9487,11 @@ packages:
 
   /ip@1.1.8:
     resolution: {integrity: sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==}
+    dev: false
+
+  /ipaddr.js@2.1.0:
+    resolution: {integrity: sha512-LlbxQ7xKzfBusov6UMi4MFpEg0m+mAm9xyNGEduwXMEDuf4WfzB/RZwMVYEd7IKGvh4IUkEXYxtAVu9T3OelJQ==}
+    engines: {node: '>= 10'}
     dev: false
 
   /is-arguments@1.1.1:
@@ -13890,7 +13973,3 @@ packages:
     version: 5.4.7
     engines: {node: '>=0.11'}
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false

@@ -56,8 +56,11 @@ const useWalletTokens = () => {
   };
 
   useEffect(() => {
-    initUserTokens();
-  }, [publicKey, loading]);
+    if (tokenAccounts) {
+      initUserTokens();
+    }
+
+  }, [publicKey, loading, tokenAccounts]);
 
   return walletTokens;
 };

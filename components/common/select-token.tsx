@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -27,13 +27,13 @@ const Row = ({
       }}
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 hover:bg-[#E5E7EB] "
     >
-      <img
+      {info && info.token && <img
         src={info.token.logoURI as string}
         alt={info.token.name}
         className="h-[24px] w-[24px] "
-      />
+      />}
       <div className=" flex flex-col items-start text-black ">
-        <span className="text-sm opacity-80">{info.token.symbol}</span>
+        {info && info.token && <span className="text-sm opacity-80">{info.token.symbol}</span>}
       </div>
     </button>
   );
@@ -49,6 +49,9 @@ export const SelectToken = ({
   const [open, setOpen] = useState(false);
   const { connected } = useWallet();
   const walletTokens = useWalletTokens();
+  useEffect(() => {
+    console.log("Wallet Tokens", walletTokens);
+  }, [walletTokens])
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full cursor-pointer ">
