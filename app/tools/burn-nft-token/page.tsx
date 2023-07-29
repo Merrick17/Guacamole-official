@@ -31,10 +31,12 @@ import { Button } from '@/components/ui/button';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
 import Tool from '@/components/common/info-card';
 import Loading from '@/components/views/trade/src/components/Loading';
+import { useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
 
 const BurnNftToken = () => {
   const { connection } = useConnection();
-
+  const { toast } = useToast();
   const wallet = useWallet();
   const metaplex = new Metaplex(connection);
   const [userNFT, setUserNFT] = useState<any | null>(null);
@@ -318,16 +320,32 @@ const BurnNftToken = () => {
           setToBurn([]);
           setIsBurning(false);
           setSuccess(true);
+          toast({
+            variant: 'success',
+            title: 'Success',
+            description: 'Your NFTs have been burned!',
+          });
           await getUserNFT();
         } else {
           setMessage('Please choose at least one NFT to burn first!');
           setSuccess(false);
+          setIsBurning(false);
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Please choose at least one NFT to burn first!',
+          });
         }
       } catch (error) {
         await getUserNFT();
         setToBurn([]);
         setIsBurning(false);
         console.log(error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'An error occured, please try again later!',
+        });
       }
     }
   };

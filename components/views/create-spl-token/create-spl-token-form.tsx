@@ -1,8 +1,8 @@
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -10,42 +10,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
   tokenName: z.string().min(2, {
-    message: "token name must be at least 2 characters.",
+    message: 'token name must be at least 2 characters.',
   }),
   tokenSymbol: z.string().min(2, {
-    message: "token symbol must be at least 2 characters.",
+    message: 'token symbol must be at least 2 characters.',
   }),
   tokenDecimals: z.number().min(2, {
-    message: "token decimals must be at least 2 .",
+    message: 'token decimals must be at least 2 .',
   }),
   tokenSupply: z.number().min(1, {
-    message: "token supply must be at least 2 .",
+    message: 'token supply must be at least 2 .',
   }),
   description: z
     .string()
     .min(10, {
-      message: "Description must be at least 10 characters.",
+      message: 'Description must be at least 10 characters.',
     })
     .max(160, {
-      message: "Description must not be longer than 30 characters.",
+      message: 'Description must not be longer than 30 characters.',
     }),
   metadataUrl: z.string().optional(),
   authority: z.boolean(),
 });
 
-import { FC, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checkbox";
-import UploadToken from "./upload-token";
-import { uploadMetaData } from "@/lib/tokens/upload-token-metadata";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { createSPLToken } from "@/lib/tokens/create-spl-token";
-interface CreateSplTokenFormProps { }
+import { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Checkbox } from '@/components/ui/checkbox';
+import UploadToken from './upload-token';
+import { uploadMetaData } from '@/lib/tokens/upload-token-metadata';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { createSPLToken } from '@/lib/tokens/create-spl-token';
+interface CreateSplTokenFormProps {}
 
 const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   // web 3
@@ -55,21 +55,21 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   const [createUrl, setCreateUrl] = useState<boolean>(true);
   // state
   const [isCreating, setIsCreating] = useState<boolean>(false);
-  const [tokenAddresss, setTokenAddresss] = useState<string>("");
-  const [signature, setSignature] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [tokenAddresss, setTokenAddresss] = useState<string>('');
+  const [signature, setSignature] = useState<string>('');
+  const [error, setError] = useState<string>('');
   // 1- .
   const [tokenIcon, setTokenIcon] = useState<File | null>(null);
   // 2- form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tokenName: "",
-      tokenSymbol: "",
+      tokenName: '',
+      tokenSymbol: '',
       tokenDecimals: 0,
       tokenSupply: 0,
-      description: "",
-      metadataUrl: "",
+      description: '',
+      metadataUrl: '',
       authority: false,
     },
   });
@@ -79,18 +79,18 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
         wallet,
         connection,
         tokenIcon,
-        form.getValues("tokenName"),
-        form.getValues("description"),
-        form.getValues("tokenSymbol")
+        form.getValues('tokenName'),
+        form.getValues('description'),
+        form.getValues('tokenSymbol')
       );
-      form.setValue("metadataUrl", uri);
+      form.setValue('metadataUrl', uri);
     } else {
-      alert("You need to connect your wallet");
+      alert('You need to connect your wallet');
     }
   };
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Form STATE", form.formState.errors);
+    console.log('Form STATE', form.formState.errors);
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
@@ -117,13 +117,13 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
         uri,
         values.description,
         undefined,
-        "url",
+        'url',
         setIsCreating,
         setTokenAddresss,
         setSignature,
         setError
       );
-      console.log("Result", res);
+      console.log('Result', res);
     } else {
       const uri = await uploadMetaData(
         wallet,
@@ -146,7 +146,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
         values.metadataUrl,
         values.description,
         undefined,
-        "url",
+        'url',
         setIsCreating,
         setTokenAddresss,
         setSignature,
@@ -252,7 +252,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             Create Metadata
           </Button>
           <Button
-            variant={"secondary"}
+            variant={'secondary'}
             onClick={() => {
               setCreateUrl(false);
             }}
@@ -268,7 +268,6 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
               <FormLabel className="uppercase">Description</FormLabel>
               <FormControl>
                 <Input
-
                   placeholder="Add a Description for the token"
                   {...field}
                 />
@@ -308,7 +307,6 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
           understand all possible settings!
         </p>
       </form>
-
     </Form>
   );
 };

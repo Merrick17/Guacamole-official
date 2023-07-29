@@ -1,6 +1,6 @@
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import {
   getAllDomains,
   performReverseLookup,
@@ -9,9 +9,9 @@ import {
   getTwitterRegistry,
   NameRegistryState,
   transferNameOwnership,
-} from "@bonfida/spl-name-service";
-import { BsPersonAdd, BsTrash } from "react-icons/bs";
-import { Button } from "@/components/ui/button";
+} from '@bonfida/spl-name-service';
+import { BsPersonAdd, BsTrash } from 'react-icons/bs';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -19,32 +19,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { TldParser } from "@onsol/tldparser";
-import { Metaplex } from "@metaplex-foundation/js";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { TldParser } from '@onsol/tldparser';
+import { Metaplex } from '@metaplex-foundation/js';
 
-import { FC, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { SelectToken } from "../../common/select-token";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { FC, useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { SelectToken } from '../../common/select-token';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
-} from "@solana/web3.js";
+} from '@solana/web3.js';
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   Token,
   TOKEN_PROGRAM_ID,
-} from "@solana/spl-token-v1";
-import { useToast } from "@/components/ui/use-toast";
+} from '@solana/spl-token-v1';
+import { useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
 const formSchema = z.object({
   receivers: z
     .object({
       receiver: z.string().refine((val) => isValidSolanaAddress(val), {
-        message: "Invalid Solana address",
+        message: 'Invalid Solana address',
       }),
       amount: z.number().positive().int(),
     })
@@ -77,11 +78,11 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
   // 2- form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       receivers: [
         {
-          receiver: "",
+          receiver: '',
           amount: 1,
         },
       ],
@@ -89,7 +90,7 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
   });
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "receivers",
+    name: 'receivers',
   });
   const send = async (receiverList: any[]) => {
     if (publicKey != null) {
@@ -98,8 +99,8 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
         const Receivers: any[] = [];
         for (let i = 0; i < receiverList.length; i++) {
           if (
-            receiverList[i]["receiver"] != "" &&
-            receiverList[i]["amount"] != ""
+            receiverList[i]['receiver'] != '' &&
+            receiverList[i]['amount'] != ''
           ) {
             Receivers.push(receiverList[i]);
           }
@@ -109,14 +110,14 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
           let Tx = new Transaction();
           for (let i = 0; i < Receivers.length; i++) {
             let receiverPubkey: PublicKey;
-            if (Receivers[i]["receiver"].includes(".sol")) {
+            if (Receivers[i]['receiver'].includes('.sol')) {
               const hashedName = await getHashedName(
-                Receivers[i]["receiver"].replace(".sol", "")
+                Receivers[i]['receiver'].replace('.sol', '')
               );
               const nameAccountKey = await getNameAccountKey(
                 hashedName,
                 undefined,
-                new PublicKey("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx") // SOL TLD Authority
+                new PublicKey('58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx') // SOL TLD Authority
               );
               const owner = await NameRegistryState.retrieve(
                 connection,
@@ -124,47 +125,47 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
               );
               receiverPubkey = owner.registry.owner;
             } else if (
-              !Receivers[i]["receiver"].includes(".sol") &&
-              Receivers[i]["receiver"].includes(".")
+              !Receivers[i]['receiver'].includes('.sol') &&
+              Receivers[i]['receiver'].includes('.')
             ) {
               const owner = await parser.getOwnerFromDomainTld(
-                Receivers[i]["receiver"]
+                Receivers[i]['receiver']
               );
               if (owner != undefined) {
                 receiverPubkey = owner;
                 console.log(receiverPubkey.toBase58());
               } else {
-                receiverPubkey = new PublicKey("");
+                receiverPubkey = new PublicKey('');
               }
-            } else if (Receivers[i]["receiver"].includes("@")) {
-              const handle = Receivers[i]["receiver"].replace("@", "");
+            } else if (Receivers[i]['receiver'].includes('@')) {
+              const handle = Receivers[i]['receiver'].replace('@', '');
               const registry = await getTwitterRegistry(connection, handle);
               receiverPubkey = registry.owner;
             } else if (
-              !Receivers[i]["receiver"].includes(".") &&
-              !Receivers[i]["receiver"].includes("@") &&
-              !isValidSolanaAddress(Receivers[i]["receiver"])
+              !Receivers[i]['receiver'].includes('.') &&
+              !Receivers[i]['receiver'].includes('@') &&
+              !isValidSolanaAddress(Receivers[i]['receiver'])
             ) {
               const url =
-                "https://xnft-api-server.xnfts.dev/v1/users/fromUsername?username=" +
-                Receivers[i]["receiver"];
+                'https://xnft-api-server.xnfts.dev/v1/users/fromUsername?username=' +
+                Receivers[i]['receiver'];
               const response = await fetch(url);
               const responseData = await response.json();
               receiverPubkey = new PublicKey(
                 responseData.user.public_keys.find(
-                  (key: any) => key.blockchain == "solana"
+                  (key: any) => key.blockchain == 'solana'
                 ).public_key
               );
             } else {
-              receiverPubkey = new PublicKey(Receivers[i]["receiver"]);
+              receiverPubkey = new PublicKey(Receivers[i]['receiver']);
             }
 
-            if (token == "So11111111111111111111111111111111111111112") {
+            if (token == 'So11111111111111111111111111111111111111112') {
               Tx.add(
                 SystemProgram.transfer({
                   fromPubkey: publicKey,
                   toPubkey: receiverPubkey,
-                  lamports: Receivers[i]["amount"] * LAMPORTS_PER_SOL,
+                  lamports: Receivers[i]['amount'] * LAMPORTS_PER_SOL,
                 })
               );
             } else {
@@ -207,7 +208,7 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
                 destination_account,
                 publicKey,
                 [],
-                parseFloat(Receivers[i]["amount"]) * 10 ** decimals
+                parseFloat(Receivers[i]['amount']) * 10 ** decimals
               );
               Tx.add(transferIx);
             }
@@ -215,13 +216,20 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
           const signature = await sendTransaction(Tx, connection);
           const confirmed = await connection.confirmTransaction(
             signature,
-            "processed"
+            'processed'
           );
-          console.log("confirmation", signature);
+          console.log('confirmation', signature);
           toast({
-            variant: "success",
-            title: "Success",
-            description: "Transaction sent successfully.",
+            variant: 'success',
+            title: 'Success',
+            description: (
+              <div className="flex flex-col gap-1">
+                <p>Transaction sent successfully.</p>
+                <Link href={`https://solscan.io/tx/${signature}`}>
+                  View on solscan
+                </Link>
+              </div>
+            ),
           });
           //getUserTokens();
           // setIsSending(false);
@@ -241,15 +249,15 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
           )
         ) {
           toast({
-            variant: "destructive",
-            title: "Error",
-            description: "It is not a valid Backpack username",
+            variant: 'destructive',
+            title: 'Error',
+            description: 'It is not a valid Backpack username',
           });
           //setError("It is not a valid Backpack username");
         } else {
           toast({
-            variant: "destructive",
-            title: "Error",
+            variant: 'destructive',
+            title: 'Error',
             description: err.message,
           });
           //setError(err);
@@ -315,7 +323,7 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
             onClick={() => {
               append({
                 amount: 1,
-                receiver: "",
+                receiver: '',
               });
             }}
             className="w-max"

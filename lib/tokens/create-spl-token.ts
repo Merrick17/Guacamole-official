@@ -3,7 +3,7 @@ import {
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
   MintLayout,
-} from "@solana/spl-token-v1";
+} from '@solana/spl-token-v1';
 import {
   Connection,
   PublicKey,
@@ -11,20 +11,20 @@ import {
   SystemProgram,
   Keypair,
   TransactionInstruction,
-} from "@solana/web3.js";
-import { WalletContextState } from "@solana/wallet-adapter-react";
-import { Dispatch, SetStateAction } from "react";
+} from '@solana/web3.js';
+import { WalletContextState } from '@solana/wallet-adapter-react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   PROGRAM_ID,
   DataV2,
   createCreateMetadataAccountV3Instruction,
-} from "@metaplex-foundation/mpl-token-metadata";
+} from '@metaplex-foundation/mpl-token-metadata';
 import {
   bundlrStorage,
   Metaplex,
   MetaplexFileTag,
   walletAdapterIdentity,
-} from "@metaplex-foundation/js";
+} from '@metaplex-foundation/js';
 
 export async function createSPLToken(
   owner: PublicKey,
@@ -56,7 +56,7 @@ export async function createSPLToken(
 ) {
   try {
     setIscreating(true);
-    setTokenAddresss("");
+    setTokenAddresss('');
 
     const metaplex = Metaplex.make(connection)
       .use(walletAdapterIdentity(wallet))
@@ -70,21 +70,21 @@ export async function createSPLToken(
 
     const [metadataPDA] = await PublicKey.findProgramAddress(
       [
-        Buffer.from("metadata"),
+        Buffer.from('metadata'),
         PROGRAM_ID.toBuffer(),
         mint_account.publicKey.toBuffer(),
       ],
       PROGRAM_ID
     );
 
-    let URI: string = "";
+    let URI: string = '';
 
-    if (metadataMethod == "url") {
-      if (metadataURL != "") {
+    if (metadataMethod == 'url') {
+      if (metadataURL != '') {
         URI = metadataURL;
       } else {
         setIscreating(false);
-        setError("Please provide a metadata URL!");
+        setError('Please provide a metadata URL!');
       }
     } else {
       if (file) {
@@ -103,11 +103,11 @@ export async function createSPLToken(
         }
       } else {
         setIscreating(false);
-        setError("Please provide an image file!");
+        setError('Please provide an image file!');
       }
     }
 
-    if (URI != "") {
+    if (URI != '') {
       const tokenMetadata: DataV2 = {
         name: tokenName,
         symbol: symbol,
@@ -205,7 +205,7 @@ export async function createSPLToken(
 
       const createAccountconfirmed = await connection.confirmTransaction(
         createAccountSignature,
-        "confirmed"
+        'confirmed'
       );
 
       const signature = createAccountSignature.toString();
