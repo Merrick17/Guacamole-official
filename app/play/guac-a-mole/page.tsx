@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Bungee } from 'next/font/google';
@@ -11,9 +11,7 @@ const bungee = Bungee({
 });
 
 const Page = () => {
-  useEffect(() => {
-
-  }, [typeof window!=="undefined"]); 
+  useEffect(() => {}, [typeof window !== 'undefined']);
   return (
     <div
       className={cn(
@@ -62,7 +60,6 @@ const Page = () => {
       </div>
     </div>
   );
-}
+};
 
-
-export default Page
+export default Page;
