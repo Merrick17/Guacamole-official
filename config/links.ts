@@ -11,9 +11,11 @@ export const Links: {
   name: string;
   href: string;
   Icon: IconType;
+
   dropdownItems?: {
     name: string;
     href: string;
+    disabled?: boolean;
   }[];
 }[] = [
   {
@@ -33,18 +35,22 @@ export const Links: {
       {
         name: 'DCA / TWAP',
         href: '',
+        disabled: true,
       },
       {
         name: 'Limit',
         href: '',
+        disabled: true,
       },
       {
         name: 'Liquidity',
         href: '',
+        disabled: true,
       },
       {
         name: 'Bridge',
         href: '',
+        disabled: true,
       },
     ],
   },
@@ -119,6 +125,7 @@ export const Links: {
       {
         name: 'Close Token Accounts',
         href: routes.tools.closeTokenAccounts,
+        disabled: true,
       },
       {
         name: 'Emergency Send All',

@@ -21,6 +21,7 @@ type MenuItemProps = {
 type DropdownItemProps = {
   name: string;
   href: string;
+  disabled?: boolean;
 };
 
 const MenuItem: FC<MenuItemProps> = ({
@@ -44,7 +45,7 @@ const MenuItem: FC<MenuItemProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="mb-2 min-h-[48px] list-none last:mb-0 text-[#6B7280] text-sm">
+    <div className="mb-2 min-h-[48px] list-none last:mb-0 text-black text-sm">
       {dropdownItems?.length ? (
         <>
           <div
@@ -52,7 +53,7 @@ const MenuItem: FC<MenuItemProps> = ({
               'relative flex h-12 cursor-pointer items-center justify-between whitespace-nowrap  rounded-lg px-4 text-sm transition-all',
               isActive
                 ? 'text-white'
-                : 'text-gray-500 hover:text-brand dark:hover:text-white'
+                : 'text-black hover:text-brand dark:hover:text-white'
             )}
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -90,17 +91,20 @@ const MenuItem: FC<MenuItemProps> = ({
                   key={index}
                   className="px-1 py-2 hover:bg-slate-50 transition-colors duration-300 ease-in-out rounded-lg cursor-pointer"
                 >
-                  <div
+                  <button
+                    disabled={item.disabled}
                     onClick={() => {
                       isOpen && setIsOpen(false);
                       router.push(item.href);
                     }}
-                    className="w-full justify-start gap-2 flex items-center "
+                    className="w-full justify-start gap-2 flex items-center disabled:cursor-not-allowed "
                     // activeClassName="!text-brand dark:!text-white dark:before:!bg-white before:!bg-brand before:!w-2 before:!h-2 before:-ml-0.5 before:ltr:!mr-[18px] before:rtl:!ml-[18px] !font-medium"
                   >
                     <div className="w-1 h-1 bg-[#6B7280] rounded-full " />
-                    <p>{item.name}</p>
-                  </div>
+                    <p className={cn(item.disabled && 'text-black/50')}>
+                      {item.name}
+                    </p>
+                  </button>
                 </li>
               ))}
             </ul>

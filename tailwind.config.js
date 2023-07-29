@@ -24,6 +24,7 @@ module.exports = {
         openMenuShadow: '0px 6px 18px 0px rgba(0, 0, 0, 0.04)',
       },
       fontFamily: {
+        body: ['Kanit', 'sans-serif'],
         bungee: ['Bungee', 'monospace'],
       },
       backgroundImage: {

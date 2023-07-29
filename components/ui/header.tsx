@@ -32,11 +32,7 @@ const Header: FC<HeaderProps> = () => {
       {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
       <nav className="fixed top-0 bg-white px-10 py-4 z-40 w-full ">
         <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
-          <HeaderLeftArea
-            isOpen={isOpen}
-            openDrawer={openDrawer}
-            closeDrawer={closeDrawer}
-          />
+          <HeaderLeftArea />
           <HeaderRightArea
             isOpen={isOpen}
             openDrawer={openDrawer}
@@ -47,17 +43,7 @@ const Header: FC<HeaderProps> = () => {
     </>
   );
 };
-const HeaderLeftArea = ({
-  isOpen,
-  openDrawer,
-  closeDrawer,
-}: {
-  isOpen: boolean;
-  openDrawer: () => void;
-  closeDrawer: () => void;
-}) => {
-  const breakpoint = useBreakpoint();
-  const isMounted = useIsMounted();
+const HeaderLeftArea = () => {
   return (
     <div className="flex items-center">
       <div className="flex items-center gap-2 mr-16">
