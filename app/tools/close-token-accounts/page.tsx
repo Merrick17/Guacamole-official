@@ -1,133 +1,116 @@
-'use client';
-import NftCard from '@/components/common/nft-card';
-import ToolHeader from '@/components/common/tool-header';
-import {
-  Metaplex,
-  toBigNumber,
-  walletAdapterIdentity,
-} from '@metaplex-foundation/js';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import {
-  PublicKey,
-  Transaction,
-  SystemProgram,
-  SYSVAR_INSTRUCTIONS_PUBKEY,
-} from '@solana/web3.js';
-import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  Token,
-  TOKEN_PROGRAM_ID,
-} from '@solana/spl-token-v1';
-import {
-  createBurnEditionNftInstruction,
-  createBurnNftInstruction,
-  PROGRAM_ADDRESS,
-  PROGRAM_ID,
-  createBurnInstruction,
-} from '@metaplex-foundation/mpl-token-metadata';
-import { BN, utils } from '@coral-xyz/anchor';
-import { useEffect, useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import useWalletTokens from '@/lib/tokens/useWalletTokens';
-import Tool from '@/components/common/info-card';
+"use client";
+import Tool from "@/components/common/info-card";
+import NftCard from "@/components/common/nft-card";
+import ToolHeader from "@/components/common/tool-header";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { getTokensMetadata } from "@/lib/metadata";
+import { Metaplex } from "@metaplex-foundation/js";
+import { TOKEN_PROGRAM_ID, Token } from "@solana/spl-token-v1";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey, Transaction } from "@solana/web3.js";
+import { useEffect, useState } from "react";
 
 const CloseTokenAccount = () => {
   const { connection } = useConnection();
-
-  const wallet = useWallet();
+  const { toast } = useToast();
+  const { sendTransaction, publicKey, connected } = useWallet();
   const metaplex = new Metaplex(connection);
-  const [userNFT, setUserNFT] = useState<any | null>(null);
+
+  const [emptyAccounts, setEmptyAccounts] = useState<any | null>(null);
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const [isBurning, setIsBurning] = useState<boolean>(false);
+  const [isClosing, setIsClosing] = useState<boolean>(false);
   const [currentTx, setCurrentTx] = useState<number | null>(null);
   const [totalTx, setTotalTx] = useState<number | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
-  const [toBurn, setToBurn] = useState<any>([]);
-  const walletTokens = useWalletTokens();
+  const [message, setMessage] = useState<string>("");
+  const [allSelected, setAllSelected] = useState(false);
+  const [toClose, setToClose] = useState<string[]>([]);
 
-  async function getUserNFT() {
-    if (!wallet.publicKey) {
-      setUserNFT([]);
+  async function getUserEmptyAccount() {
+    if (!publicKey) {
+      setEmptyAccounts([]);
       return;
     }
-    const publickey = wallet.publicKey;
+    const publickey = publicKey;
     setIsFetched(false);
 
-    const userNFTs = await metaplex
-      .nfts()
-      .findAllByOwner({ owner: wallet.publicKey });
+    const allTokens: any = [];
 
-    console.log(userNFTs);
+    const myHeaders = new Headers();
+    myHeaders.append("x-api-key", "AwM0UoO6r1w8XNOA");
 
-    const seed1 = Buffer.from(utils.bytes.utf8.encode('metadata'));
-    const seed2 = Buffer.from(PROGRAM_ID.toBytes());
-    const seed4 = Buffer.from(utils.bytes.utf8.encode('edition'));
-
-    const userNFTMetadata = await Promise.all(
-      userNFTs.map(async (token) => {
-        // @ts-ignore
-        const mintPublickey = token.mintAddress;
-        const mint = mintPublickey.toBase58();
-        let name = token.name.trim();
-        let logoURI: string;
-        const collectionAddress = token.collection?.address;
-        let collectionMetadata: string | undefined = undefined;
-
-        if (collectionAddress) {
-          const [collectionMetadataPDA, _bump3] =
-            PublicKey.findProgramAddressSync(
-              [seed1, seed2, Buffer.from(collectionAddress.toBytes())],
-              PROGRAM_ID
-            );
-          collectionMetadata = collectionMetadataPDA.toBase58();
-        }
-        const seed3 = Buffer.from(mintPublickey.toBytes());
-        const [_masterEditionPDA, _bump2] = PublicKey.findProgramAddressSync(
-          [seed1, seed2, seed3, seed4],
-          PROGRAM_ID
-        );
-        const masterEditionPDA = _masterEditionPDA.toBase58();
-        const metadataAccount = token.address.toBase58();
-        const NFTloaded = await metaplex
-          .nfts()
-          .findByMint({ mintAddress: mintPublickey });
-
-        if (name == '' && NFTloaded.json?.name && NFTloaded.json?.name != '') {
-          name = NFTloaded.json?.name.trim();
-        }
-        if (NFTloaded.json?.image && NFTloaded.json?.image != '') {
-          logoURI = NFTloaded.json?.image;
-        } else {
-          logoURI =
-            'https://arweave.net/WCMNR4N-4zKmkVcxcO2WImlr2XBAlSWOOKBRHLOWXNA';
-        }
-
-        // @ts-ignore
-        const isMasterEdition = NFTloaded?.edition?.isOriginal;
-        // const edition = NFTloaded.
-        const tokenAccount = (
-          await Token.getAssociatedTokenAddress(
-            ASSOCIATED_TOKEN_PROGRAM_ID,
-            TOKEN_PROGRAM_ID,
-            mintPublickey,
-            publickey
-          )
-        ).toBase58();
-
-        return {
-          name,
-          logoURI,
-          metadataAccount,
-          mint,
-          tokenAccount,
-          masterEditionPDA,
-          collectionMetadata,
-          isMasterEdition,
-        };
-      })
+    const tokenResponse = await fetch(
+      "https://api.shyft.to/sol/v1/wallet/all_tokens?network=mainnet-beta&wallet=" +
+        publickey.toBase58(),
+      { method: "GET", headers: myHeaders, redirect: "follow" }
     );
-    userNFTMetadata.sort(function (a, b) {
+    const tokenInfo = (await tokenResponse.json()).result;
+
+    const tokens = tokenInfo.filter((m: any) => {
+      const balance = m.balance;
+      return balance == 0;
+    });
+
+    tokens.map((token: any) => {
+      const mint = token.address;
+      const logoURI =
+        token.info.image != ""
+          ? token.info.image
+          : "https://arweave.net/WCMNR4N-4zKmkVcxcO2WImlr2XBAlSWOOKBRHLOWXNA";
+      const tokenAccount = token.associated_account;
+      const amount = token.balance;
+      let name = token.info.name.trim();
+      if (name == "") {
+        name = mint.slice(0, 4) + "..." + mint.slice(-4);
+      }
+      allTokens.push({
+        name: name,
+        logoURI: logoURI,
+        tokenAccount: tokenAccount,
+        mint: mint,
+        amount: amount,
+      });
+    });
+
+    const { value: splAccounts } =
+      await connection.getParsedTokenAccountsByOwner(
+        publickey,
+        {
+          programId: new PublicKey(
+            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          ),
+        },
+        "processed"
+      );
+
+    const myNFTEmptyAccounts: any = [];
+
+    const _myNFTEmptyAccounts = splAccounts
+      .filter((m) => {
+        const amount = m.account?.data?.parsed?.info?.tokenAmount?.uiAmount;
+        return amount == 0;
+      })
+      .map((m) => {
+        const tokenAccountaddress = m.pubkey.toBase58();
+        const mintAdddress = m.account?.data?.parsed?.info?.mint;
+        const _tokenAccount = allTokens.find(
+          (token: any) => token.tokenAccount == tokenAccountaddress
+        );
+        if (_tokenAccount == undefined) {
+          myNFTEmptyAccounts.push({ tokenAccountaddress, mintAdddress });
+        }
+      });
+
+    console.log(myNFTEmptyAccounts);
+
+    const myNFTEmptyAccountsMetadata = await getTokensMetadata(
+      myNFTEmptyAccounts,
+      connection
+    );
+    const userEmptyAccounts = allTokens.concat(myNFTEmptyAccountsMetadata);
+
+    userEmptyAccounts.sort(function (a: any, b: any) {
       if (a.name.toUpperCase() < b.name.toUpperCase()) {
         return -1;
       }
@@ -136,219 +119,26 @@ const CloseTokenAccount = () => {
       }
       return 0;
     });
-    setUserNFT(userNFTMetadata);
+
+    setEmptyAccounts(userEmptyAccounts);
     setIsFetched(true);
-    console.log('user NFTs', userNFTMetadata);
+    console.log("my empty accounts", userEmptyAccounts);
   }
 
   useEffect(() => {
-    getUserNFT();
-  }, [wallet.publicKey]);
+    getUserEmptyAccount();
+  }, [publicKey, connected]);
 
-  const BurnTokens = async () => {
-    if (wallet.connected) {
-      const publickey = wallet.publicKey;
-      try {
-        if (toBurn[0] != undefined && publickey) {
-          // console.log("To Burn", toBurn);
-          // const metaplex = Metaplex.make(connection)
-          //   .use(walletAdapterIdentity(wallet))
-          // const parameters = {
-          //   mintAddress: new PublicKey(toBurn[0].mint)
-          // }
-          // const tx = await metaplex.nfts().delete(parameters);
-          // console.log("Tx",tx);
-          setIsBurning(true);
-          setSuccess(false);
-          setMessage('');
-          const nbPerTx = 5;
-          let nbTx: number;
-          if (toBurn.length % nbPerTx == 0) {
-            nbTx = toBurn.length / nbPerTx;
-          } else {
-            nbTx = Math.floor(toBurn.length / nbPerTx) + 1;
-          }
-          setTotalTx(nbTx);
-
-          for (let i = 0; i < nbTx; i++) {
-            setCurrentTx(i + 1);
-            let Tx = new Transaction();
-
-            let bornSup: number;
-
-            if (i == nbTx - 1) {
-              bornSup = toBurn.length;
-            } else {
-              bornSup = nbPerTx * (i + 1);
-            }
-
-            const seed1 = Buffer.from(utils.bytes.utf8.encode('metadata'));
-            const seed2 = Buffer.from(PROGRAM_ID.toBytes());
-            const seed4 = Buffer.from(utils.bytes.utf8.encode('edition'));
-
-            for (let j = nbPerTx * i; j < bornSup; j++) {
-              const tokenAccount = new PublicKey(toBurn[j].tokenAccount);
-              const mint = new PublicKey(toBurn[j].mint);
-              const masterEditionPDA = new PublicKey(
-                toBurn[j].masterEditionPDA
-              );
-              const metadataAccount = new PublicKey(toBurn[j].metadataAccount);
-              const _collectionMetadata = toBurn[j].collectionMetadata;
-              const isMasterEdition = toBurn[j].isMasterEdition;
-              let burnAccount;
-              const tokenRecord = metaplex
-                .nfts()
-                .pdas()
-                .tokenRecord({ mint: mint, token: tokenAccount });
-              let collectionMetadata: PublicKey | undefined = undefined;
-
-              if (_collectionMetadata) {
-                collectionMetadata = new PublicKey(_collectionMetadata);
-              }
-              if (isMasterEdition == true) {
-                const tokenRecordInfo = await connection.getAccountInfo(
-                  tokenRecord
-                );
-                if (tokenRecordInfo) {
-                  const burn = createBurnInstruction(
-                    {
-                      authority: publickey,
-                      metadata: metadataAccount,
-                      collectionMetadata: collectionMetadata,
-                      edition: masterEditionPDA,
-                      mint: mint,
-                      token: tokenAccount,
-                      tokenRecord: tokenRecord,
-                      systemProgram: SystemProgram.programId,
-                      sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
-                      splTokenProgram: TOKEN_PROGRAM_ID,
-                    },
-                    {
-                      burnArgs: {
-                        __kind: 'V1',
-                        amount: toBigNumber(1),
-                      },
-                    }
-                  );
-                  Tx.add(burn);
-                } else {
-                  if (_collectionMetadata) {
-                    burnAccount = {
-                      metadata: metadataAccount,
-                      owner: publickey,
-                      mint: mint,
-                      tokenAccount: tokenAccount,
-                      masterEditionAccount: masterEditionPDA,
-                      splTokenProgram: TOKEN_PROGRAM_ID,
-                      collectionMetadata: collectionMetadata,
-                    };
-                  } else {
-                    burnAccount = {
-                      metadata: metadataAccount,
-                      owner: publickey,
-                      mint: mint,
-                      tokenAccount: tokenAccount,
-                      masterEditionAccount: masterEditionPDA,
-                      splTokenProgram: TOKEN_PROGRAM_ID,
-                    };
-                    const burnInstruction = createBurnNftInstruction(
-                      burnAccount,
-                      new PublicKey(PROGRAM_ADDRESS)
-                    );
-                    // add the burn instruction to the transaction
-                    Tx.add(burnInstruction);
-                  }
-                }
-              } else {
-                const getbalance = await connection.getTokenAccountBalance(
-                  tokenAccount
-                );
-                const decimals = getbalance.value.decimals;
-                const balance = getbalance.value.uiAmount;
-
-                const burnInstruction = Token.createBurnInstruction(
-                  TOKEN_PROGRAM_ID,
-                  mint,
-                  tokenAccount,
-                  publickey,
-                  [],
-                  balance! * 10 ** decimals
-                );
-
-                const closeInstruction = Token.createCloseAccountInstruction(
-                  TOKEN_PROGRAM_ID,
-                  tokenAccount,
-                  publickey,
-                  publickey,
-                  []
-                );
-                Tx.add(burnInstruction, closeInstruction);
-              }
-
-              // const seed3 = Buffer.from(mint.toBytes());
-              // const seed5 = Buffer.from(Math.floor(edition/248));
-
-              // const [editionMarkerAccount, _bump] = PublicKey.findProgramAddressSync(
-              //   [seed1, seed2, seed3, seed4, seed5],
-              //   PROGRAM_ID
-              // );
-
-              // const burnEditionAccount = {
-              //   metadata: metadataAccount,
-              //   owner: publickey,
-              //   printEditionMint: mint,
-              //   masterEditionMint: ,
-              //   printEditionTokenAccount: tokenAccount,
-              //   masterEditionTokenAccount: ,
-              //   masterEditionAccount: parent,
-              //   printEditionAccount: masterEditionPDA,
-              //   editionMarkerAccount: editionMarkerAccount,
-              //   splTokenProgram: TOKEN_PROGRAM_ID,
-              // }
-              // const burnEdition = createBurnEditionNftInstruction(burnEditionAccount, new PublicKey(PROGRAM_ADDRESS))
-            }
-
-            const signature = await wallet.sendTransaction(Tx, connection);
-            const confirmed = await connection.confirmTransaction(
-              signature,
-              'processed'
-            );
-            console.log('confirmation', signature);
-          }
-          setToBurn([]);
-          setIsBurning(false);
-          setSuccess(true);
-          await getUserNFT();
-        } else {
-          setMessage('Please choose at least one NFT to burn first!');
-          setSuccess(false);
-        }
-      } catch (error) {
-        await getUserNFT();
-        setToBurn([]);
-        setIsBurning(false);
-        console.log(error);
-      }
-    }
-  };
-  const SelectButton = ({ token }: { token: any }) => {
+  function SelectButton(props: { tokenAccount: any }) {
     const [isSelected, setIsSelected] = useState(false);
-    const tokenAccount = token.tokenAccount;
-    const mint = token.mint;
-    const masterEditionPDA = token.masterEditionPDA;
-    const metadataAccount = token.metadataAccount;
-    const collectionMetadata = token.collectionMetadata;
-    const isMasterEdition = token.isMasterEdition;
 
-    const data = {
-      tokenAccount: tokenAccount,
-      mint: mint,
-      masterEditionPDA: masterEditionPDA,
-      metadataAccount: metadataAccount,
-      collectionMetadata: collectionMetadata,
-      isMasterEdition: isMasterEdition,
-    };
-
+    useEffect(() => {
+      if (toClose.includes(props.tokenAccount)) {
+        setIsSelected(true);
+      } else {
+        setIsSelected(false);
+      }
+    });
     return (
       <div>
         {!isSelected ? (
@@ -357,7 +147,7 @@ const CloseTokenAccount = () => {
             variant="default"
             onClick={() => {
               setIsSelected(true);
-              toBurn.push(data);
+              toClose.push(props.tokenAccount);
             }}
           >
             <span className="text-xs">Select</span>
@@ -368,7 +158,7 @@ const CloseTokenAccount = () => {
             variant="destructive"
             onClick={() => {
               setIsSelected(false);
-              toBurn.splice(toBurn.indexOf(data), 1);
+              toClose.splice(toClose.indexOf(props.tokenAccount), 1);
             }}
           >
             Unselect
@@ -376,29 +166,138 @@ const CloseTokenAccount = () => {
         )}
       </div>
     );
+  }
+
+  const CloseAccounts = async () => {
+    try {
+      if (toClose[0] != undefined && connected) {
+        setIsClosing(true);
+        setSuccess(false);
+        setMessage("");
+        const nbPerTx = 5;
+        let nbTx: number;
+        if (toClose.length % nbPerTx == 0) {
+          nbTx = toClose.length / nbPerTx;
+        } else {
+          nbTx = Math.floor(toClose.length / nbPerTx) + 1;
+        }
+        setTotalTx(nbTx);
+
+        for (let i = 0; i < nbTx; i++) {
+          setCurrentTx(i + 1);
+          let Tx = new Transaction();
+
+          let bornSup: number;
+
+          if (i == nbTx - 1) {
+            bornSup = toClose.length;
+          } else {
+            bornSup = nbPerTx * (i + 1);
+          }
+
+          for (let j = nbPerTx * i; j < bornSup; j++) {
+            console.log("TO Close", toClose);
+            const associatedAddress = new PublicKey(toClose[j]);
+
+            const closeInstruction = await Token.createCloseAccountInstruction(
+              TOKEN_PROGRAM_ID,
+              associatedAddress,
+              publicKey,
+              publicKey,
+              []
+            );
+            Tx.add(closeInstruction);
+          }
+
+          const signature = await sendTransaction(Tx, connection);
+          const confirmed = await connection.confirmTransaction(
+            signature,
+            "processed"
+          );
+          console.log("confirmation", signature);
+          toast({
+            variant: "success",
+            title: "Success",
+            description: (
+              <span>
+                Transaction sent successfully ,
+                <a href={`https://solscan.com/tx/${signature}`} target="_blank">
+                  View on solscan
+                </a>
+              </span>
+            ),
+          });
+        }
+        setToClose([]);
+        setAllSelected(false);
+        setIsClosing(false);
+        setSuccess(true);
+        await getUserEmptyAccount();
+      } else {
+        toast({
+          variant: "default",
+          title: "Warning",
+          description:
+            "Please choose at least one token account to close first!",
+        });
+
+        setSuccess(false);
+      }
+    } catch (error) {
+      await getUserEmptyAccount();
+      setToClose([]);
+      setAllSelected(false);
+      setIsClosing(false);
+      console.log(error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    }
   };
+
+  const SelectAll = () => {
+    const _toClose = emptyAccounts.map((token: any) => {
+      const tokenAccount = token.tokenAccount;
+      return tokenAccount;
+    });
+    setToClose(_toClose);
+    setAllSelected(true);
+  };
+
+  const UnselectAll = () => {
+    setToClose([]);
+    setAllSelected(false);
+  };
+
   return (
     <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      {wallet.connected ? (
+      {connected ? (
         <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5">
           <ToolHeader
             title="Close Token Accounts"
             burnAll
-            handleBurn={BurnTokens}
+            handleBurn={CloseAccounts}
           />
           <hr className="border-dashed border-[#E5E7EB]" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
-            {userNFT &&
-              userNFT.map((token, index) => (
+            {emptyAccounts &&
+              emptyAccounts.map((token, index) => (
                 <NftCard
                   key={token.mint + index}
                   title="<Insert NFT Name>"
                   image=""
                   token={token}
-                  SelectButton={<SelectButton token={token} key={token.mint} />}
+                  SelectButton={
+                    <SelectButton
+                      tokenAccount={token.tokenAccount}
+                      key={token.mint}
+                    />
+                  }
                 />
               ))}
-            {userNFT && userNFT.length === 0 && (
+            {emptyAccounts && emptyAccounts.length === 0 && (
               <p className="text-gray-400 text-sm mt-4">
                 You don`t have any accounts yet
               </p>

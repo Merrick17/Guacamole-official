@@ -8,7 +8,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['arweave.net'],
+    domains: ['arweave.net','raw.githubusercontent.com'],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

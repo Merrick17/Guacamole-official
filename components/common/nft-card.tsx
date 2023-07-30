@@ -18,6 +18,7 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
     <div className="rounded-xl bg-[#E5E7EB] border-2 border-white flex flex-col gap-2 text-xs px-6 py-4 ">
       <div className="flex flex-col  items-center">
         <Image
+        unoptimized 
           src={token ? token.logoURI : '/images/placeholder.png'}
           alt={token ? token.name : ''}
           className="rounded-xl"
