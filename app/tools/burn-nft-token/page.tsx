@@ -403,6 +403,7 @@ const BurnNftToken = () => {
             title="Burn NFT To Redeem $SOL"
             burnAll
             handleBurn={BurnTokens}
+            tutorialLink='https://docs.guacamole.gg/products-and-features/tools/burn-solana-nft'
           />
           <hr className="border-dashed border-[#E5E7EB]" />
 

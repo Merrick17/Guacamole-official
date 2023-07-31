@@ -235,6 +235,7 @@ const BurnSplToken = () => {
             title="Burn SPL Tokens To Redeem $SOL"
             burnAll
             handleBurn={BurnTokens}
+            tutorialLink="https://docs.guacamole.gg/products-and-features/tools/burn-spl-tokens"
           />
           <hr className="border-dashed border-[#E5E7EB]" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">

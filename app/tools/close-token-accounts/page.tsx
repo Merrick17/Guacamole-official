@@ -277,8 +277,9 @@ const CloseTokenAccount = () => {
         <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5">
           <ToolHeader
             title="Close Token Accounts"
-            burnAll
+            closeAll
             handleBurn={CloseAccounts}
+            tutorialLink="https://docs.guacamole.gg/products-and-features/tools/close-empty-accounts"
           />
           <hr className="border-dashed border-[#E5E7EB]" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">

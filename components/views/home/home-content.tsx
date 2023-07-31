@@ -2,6 +2,7 @@ import { FC } from 'react';
 import ColorBlocks from '@/components/common/color-block';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import routes from '@/config/routes';
 
 interface HomeContentProps {}
 
@@ -19,8 +20,8 @@ const HomeContent: FC<HomeContentProps> = () => {
         effortlessly, while enjoying a seamless and user-friendly experience.
         Get started and unlock a world of possibilities!
       </p>
-      <Link href={'/trade'}>
-        <Button className="px-6 py-3 md:px-12 md:py-6 sm:max-w-[220px] text-lg md:text-2xl font-medium text-white  rounded-[36px] whitespace-nowrap">
+      <Link href={routes.info.root}>
+        <Button className="px-6 py-3 md:px-12 max-h-[66px] md:py-6 sm:max-w-[220px] text-lg md:!text-2xl font-medium text-white  rounded-[36px] whitespace-nowrap">
           Get Started
         </Button>
       </Link>

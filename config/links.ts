@@ -125,11 +125,11 @@ export const Links: {
       {
         name: 'Close Token Accounts',
         href: routes.tools.closeTokenAccounts,
-        disabled: true,
       },
       {
         name: 'Emergency Send All',
         href: routes.tools.emergencySend,
+
       },
     ],
   },

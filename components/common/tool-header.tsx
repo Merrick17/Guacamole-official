@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface ToolHeaderProps {
   className?: string;
@@ -8,6 +9,7 @@ interface ToolHeaderProps {
   closeAll?: boolean;
   title: string;
   handleBurn?: () => void;
+  tutorialLink: string;
 }
 
 const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
@@ -16,6 +18,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
   closeAll,
   burnAll,
   handleBurn,
+  tutorialLink
 }) => {
   return (
     <header
@@ -30,7 +33,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
           <Button
             size="sm"
             variant="destructive"
-            className="text-sm font-medium capitalize py-[6px]"
+            className="text-sm font-medium capitalize py-[6px] h-[32px]"
             onClick={handleBurn}
           >
             <span className="text-sm font-medium ">Burn All Selected</span>
@@ -40,14 +43,19 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
           <Button
             size="sm"
             variant="destructive"
-            className="text-sm font-medium capitalize py-[6px]"
+            className="text-sm font-medium capitalize py-[6px] h-[32px]"
+            onClick={handleBurn}
           >
             <span className="text-sm font-medium ">Close All Selected</span>
           </Button>
         )}
-        <Button size="sm" className="text-sm font-medium capitalize py-[6px]">
+        <Link
+          href={tutorialLink}
+          target='_blank'
+          rel="noopener noreferrer"
+           className="text-sm font-medium capitalize py-[6px] rounded-lg text-white bg-black px-3 hover:bg-black/80 transition-colors " >
           <span>View tutorial</span>
-        </Button>
+        </Link>
       </div>
     </header>
   );
