@@ -1,6 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FC } from 'react';
 
 const WalletMultiButtonDynamic = dynamic(
@@ -14,6 +15,7 @@ interface InfoCardProps {
   name: string;
   description: string;
   connectWallet?: boolean;
+  href?: string;
 }
 
 const InfoCard: FC<InfoCardProps> = ({
@@ -21,9 +23,13 @@ const InfoCard: FC<InfoCardProps> = ({
   name,
   description,
   connectWallet = false,
+  href,
 }) => {
   return (
-    <div className="flex  flex-col items-center gap-6 rounded-lg bg-white px-8 py-16 max-w-sm">
+    <Link
+      href={href || '#'}
+      className="flex  flex-col items-center gap-6 rounded-lg bg-white px-8 py-16 max-w-sm"
+    >
       <div className="relative aspect-square w-28">
         <Image src={image} alt={name} fill />
       </div>
@@ -41,7 +47,7 @@ const InfoCard: FC<InfoCardProps> = ({
           Connect Wallet
         </WalletMultiButtonDynamic>
       )}
-    </div>
+    </Link>
   );
 };
 
