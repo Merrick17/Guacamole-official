@@ -29,41 +29,42 @@ const tools: {
   href?: string;
 }[] = [
   {
-    image: '/images/spl-token.png',
+    image: '/images/tools/create-spl-token.png',
     name: 'Create SPL Token',
     description:
       'Easily create your own token on the Solana network with this simple interface',
     href: routes.tools.createSplToken,
   },
   {
-    image: '/images/multi-token.png',
+    image: '/images/tools/token-multi-sender.png',
     name: 'Token Multi Sender',
     description:
       'Multiple options to send tokens to  Solana addresses and domains. The best way to airdrop tokens!',
     href: routes.tools.tokenMultiSender,
   },
   {
-    image: '/images/burn-token-spl.png',
+    image: '/images/tools/burn-spl-token.png',
     name: 'BURN SPL Tokens',
     description:
       'Burn those worthless tokens and scam airdrops in your wallet to reclaim some $SOL back from rent accounts.',
     href: routes.tools.burnSplToken,
   },
   {
-    image: '/images/burn-token.png',
+    image: '/images/tools/burn-nft-token.png',
     name: 'BURN SOLANA NFT',
     description:
       'Burn those worthless airdrop and “rugged” NFTs to reclaim some $SOL back from rent accounts.',
     href: routes.tools.burnNftToken,
   },
   {
-    image: '/images/send-token.png',
-    name: 'Send an nft message',
+    image: '/images/tools/emergency-send.png',
+    name: 'EMERGENCY SEND',
     description:
-      'One of the best ways to get in touch with people on-chain! Send an NFT with a customized message included.',
+      'Easily send everything from one wallet to a new wallet of your choice. Useful if you suspect your wallet is compromised.',
+    href: routes.tools.emergencySend,
   },
   {
-    image: '/images/close-account.png',
+    image: '/images/tools/close-accounts.png',
     name: 'Close empty accounts',
     description:
       'Your wallet may have some unused accounts! You can close these accounts to reclaim some $SOL back!',
