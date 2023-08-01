@@ -1,15 +1,15 @@
-"use client";
-import Tool from "@/components/common/info-card";
-import NftCard from "@/components/common/nft-card";
-import ToolHeader from "@/components/common/tool-header";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { getTokensMetadata } from "@/lib/metadata";
-import { Metaplex } from "@metaplex-foundation/js";
-import { TOKEN_PROGRAM_ID, Token } from "@solana/spl-token-v1";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey, Transaction } from "@solana/web3.js";
-import { useEffect, useState } from "react";
+'use client';
+import Tool from '@/components/common/info-card';
+import NftCard from '@/components/common/nft-card';
+import ToolHeader from '@/components/common/tool-header';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { getTokensMetadata } from '@/lib/metadata';
+import { Metaplex } from '@metaplex-foundation/js';
+import { TOKEN_PROGRAM_ID, Token } from '@solana/spl-token-v1';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { PublicKey, Transaction } from '@solana/web3.js';
+import { useEffect, useState } from 'react';
 
 const CloseTokenAccount = () => {
   const { connection } = useConnection();
@@ -23,7 +23,7 @@ const CloseTokenAccount = () => {
   const [currentTx, setCurrentTx] = useState<number | null>(null);
   const [totalTx, setTotalTx] = useState<number | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>('');
   const [allSelected, setAllSelected] = useState(false);
   const [toClose, setToClose] = useState<string[]>([]);
 
@@ -38,12 +38,12 @@ const CloseTokenAccount = () => {
     const allTokens: any = [];
 
     const myHeaders = new Headers();
-    myHeaders.append("x-api-key", "AwM0UoO6r1w8XNOA");
+    myHeaders.append('x-api-key', 'AwM0UoO6r1w8XNOA');
 
     const tokenResponse = await fetch(
-      "https://api.shyft.to/sol/v1/wallet/all_tokens?network=mainnet-beta&wallet=" +
+      'https://api.shyft.to/sol/v1/wallet/all_tokens?network=mainnet-beta&wallet=' +
         publickey.toBase58(),
-      { method: "GET", headers: myHeaders, redirect: "follow" }
+      { method: 'GET', headers: myHeaders, redirect: 'follow' }
     );
     const tokenInfo = (await tokenResponse.json()).result;
 
@@ -55,14 +55,14 @@ const CloseTokenAccount = () => {
     tokens.map((token: any) => {
       const mint = token.address;
       const logoURI =
-        token.info.image != ""
+        token.info.image != ''
           ? token.info.image
-          : "https://arweave.net/WCMNR4N-4zKmkVcxcO2WImlr2XBAlSWOOKBRHLOWXNA";
+          : 'https://arweave.net/WCMNR4N-4zKmkVcxcO2WImlr2XBAlSWOOKBRHLOWXNA';
       const tokenAccount = token.associated_account;
       const amount = token.balance;
       let name = token.info.name.trim();
-      if (name == "") {
-        name = mint.slice(0, 4) + "..." + mint.slice(-4);
+      if (name == '') {
+        name = mint.slice(0, 4) + '...' + mint.slice(-4);
       }
       allTokens.push({
         name: name,
@@ -78,10 +78,10 @@ const CloseTokenAccount = () => {
         publickey,
         {
           programId: new PublicKey(
-            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+            'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
           ),
         },
-        "processed"
+        'processed'
       );
 
     const myNFTEmptyAccounts: any = [];
@@ -122,7 +122,7 @@ const CloseTokenAccount = () => {
 
     setEmptyAccounts(userEmptyAccounts);
     setIsFetched(true);
-    console.log("my empty accounts", userEmptyAccounts);
+    console.log('my empty accounts', userEmptyAccounts);
   }
 
   useEffect(() => {
@@ -173,7 +173,7 @@ const CloseTokenAccount = () => {
       if (toClose[0] != undefined && connected) {
         setIsClosing(true);
         setSuccess(false);
-        setMessage("");
+        setMessage('');
         const nbPerTx = 5;
         let nbTx: number;
         if (toClose.length % nbPerTx == 0) {
@@ -196,7 +196,7 @@ const CloseTokenAccount = () => {
           }
 
           for (let j = nbPerTx * i; j < bornSup; j++) {
-            console.log("TO Close", toClose);
+            console.log('TO Close', toClose);
             const associatedAddress = new PublicKey(toClose[j]);
 
             const closeInstruction = await Token.createCloseAccountInstruction(
@@ -212,12 +212,12 @@ const CloseTokenAccount = () => {
           const signature = await sendTransaction(Tx, connection);
           const confirmed = await connection.confirmTransaction(
             signature,
-            "processed"
+            'processed'
           );
-          console.log("confirmation", signature);
+          console.log('confirmation', signature);
           toast({
-            variant: "success",
-            title: "Success",
+            variant: 'success',
+            title: 'Success',
             description: (
               <span>
                 Transaction sent successfully ,
@@ -235,10 +235,10 @@ const CloseTokenAccount = () => {
         await getUserEmptyAccount();
       } else {
         toast({
-          variant: "default",
-          title: "Warning",
+          variant: 'default',
+          title: 'Warning',
           description:
-            "Please choose at least one token account to close first!",
+            'Please choose at least one token account to close first!',
         });
 
         setSuccess(false);
@@ -250,8 +250,8 @@ const CloseTokenAccount = () => {
       setIsClosing(false);
       console.log(error);
       toast({
-        variant: "destructive",
-        title: "Error",
+        variant: 'destructive',
+        title: 'Error',
         description: error.message,
       });
     }
@@ -272,50 +272,37 @@ const CloseTokenAccount = () => {
   };
 
   return (
-    <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      {connected ? (
-        <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5">
-          <ToolHeader
-            title="Close Token Accounts"
-            closeAll
-            handleBurn={CloseAccounts}
-            tutorialLink="https://docs.guacamole.gg/products-and-features/tools/close-empty-accounts"
-          />
-          <hr className="border-dashed border-[#E5E7EB]" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
-            {emptyAccounts &&
-              emptyAccounts.map((token, index) => (
-                <NftCard
-                  key={token.mint + index}
-                  title="<Insert NFT Name>"
-                  image=""
-                  token={token}
-                  SelectButton={
-                    <SelectButton
-                      tokenAccount={token.tokenAccount}
-                      key={token.mint}
-                    />
-                  }
+    <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5">
+      <ToolHeader
+        title="Close Token Accounts"
+        closeAll
+        handleBurn={CloseAccounts}
+        tutorialLink="https://docs.guacamole.gg/products-and-features/tools/close-empty-accounts"
+      />
+      <hr className="border-dashed border-[#E5E7EB]" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
+        {emptyAccounts &&
+          emptyAccounts.map((token, index) => (
+            <NftCard
+              key={token.mint + index}
+              title="<Insert NFT Name>"
+              image=""
+              token={token}
+              SelectButton={
+                <SelectButton
+                  tokenAccount={token.tokenAccount}
+                  key={token.mint}
                 />
-              ))}
-            {emptyAccounts && emptyAccounts.length === 0 && (
-              <p className="text-gray-400 text-sm mt-4">
-                You don`t have any accounts yet
-              </p>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center">
-          <Tool
-            name="Please connect your wallet"
-            description="You will need to connect a supported Solana wallet to continue! Press the button below to explore the options."
-            image="/images/connect-wallet-tool.png"
-            connectWallet
-          />
-        </div>
-      )}
-    </main>
+              }
+            />
+          ))}
+        {emptyAccounts && emptyAccounts.length === 0 && (
+          <p className="text-gray-400 text-sm mt-4">
+            You don`t have any accounts yet
+          </p>
+        )}
+      </div>
+    </div>
   );
 };
 

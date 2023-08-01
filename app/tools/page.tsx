@@ -6,7 +6,9 @@ import { FC } from 'react';
 interface ToolsProps {}
 
 export const metadata: Metadata = {
-  title: 'Tools | Guacamole',
+  title: 'Useful Tools For All Solana Users | Guacamole',
+  description:
+    'Find a variety of easy to use tools in our suite that can instantly help improve your quality of life while interacting with the Solana blockchain or starting your own project!',
 };
 const Tools: FC<ToolsProps> = () => {
   return (

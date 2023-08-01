@@ -26,7 +26,6 @@ import { Metaplex } from '@metaplex-foundation/js';
 
 import { FC, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { SelectToken } from '../../common/select-token';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
   LAMPORTS_PER_SOL,
@@ -41,6 +40,7 @@ import {
 } from '@solana/spl-token-v1';
 import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
+import { SelectToken } from '@/components/common/select-token';
 const formSchema = z.object({
   receivers: z
     .object({
