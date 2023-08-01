@@ -230,19 +230,21 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="metadataUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="uppercase">Metadata URL</FormLabel>
-              <FormControl>
-                <Input placeholder="Url" {...field} disabled={createUrl} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!createUrl && (
+          <FormField
+            control={form.control}
+            name="metadataUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="uppercase">Metadata URL</FormLabel>
+                <FormControl>
+                  <Input placeholder="Url" {...field} disabled={createUrl} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <div className=" flex flex-row items-center gap-4">
           <Button
             onClick={() => {

@@ -36,7 +36,6 @@ interface TokenMultiSenderCsvFormProps {}
 
 const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [selectedToken, setSelectedToken] = useState<any>(null);
   const [csvData, setCsvData] = useState<any[]>([]);
   const [csvHeaders, setCsvHeaders] = useState([]);
   const [currentTx, setCurrentTx] = useState<number | null>(null);
@@ -317,40 +316,30 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
   };
 
   return (
-    <>
-      <SelectToken
-        handleSelect={(token: any) => setSelectedToken(token)}
-        selectedToken={selectedToken}
-      />
-
-      <form onSubmit={(e) => onSubmit(e)} className="space-y-6 pb-6">
-        {!file ? (
-          <div {...getRootProps({ className: 'dropzone' })}>
-            <input {...getInputProps()} />
-            <Button type="button" className="w-full py-4 font-medium">
-              Select File To Upload
-            </Button>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2 lg:flex lg:flex-row lg:justify-between lg:gap-4 ">
-            <Button
-              type="button"
-              variant="destructive"
-              className="w-full py-4 font-medium capitalize"
-              onClick={() => setFile(null)}
-            >
-              remove file
-            </Button>
-            <Button
-              type="submit"
-              className="w-full py-4 font-medium capitalize"
-            >
-              apply
-            </Button>
-          </div>
-        )}
-      </form>
-    </>
+    <form onSubmit={(e) => onSubmit(e)} className="space-y-6 pb-6">
+      {!file ? (
+        <div {...getRootProps({ className: 'dropzone' })}>
+          <input {...getInputProps()} />
+          <Button type="button" className="w-full py-4 font-medium">
+            Select File To Upload
+          </Button>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2 lg:flex lg:flex-row lg:justify-between lg:gap-4 ">
+          <Button
+            type="button"
+            variant="destructive"
+            className="w-full py-4 font-medium capitalize"
+            onClick={() => setFile(null)}
+          >
+            remove file
+          </Button>
+          <Button type="submit" className="w-full py-4 font-medium capitalize">
+            apply
+          </Button>
+        </div>
+      )}
+    </form>
   );
 };
 

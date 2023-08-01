@@ -1,9 +1,13 @@
 import InfoCard from '@/components/common/info-card';
 import routes from '@/config/routes';
+import { Metadata } from 'next';
 import { FC } from 'react';
 
 interface ToolsProps {}
 
+export const metadata: Metadata = {
+  title: 'Tools | Guacamole',
+};
 const Tools: FC<ToolsProps> = () => {
   return (
     <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">

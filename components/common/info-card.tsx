@@ -16,6 +16,7 @@ interface InfoCardProps {
   description: string;
   connectWallet?: boolean;
   href?: string;
+  openNewTab?: boolean;
 }
 
 const InfoCard: FC<InfoCardProps> = ({
@@ -24,10 +25,12 @@ const InfoCard: FC<InfoCardProps> = ({
   description,
   connectWallet = false,
   href,
+  openNewTab = false,
 }) => {
   return (
     <Link
       href={href || '#'}
+      target={openNewTab ? '_blank' : undefined}
       className="flex  flex-col items-center gap-6 rounded-lg bg-white px-8 py-16 max-w-sm"
     >
       <div className="relative aspect-square w-28">
