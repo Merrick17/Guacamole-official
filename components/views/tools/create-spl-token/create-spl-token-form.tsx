@@ -230,7 +230,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </FormItem>
           )}
         />
-        {!createUrl && (
+        {/* {!createUrl && (
           <FormField
             control={form.control}
             name="metadataUrl"
@@ -244,8 +244,8 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
               </FormItem>
             )}
           />
-        )}
-        <div className=" flex flex-row items-center gap-4">
+        )} */}
+        {/* <div className=" flex flex-row items-center gap-4">
           <Button
             onClick={() => {
               setCreateUrl(true);
@@ -261,7 +261,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
           >
             Use Existing URL
           </Button>
-        </div>
+        </div> */}
         <FormField
           control={form.control}
           name="description"

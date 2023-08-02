@@ -362,8 +362,25 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
     refresh();
   }, 15_000);
 
-  const [inputPrice, setInputPrice] = useState(0);
-  const [outputPrice, setOutputPrice] = useState(0);
+  const [inputPriceInUSD, setInputPriceInUSD] = useState(0);
+  const [outputPriceInUSD, setOutputPriceInUSD] = useState(0);
+  const getValueInUsd = async (token: TokenInfo, amount: number, setPrice) => {
+    const { data } = await axios.get(
+      'https://price.jup.ag/v4/price?ids=' + token.symbol
+    );
+    for (var prop in data.data) {
+      const value = data.data[prop].price;
+      setPrice(value * (Number(amount) || 0));
+      break;
+    }
+  };
+  useEffect(() => {
+    getValueInUsd(inputTokenInfo, Number(inputAmout), setInputPriceInUSD);
+  }, [inputTokenInfo, inputAmout]);
+  useEffect(() => {
+    getValueInUsd(outputTokenInfo, Number(outputAmount), setOutputPriceInUSD);
+  }, [outputTokenInfo, outputAmount]);
+
   // useEffect(() => {
   //   const getPrice = async () => {
   //     const res = await axios.get('https://price.jup.ag/v4/price?ids=SOl');
@@ -384,7 +401,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
               variant="secondary"
               className="h-full rounded-lg text-sm"
             >
-              TWAMM
+              DCA
             </Button>
           </div>
           <div className=" flex flex-row items-center justify-end gap-1 h-7">
@@ -405,7 +422,16 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
         </div>
         <Separator className="mt-5" />
 
-        <div className="mt-4 flex flex-col justify-between gap-[5px]">
+        <div className="mt-4 flex flex-col justify-between gap-2 px-2">
+          <div className="flex items-center justify-between">
+            <h1 className="text-sm">Swap This:</h1>
+            <Balance
+              tokenAccounts={tokenAccounts}
+              token={inputTokenInfo}
+              setInput={setInputAmount}
+              solBalance={solBalance}
+            />
+          </div>
           {inputTokenInfo ? (
             <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
               <div className="flex flex-col w-full sm:flex-row items-center  gap-2 rounded-lg bg-white  text-black">
@@ -415,21 +441,15 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                     setCoin={setInputTokenInfo}
                   />
                 </div>
-                <Input
-                  value={inputAmout}
-                  type="number"
-                  onChange={(e) => setInputAmount(e.target.value.trim())}
-                  className="w-full rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none"
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Balance
-                  tokenAccounts={tokenAccounts}
-                  token={inputTokenInfo}
-                  setInput={setInputAmount}
-                  solBalance={solBalance}
-                  amount={Number(inputAmout)}
-                />
+                <div className="flex flex-col gap-2 text-right">
+                  <Input
+                    value={inputAmout}
+                    type="number"
+                    onChange={(e) => setInputAmount(e.target.value.trim())}
+                    className="w-full rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none"
+                  />
+                  <p className="text-black/50 text-xs">{inputPriceInUSD} USD</p>
+                </div>
               </div>
             </div>
           ) : (
@@ -444,30 +464,38 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             </div>
           </div>
           {outputTokenInfo ? (
-            <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
-              <div className=" flex w-full flex-col sm:flex-row items-center gap-2 rounded-lg bg-white ">
-                <div className="w-full  rounded-xl">
-                  <SelectCoin
-                    tokenInfo={outputTokenInfo}
-                    setCoin={setOutputTokenInfo}
-                  />
-                </div>
+            <div className="mt-4 flex flex-col justify-between gap-2">
+              <div className="flex items-center justify-between">
+                <h1 className="text-sm">To Receive:</h1>
+                <Balance
+                  tokenAccounts={tokenAccounts}
+                  token={outputTokenInfo}
+                  solBalance={solBalance}
+                />
+              </div>
+              <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
+                <div className=" flex w-full flex-col sm:flex-row items-center gap-2 rounded-lg bg-white ">
+                  <div className="w-full  rounded-xl">
+                    <SelectCoin
+                      tokenInfo={outputTokenInfo}
+                      setCoin={setOutputTokenInfo}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 text-right">
+                    <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
+                      {(outputAmount &&
+                        outputAmount.toLocaleString(undefined, {
+                          maximumFractionDigits: 6,
+                        })) ||
+                        '0'}
+                    </div>
 
-                <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
-                  {(outputAmount &&
-                    outputAmount.toLocaleString(undefined, {
-                      maximumFractionDigits: 6,
-                    })) ||
-                    '0'}
+                    <p className="text-black/50 text-xs">
+                      {outputPriceInUSD} USD
+                    </p>
+                  </div>
                 </div>
               </div>
-
-              <Balance
-                tokenAccounts={tokenAccounts}
-                token={outputTokenInfo}
-                solBalance={solBalance}
-                amount={Number(outputAmount)}
-              />
             </div>
           ) : (
             <Skeleton className="h-[116px] w-full  rounded-xl border border-[#E5E7EB]" />
