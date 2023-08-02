@@ -423,8 +423,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
         <Separator className="mt-5" />
 
         <div className="mt-4 flex flex-col justify-between gap-2 px-2">
-          <div className="flex items-center justify-between">
-            <h1 className="text-sm">Swap This:</h1>
+          <div className="flex items-center justify-end  sm:justify-between">
+            <h1 className="text-sm hidden sm:block">Swap This:</h1>
             <Balance
               tokenAccounts={tokenAccounts}
               token={inputTokenInfo}
@@ -433,7 +433,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             />
           </div>
           {inputTokenInfo ? (
-            <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
+            <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] p-2  sm:p-4 ">
               <div className="flex flex-col w-full sm:flex-row items-center  gap-2 rounded-lg bg-white  text-black">
                 <div className=" w-full rounded-xl">
                   <SelectCoin
@@ -464,16 +464,16 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             </div>
           </div>
           {outputTokenInfo ? (
-            <div className="mt-4 flex flex-col justify-between gap-2">
-              <div className="flex items-center justify-between">
-                <h1 className="text-sm">To Receive:</h1>
+            <div className=" flex flex-col justify-between gap-2">
+              <div className="flex items-center justify-end  sm:justify-between">
+                <h1 className="text-sm hidden sm:block">To Receive:</h1>
                 <Balance
                   tokenAccounts={tokenAccounts}
                   token={outputTokenInfo}
                   solBalance={solBalance}
                 />
               </div>
-              <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB] px-4 py-5 ">
+              <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB]  p-2  sm:p-4  ">
                 <div className=" flex w-full flex-col sm:flex-row items-center gap-2 rounded-lg bg-white ">
                   <div className="w-full  rounded-xl">
                     <SelectCoin
@@ -481,7 +481,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                       setCoin={setOutputTokenInfo}
                     />
                   </div>
-                  <div className="flex flex-col gap-2 text-right">
+                  <div className="flex flex-col gap-2 text-right w-full">
                     <div className="w-full overflow-hidden text-ellipsis rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none">
                       {(outputAmount &&
                         outputAmount.toLocaleString(undefined, {
