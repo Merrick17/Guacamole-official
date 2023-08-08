@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const Page: FC = () => {
   return (
-    <main className="container mx-auto min-h-[calc(100vh-80px)] justify-center flex flex-col items-center gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
       <div className="flex w-full max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7">
         {/* <Tabs defaultValue="swap" value={menuValue} className="w-full">
             <div className="flex flex-row justify-between items-center">

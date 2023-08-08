@@ -8,7 +8,7 @@ interface HomeContentProps {}
 
 const HomeContent: FC<HomeContentProps> = () => {
   return (
-    <div className="flex  lg:max-w-3xl flex-col gap-10 rounded-lg bg-white px-14 py-10">
+    <div className="flex border border-[#E5E7EB] backdrop:blur-sm lg:max-w-3xl flex-col gap-10 rounded-lg bg-white px-14 py-10">
       <header className="flex flex-col gap-6">
         <ColorBlocks />
         <h1 className="text-3xl sm:text-6xl lg:text-[64px] font-medium lg:leading-[72px] text-black">
@@ -20,11 +20,6 @@ const HomeContent: FC<HomeContentProps> = () => {
         effortlessly, while enjoying a seamless and user-friendly experience.
         Get started and unlock a world of possibilities!
       </p>
-      <Link href={routes.info.root}>
-        <Button className="px-6 py-3 md:px-12 max-h-[66px] md:py-6 sm:max-w-[220px] text-lg md:!text-2xl font-medium text-white  rounded-[36px] whitespace-nowrap">
-          Get Started
-        </Button>
-      </Link>
     </div>
   );
 };

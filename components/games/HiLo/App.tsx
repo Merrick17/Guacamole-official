@@ -1,3 +1,4 @@
+'use client';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { solToLamports } from 'gamba';
 import { useGamba } from 'gamba/react';

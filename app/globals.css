@@ -16,7 +16,7 @@
 
 }
 body {
-  @apply  bg-body bg-body-image bg-cover min-h-screen	 bg-no-repeat antialiased overflow-x-hidden ;
+  @apply  min-h-screen	overflow-x-hidden  ;
 }
 
 .wallet-adapter-button {

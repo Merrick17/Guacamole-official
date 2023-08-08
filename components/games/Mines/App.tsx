@@ -1,3 +1,4 @@
+'use client';
 import { solToLamports } from 'gamba';
 import { useGamba } from 'gamba/react';
 import { formatLamports } from 'gamba/react-ui';
