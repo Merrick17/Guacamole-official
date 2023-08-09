@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 };
 import { Toaster } from '@/components/ui/toaster';
 import Footer from '@/components/ui/footer';
+import WalletDrawer from '@/components/ui/wallet-drawer';
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
@@ -27,9 +28,9 @@ export default function RootLayout({
         <Disclaimer />
         <Wallet>
           <Header />
-
+          <WalletDrawer />
           <div className="mt-20 min-h-screen relative">
-            <div className="absolute top-0 left-0  w-screen h-screen bg-body-image bg-cover bg-no-repeat antialiased z-[-1]" />
+            <div className="fixed top-0 left-0  w-screen h-screen bg-body-image bg-cover bg-no-repeat antialiased z-[-1]" />
             <div className="z-10">{children}</div>
           </div>
           <Footer />

@@ -6,7 +6,7 @@ import { BsChevronDown } from 'react-icons/bs';
 
 export function MenuItems() {
   return (
-    <div className="flex items-center gap-[30px] tex-[#4B5563]">
+    <div className="flex items-center gap-[30px] text-[#4B5563]">
       {Links.map((item, index) => (
         <Fragment key={item.name + index}>
           {item.dropdownItems ? (

@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 const Page: FC = () => {
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      <div className="flex w-full max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7">
-        {/* <Tabs defaultValue="swap" value={menuValue} className="w-full">
+      {/* <Tabs defaultValue="swap" value={menuValue} className="w-full">
             <div className="flex flex-row justify-between items-center">
               <TabsList>
                 <TabsTrigger value="swap" onClick={() => setMenuValue('swap')}>
@@ -28,11 +27,10 @@ const Page: FC = () => {
               <WalletMultiButtonDynamic className="rounded-full" />
             </div>
             <TabsContent value="swap"> */}
-        <Trade />
-        {/* </TabsContent>
+      <Trade />
+      {/* </TabsContent>
             <TabsContent value="twamm">Comming Soon</TabsContent>
           </Tabs> */}
-      </div>
     </main>
   );
 };

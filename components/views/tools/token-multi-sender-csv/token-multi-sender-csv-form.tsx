@@ -8,7 +8,7 @@ import Papa from 'papaparse';
 import { FC, FormEvent, FormEventHandler, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { SelectToken } from '@/components/common/select-token';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,

@@ -1,14 +1,19 @@
 import { FC } from 'react';
 import ColorBlocks from '@/components/common/color-block';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import routes from '@/config/routes';
+import { cn } from '@/lib/utils';
 
 interface HomeContentProps {}
 
-const HomeContent: FC<HomeContentProps> = () => {
+const HomeContent: FC<HomeContentProps & Partial<HTMLDListElement>> = ({
+  className,
+}) => {
   return (
-    <div className="flex border border-[#E5E7EB] backdrop:blur-sm lg:max-w-3xl flex-col gap-10 rounded-lg bg-white px-14 py-10">
+    <div
+      className={cn(
+        'flex border border-[#E5E7EB] backdrop:blur-sm lg:max-w-3xl flex-col gap-10 rounded-lg bg-white px-14 py-10',
+        className
+      )}
+    >
       <header className="flex flex-col gap-6">
         <ColorBlocks />
         <h1 className="text-3xl sm:text-6xl lg:text-[64px] font-medium lg:leading-[72px] text-black">

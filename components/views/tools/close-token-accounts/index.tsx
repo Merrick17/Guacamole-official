@@ -3,7 +3,7 @@ import Tool from '@/components/common/info-card';
 import NftCard from '@/components/common/nft-card';
 import ToolHeader from '@/components/common/tool-header';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { getTokensMetadata } from '@/lib/metadata';
 import { Metaplex } from '@metaplex-foundation/js';
 import { TOKEN_PROGRAM_ID, Token } from '@solana/spl-token-v1';

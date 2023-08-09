@@ -49,12 +49,18 @@ const Toast = React.forwardRef<
       )}
       {...props}
     >
-      <div className="flex flex-row gap-2 items-center ">
+      <div
+        className={cn(
+          'gap-2 items-center h-full ',
+          variant !== 'success' && 'grid grid-cols-toast ',
+          variant === 'success' && 'flex'
+        )}
+      >
         {variant === 'default' && (
           <div
             className={cn(
               toastVariants({ variant }),
-              'min-h-full w-[6px] rounded-full shrink-0'
+              'min-h-full  w-[6px] rounded-full shrink-0'
             )}
           />
         )}

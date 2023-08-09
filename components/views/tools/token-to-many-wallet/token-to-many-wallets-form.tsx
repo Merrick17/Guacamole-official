@@ -38,7 +38,7 @@ import {
   Token,
   TOKEN_PROGRAM_ID,
 } from '@solana/spl-token-v1';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { SelectToken } from '@/components/common/select-token';
 const formSchema = z.object({

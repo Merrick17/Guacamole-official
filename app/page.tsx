@@ -1,9 +1,12 @@
 import ColorBlocks from '@/components/common/color-block';
+import Container from '@/components/views/home/container';
+import EarnList from '@/components/views/home/earn-list';
 import GamesSection from '@/components/views/home/games-section';
 import HomeContent from '@/components/views/home/home-content';
 import HomeHeadline from '@/components/views/home/home-headline';
 import HomeList from '@/components/views/home/home-list';
 import ShopSection from '@/components/views/home/shop-section';
+import Trade from '@/components/views/trade/src/Trade';
 import routes from '@/config/routes';
 import { cn } from '@/lib/utils';
 
@@ -15,7 +18,11 @@ export default function Home() {
       )}
     >
       <section className="flex flex-col gap-[60px]">
-        <HomeContent />
+        <div className="flex flex-col lg:flex-row  gap-14 ">
+          <HomeContent className="w-full" />
+          <Trade showDetails={false} />
+        </div>
+
         <HomeList listItems={HomeListItems} />
         <ColorBlocks className="mx-auto" />
       </section>
@@ -47,7 +54,7 @@ export default function Home() {
           title="There’s nothing like a fresh side of GUAC."
           description="The GUAC token is at the very pit of the Guacamole ecosystem. You can easily buy, farm, spend, stake, win and even vote with it! Our token was initially stealth launched with a whopping 94% of supply locked in a Raydium liquidity pool on launch."
         />
-        <HomeList listItems={EarnListItems} />
+        <EarnList />
         <ColorBlocks className="mx-auto" />
       </section>
       <ShopSection />

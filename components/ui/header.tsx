@@ -4,8 +4,6 @@ import { FC, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { BsDiscord } from 'react-icons/bs';
-import { useIsMounted } from 'usehooks-ts';
-import { useBreakpoint } from '@/hooks/use-breakpoint';
 import { Logo } from '../views/trade/src/components/navigation-frame/TopBar/Logo';
 import Hamburger from './hamburger';
 import { MenuItems } from './menu-items';
@@ -30,7 +28,7 @@ const Header: FC<HeaderProps> = () => {
   return (
     <>
       {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
-      <nav className="fixed top-0 bg-white px-10 py-4 z-40 w-full ">
+      <nav className="fixed top-0 bg-[#F0FDF4] px-10 py-4 z-40 w-full border-b border-[#E5E7EB]">
         <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
           <HeaderLeftArea />
           <HeaderRightArea

@@ -17,6 +17,10 @@ module.exports = {
     },
 
     extend: {
+      gridTemplateColumns: {
+        // Complex site-specific column configuration
+        toast: '7px 1fr',
+      },
       colors: {
         body: '#E1F5DA',
       },

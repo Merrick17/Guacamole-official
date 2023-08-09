@@ -31,7 +31,7 @@ import { Button } from '@/components/ui/button';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
 import Tool from '@/components/common/info-card';
 import Loading from '@/components/views/trade/src/components/Loading';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
 const BurnNftToken = () => {

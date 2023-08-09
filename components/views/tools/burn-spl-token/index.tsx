@@ -30,7 +30,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
 import Tool from '@/components/common/info-card';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const BurnSplToken = () => {
   const { connection } = useConnection();
