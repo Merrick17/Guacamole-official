@@ -54,6 +54,21 @@ export const Links: {
       },
     ],
   },
+  {
+    name: 'Earn',
+    href: routes.earn.root,
+    Icon: GoHourglass,
+    dropdownItems: [
+      {
+        name: 'Dynamic Vault',
+        href: routes.earn.dynamicVault,
+      },
+      {
+        name: 'Statistics',
+        href: routes.earn.statistics,
+      },
+    ],
+  },
 
   {
     name: 'Play',
@@ -129,7 +144,6 @@ export const Links: {
       {
         name: 'Emergency Send All',
         href: routes.tools.emergencySend,
-
       },
     ],
   },

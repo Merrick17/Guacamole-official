@@ -15,10 +15,10 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
     console.log('Token', token);
   }, [token]);
   return (
-    <div className="rounded-xl bg-[#E5E7EB] border-2 border-white flex flex-col gap-2 text-xs px-6 py-4 ">
+    <div className="rounded-xl bg-white border-2 border-[#E5E7EB] flex flex-col gap-2 text-xs px-6 py-4  hover:bg-[#F0FDF4] ">
       <div className="flex flex-col  items-center">
         <Image
-        unoptimized 
+          unoptimized
           src={token ? token.logoURI : '/images/placeholder.png'}
           alt={token ? token.name : ''}
           className="rounded-xl"

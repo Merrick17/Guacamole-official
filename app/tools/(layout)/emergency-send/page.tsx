@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 const EmergencySend = () => {
   return (
-    <div className=" mx-auto flex w-full max-w-lg flex-col gap-6 rounded-lg bg-white px-6 py-5">
+    <div className=" mx-auto flex w-full max-w-lg flex-col gap-6 rounded-lg bg-white px-6 py-5  border border-[#E5E7EB] shadow-md">
       <ToolHeader
         title="Emergency Send Tool"
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/emergency-send"

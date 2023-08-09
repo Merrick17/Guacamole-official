@@ -429,6 +429,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const [inputPriceInUSD, setInputPriceInUSD] = useState(0);
   const [outputPriceInUSD, setOutputPriceInUSD] = useState(0);
   const getValueInUsd = async (token: TokenInfo, amount: number, setPrice) => {
+    if (!token) return;
     const { data } = await axios.get(
       'https://price.jup.ag/v4/price?ids=' + token.symbol
     );

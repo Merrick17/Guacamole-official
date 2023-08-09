@@ -272,7 +272,7 @@ const CloseTokenAccount = () => {
   };
 
   return (
-    <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5">
+    <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5  border border-[#E5E7EB] shadow-md">
       <ToolHeader
         title="Close Token Accounts"
         closeAll

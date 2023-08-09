@@ -7,6 +7,11 @@ const routes = {
     liquidity: '/swap/liquidity',
     bridge: '/swap/bridge',
   },
+  earn: {
+    root: '/earn',
+    dynamicVault: '/earn/dynamic-vault',
+    statistics: '/earn/statistics',
+  },
   play: {
     root: '/play',
     guacamole: '/play/guac-a-mole',
@@ -29,6 +34,7 @@ const routes = {
   info: {
     root: '/info',
   },
+
   inPageLinks: {
     tokenMultiSender: {
       root: '/tools/token-multi-sender',
