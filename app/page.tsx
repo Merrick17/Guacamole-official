@@ -138,14 +138,14 @@ const EarnListItems: ListItemProps[] = [
     title: 'Dynamic Vaults',
     description:
       'Optimize yields between top lending protocols with rebalancing vaults.',
-    image: '/images/home/earn/vault.png',
+    image: '/images/earn/dynamic-vault.png',
     href: routes.swap.root,
   },
   {
     title: 'Token For NFT Pools',
     description:
       'Stake tokens to receive points which can be utilized to redeem vaulted NFTs.',
-    image: '/images/home/earn/nft-pool.png',
+    image: '/images/earn/nft-pool.png',
     href: routes.info.root,
     disabled: true,
   },
@@ -153,7 +153,7 @@ const EarnListItems: ListItemProps[] = [
     title: 'NFT For Token Pools',
     description:
       'Stake your NFTs to receive tokens. Can be created or used by any project.',
-    image: '/images/home/earn/token-pool.png',
+    image: '/images/earn/token-pool.png',
     href: routes.play.root,
     disabled: true,
   },
@@ -161,7 +161,7 @@ const EarnListItems: ListItemProps[] = [
     title: 'Liquidity Farming',
     description:
       'Power up your liquidity provision to earn extra liquidity mining rewards.',
-    image: '/images/home/earn/liquidity-farming.png',
+    image: '/images/earn/liquidity-farming.png',
     href: routes.tools.root,
     disabled: true,
   },

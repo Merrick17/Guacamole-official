@@ -7,7 +7,7 @@ export const numberColorToHex = (numberColor: string) => {
   if (numberColor === 'black') {
     return { text: '#00ff61', background: '#242634' };
   }
-  return { text: 'white', background: 'transparent' };
+  return { text: 'black', background: 'transparent' };
 };
 
 const getChipColor = (value = 0) => {

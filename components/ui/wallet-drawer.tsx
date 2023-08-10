@@ -64,7 +64,7 @@ const WalletDrawer = () => {
                   className="w-9 h-8 p-1  flex items-center justify-center rounded-lg bg-white border border-[#E5E7EB]"
                 >
                   <Image
-                    src="/images/home/earn/vault.png"
+                    src="/images/earn/dynamic-vault.png"
                     width={20}
                     height={20}
                     alt="vault"

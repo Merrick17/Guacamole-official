@@ -1,5 +1,8 @@
 import EarnFooter from '@/components/common/earn-footer';
 import EarnHeader from '@/components/common/earn-header';
+import StatisticsForms from '@/components/views/earn/statistics/statistics-forms';
+import TotalLiquidity from '@/components/views/earn/statistics/total-liquidity';
+import YourDeposit from '@/components/views/earn/statistics/your-deposit';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -18,6 +21,15 @@ const Page = () => {
           viewAll={true}
         />
         <hr className="border-dashed border-[#E5E7EB]" />
+        <div className="grid grid-cols-5 gap-4">
+          <div className="col-span-3 flex flex-col gap-4">
+            <TotalLiquidity />
+          </div>
+          <div className="col-span-2 flex flex-col gap-4">
+            <YourDeposit />
+            <StatisticsForms />
+          </div>
+        </div>
         <EarnFooter />
       </div>
     </main>

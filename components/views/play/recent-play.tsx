@@ -6,7 +6,7 @@ import { RecentPlays } from '@/components/common/recent-plays';
 
 const RecentPlay = () => {
   return (
-    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-white px-5 py-7">
+    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-white px-5 py-7  border border-[#E5E7EB]">
       <header className="flex items-center gap-1 ">
         <div className="relative aspect-square w-6">
           <Image src="/images/recent-play.png" fill alt="play" />

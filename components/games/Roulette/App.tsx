@@ -82,7 +82,7 @@ export default function Roulette() {
   return (
     <>
       <ResponsiveSize>
-        <div className=" grid gap-5">
+        <div className=" grid gap-5 ">
           <div
             style={{
               textAlign: 'center',

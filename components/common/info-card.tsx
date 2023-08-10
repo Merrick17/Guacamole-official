@@ -1,4 +1,5 @@
 'use client';
+import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,6 +18,7 @@ interface InfoCardProps {
   connectWallet?: boolean;
   href?: string;
   openNewTab?: boolean;
+  disabled?: boolean;
 }
 
 const InfoCard: FC<InfoCardProps> = ({
@@ -26,12 +28,16 @@ const InfoCard: FC<InfoCardProps> = ({
   connectWallet = false,
   href,
   openNewTab = false,
+  disabled = false,
 }) => {
   return (
     <Link
-      href={href || '#'}
+      href={!disabled ? href : '#'}
       target={openNewTab ? '_blank' : undefined}
-      className="flex  flex-col items-center gap-6 rounded-lg border border-[#E5E7EB] bg-white px-8 py-16 max-w-sm hover:bg-[#F0FDF4] transition-colors"
+      className={cn(
+        'flex  flex-col items-center gap-6 rounded-lg border border-[#E5E7EB] bg-white px-8 py-16 max-w-sm hover:bg-[#F0FDF4] transition-colors',
+        disabled && 'bg-[#E5E7EB80] cursor-not-allowed hover:bg-[#E5E7EB80]'
+      )}
     >
       <div className="relative aspect-square w-28">
         <Image src={image} alt={name} fill />

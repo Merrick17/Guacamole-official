@@ -60,6 +60,10 @@ export const Links: {
     Icon: GoHourglass,
     dropdownItems: [
       {
+        name: 'Earn Overview',
+        href: routes.earn.root,
+      },
+      {
         name: 'Dynamic Vault',
         href: routes.earn.dynamicVault,
       },
