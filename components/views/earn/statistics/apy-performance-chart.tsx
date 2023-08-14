@@ -9,6 +9,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from 'recharts';
 
 const data = [
@@ -59,18 +61,20 @@ const data = [
 const ApyPerformanceChart = () => {
   return (
     <ResponsiveContainer width={'100%'} height={355}>
-      <LineChart width={500} height={355} data={data}>
+      <AreaChart width={500} height={355} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" stroke="#9CA3AF " />
-        <YAxis domain={['auto', 'auto']} stroke="#9CA3AF" />
+        <YAxis domain={['auto', 5]} stroke="#9CA3AF" />
         <Tooltip />
-        <Line
-          type="linear"
+
+        <Area
+          type="natural"
           dataKey="pv"
-          stroke="#4E8341"
-          activeDot={{ r: 8 }}
+          stroke="#97D19C"
+          strokeWidth={2}
+          fill="#F0FDF4"
         />
-      </LineChart>
+      </AreaChart>
     </ResponsiveContainer>
   );
 };

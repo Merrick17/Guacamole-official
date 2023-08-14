@@ -1,3 +1,4 @@
+// 'use client';
 import Container from '@/components/views/home/container';
 import { BannerCard } from '@/components/common/banner-card';
 import { GAMES } from '@/components/games';
@@ -5,16 +6,33 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import ColorBlocks from '@/components/common/color-block';
 import { Raleway } from 'next/font/google';
+// import { useEffect } from 'react';
+import axios from 'axios';
 const RalewayFont = Raleway({
   weight: '700',
   subsets: ['latin'],
 });
 const GamesSection = () => {
+  // useEffect(() => {
+  //   const getTotalPlayedVolume = async () => {
+  //     const { data } = await axios.get(
+  //       `https://209.38.229.113.nip.io:3001/top-creators/total-wager?start=1677724800&end=${Date.now()}`,
+  //       {
+  //         headers: {
+  //           'Access-Control-Allow-Origin': '*',
+  //           'Content-Type': 'application/json',
+  //         },
+  //       }
+  //     );
+  //     console.log('wa333', data);
+  //   };
+  //   getTotalPlayedVolume();
+  // }, []);
   return (
     <section className="flex flex-col gap-[60px]">
       <div className="flex flex-col lg:flex-row gap-14 justify-between w-full">
         <Container>
-          <div className="flex flex-col justify-between h-full">
+          <div className="flex flex-col justify-center gap-10 h-full">
             <div className="flex flex-col gap-10">
               <h1
                 className={cn('font-bold text-[40px]', RalewayFont.className)}
@@ -31,7 +49,7 @@ const GamesSection = () => {
               <div className="font-medium text-3xl">
                 <p className="text-black/50 text-sm ">Total Played Volume</p>
                 <h1>
-                  <span className="uppercase">537.08</span> SOL
+                  <span className="uppercase">1000+</span> SOL
                 </h1>
               </div>
               <div className="font-medium text-3xl">
