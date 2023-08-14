@@ -15,16 +15,21 @@ const ShopSection = () => {
     <section className="flex flex-col gap-[60px]">
       <div className="flex flex-col lg:flex-row gap-14 justify-between w-full">
         <Container>
-          <div className="flex flex-col gap-10">
-            <h1 className={cn('font-bold text-[40px]', RalewayFont.className)}>
-              Explore a fresher way to shop & reward yourself!
-            </h1>
-            <p className="font-medium text-xl text-[#5B5B5B]">
-              The GUAC Shop (GUAC.GG) provides enthusiasts access to exciting
-              giveaways, exclusive offers, and a variety of socially driven
-              features! Freshen up and accumulate rewards in real-time to obtain
-              or trade games, software, experiences, and digital collectibles.
-            </p>
+          <div className="flex flex-col h-full justify-between">
+            <div className="flex flex-col gap-10">
+              <h1
+                className={cn('font-bold text-[40px]', RalewayFont.className)}
+              >
+                Explore a fresher way to shop & reward yourself!
+              </h1>
+              <p className="font-medium text-xl text-[#5B5B5B]">
+                The GUAC Shop (GUAC.GG) provides enthusiasts access to exciting
+                giveaways, exclusive offers, and a variety of socially driven
+                features! Freshen up and accumulate rewards in real-time to
+                obtain or trade games, software, experiences, and digital
+                collectibles.
+              </p>
+            </div>
             <div className="bg-[#F0FDF4] rounded-lg border border-[#E5E7EB] p-6 flex flex-col gap-6 ">
               <div className="font-medium text-3xl">
                 <p className="text-black/50 text-sm ">
@@ -47,7 +52,7 @@ const ShopSection = () => {
         <Container>
           <div
             className={cn(
-              'grid   gap-y-9 gap-x-9 grid-cols-1',
+              'grid place-content-center gap-9 grid-cols-1',
               'md:grid-cols-2'
             )}
           >

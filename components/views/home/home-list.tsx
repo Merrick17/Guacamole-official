@@ -17,7 +17,7 @@ interface HomeListProps {
 
 const HomeList: FC<HomeListProps> = ({ listItems }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 rounded-lg bg-white px-14 py-6  border border-[#E5E7EB] backdrop:blur-sm">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-white px-14 py-6  border border-[#E5E7EB] backdrop:blur-sm">
       {listItems.map((item, index) => (
         <ListItem key={index} {...item} />
       ))}

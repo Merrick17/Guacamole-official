@@ -1,5 +1,8 @@
 import EarnFooter from '@/components/common/earn-footer';
 import EarnHeader from '@/components/common/earn-header';
+import ApyPerformance from '@/components/views/earn/statistics/apy-performance';
+import LiquidityAllocation from '@/components/views/earn/statistics/liquidity-allocation';
+import StatisticsCardContainer from '@/components/views/earn/statistics/statistics-card-container';
 import StatisticsForms from '@/components/views/earn/statistics/statistics-forms';
 import TotalLiquidity from '@/components/views/earn/statistics/total-liquidity';
 import YourDeposit from '@/components/views/earn/statistics/your-deposit';
@@ -21,13 +24,28 @@ const Page = () => {
           viewAll={true}
         />
         <hr className="border-dashed border-[#E5E7EB]" />
-        <div className="grid grid-cols-5 gap-4">
-          <div className="col-span-3 flex flex-col gap-4">
+        <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
+          <div className="lg:col-span-3">
             <TotalLiquidity />
           </div>
-          <div className="col-span-2 flex flex-col gap-4">
+          <div className="lg:col-span-2">
             <YourDeposit />
+          </div>
+          <div className="lg:col-span-3">
+            <LiquidityAllocation />
+          </div>
+          <div className="lg:col-span-2">
             <StatisticsForms />
+          </div>
+          <div className="lg:col-span-3">
+            <ApyPerformance />
+          </div>
+          <div className="lg:col-span-2">
+            <StatisticsCardContainer>
+              <h1 className="text-lg font-semibold">
+                What Are Dynamic Vaults?
+              </h1>
+            </StatisticsCardContainer>
           </div>
         </div>
         <EarnFooter />

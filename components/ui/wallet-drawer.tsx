@@ -10,13 +10,44 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import routes from '@/config/routes';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
 import axios from 'axios';
+import { Skeleton } from './skeleton';
 
 const WalletDrawer = () => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const { connected } = useWallet();
   const walletTokens = useWalletTokens();
-  console.log('Wallet Tokens', walletTokens);
+
+  const [tokenData, setTokenData] = useState([]); // Store token data including USD values
+
+  useEffect(() => {
+    const fetchTokenData = async () => {
+      const tokenDataWithPrices = await Promise.all(
+        walletTokens
+          .filter((token) => !!token.token)
+          .map(async (token) => {
+            const { data } = await axios.get(
+              'https://price.jup.ag/v4/price?ids=' + token.token.symbol
+            );
+            for (var prop in data.data) {
+              const price = data.data[prop].price;
+              const amount = token.account.amount
+                ? Number(token.account.amount) / Math.pow(10, token.decimals)
+                : 0;
+              return {
+                ...token,
+                price,
+                amount,
+              };
+            }
+          })
+      );
+
+      setTokenData(tokenDataWithPrices);
+    };
+
+    fetchTokenData();
+  }, [walletTokens]);
   return (
     <>
       <button
@@ -77,10 +108,19 @@ const WalletDrawer = () => {
               style={{ height: 'calc(100% - 96px)' }}
             >
               <ul className="flex flex-col gap-2">
-                {walletTokens?.map(
-                  (token, index) =>
-                    token.token && <Row key={index} token={token} />
-                )}
+                {tokenData
+                  ? tokenData.length > 0 &&
+                    tokenData
+                      .sort((a, b) =>
+                        a.price * a.amount > b.price * b.amount ? -1 : 1
+                      )
+                      .map((token, index) => <Row key={index} token={token} />)
+                  : Array(5).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        className="h-16 w-full rounded-xl "
+                      />
+                    ))}
               </ul>
             </div>
             <div
@@ -99,28 +139,11 @@ const WalletDrawer = () => {
 export default WalletDrawer;
 
 const Row = ({ token }: { token: any }) => {
-  const [price, setPrice] = useState(0);
-
-  const getValueInUsd = async (token: TokenInfo) => {
-    const { data } = await axios.get(
-      'https://price.jup.ag/v4/price?ids=' + token.symbol
-    );
-    for (var prop in data.data) {
-      const value = data.data[prop].price;
-      setPrice(value);
-      break;
-    }
-  };
-
   const amount = useMemo(() => {
     return token.account.amount
       ? Number(token.account.amount) / Math.pow(10, token.decimals)
       : 0;
   }, [token.account.amount, token.decimals]);
-
-  useEffect(() => {
-    getValueInUsd(token.token);
-  }, [amount]);
 
   return (
     <div
@@ -148,11 +171,11 @@ const Row = ({ token }: { token: any }) => {
               <BiLink />
             </Link>
           </div>
-          <span>${price.toFixed(2)}</span>
+          <span>${token.price.toFixed(2)}</span>
         </div>
         <div className=" flex flex-row items-center justify-between gap-4 text-black text-sm ">
           <span>{amount.toFixed(6)}</span>
-          <span>${(price * amount).toFixed(2)}</span>
+          <span>${(token.price * amount).toFixed(2)}</span>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ export function BannerCard({
         'min-w-[222px] w-full md:min-w-[372px] aspect-square bg-white  rounded-lg border border-[#E5E7EB] shadow-sm',
         {
           ' py-[6px] px-[10px]  md:py-[18px] md:px-[19px] ': !compact,
-          'w-full min-w-0 max-w-[222px] md:min-w-0 md:max-w-[222px]': compact,
+          'w-full min-w-0  md:min-w-0 ': compact,
         }
       )}
     >

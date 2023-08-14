@@ -14,15 +14,19 @@ const GamesSection = () => {
     <section className="flex flex-col gap-[60px]">
       <div className="flex flex-col lg:flex-row gap-14 justify-between w-full">
         <Container>
-          <div className="flex flex-col gap-10">
-            <h1 className={cn('font-bold text-[40px]', RalewayFont.className)}>
-              Play plenty of fun on-chain games and win prizes!
-            </h1>
-            <p className="font-medium text-xl text-[#5B5B5B]">
-              Take a chance in fun games where you can win Solana and some of
-              your favorite coins and tokens. Flips, mines, dice, and more away
-              for you to play on Guacamole’s game section.
-            </p>
+          <div className="flex flex-col justify-between h-full">
+            <div className="flex flex-col gap-10">
+              <h1
+                className={cn('font-bold text-[40px]', RalewayFont.className)}
+              >
+                Play plenty of fun on-chain games and win prizes!
+              </h1>
+              <p className="font-medium text-xl text-[#5B5B5B]">
+                Take a chance in fun games where you can win Solana and some of
+                your favorite coins and tokens. Flips, mines, dice, and more
+                away for you to play on Guacamole’s game section.
+              </p>
+            </div>
             <div className="bg-[#F0FDF4] rounded-lg border border-[#E5E7EB] p-6 flex flex-col gap-6 ">
               <div className="font-medium text-3xl">
                 <p className="text-black/50 text-sm ">Total Played Volume</p>
@@ -42,8 +46,8 @@ const GamesSection = () => {
         <Container>
           <div
             className={cn(
-              'grid   gap-y-9 gap-x-9 grid-cols-1',
-              'md:grid-cols-2'
+              'grid  place-content-center  grid-cols-1',
+              'md:grid-cols-2  gap-9'
             )}
           >
             {GAMES.length > 1 &&
