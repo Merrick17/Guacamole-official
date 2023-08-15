@@ -1,9 +1,12 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import routes from '@/config/routes';
+import { convert, formatNumber } from '@/lib/numbers';
 import { cn } from '@/lib/utils';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 type EarnListItemProps = {
   title: string;
@@ -15,11 +18,35 @@ type EarnListItemProps = {
 interface EarnListProps {}
 
 const EarnList: FC<EarnListProps> = () => {
+  const [marketCap, setMarketCap] = useState(0);
+  const [marketPrice, setMarketPrice] = useState(0);
+
+  useEffect(() => {
+    const getMarketCap = async () => {
+      const { data } = await axios.get(
+        'https://api.coingecko.com/api/v3/coins/guacamole'
+      );
+
+      setMarketCap(data.market_data.fully_diluted_valuation.usd);
+      setMarketPrice(data.market_data.current_price.usd);
+    };
+    getMarketCap();
+  }, []);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 rounded-lg bg-white px-14 py-6  border border-[#E5E7EB] backdrop:blur-sm">
-      {earnListItems.map((item, index) => (
-        <EarnListItem key={index} {...item} />
-      ))}
+      <EarnListItem {...earnListItems[0]} />
+      <EarnListItem {...earnListItems[1]} />
+      <EarnListItem
+        {...earnListItems[2]}
+        description={new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(marketCap)}
+      />
+      <EarnListItem
+        {...earnListItems[3]}
+        description={'$' + convert(marketPrice)}
+      />
     </div>
   );
 };
@@ -34,7 +61,7 @@ const EarnListItem: FC<EarnListItemProps> = ({
   return (
     <div
       className={cn(
-        ' max-w-[322px] flex flex-col gap-2  transition-colors p-4 border-[#E5E7EB] border rounded-lg cursor-pointer bg-[#F0FDF4]'
+        ' w-full lg:max-w-[322px] flex flex-col gap-2  transition-colors p-4 border-[#E5E7EB] border rounded-lg cursor-pointer bg-[#F0FDF4]'
       )}
     >
       <p className="text-sm  text-black/50">{title}</p>
@@ -65,8 +92,8 @@ const earnListItems: EarnListItemProps[] = [
   },
   {
     title: 'Current Market Cap',
-    btnText: '$357,036.89',
-    description: 'View COINGECKO',
+    btnText: 'View COINGECKO',
+    description: '$357,036.89',
     href: '/',
   },
   {
