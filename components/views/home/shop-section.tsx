@@ -39,13 +39,12 @@ const ShopSection = () => {
                   <span className="uppercase">7.99 USDC</span> for Discord Nitro
                 </h1>
               </div>
-              <Button
-                variant="default"
-                size="sm"
-                className="uppercase font-semibold w-max"
+              <Link
+                href={'https://guac.gg/nitro-offer'}
+                className="text-sm font-semibold uppercase bg-black text-white py-2 px-5 text-center rounded-md w-max  "
               >
                 Start Shopping
-              </Button>
+              </Link>
             </div>
           </div>
         </Container>
@@ -56,18 +55,17 @@ const ShopSection = () => {
               'md:grid-cols-2'
             )}
           >
-            {GAMES.length > 1 &&
-              GAMES.map((game: any) => (
-                <Link key={game.short_name} href={`/play/${game.short_name}`}>
-                  <BannerCard
-                    backgroundImage={game.image}
-                    backgroundColor={game.theme_color}
-                    compact={true}
-                  >
-                    {game.name}
-                  </BannerCard>
-                </Link>
-              ))}
+            {shopList.map((item) => (
+              <Link key={item.name} href={item.href}>
+                <BannerCard
+                  backgroundImage={item.image}
+                  backgroundColor={item.theme_color}
+                  compact={true}
+                >
+                  {item.name}
+                </BannerCard>
+              </Link>
+            ))}
           </div>
         </Container>
       </div>
@@ -75,5 +73,32 @@ const ShopSection = () => {
     </section>
   );
 };
+
+const shopList = [
+  {
+    name: 'SHOP',
+    theme_color: '#F0FDF4',
+    image: '/images/home/shop/SHOP.png',
+    href: 'https://guac.gg/shop',
+  },
+  {
+    name: 'RAFFLES',
+    theme_color: '#F0FDF4',
+    image: '/images/home/shop/RAFFLES.png',
+    href: 'https://guac.gg/raffles',
+  },
+  {
+    name: 'GIVEAWAYS',
+    theme_color: '#F0FDF4',
+    image: '/images/home/shop/GIVEAWAYS.png',
+    href: 'https://guac.gg/dashboard?menu=giveaways',
+  },
+  {
+    name: 'SECONDARY',
+    theme_color: '#F0FDF4',
+    image: '/images/home/shop/SECONDARY.png',
+    href: 'https://guac.gg/secondary',
+  },
+];
 
 export default ShopSection;

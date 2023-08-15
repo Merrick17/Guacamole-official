@@ -39,6 +39,8 @@ const tools: {
     description:
       'Optimize possible yields between top lending protocols with dynamically rebalancing vaults.',
     href: routes.earn.dynamicVault,
+    disabled: true,
+
   },
   {
     image: '/images/earn/nft-pool.png',
@@ -46,6 +48,8 @@ const tools: {
     description:
       'Stake tokens to receive points which can be utilized to redeem vaulted NFTs. Any project can start a staking pool!',
     href: routes.earn.statistics,
+    disabled: true,
+
   },
   {
     image: '/images/earn/token-pool.png',

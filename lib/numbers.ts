@@ -44,32 +44,37 @@ function getSubscriptForNumber(number) {
   }
   return subscriptString;
 }
-export function convert(n: number): string {
+export function convert(n) {
   let str = '';
-  const sign = +n < 0 ? '-' : '';
-  const toStr = n.toString();
+  var sign = +n < 0 ? '-' : '',
+    toStr = n.toString();
   if (!/e/i.test(toStr)) {
-    str = n.toString();
+    str = n;
   }
-  const [lead, decimal, pow] = n
+  var [lead, decimal, pow] = n
     .toString()
     .replace(/^-/, '')
     .replace(/^([0-9]+)(e.*)/, '$1.$2')
     .split(/e|\./);
+
+  // Handle the case when decimal is undefined
+  if (decimal === undefined) {
+    return `${sign}${lead}`;
+  }
+
   str =
     +pow < 0
       ? sign +
         '0.' +
-        '0'.repeat(Math.max(Math.abs(+pow) - 1 || 0, 0)) +
+        '0'.repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
         lead +
         decimal
       : sign +
         lead +
-        (+pow >= (decimal ? decimal.length : 0)
+        (+pow >= decimal.length
           ? decimal + '0'.repeat(Math.max(+pow - decimal.length || 0, 0))
-          : decimal
-          ? decimal.slice(0, +pow) + '.' + decimal.slice(+pow)
-          : '0');
+          : decimal.slice(0, +pow) + '.' + decimal.slice(+pow));
+
   const [integerPart, trailingZeros, nonZeroDigits] =
     extractTrailingZerosAndDigits(str);
   console.log('INT', integerPart); // Output: "123"

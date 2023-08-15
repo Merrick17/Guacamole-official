@@ -16,6 +16,7 @@ type MenuItemProps = {
   href: string;
   dropdownItems?: DropdownItemProps[];
   isActive?: boolean;
+  closeMenu?: () => void;
 };
 
 type DropdownItemProps = {
@@ -30,6 +31,7 @@ const MenuItem: FC<MenuItemProps> = ({
   Icon,
   dropdownItems,
   isActive,
+  closeMenu,
 }) => {
   const pathname = usePathname()?.split('/') ?? '';
   const router = useRouter();
@@ -96,6 +98,7 @@ const MenuItem: FC<MenuItemProps> = ({
                     onClick={() => {
                       isOpen && setIsOpen(false);
                       router.push(item.href);
+                      closeMenu && closeMenu();
                     }}
                     className="w-full justify-start gap-2 flex items-center disabled:cursor-not-allowed "
                     // activeClassName="!text-brand dark:!text-white dark:before:!bg-white before:!bg-brand before:!w-2 before:!h-2 before:-ml-0.5 before:ltr:!mr-[18px] before:rtl:!ml-[18px] !font-medium"
@@ -119,6 +122,7 @@ const MenuItem: FC<MenuItemProps> = ({
               'bg-black !text-white': isActive,
             }
           )}
+          onClick={() => closeMenu && closeMenu()}
         >
           <span
             className={cn(

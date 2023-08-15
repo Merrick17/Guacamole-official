@@ -13,7 +13,7 @@ type TradeProps = {
 };
 const Trade: FC<TradeProps> = ({ showDetails = true }) => {
   return (
-    <div className="flex w-full max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7 border border-[#E5E7EB]">
+    <div className="flex w-full lg:max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7 border border-[#E5E7EB]">
       <JupiterApiProvider>
         <div className="bg-white w-full">
           {/* <TopBar setCustomRpc={setCustomRpc} /> */}

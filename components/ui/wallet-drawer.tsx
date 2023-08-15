@@ -91,7 +91,7 @@ const WalletDrawer = () => {
                   />
                 </Link>
                 <Link
-                  href={routes.swap.root}
+                  href={routes.earn.root}
                   className="w-9 h-8 p-1  flex items-center justify-center rounded-lg bg-white border border-[#E5E7EB]"
                 >
                   <Image

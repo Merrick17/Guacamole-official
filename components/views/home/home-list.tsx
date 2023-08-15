@@ -39,7 +39,7 @@ const ListItem: FC<ListItemProps> = ({
       href={href}
       aria-disabled={disabled}
       className={cn(
-        ' max-w-[322px] flex flex-col gap-2  transition-colors p-4 border-[#E5E7EB] border rounded-lg cursor-pointer',
+        'w-full lg:max-w-[322px] flex flex-col gap-2  transition-colors p-4 border-[#E5E7EB] border rounded-lg cursor-pointer',
         disabled && 'bg-[#E5E7EB80] cursor-not-allowed pointer-events-none',
         !disabled && 'hover:bg-[#F0FDF4]'
       )}

@@ -101,8 +101,7 @@ const BurnNftToken = () => {
         if (NFTloaded.json?.image && NFTloaded.json?.image != '') {
           logoURI = NFTloaded.json?.image;
         } else {
-          logoURI =
-            'https://arweave.net/WCMNR4N-4zKmkVcxcO2WImlr2XBAlSWOOKBRHLOWXNA';
+          logoURI = '/images/Guacamole_Image_Unknown.png';
         }
 
         // @ts-ignore

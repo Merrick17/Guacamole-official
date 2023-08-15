@@ -20,8 +20,8 @@ const HomeContent: FC<HomeContentProps & Partial<HTMLDListElement>> = ({
           A Fresh And Simple Way To Trade, Earn, Create, And Play!
         </h1>
       </header>
-      <p className="text-[#5B5B5B] text-xl">
-        Experience a fresh take on DeFi with{' '}
+      <p className="text-[#5B5B5B] text-xl font-medium leading-8">
+        Experience a fresh take on Solana DeFi with{' '}
         <span className="text-[#4E8341]">Guacamole</span>. Trade, earn, and play
         effortlessly, while enjoying a seamless and user-friendly experience.
         Get started and unlock a world of possibilities!

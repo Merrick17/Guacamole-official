@@ -57,6 +57,7 @@ const EarnListItem: FC<EarnListItemProps> = ({
   title,
   description,
   btnText,
+  href,
 }) => {
   return (
     <div
@@ -66,13 +67,12 @@ const EarnListItem: FC<EarnListItemProps> = ({
     >
       <p className="text-sm  text-black/50">{title}</p>
       <h1 className="text-2xl font-medium ">{description}</h1>
-      <Button
-        variant="default"
-        size="sm"
-        className="text-sm font-semibold uppercase"
+      <Link
+        href={href}
+        className="text-sm font-semibold uppercase bg-black text-white py-2 px-5 text-center rounded-md w-max  "
       >
         {btnText}
-      </Button>
+      </Link>
     </div>
   );
 };
@@ -82,24 +82,24 @@ const earnListItems: EarnListItemProps[] = [
     title: 'Total Circulating Supply',
     description: '94% of All Tokens',
     btnText: 'View Guacenomics',
-    href: '/',
+    href: 'https://docs.guacamole.gg/guacamole-guac/guac-token',
   },
   {
     title: 'Initially Locked In Liquidity',
     description: '99 Trillion GUAC',
     btnText: 'VIEW TRANSACTION',
-    href: '/',
+    href: 'https://solscan.io/tx/2CiP2qyYpq1vtuL2R1Vu8HE8xRgRFAEFxEEiQ1q3GCPeWenuX8jZANPuXhexqtCWtNPPghNQSkSEnLn4z3pnEjDk',
   },
   {
     title: 'Current Market Cap',
     btnText: 'View COINGECKO',
     description: '$357,036.89',
-    href: '/',
+    href: 'https://www.coingecko.com/en/coins/guacamole',
   },
   {
     title: 'Current Market Price',
     description: '$0.0₈3606',
     btnText: 'SWAP FOR GUAC',
-    href: '/',
+    href: routes.swap.root,
   },
 ];

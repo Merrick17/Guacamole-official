@@ -28,6 +28,7 @@ const Banner: FC<BannerProps> = ({
       )}
     >
       <div className="relative h-[136px] w-full overflow-hidden rounded-[5px]">
+        <div className="absolute  top-0 left-0 z-10 w-full h-full opacity-100 group-hover:opacity-0 transition-opacity bg-white/50" />
         <div
           className="group-hover:scale-110 absolute top-0 left-0 w-full h-full bg-cover bg-center transition-transform duration-200 ease-in-out"
           style={{ backgroundImage: 'url(' + image + ')' }}

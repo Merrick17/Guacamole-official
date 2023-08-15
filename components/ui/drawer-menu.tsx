@@ -17,7 +17,7 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
   const pathname = usePathname();
 
   return (
-    <div className={cn('fixed w-full h-full top-0 z-50 ')}>
+    <div className={cn('fixed w-full h-full top-0 z-[9999] ')}>
       <div
         className=" fixed bg-black/50 w-screen h-screen cursor-pointer "
         onClick={closeDrawer}
@@ -51,14 +51,16 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
                 Icon={item.Icon}
                 dropdownItems={item.dropdownItems}
                 isActive={pathname === item.href}
+                closeMenu={closeDrawer}
               />
             ))}
           </div>
         </div>
-        <div className="absolute bottom-4 right-0 z-10 w-full px-6">
+        <div className="absolute bottom-4 right-0 z-10 w-full px-6  ">
           <WalletMultiButtonDynamic
             className="w-full flex items-center justify-center !rounded-lg"
             startIcon={undefined}
+            style={{ width: '100%' }}
           />
         </div>
       </div>

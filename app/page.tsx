@@ -6,6 +6,7 @@ import HomeContent from '@/components/views/home/home-content';
 import HomeHeadline from '@/components/views/home/home-headline';
 import HomeList from '@/components/views/home/home-list';
 import ShopSection from '@/components/views/home/shop-section';
+import Sponsors from '@/components/views/home/sponsors';
 import Trade from '@/components/views/trade/src/Trade';
 import routes from '@/config/routes';
 import { cn } from '@/lib/utils';
@@ -35,6 +36,7 @@ export default function Home() {
             ability to DCA, place limit orders, or bridge from other chains."
         />
         <HomeList listItems={TradeListItems} />
+        <Sponsors />
         <ColorBlocks className="mx-auto" />
       </section>
       <section className="flex flex-col gap-[60px]">
@@ -107,6 +109,7 @@ const TradeListItems: ListItemProps[] = [
       'Easily find the best trading routes to ensure you get the best bang for your buck!',
     image: '/images/home/trade/swap-aggregator.png',
     href: routes.swap.root,
+    disabled: true,
   },
   {
     title: 'DCA & Limit Orders',
