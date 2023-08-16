@@ -31,9 +31,11 @@ import { Button } from '@/components/ui/button';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
 import Tool from '@/components/common/info-card';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 const BurnSplToken = () => {
   const { connection } = useConnection();
+  const { toast } = useToast();
 
   const wallet = useWallet();
   const metaplex = new Metaplex(connection);
@@ -78,7 +80,7 @@ const BurnSplToken = () => {
       const logoURI =
         token.info.image != ''
           ? token.info.image
-          : 'https://arweave.net/WCMNR4N-4zKmkVcxcO2WImlr2XBAlSWOOKBRHLOWXNA';
+          : '/images/Guacamole_Image_Unknown.png';
       const tokenAccount = token.associated_account;
       const amount = token.balance;
       let name = token.info.name.trim();
@@ -176,6 +178,23 @@ const BurnSplToken = () => {
             'processed'
           );
           console.log('confirmation', signature);
+          toast({
+            variant: 'success',
+            title: 'Success',
+            description: (
+              <div className="flex flex-col gap-2">
+                <p>Your token have been burned!</p>
+                <Link
+                  href={`https://solscan.com/tx/${signature}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"
+                >
+                  View on solscan
+                </Link>
+              </div>
+            ),
+          });
         }
         setToBurn([]);
         setIsBurning(false);

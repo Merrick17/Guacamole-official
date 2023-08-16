@@ -85,7 +85,7 @@ function HeaderRightArea({
           />
         </Link>
         <Link
-          href="https://discord.com/invite/guac"
+          href="https://guac.gg/shop"
           rel="noopener noreferrer"
           target="_blank"
           className="focus:outline-none cursor-pointer p-3 border border-[#E5E7EB] rounded-lg bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "

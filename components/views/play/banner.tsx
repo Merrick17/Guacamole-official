@@ -33,7 +33,7 @@ const Banner: FC<BannerProps> = ({
           className="group-hover:scale-110 absolute top-0 left-0 w-full h-full bg-cover bg-center transition-transform duration-200 ease-in-out"
           style={{ backgroundImage: 'url(' + image + ')' }}
         />
-        <div className="absolute bottom-[10px] left-[10px]">
+        <div className="absolute bottom-[10px] left-[10px] z-20">
           <Button className={cn('font-semibold uppercase', btnClassName)}>
             {title}
           </Button>

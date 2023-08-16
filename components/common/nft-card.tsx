@@ -21,7 +21,7 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
           unoptimized
           src={token ? token.logoURI : '/images/placeholder.png'}
           alt={token ? token.name : ''}
-          className="rounded-xl"
+          className="rounded-xl w-[200px] h-[200px] "
           width={200}
           height={200}
         />

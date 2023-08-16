@@ -315,15 +315,28 @@ const BurnNftToken = () => {
               'processed'
             );
             console.log('confirmation', signature);
+            toast({
+              variant: 'success',
+              title: 'Success',
+              description: (
+                <div className="flex flex-col gap-2">
+                  <p>Your NFTs have been burned!</p>
+                  <Link
+                    href={`https://solscan.com/tx/${signature}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"
+                  >
+                    View on solscan
+                  </Link>
+                </div>
+              ),
+            });
           }
           setToBurn([]);
           setIsBurning(false);
           setSuccess(true);
-          toast({
-            variant: 'success',
-            title: 'Success',
-            description: 'Your NFTs have been burned!',
-          });
+
           await getUserNFT();
         } else {
           setMessage('Please choose at least one NFT to burn first!');

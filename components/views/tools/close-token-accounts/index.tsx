@@ -9,6 +9,7 @@ import { Metaplex } from '@metaplex-foundation/js';
 import { TOKEN_PROGRAM_ID, Token } from '@solana/spl-token-v1';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey, Transaction } from '@solana/web3.js';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const CloseTokenAccount = () => {
@@ -57,7 +58,7 @@ const CloseTokenAccount = () => {
       const logoURI =
         token.info.image != ''
           ? token.info.image
-          : 'https://arweave.net/WCMNR4N-4zKmkVcxcO2WImlr2XBAlSWOOKBRHLOWXNA';
+          : '/images/Guacamole_Image_Unknown.png';
       const tokenAccount = token.associated_account;
       const amount = token.balance;
       let name = token.info.name.trim();
@@ -219,12 +220,17 @@ const CloseTokenAccount = () => {
             variant: 'success',
             title: 'Success',
             description: (
-              <span>
-                Transaction sent successfully ,
-                <a href={`https://solscan.com/tx/${signature}`} target="_blank">
+              <div className="flex flex-col gap-2">
+                <p>Transaction sent successfully</p>
+                <Link
+                  href={`https://solscan.com/tx/${signature}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"
+                >
                   View on solscan
-                </a>
-              </span>
+                </Link>
+              </div>
             ),
           });
         }

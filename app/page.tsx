@@ -109,7 +109,6 @@ const TradeListItems: ListItemProps[] = [
       'Easily find the best trading routes to ensure you get the best bang for your buck!',
     image: '/images/home/trade/swap-aggregator.png',
     href: routes.swap.root,
-    disabled: true,
   },
   {
     title: 'DCA & Limit Orders',
@@ -143,6 +142,7 @@ const EarnListItems: ListItemProps[] = [
       'Optimize yields between top lending protocols with rebalancing vaults.',
     image: '/images/earn/dynamic-vault.png',
     href: routes.swap.root,
+    disabled: true,
   },
   {
     title: 'Token For NFT Pools',
