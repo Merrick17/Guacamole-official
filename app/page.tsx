@@ -85,7 +85,7 @@ const HomeListItems: ListItemProps[] = [
     description:
       'Put your crypto to work for you in various ways and enjoy the fruit of its labor.',
     image: '/icons/earn.svg',
-    href: routes.info.root,
+    href: routes.earn.root,
   },
   {
     title: 'Play',
@@ -141,7 +141,7 @@ const EarnListItems: ListItemProps[] = [
     description:
       'Optimize yields between top lending protocols with rebalancing vaults.',
     image: '/images/earn/dynamic-vault.png',
-    href: routes.swap.root,
+    href: routes.earn.root,
     disabled: true,
   },
   {

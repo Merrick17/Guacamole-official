@@ -58,6 +58,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -506,12 +507,14 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                     setCoin={setInputTokenInfo}
                   />
                 </div>
-                <div className="flex flex-col gap-2 text-right">
+                <div className="flex flex-col gap-2 text-right h-full w-full">
                   <Input
                     value={inputAmout}
                     type="number"
                     onChange={(e) => setInputAmount(e.target.value.trim())}
-                    className="w-full rounded-xl border-none bg-transparent text-right text-xl font-medium  outline-none"
+                    className={cn(
+                      'w-full h-full rounded-none  text-right text-xl font-medium transition-all duration-200 ease-in-out '
+                    )}
                   />
                   <p className="text-black/50 text-xs">{inputPriceInUSD} USD</p>
                 </div>

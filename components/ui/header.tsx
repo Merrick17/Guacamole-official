@@ -105,7 +105,7 @@ function HeaderRightArea({
           href="https://docs.guacamole.gg/"
           rel="noopener noreferrer"
           target="_blank"
-          className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+          className="focus:outline-none cursor-pointer p-3 border border-[#E5E7EB] rounded-lg bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
         >
           <Image
             src="/images/documentation.png"
@@ -115,14 +115,13 @@ function HeaderRightArea({
           />
         </Link>
         <Link
-          href="https://discord.com/invite/guac"
+          href="https://guac.gg/shop"
           rel="noopener noreferrer"
           target="_blank"
-          className="focus:outline-none cursor-pointer p-3 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+          className="focus:outline-none cursor-pointer p-3 border border-[#E5E7EB] rounded-lg bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
         >
-          <BsDiscord color="#7289DA" className="w-full h-full" />
+          <Image src="/images/shop.png" alt="search" width={25} height={25} />
         </Link>
-
         <Hamburger
           isOpen={isOpen}
           onClick={() => (isOpen ? closeDrawer() : openDrawer())}

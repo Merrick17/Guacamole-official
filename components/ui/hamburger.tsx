@@ -14,9 +14,13 @@ export default function Hamburger({
   return (
     <div
       onClick={onClick}
-      className="focus:outline-none cursor-pointer p-2 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-10 aspect-square"
+      className="focus:outline-none cursor-pointer border border-[#E5E7EB] rounded-lg p-3 w-12 h-12 bg-white text-black shadow-openMenuShadow flex items-center justify-center aspect-square"
     >
-      {isOpen ? <GrClose /> : <GrMenu />}
+      {isOpen ? (
+        <GrClose className="w-[25px] h-[25px] " />
+      ) : (
+        <GrMenu className="w-[25px] h-[25px]" />
+      )}
     </div>
   );
 }
