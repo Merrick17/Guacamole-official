@@ -15,35 +15,58 @@ module.exports = {
         '2xl': '1400px',
       },
     },
-
     extend: {
-      gridTemplateColumns: {
-        // Complex site-specific column configuration
-        toast: '7px 1fr',
-      },
       colors: {
-        body: '#E1F5DA',
-      },
-      boxShadow: {
-        openMenuShadow: '0px 6px 18px 0px rgba(0, 0, 0, 0.04)',
+        border: 'var(--border)',
+        input: 'var(--input)',
+        ring: 'var(--ring)',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        primary: {
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
+        },
+        secondary: {
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
+        },
+        destructive: {
+          DEFAULT: 'var(--destructive)',
+          foreground: 'var(--destructive-foreground)',
+        },
+        muted: {
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
+        },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)',
+        },
+        popover: {
+          DEFAULT: 'var(--popover)',
+          foreground: 'var(--popover-foreground)',
+        },
+        card: {
+          DEFAULT: 'var(--card)',
+          foreground: 'var(--card-foreground)',
+        },
       },
       fontFamily: {
         body: ['Kanit', 'sans-serif'],
         bungee: ['Bungee', 'monospace'],
       },
+      boxShadow: {
+        openMenuShadow: '0px 6px 18px 0px rgba(0, 0, 0, 0.04)',
+        themeButtonShadow: '0px 2px 12px 0px var(--accent)',
+      },
       backgroundImage: {
         'body-image': "url('/images/body-background.png')",
       },
-
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        text: 'text 3s ease infinite',
-        'gradient-x': 'gradient-x 10s ease infinite',
-        'gradient-y': 'gradient-y 10s ease infinite',
-        'gradient-xy': 'gradient-xy 10s ease infinite',
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
-
       keyframes: {
         'accordion-down': {
           from: { height: 0 },
@@ -53,46 +76,10 @@ module.exports = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: 0 },
         },
-        text: {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center',
-          },
-        },
-        'gradient-y': {
-          '0%, 100%': {
-            'background-size': '400% 400%',
-            'background-position': 'center top',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'center center',
-          },
-        },
-        'gradient-x': {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center',
-          },
-        },
-        'gradient-xy': {
-          '0%, 100%': {
-            'background-size': '400% 400%',
-            'background-position': 'left center',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center',
-          },
-        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
       },
     },
   },

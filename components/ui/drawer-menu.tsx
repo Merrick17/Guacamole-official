@@ -23,17 +23,17 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
         onClick={closeDrawer}
       />
 
-      <div className="relative h-full  w-full max-w-full md:max-w-md bg-white xs:w-80 ">
+      <div className="relative h-full  w-full max-w-full md:max-w-md bg-foreground xs:w-80 ">
         <div className="flex items-center justify-between overflow-hidden px-4 py-3">
           <div className="flex items-center gap-2">
             <Logo />
-            <h1 className=" block text-2xl font-medium text-black">
+            <h1 className=" block text-2xl font-medium uppercase ">
               Guacamole
             </h1>
           </div>
           <div
             onClick={() => closeDrawer()}
-            className="focus:outline-none cursor-pointer p-2 rounded-full bg-white text-black shadow-openMenuShadow flex items-center justify-center w-10 aspect-square"
+            className="focus:outline-none cursor-pointer p-2 rounded-full bg-primary  shadow-openMenuShadow flex items-center justify-center w-10 aspect-square"
           >
             <GrClose />
           </div>
@@ -58,7 +58,7 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
         </div>
         <div className="absolute bottom-4 right-0 z-10 w-full px-6  ">
           <WalletMultiButtonDynamic
-            className="w-full flex items-center justify-center !rounded-lg"
+            className="w-full flex items-center text-black bg-primary justify-center !rounded-lg"
             startIcon={undefined}
             style={{ width: '100%' }}
           />

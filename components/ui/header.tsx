@@ -28,9 +28,12 @@ const Header: FC<HeaderProps> = () => {
   return (
     <>
       {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
-      <nav className="fixed top-0 bg-[#F0FDF4] px-10 py-4 z-40 w-full border-b border-[#E5E7EB]">
+      <nav className="fixed top-0 bg-foreground px-10 py-4 z-40 w-full ">
         <div className="mx-auto max-w-[1840px] flex flex-row items-center justify-between ">
           <HeaderLeftArea />
+          <div className={'hidden lg:block'}>
+            <MenuItems />
+          </div>
           <HeaderRightArea
             isOpen={isOpen}
             openDrawer={openDrawer}
@@ -43,16 +46,11 @@ const Header: FC<HeaderProps> = () => {
 };
 const HeaderLeftArea = () => {
   return (
-    <div className="flex items-center">
-      <div className="flex items-center gap-2 mr-16">
-        <Logo />
-        <h1 className="hidden lg:block text-2xl font-medium text-black">
-          Guacamole
-        </h1>
-      </div>
-      <div className={'hidden lg:block'}>
-        <MenuItems />
-      </div>
+    <div className="flex items-center gap-2 mr-16">
+      <Logo />
+      <h1 className="hidden lg:block text-2xl font-medium uppercase">
+        Guacamole
+      </h1>
     </div>
   );
 };
@@ -72,55 +70,47 @@ function HeaderRightArea({
 
       <div className="hidden gap-6 lg:flex 2xl:gap-8">
         <Link
-          href="https://docs.guacamole.gg/"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="focus:outline-none cursor-pointer p-3 border border-[#E5E7EB] rounded-lg bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
-        >
-          <Image
-            src="/images/documentation.png"
-            alt="search"
-            width={25}
-            height={25}
-          />
-        </Link>
-        <Link
           href="https://guac.gg/shop"
           rel="noopener noreferrer"
           target="_blank"
-          className="focus:outline-none cursor-pointer p-3 border border-[#E5E7EB] rounded-lg bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+          className="shrink-0"
         >
-          <Image src="/images/shop.png" alt="search" width={25} height={25} />
+          <Image src="/icons/shop.svg" alt="search" width={48} height={48} />
         </Link>
+        <Link
+          href="https://docs.guacamole.gg/"
+          rel="noopener noreferrer"
+          target="_blank"
+          className="shrink-0"
+        >
+          <Image src="/icons/account.svg" alt="search" width={48} height={48} />
+        </Link>
+
         <WalletMultiButtonDynamic
-          className={
-            'bg-primary rounded-full px-4 py-2 font-bold text-white hover:bg-blue-700 '
-          }
+          className={' text-black rounded-lg  '}
+          style={{
+            backgroundColor: '#8bd796',
+          }}
           startIcon={undefined}
         />
       </div>
 
       <div className="flex items-center gap-2 lg:hidden ">
         <Link
-          href="https://docs.guacamole.gg/"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="focus:outline-none cursor-pointer p-3 border border-[#E5E7EB] rounded-lg bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
-        >
-          <Image
-            src="/images/documentation.png"
-            alt="search"
-            width={25}
-            height={25}
-          />
-        </Link>
-        <Link
           href="https://guac.gg/shop"
           rel="noopener noreferrer"
           target="_blank"
-          className="focus:outline-none cursor-pointer p-3 border border-[#E5E7EB] rounded-lg bg-white text-black shadow-openMenuShadow flex items-center justify-center w-12 aspect-square "
+          className="shrink-0"
         >
-          <Image src="/images/shop.png" alt="search" width={25} height={25} />
+          <Image src="/icons/shop.svg" alt="search" width={48} height={48} />
+        </Link>
+        <Link
+          href="https://docs.guacamole.gg/"
+          rel="noopener noreferrer"
+          target="_blank"
+          className="shrink-0"
+        >
+          <Image src="/icons/account.svg" alt="search" width={48} height={48} />
         </Link>
         <Hamburger
           isOpen={isOpen}

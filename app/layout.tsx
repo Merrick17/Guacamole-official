@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 import { Toaster } from '@/components/ui/toaster';
 import Footer from '@/components/ui/footer';
 import WalletDrawer from '@/components/ui/wallet-drawer';
+import { Themes } from '@/context/themes';
+import ThemeSwitcher from '@/components/ui/theme-switcher';
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
@@ -25,17 +27,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={kanit.className}>
-        <Disclaimer />
-        <Wallet>
-          <Header />
-          <WalletDrawer />
-          <div className="mt-20 min-h-screen relative">
-            <div className="fixed top-0 left-0  w-screen h-screen bg-body-image bg-cover bg-no-repeat antialiased z-[-1]" />
-            <div className="z-10">{children}</div>
-          </div>
-          <Footer />
-        </Wallet>
-        <Toaster />
+        <Themes>
+          <Disclaimer />
+          <Wallet>
+            <Header />
+            {/* <WalletDrawer /> */}
+            <ThemeSwitcher />
+            <div className="mt-20 min-h-screen relative">
+              <div className="fixed top-1/2 left-1/2  rounded-full blur-[100px]  w-[50vw] h-[50vh] -translate-x-1/2 -translate-y-1/2 bg-primary  antialiased z-[-1]" />
+              <div className="z-10">{children}</div>
+            </div>
+            <Footer />
+          </Wallet>
+          <Toaster />
+        </Themes>
       </body>
     </html>
   );
