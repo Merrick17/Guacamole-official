@@ -1,22 +1,32 @@
 'use client';
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
 import { RecentPlays } from '@/components/common/recent-plays';
-//@ts-ignore
+import Container from '@/components/common/container';
+import { FC } from 'react';
+import { cn } from '@/lib/utils';
 
-const RecentPlay = () => {
+type Props = {
+  compact?: boolean;
+};
+
+const RecentPlay: FC<Props> = ({ compact = false }) => {
   return (
-    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-white px-5 py-7  border border-[#E5E7EB]">
+    <Container className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-foreground  ">
       <header className="flex items-center gap-1 ">
         <div className="relative aspect-square w-6">
-          <Image src="/images/recent-play.png" fill alt="play" />
+          <Image src="/images/themes/yellow.png" fill alt="play" />
         </div>
-        <h1 className="text-2xl   text-black">Recent Plays</h1>
+        <h1 className="text-2xl">Recent Plays</h1>
       </header>
-      <div className="flex flex-col gap-4">
-        <RecentPlays />
+      <div
+        className={cn(
+          'flex flex-col gap-5 h-full',
+          compact && 'justify-between'
+        )}
+      >
+        <RecentPlays compact={compact} />
       </div>
-    </div>
+    </Container>
   );
 };
 

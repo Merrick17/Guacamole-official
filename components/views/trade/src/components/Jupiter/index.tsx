@@ -34,7 +34,6 @@ import React, {
 import emoji from '../../assets/no-route.png';
 import { getFeeAddress } from '../../utils/fees';
 import Loading from '../Loading';
-import { SwapRoute } from '../SwapRoute';
 import { Balance } from './Balance';
 import { SelectCoin } from './SelectCoin';
 import { Slippage } from './Slippage';
@@ -44,13 +43,11 @@ export const INPUT_MINT_ADDRESS =
   'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'; // USDC
 export const OUTPUT_MINT_ADDRESS =
   'AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR'; // Guac
-
 import { useJupiterApiContext } from '../../contexts';
 import { Button } from '@/components/ui/button';
 import { toast } from 'react-toastify';
 import { RenderUpdate } from '@/components/ui/RenderUpdate';
 import dynamic from 'next/dynamic';
-import { SwapRoutes } from './swap-routes';
 import Details from './details';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
@@ -59,6 +56,9 @@ import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
+import { SwapRoutes } from './swap-routes';
+import { RefreshCw, RefreshCwIcon } from 'lucide-react';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -70,7 +70,6 @@ interface IJupiterFormProps {
 }
 
 const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
-  const toastId = useRef(nanoid());
   const [firstLoad, setFirstLoad] = useState(false);
   const { connected, publicKey, signAllTransactions, sendTransaction } =
     useWallet();
@@ -456,33 +455,35 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   //   getPrice();
   // }, [inputAmout, inputTokenInfo, outputTokenInfo, loadingRoute]);
 
+  const pathname = usePathname();
   return (
     <>
-      <div className="w-full rounded-[15px] bg-white  sm:w-[450px] ">
+      <div className="w-full rounded-[15px] bg-foreground  sm:w-[450px] ">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1 !h-7">
-            <Button className=" h-full rounded-lg text-sm">Swap</Button>
-            <Button
-              disabled
-              variant="secondary"
-              className="h-full rounded-lg text-sm"
-            >
-              DCA
-            </Button>
+            {pathname === '/trade' ? (
+              <Link
+                href={'/trade/swap'}
+                className="text-sm bg-primary text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
+              >
+                Open Full Page
+              </Link>
+            ) : (
+              <Button className=" h-7 rounded-lg text-sm">Swap</Button>
+            )}
           </div>
-          <div className=" flex flex-row items-center justify-end gap-1 h-7">
+          <div className=" flex flex-row items-center justify-end gap-1 h-7 text-primary">
             <div
               onClick={() => !loadingRoute && refresh()}
-              className=" h-full aspect-square flex items-center justify-center cursor-pointer rounded-xl !bg-[#E5E7EB] p-2 text-black"
-              color="white"
+              className=" h-full aspect-square flex items-center justify-center cursor-pointer rounded-xl !bg-background p-2 text-primary "
             >
-              <GrRefresh className="h-full  " />
+              <RefreshCwIcon className="text-accent" />
             </div>
             <Slippage slippage={slippage || 0} setSlippage={setSlippage} />
 
             <WalletMultiButtonDynamic
               startIcon={undefined}
-              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex "
+              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex bg-primary text-primary-foreground hover:!bg-primary"
             />
           </div>
         </div>
@@ -490,7 +491,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
 
         <div className="mt-4 flex flex-col justify-between gap-2 px-2">
           <div className="flex items-center justify-end  sm:justify-between">
-            <h1 className="text-sm hidden sm:block">Swap This:</h1>
+            <h1 className="text-sm text-muted-foreground hidden sm:block">
+              Swap This:
+            </h1>
             <Balance
               tokenAccounts={tokenAccounts}
               token={inputTokenInfo}
@@ -499,8 +502,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             />
           </div>
           {inputTokenInfo ? (
-            <div className="flex flex-col gap-4 rounded-xl border border-[#E5E7EB] p-2  sm:p-4 ">
-              <div className="flex flex-col w-full sm:flex-row items-center  gap-2 rounded-lg bg-white  text-black">
+            <div className="flex flex-col gap-4 rounded-xl bg-background p-2  sm:p-4 ">
+              <div className="flex flex-col w-full sm:flex-row items-center  gap-2 rounded-lg   text-white">
                 <div className=" w-full rounded-xl">
                   <SelectCoin
                     tokenInfo={inputTokenInfo}
@@ -516,33 +519,37 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                       'w-full h-full rounded-none  text-right text-xl font-medium transition-all duration-200 ease-in-out '
                     )}
                   />
-                  <p className="text-black/50 text-xs">{inputPriceInUSD} USD</p>
+                  <p className=" text-xs text-muted-foreground">
+                    {inputPriceInUSD} USD
+                  </p>
                 </div>
               </div>
             </div>
           ) : (
-            <Skeleton className="h-[116px] w-full  rounded-xl border border-[#E5E7EB]" />
+            <Skeleton className="h-[116px] w-full  rounded-xl " />
           )}
           <div className="flex w-full flex-row justify-center ">
             <div
-              className="h-[32px] w-[32px] cursor-pointer rounded-lg border border-[#E5E7EB] bg-[#E5E7EB] p-2"
+              className="h-[32px] w-[32px] cursor-pointer rounded-lg bg-background  p-2"
               onClick={handleSwitch}
             >
-              <HiOutlineSwitchVertical className=" h-full w-full rotate-45 text-black  " />
+              <HiOutlineSwitchVertical className=" h-full w-full rotate-45  text-white  " />
             </div>
           </div>
           {outputTokenInfo ? (
             <div className=" flex flex-col justify-between gap-2">
               <div className="flex items-center justify-end  sm:justify-between">
-                <h1 className="text-sm hidden sm:block">To Receive:</h1>
+                <h1 className="text-sm hidden text-muted-foreground sm:block">
+                  To Receive:
+                </h1>
                 <Balance
                   tokenAccounts={tokenAccounts}
                   token={outputTokenInfo}
                   solBalance={solBalance}
                 />
               </div>
-              <div className=" flex flex-col gap-4 rounded-xl border border-[#E5E7EB]  p-2  sm:p-4  ">
-                <div className=" flex w-full flex-col sm:flex-row items-center gap-2 rounded-lg bg-white ">
+              <div className=" flex flex-col gap-4 rounded-xl bg-background p-2  sm:p-4  ">
+                <div className=" flex w-full flex-col sm:flex-row items-center gap-2 rounded-lg ">
                   <div className="w-full  rounded-xl">
                     <SelectCoin
                       tokenInfo={outputTokenInfo}
@@ -558,7 +565,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                         '0'}
                     </div>
 
-                    <p className="text-black/50 text-xs">
+                    <p className="text-muted-foreground text-xs">
                       {outputPriceInUSD} USD
                     </p>
                   </div>
@@ -609,7 +616,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             <div className="mt-4 flex flex-row justify-center">
               <WalletMultiButtonDynamic
                 startIcon={undefined}
-                className="h-full flex items-center justify-center w-full "
+                className="h-full flex bg-primary hover:!bg-primary text-primary-foreground items-center justify-center w-full "
                 style={{ borderRadius: '12px' }}
               >
                 Connect Wallet
@@ -627,7 +634,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                   routes={routes}
                 />
               ) : (
-                <Skeleton className="mt-4 h-[106px] w-full  border border-black/5 rounded-xl  " />
+                <Skeleton className="mt-4 h-[106px] w-full  border border-primary rounded-xl  " />
               )}
             </div>
           )}

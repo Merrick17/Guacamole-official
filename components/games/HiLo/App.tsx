@@ -217,25 +217,16 @@ export default function HiLo() {
             </>
           ) : (
             <Button
-              loading={claiming}
               disabled={newSession || claiming || loading || needsReset}
               onClick={resetGame}
             >
               CASHOUT {formatLamports(gamba.balances.user)}
             </Button>
           )}
-          <Button
-            loading={loading}
-            disabled={!option || needsReset}
-            onClick={play}
-          >
+          <Button disabled={!option || needsReset} onClick={play}>
             PLAY {option}
           </Button>
-          <Button
-            variant="secondary"
-            disabled={!needsReset}
-            onClick={resetGame}
-          >
+          <Button disabled={!needsReset} onClick={resetGame}>
             Reset
           </Button>
         </>

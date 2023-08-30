@@ -1,5 +1,5 @@
 // 'use client';
-import Container from '@/components/views/home/container';
+import Container from '@/components/common/container';
 import { BannerCard } from '@/components/common/banner-card';
 import { GAMES } from '@/components/games';
 import { cn } from '@/lib/utils';
@@ -47,13 +47,17 @@ const GamesSection = () => {
             </div>
             <div className="bg-[#F0FDF4] rounded-lg border border-[#E5E7EB] p-6 flex flex-col gap-6 ">
               <div className="font-medium text-3xl">
-                <p className="text-black/50 text-sm ">Total Played Volume</p>
+                <p className="text-muted-foreground text-sm ">
+                  Total Played Volume
+                </p>
                 <h1>
                   <span className="uppercase">1000+</span> SOL
                 </h1>
               </div>
               <div className="font-medium text-3xl">
-                <p className="text-black/50 text-sm ">Biggest Multiplier Win</p>
+                <p className="text-muted-foreground text-sm ">
+                  Biggest Multiplier Win
+                </p>
                 <h1>
                   <span className="uppercase">25.0</span> X
                 </h1>

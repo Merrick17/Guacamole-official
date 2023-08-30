@@ -33,7 +33,7 @@ const Disclaimer = () => {
           <AlertDialogTitle>
             <h1 className="text-base">Before Continuing...</h1>
           </AlertDialogTitle>
-          <AlertDialogDescription className="h-[50vh] max-h-[50vh] overflow-auto text-xs text-black/50 flex flex-col items-start gap-4">
+          <AlertDialogDescription className="h-[50vh] max-h-[50vh] overflow-auto text-xs text-muted-foreground flex flex-col items-start gap-4">
             <p>
               This website-hosted user interface {'(this "Interface")'} is an
               open source frontend software portal that interacts with several

@@ -70,9 +70,9 @@ const ApyPerformanceChart = () => {
         <Area
           type="natural"
           dataKey="pv"
-          stroke="#97D19C"
+          stroke="var(--primary)"
           strokeWidth={2}
-          fill="#F0FDF4"
+          fill="#ffa5a5"
         />
       </AreaChart>
     </ResponsiveContainer>

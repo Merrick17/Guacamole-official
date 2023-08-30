@@ -52,14 +52,6 @@ const StyledDropdown = styled.button<{ $active?: boolean }>`
   height: 40px;
   padding: 10px 20px;
 
-  ${({ $active }) =>
-    $active &&
-    `
-    background: #2e323f;
-  `}
-  &:hover {
-    background: #2e323f;
-  }
   &:disabled {
     background: #2e323f;
     color: #cccccc;
@@ -73,7 +65,7 @@ const StyledPopup = styled.div`
   left: 0;
   border: none;
   max-width: 100%;
-  background: white;
+  background: #141414;
   color: white;
   border-radius: var(--border-radius);
   margin-bottom: 20px;
@@ -100,14 +92,16 @@ const StyledOption = styled.button<{ $selected?: boolean }>`
   width: 100%;
   text-align: left;
   background: none;
-  color: black;
+  color: #fcfcfc;
   padding: 5px;
+
   & > div {
     padding: 10px 20px;
-    border-radius: var(--border-radius);
+    border-radius: 5px;
     border: black 1px solid;
-    background-color: white;
+    background-color: #0f0f0f;
   }
+
   ${({ $selected }) =>
     $selected &&
     `
@@ -116,16 +110,10 @@ const StyledOption = styled.button<{ $selected?: boolean }>`
       color:white;
     }
   `}
-  &:hover {
-    & > div {
-      background: #2e323f;
-      color: white;
-    }
-  }
 `;
 
 interface Props<T> {
-  label: string;
+  label?: string;
   options: { value: T; label: string }[];
   onChange: (value: T) => void;
   value: T;
@@ -205,7 +193,7 @@ export function Dropdown<T>({
         onClick={() => open()}
       >
         <>
-          <Label>{label}</Label>
+          {label && <Label>{label}</Label>}
           {displayedValue}
         </>
       </StyledDropdown>

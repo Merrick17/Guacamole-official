@@ -15,7 +15,7 @@ const TokenMultiSenderCSV = () => {
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/token-multi-sender"
       />
       <hr className="border-dashed border-[#E5E7EB]" />
-      <div className="text-black/50 text-sm ">
+      <div className="text-muted-foreground text-sm ">
         <p>
           You can use this tool to upload a .csv file instead of manually
           inputting addresses in each input.

@@ -91,7 +91,7 @@ const ExchangeRate = ({
     <div
       className={cn(
         className,
-        'flex cursor-pointer text-black/30 text-xs align-center'
+        'flex cursor-pointer text-muted-foreground text-xs align-center'
       )}
       onClick={onReverse}
     >

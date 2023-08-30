@@ -22,7 +22,7 @@ const ColorBlocks: FC<Partial<HTMLDivElement>> = ({ className }) => {
         height={16}
         alt="violet"
         className={cn(
-          pathname.includes(routes.swap.root) ? 'opacity-100' : 'opacity-50'
+          pathname.includes(routes.trade.root) ? 'opacity-100' : 'opacity-50'
         )}
       />
       <Image

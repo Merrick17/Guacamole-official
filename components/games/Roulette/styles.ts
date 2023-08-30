@@ -2,10 +2,10 @@ import styled, { keyframes } from 'styled-components';
 
 export const numberColorToHex = (numberColor: string) => {
   if (numberColor === 'red') {
-    return { text: '#ff3d5e', background: '#ff3d5e' };
+    return { text: '#000', background: '#FF8F8F' };
   }
   if (numberColor === 'black') {
-    return { text: '#00ff61', background: '#242634' };
+    return { text: '#000', background: '#8BD796' };
   }
   return { text: 'black', background: 'transparent' };
 };
@@ -60,7 +60,7 @@ export const Relative = styled.div`
 `;
 
 export const TableSquare = styled.div<{
-  $color: 'red' | 'black' | 'none';
+  $color: 'red' | 'white' | 'none';
   $transparent?: boolean;
   $highlighted?: boolean;
 }>`
@@ -69,7 +69,7 @@ export const TableSquare = styled.div<{
   height: 40px;
   line-height: 40px;
   background: ${({ $color }) => numberColorToHex($color).background};
-  color: white;
+  color: black;
   transition: opacity 0.2s;
   ${({ $transparent }) =>
     $transparent &&
@@ -120,5 +120,4 @@ export const StyledBetButton = styled.div`
   width: 60px;
   line-height: 40px;
   text-align: center;
-  color: black;
 `;

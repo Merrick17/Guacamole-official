@@ -42,11 +42,11 @@ const ListItem: FC<ListItemProps> = ({
       aria-disabled={disabled}
       style={
         {
-          '--accent': accent || '#8bd796',
+          '--accent': accent,
         } as React.CSSProperties
       }
       className={cn(
-        'w-full lg:max-w-[322px] flex flex-col gap-2  transition-colors p-4 rounded-lg cursor-pointer bg-background text-[#FCFCFC] border border-transparent  duration-500 ease-in-out',
+        'w-full lg:max-w-[322px] flex flex-col gap-2  transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         !disabled && ` hover:border-[var(--accent)]  hover:border`
       )}

@@ -25,12 +25,12 @@ export const Links: {
   },
   {
     name: 'Trade',
-    href: routes.swap.root,
+    href: routes.trade.root,
     Icon: GoArrowSwitch,
     dropdownItems: [
       {
         name: 'Swap',
-        href: routes.swap.root,
+        href: routes.trade.root,
       },
       {
         name: 'DCA / TWAP',
@@ -61,7 +61,7 @@ export const Links: {
     dropdownItems: [
       {
         name: 'Explore Ways To Earn',
-        href: routes.earn.root,
+        href: routes.earn.explore,
       },
       {
         name: 'Token For NFT Staking',
@@ -93,17 +93,8 @@ export const Links: {
     dropdownItems: [
       {
         name: 'Explore All Games',
-        href: routes.play.root,
+        href: routes.play.explore,
       },
-      // {
-      //   name: 'Guac-a-Mole',
-
-      //   href: routes.play.guacamole,
-      // },
-      // {
-      //   name: 'Coin Flip',
-      //   href: routes.play.coinFlip,
-      // },
       {
         name: 'Roulette',
         href: routes.play.roulette,

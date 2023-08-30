@@ -6,7 +6,7 @@ const game = {
   description: '',
   creator: 'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC',
   theme_color: '#ff6a6a',
-  image: '/images/mines.png',
+  image: '/icons/play/mines.png',
   app: React.lazy(() => import('./App')),
 };
 

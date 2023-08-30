@@ -36,13 +36,12 @@ export function Slider({ children }: PropsWithChildren) {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
-        className="text-black"
       >
         <header className="flex items-center gap-1">
           <div className="relative aspect-square w-6">
-            <Image src="/icons/featured-games.svg" fill alt="play" />
+            <Image src="/images/themes/yellow.png" fill alt="play" />
           </div>
-          <h1 className="text-2xl   text-black">Featured Games</h1>
+          <h1 className="text-2xl  ">Featured Games</h1>
         </header>
 
         <div style={{ display: 'flex', gap: '20px' }}>

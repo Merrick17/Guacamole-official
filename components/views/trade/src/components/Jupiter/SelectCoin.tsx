@@ -28,14 +28,14 @@ const Row = ({
     <button
       key={info.address}
       onClick={() => handleSelect(info)}
-      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 hover:bg-[#E5E7EB] "
+      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background "
     >
       <img
         src={info.logoURI as string}
         alt={info.name}
         className="h-[24px] w-[24px] "
       />
-      <div className=" flex flex-col items-start text-black ">
+      <div className=" flex flex-col items-start  ">
         <div className="flex items-center gap-2">
           <h1 className="text-sm">{info.symbol}</h1>
           <Link
@@ -58,7 +58,7 @@ const Row = ({
 
 const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
   return (
-    <div className="flex flex-row items-center justify-start rounded-xl border border-[#E5E7EB] bg-[#E5E7EB] px-3 py-2">
+    <div className="flex flex-row items-center justify-start rounded-xl  bg-foreground text-white px-3 py-2">
       <img
         src={tokenInfo?.logoURI as string}
         onError={({ currentTarget }) => {
@@ -71,8 +71,8 @@ const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
         alt="coin logo"
       />
       <div className="flex flex-row items-center">
-        <span className="ml-4 text-base  text-black">{tokenInfo.symbol}</span>
-        <BiChevronDown className="text-grey ml-2 w-[20px]" />
+        <span className="ml-4 text-base  ">{tokenInfo.symbol}</span>
+        <BiChevronDown className=" ml-2 w-[20px]" />
       </div>
     </div>
   );
@@ -87,9 +87,6 @@ export const SelectCoin = ({
 }) => {
   const { tokenMap } = useJupiterApiContext();
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(0);
-
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
 
   const originalList = useMemo(
     () =>
@@ -118,9 +115,7 @@ export const SelectCoin = ({
         <DialogHeader>
           <DialogTitle>
             <div className="relative">
-              <h2 className="text-base  text-black text-center ">
-                Select Route
-              </h2>
+              <h2 className="text-base  text-center ">Select Route</h2>
               <DialogTrigger asChild>
                 <AiOutlineArrowLeft className=" absolute w-4 h-4 top-1/2 -left-2 -translate-y-1/2 cursor-pointer" />
               </DialogTrigger>
@@ -135,7 +130,7 @@ export const SelectCoin = ({
               type="text"
               id="search-token"
               placeholder="Search"
-              className=" mt-4  w-full rounded-xl !border-none !bg-[#E5E7EB] text-black text-xs placeholder:text-black/50 !outline-none sm:text-lg p-2"
+              className=" mt-4  w-full rounded-xl !border-none !bg-foreground  text-xs placeholder:text-muted-foreground !outline-none sm:text-lg p-2"
               spellCheck={false}
             />
           </DialogDescription>
@@ -153,11 +148,11 @@ export const SelectCoin = ({
 
 const Rows = ({ currentItems, handleSelect }) => {
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {currentItems.map((e) => (
         <Row key={e.address} info={e} handleSelect={handleSelect} />
       ))}
-    </>
+    </div>
   );
 };
 

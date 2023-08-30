@@ -8,7 +8,7 @@ interface StatisticsFormsProps {}
 
 const StatisticsForms: FC<StatisticsFormsProps> = () => {
   return (
-    <StatisticsCardContainer>
+    <StatisticsCardContainer className="bg-foreground border border-[#1A1E1D]">
       <Tabs defaultValue="deposit" className="flex flex-col gap-6">
         <TabsList>
           <TabsTrigger value="deposit">Deposit</TabsTrigger>
@@ -21,8 +21,8 @@ const StatisticsForms: FC<StatisticsFormsProps> = () => {
           <WithdrawForm />
         </TabsContent>
         <footer className="flex items-center justify-between text-sm ">
-          <p className="text-black/50 font-medium">Virtual Price</p>
-          <p className="text-black/75 font-semibold">1.042058371</p>
+          <p className="text-muted-foreground font-medium">Virtual Price</p>
+          <p className="text-muted-foreground font-semibold">1.042058371</p>
         </footer>
       </Tabs>
     </StatisticsCardContainer>

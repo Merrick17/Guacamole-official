@@ -5,7 +5,7 @@ const game = {
   short_name: 'slots',
   description: '',
   creator: 'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC',
-  image: '/images/slots.png',
+  image: '/icons/play/slots.png',
   theme_color: '#ad6bff',
   app: React.lazy(() => import('./App')),
 };

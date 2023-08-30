@@ -17,13 +17,13 @@ export const metadata: Metadata = {
 const Page = () => {
   return (
     <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12 w-full  max-w-[1440px]">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-white px-6 py-5 border border-[#E5E7EB] shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
         <EarnHeader
           title="Dynamic SOL Vault"
           tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"
           viewAll={true}
         />
-        <hr className="border-dashed border-[#E5E7EB]" />
+        <hr className="border-dashed border-background" />
         <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
           <div className="lg:col-span-3">
             <TotalLiquidity />

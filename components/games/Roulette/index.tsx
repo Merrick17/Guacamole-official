@@ -4,7 +4,7 @@ const game = {
   short_name: 'roulette',
   description: '',
   creator: 'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC',
-  image: '/images/roulette.png',
+  image: '/icons/play/roulette.png',
   theme_color: '#59ff5f',
   app: React.lazy(() => import('./App')),
 };

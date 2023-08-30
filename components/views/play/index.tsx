@@ -4,6 +4,10 @@ import { GAMES } from '@/components/games';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { BannerCard } from '@/components/common/banner-card';
+import PlayCard from '@/components/ui/play-card';
+import Container from '@/components/common/container';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 const Play = () => {
   return (
@@ -15,20 +19,33 @@ const Play = () => {
       }
       <div
         className={cn(
-          'grid place-items-center  gap-4 px-4 py-4 grid-cols-1',
-          'md:grid-cols-2'
+          'grid place-items-center  gap-4 px-4 py-4 grid-cols-1 w-full ',
+          'md:grid-cols-2 '
         )}
       >
         {GAMES.length > 1 &&
           GAMES.map((game: any) => (
-            <Link key={game.short_name} href={`/play/${game.short_name}`}>
-              <BannerCard
-                backgroundImage={game.image}
-                backgroundColor={game.theme_color}
+            <Container
+              key={game.short_name}
+              className="border border-transparent  duration-500 ease-in-out hover:border-[var(--accent)]  hover:border rounded-lg"
+            >
+              <Link
+                href={`/play/${game.short_name}`}
+                className={cn(
+                  'w-full lg:max-w-[322px] flex flex-col items-center gap-8  transition-colors p-4 rounded-lg cursor-pointer bg-background  '
+                )}
               >
-                {game.name}
-              </BannerCard>
-            </Link>
+                <header>
+                  <Image
+                    src={game.image}
+                    alt={game.short_name}
+                    width={90}
+                    height={90}
+                  />
+                </header>
+                <Button className="w-32">{game.short_name}</Button>
+              </Link>
+            </Container>
           ))}
       </div>
     </>

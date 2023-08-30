@@ -303,7 +303,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
         <Button type="submit" className=" w-full">
           Create My Token
         </Button>
-        <p className="text-center text-black/50 text-sm ">
+        <p className="text-center text-muted-foreground text-sm ">
           This interface makes creating your own SPL token easy! Make sure to
           follow the tutorial attached if this is your first time so that you
           understand all possible settings!

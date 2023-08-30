@@ -1,4 +1,4 @@
-import Container from '@/components/views/home/container';
+import Container from '@/components/common/container';
 import { BannerCard } from '@/components/common/banner-card';
 import { GAMES } from '@/components/games';
 import { cn } from '@/lib/utils';
@@ -32,7 +32,7 @@ const ShopSection = () => {
             </div>
             <div className="bg-[#F0FDF4] rounded-lg border border-[#E5E7EB] p-6 flex flex-col gap-6 ">
               <div className="font-medium text-3xl">
-                <p className="text-black/50 text-sm ">
+                <p className="text-muted-foreground text-sm ">
                   Today’s Highlighted Avotar Holder Deal
                 </p>
                 <h1>

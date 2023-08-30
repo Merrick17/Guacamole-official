@@ -1,7 +1,7 @@
 import ColorBlocks from '@/components/common/color-block';
 import HeroHeadline from '@/components/common/hero-headline';
 import ThemeSwitcher from '@/components/ui/theme-switcher';
-import Container from '@/components/views/home/container';
+import Container from '@/components/common/container';
 import EarnList from '@/components/views/home/earn-list';
 import GamesSection from '@/components/views/home/games-section';
 import HomeContent from '@/components/views/home/home-content';
@@ -15,40 +15,44 @@ import { AccentColors } from '@/config/themes';
 import { cn } from '@/lib/utils';
 import HeroList from '@/components/common/hero-list';
 import TrendingToday from '@/components/views/home/trending-today';
+import BackgroundSplash from '@/components/common/background-splash';
 
 export default function Home() {
   return (
-    <main
-      className={cn(
-        'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
-      )}
-    >
-      <section className="flex flex-col gap-[60px]">
-        <div className="flex flex-col lg:flex-row  gap-14 ">
-          {/* <HomeContent className="w-full" /> */}
-          <HeroHeadline
-            title={
-              <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
-                The <span className="text-primary">best ingredients</span> to
-                keep your crypto portfolio{' '}
-                <span className="text-primary">super fresh.</span>
-              </h1>
-            }
-          >
-            <p className=" text-xl font-medium leading-8 text-muted-foreground">
-              Experience a fresh take on Solana DeFi with{' '}
-              <span className="text-[#4E8341]">Guacamole</span>. Trade, earn,
-              and play effortlessly, while enjoying a seamless and user-friendly
-              experience. Get started and unlock a world of possibilities!
-            </p>
-          </HeroHeadline>
-          <TrendingToday />
-        </div>
+    <>
+      <BackgroundSplash />
+      <main
+        className={cn(
+          'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
+        )}
+      >
+        <section className="flex flex-col gap-[60px]">
+          <div className="flex flex-col lg:flex-row  gap-14 ">
+            {/* <HomeContent className="w-full" /> */}
+            <HeroHeadline
+              title={
+                <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
+                  The <span className="text-primary">best ingredients</span> to
+                  keep your crypto portfolio{' '}
+                  <span className="text-primary">super fresh.</span>
+                </h1>
+              }
+            >
+              <p className=" text-xl font-medium leading-8 text-muted-foreground">
+                Experience a fresh take on Solana DeFi with{' '}
+                <span className="text-[#4E8341]">Guacamole</span>. Trade, earn,
+                and play effortlessly, while enjoying a seamless and
+                user-friendly experience. Get started and unlock a world of
+                possibilities!
+              </p>
+            </HeroHeadline>
+            <TrendingToday />
+          </div>
 
-        <HeroList listItems={HomeListItems} />
-        <ColorBlocks className="mx-auto" />
-      </section>
-      {/* <section className="flex flex-col gap-[60px]">
+          <HeroList listItems={HomeListItems} />
+          <ColorBlocks className="mx-auto" />
+        </section>
+        {/* <section className="flex flex-col gap-[60px]">
         <HomeHeadline
           title="Trade anything with the click of a button. It’s that easy!"
           description="Our amazing tools help you trade any token on Solana in just
@@ -81,18 +85,10 @@ export default function Home() {
         <ColorBlocks className="mx-auto" />
       </section>
       <ShopSection /> */}
-    </main>
+      </main>
+    </>
   );
 }
-
-type ListItemProps = {
-  title: string;
-  description: string;
-  image: string;
-  href: string;
-  disabled?: boolean;
-  accent: string;
-};
 
 const HomeListItems: ListItemProps[] = [
   {
@@ -100,7 +96,7 @@ const HomeListItems: ListItemProps[] = [
     description:
       'Trade any tokens on Solana in just a few clicks with no hassle and the best fees.',
     image: '/images/themes/violet.png',
-    href: routes.swap.root,
+    href: routes.trade.root,
     accent: AccentColors.violet,
   },
   {
@@ -128,71 +124,3 @@ const HomeListItems: ListItemProps[] = [
     accent: AccentColors.white,
   },
 ];
-// const TradeListItems: ListItemProps[] = [
-//   {
-//     title: 'Swap Aggregator',
-//     description:
-//       'Easily find the best trading routes to ensure you get the best bang for your buck!',
-//     image: '/images/home/trade/swap-aggregator.png',
-//     href: routes.swap.root,
-
-//   },
-//   {
-//     title: 'DCA & Limit Orders',
-//     description:
-//       'Set limit or dollar cost averaging orders to swap when you’re not around.',
-//     image: '/images/home/trade/dca.png',
-//     href: routes.info.root,
-//     disabled: true,
-//   },
-//   {
-//     title: 'Bridge Swaps',
-//     description:
-//       'Bridge your ETH, BNB, AVAX, and ARB to Solana and pick up tokens like GUAC.',
-//     image: '/images/home/trade/bridge-swap.png',
-//     href: routes.play.root,
-//     disabled: true,
-//   },
-//   {
-//     title: 'Liquidity Pools',
-//     description:
-//       'Provide liquidity for AMMs like Guacamole, Raydium, Orca, and more to earn fees.',
-//     image: '/images/home/trade/liquidity-pools.png',
-//     href: routes.tools.root,
-//     disabled: true,
-//   },
-// ];
-// const EarnListItems: ListItemProps[] = [
-//   {
-//     title: 'Dynamic Vaults',
-//     description:
-//       'Optimize yields between top lending protocols with rebalancing vaults.',
-//     image: '/images/earn/dynamic-vault.png',
-//     href: routes.earn.root,
-//     disabled: true,
-//   },
-//   {
-//     title: 'Token For NFT Pools',
-//     description:
-//       'Stake tokens to receive points which can be utilized to redeem vaulted NFTs.',
-//     image: '/images/earn/nft-pool.png',
-//     href: routes.info.root,
-//     disabled: true,
-//   },
-//   {
-//     title: 'NFT For Token Pools',
-//     description:
-//       'Stake your NFTs to receive tokens. Can be created or used by any project.',
-//     image: '/images/earn/token-pool.png',
-//     href: routes.play.root,
-//     disabled: true,
-//   },
-//   {
-//     title: 'Liquidity Farming',
-//     description:
-//       'Power up your liquidity provision to earn extra liquidity mining rewards.',
-//     image: '/images/earn/liquidity-farming.png',
-//     href: routes.tools.root,
-//     disabled: true,
-//   },
-// ];

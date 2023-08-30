@@ -39,7 +39,7 @@ const TokenMultiSender = () => {
         </div>
 
         <hr className="border-dashed border-[#E5E7EB]" />
-        <p className="text-center text-black/50 text-sm ">
+        <p className="text-center text-muted-foreground text-sm ">
           Select one of the token multi send options above to proceed. All multi
           send options support public addresses, .sol domains, and the new ANS
           standard as well!

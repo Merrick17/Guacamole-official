@@ -32,7 +32,7 @@ export const SlotWindowContainer = styled.div`
   width: 128px;
   height: 192px;
   border-radius: 10px;
-  background-color: white;
+  background-color: #0f0f0f;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.3);
   border: 0px solid #ccc;
 

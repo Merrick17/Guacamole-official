@@ -25,7 +25,7 @@ const Row = ({
         handleSelect(info);
         setOpen(false);
       }}
-      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 hover:bg-[#E5E7EB] "
+      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-primary "
     >
       {info && info.token && (
         <img
@@ -34,7 +34,7 @@ const Row = ({
           className="h-[24px] w-[24px] "
         />
       )}
-      <div className=" flex flex-col items-start text-black ">
+      <div className=" flex flex-col items-start  ">
         {info && info.token && (
           <span className="text-sm opacity-80">{info.token.symbol}</span>
         )}
@@ -60,10 +60,10 @@ export const SelectToken = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full cursor-pointer ">
         <div className="p-3 flex flex-col gap-[6px] items-start rounded-lg border border-[#E5E7EB] w-full">
-          <p className="text-[#4B5563] text-xs font-normal uppercase">
+          <p className="text-muted-foreground text-xs font-normal uppercase">
             Select A Token
           </p>
-          <p className="text-black font-medium text-sm">
+          <p className=" font-medium text-sm">
             {selectedToken
               ? selectedToken.token.name
               : 'Select token from dropdown'}
@@ -75,7 +75,7 @@ export const SelectToken = ({
         <DialogHeader>
           <DialogTitle>
             <div className="relative">
-              <h2 className="text-base  text-black text-center ">Tokens</h2>
+              <h2 className="text-base   text-center ">Tokens</h2>
               <DialogTrigger asChild>
                 <AiOutlineArrowLeft className=" absolute w-4 h-4 top-1/2 -left-2 -translate-y-1/2 cursor-pointer" />
               </DialogTrigger>

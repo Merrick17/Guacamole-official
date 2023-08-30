@@ -15,7 +15,7 @@ const TokenToManyWallets = () => {
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/token-multi-sender"
       />
       <hr className="border-dashed border-[#E5E7EB]" />
-      <p className="text-black/50 text-sm text-center">
+      <p className="text-muted-foreground text-sm text-center">
         Select a token and insert the addresses and amount you would like to
         send in one simple transaction. We support .sol and ans domains!
       </p>

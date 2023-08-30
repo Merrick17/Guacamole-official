@@ -13,13 +13,10 @@ type TradeProps = {
 };
 const Trade: FC<TradeProps> = ({ showDetails = true }) => {
   return (
-    <div className="flex w-full lg:max-w-lg flex-col gap-[10px] rounded-lg bg-white px-5 py-7 border border-[#E5E7EB]">
+    <div className="flex w-full lg:max-w-lg flex-col gap-[10px] rounded-lg bg-foreground px-5 py-7">
       <JupiterApiProvider>
-        <div className="bg-white w-full">
-          {/* <TopBar setCustomRpc={setCustomRpc} /> */}
-          <div className="flex  flex-col items-center justify-center bg-white">
-            <JupiterForm showDetails={showDetails} />
-          </div>
+        <div className="flex  flex-col items-center justify-center ">
+          <JupiterForm showDetails={showDetails} />
         </div>
       </JupiterApiProvider>
       <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />

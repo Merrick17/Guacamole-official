@@ -17,7 +17,7 @@ export function BannerCard({
   return (
     <div
       className={cn(
-        'min-w-[222px] w-full md:min-w-[372px] aspect-square bg-white  rounded-lg border border-[#E5E7EB] shadow-sm',
+        'min-w-[222px] w-full md:min-w-[372px] aspect-square bg-foreground  rounded-lg  shadow-sm',
         {
           ' py-[6px] px-[10px]  md:py-[18px] md:px-[19px] ': !compact,
           'w-full min-w-0  md:min-w-0 ': compact,

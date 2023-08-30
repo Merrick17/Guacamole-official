@@ -1,19 +1,22 @@
 const routes = {
   home: '/',
-  swap: {
-    root: '/swap',
-    dca: '/swap/dca',
-    limit: '/swap/limit',
-    liquidity: '/swap/liquidity',
-    bridge: '/swap/bridge',
+  trade: {
+    root: '/trade',
+    swap: '/trade/swap',
+    dca: '/trade/dca',
+    limit: '/trade/limit',
+    liquidity: '/trade/liquidity',
+    bridge: '/trade/bridge',
   },
   earn: {
     root: '/earn',
+    explore: '/earn/explore',
     dynamicVault: '/earn/dynamic-vault',
     statistics: '/earn/statistics',
   },
   play: {
     root: '/play',
+    explore: '/play/explore',
     guacamole: '/play/guac-a-mole',
     coinFlip: '/play/flip',
     roulette: '/play/roulette',

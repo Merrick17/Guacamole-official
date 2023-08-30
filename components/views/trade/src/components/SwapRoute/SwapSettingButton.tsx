@@ -20,7 +20,7 @@ const SwapSettingButton = ({
   roundBorder,
   children,
 }: ISwapSettingButton) => {
-  const classes = `relative flex-1 py-4 px-1 text-black/50  bg-[#E5E7EB59]  `;
+  const classes = `relative flex-1 py-4 px-1 text-muted-foreground  bg-[#E5E7EB59]  `;
   const roundBorderClass = (() => {
     if (roundBorder === 'left') return 'border-white rounded-l-xl ';
     if (roundBorder === 'right') return 'border-white rounded-r-xl';
@@ -35,7 +35,7 @@ const SwapSettingButton = ({
     <button
       type="button"
       className={`${
-        highlighted ? `border-white ${roundBorderClass} !bg-[#E5E7EB]  ` : ''
+        highlighted ? `border-white ${roundBorderClass} !bg-background  ` : ''
       } ${borderClassName} ${classes} ${className} relative`}
       onClick={onClick}
     >

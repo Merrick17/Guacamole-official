@@ -44,7 +44,7 @@ export const Balance = ({
       : 0;
 
   return (
-    <div className=" flex flex-row items-center gap-1 text-black/50 text-xs">
+    <div className=" flex flex-row items-center gap-1 text-muted-foreground  text-xs">
       <span>
         <BiWallet />
       </span>
@@ -54,15 +54,13 @@ export const Balance = ({
       {setInput && !!balance && (
         <>
           <Button
-            className="!h-5 text-[10px] bg-[#E5E7EB]"
-            variant="secondary"
+            className="!h-5 text-[10px] "
             onClick={() => setInput((balance / 2).toString())}
           >
             50%
           </Button>
           <Button
-            variant="secondary"
-            className="!h-5 text-[10px] bg-[#E5E7EB]"
+            className="!h-5 text-[10px] "
             onClick={() => setInput(balance.toString())}
           >
             100%

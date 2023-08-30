@@ -13,7 +13,7 @@ const StatisticsCardContainer: FC<StatisticsCardContainerProps> = ({
   return (
     <div
       className={cn(
-        'w-full h-full p-6 rounded-lg border border-[#E5E7EB]',
+        'w-full  h-full bg-background  p-6 rounded-lg border border-transparent hover:border-primary transition-colors duration-500 ease-in-out',
         className
       )}
     >

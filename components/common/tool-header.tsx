@@ -18,7 +18,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
   closeAll,
   burnAll,
   handleBurn,
-  tutorialLink
+  tutorialLink,
 }) => {
   return (
     <header
@@ -27,7 +27,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
         className
       )}
     >
-      <h1 className="font-medium text-base text-[#4B5563]">{title}</h1>
+      <h1 className="font-medium text-base text-muted-foreground">{title}</h1>
       <div className="flex  flex-col gap-4 sm:flex-row  items-center sm:gap-5">
         {burnAll && (
           <Button
@@ -51,9 +51,10 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
         )}
         <Link
           href={tutorialLink}
-          target='_blank'
+          target="_blank"
           rel="noopener noreferrer"
-           className="text-sm font-medium capitalize py-[6px] rounded-lg text-white bg-black px-3 hover:bg-black/80 transition-colors " >
+          className="text-sm font-medium capitalize py-[6px] rounded-lg text-white bg-black px-3 hover:bg-black/80 transition-colors "
+        >
           <span>View tutorial</span>
         </Link>
       </div>

@@ -75,8 +75,8 @@ export function ActionBar({ children }: Props) {
 
   return (
     <>
-      <div className=" max-w-[512px]  w-full z-10  bg-white rounded-lg border border-[#E5E7EB]">
-        <div className="  w-full p-5 flex flex-wrap items-center gap-1 justify-evenly bg-white rounded-lg backdrop:blur-[50px]">
+      <div className=" max-w-[512px]  w-full z-10  bg-foreground rounded-lg ">
+        <div className="  w-full p-5 flex flex-wrap items-center gap-1 justify-evenly  rounded-lg backdrop:blur-[50px]">
           {children}
           <div>
             <div style={{ position: 'relative' }}>

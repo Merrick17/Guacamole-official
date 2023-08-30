@@ -6,7 +6,7 @@ import { Loader, numberColorToHex } from './styles';
 
 export const Wrapper = styled.div`
   border-radius: 5px;
-  background: #f0fdf4;
+  background: #0f0f0f;
   color: black;
   margin: 0 auto;
   font-weight: bold;

@@ -34,7 +34,6 @@ export default function RootLayout({
             {/* <WalletDrawer /> */}
             <ThemeSwitcher />
             <div className="mt-20 min-h-screen relative">
-              <div className="fixed top-1/2 left-1/2  rounded-full blur-[100px]  w-[50vw] h-[50vh] -translate-x-1/2 -translate-y-1/2 bg-primary  antialiased z-[-1]" />
               <div className="z-10">{children}</div>
             </div>
             <Footer />

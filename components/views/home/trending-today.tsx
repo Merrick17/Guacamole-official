@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Container from './container';
+import Container from '../../common/container';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { BiLink } from 'react-icons/bi';
@@ -8,14 +8,16 @@ interface TrendingTodayProps {}
 
 const TrendingToday: FC<TrendingTodayProps> = () => {
   return (
-    <Container className="flex flex-col  gap-5">
-      <div className="flex flex-row gap-2">
-        <Image
-          src="/images/home/trending.png"
-          width={20}
-          height={20}
-          alt="trending"
-        />
+    <Container className="flex flex-col  gap-5 overflow-y-auto">
+      <div className="flex flex-row gap-2 items-center">
+        <div className="shrink-0 w-5 aspect-square">
+          <Image
+            src="/images/home/trending.png"
+            width={20}
+            height={20}
+            alt="trending"
+          />
+        </div>
         <h1 className="text-xl capitalize">Trending Today</h1>
       </div>
       <TrendingItem />

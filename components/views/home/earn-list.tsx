@@ -65,7 +65,7 @@ const EarnListItem: FC<EarnListItemProps> = ({
         ' w-full lg:max-w-[322px] flex flex-col gap-2  transition-colors p-4 border-[#E5E7EB] border rounded-lg cursor-pointer bg-[#F0FDF4]'
       )}
     >
-      <p className="text-sm  text-black/50">{title}</p>
+      <p className="text-sm  text-muted-foreground">{title}</p>
       <h1 className="text-2xl font-medium ">{description}</h1>
       <Link
         href={href}
@@ -100,6 +100,6 @@ const earnListItems: EarnListItemProps[] = [
     title: 'Current Market Price',
     description: '$0.0₈3606',
     btnText: 'SWAP FOR GUAC',
-    href: routes.swap.root,
+    href: routes.trade.root,
   },
 ];

@@ -50,9 +50,11 @@ const Details = ({
   }, [selectRoute]);
 
   return (
-    <div className={cn('mt-4 space-y-4 border border-black/5 rounded-xl p-3')}>
+    <div
+      className={cn('mt-4 space-y-4 border border-background rounded-xl p-3')}
+    >
       <div className="flex items-center justify-between text-xs">
-        <div className="text-black/30">{<span>Rate</span>}</div>
+        <div className="text-muted-foreground">{<span>Rate</span>}</div>
         {JSBI.greaterThan(rateParams.inAmount, ZERO) &&
         JSBI.greaterThan(rateParams.outAmount, ZERO) ? (
           <ExchangeRate
@@ -63,11 +65,11 @@ const Details = ({
             reversible={true}
           />
         ) : (
-          <span className="text-black/30">{'-'}</span>
+          <span className="text-muted-foreground">{'-'}</span>
         )}
       </div>
 
-      <div className="flex items-center justify-between text-xs text-black/30">
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
         <div>
           <span>Price Impact</span>
         </div>
@@ -75,14 +77,14 @@ const Details = ({
       </div>
 
       <div className="flex items-center justify-between text-xs">
-        <div className="text-black/30">
+        <div className="text-muted-foreground">
           {selectRoute?.swapMode === SwapMode.ExactIn ? (
             <span>Minimum Received</span>
           ) : (
             <span>Maximum Consumed</span>
           )}
         </div>
-        <div className="text-black/30">{otherAmountThresholdText}</div>
+        <div className="text-muted-foreground">{otherAmountThresholdText}</div>
       </div>
     </div>
   );

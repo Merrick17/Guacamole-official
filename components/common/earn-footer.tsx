@@ -7,8 +7,10 @@ const inter = Inter({
 });
 const EarnFooter = () => {
   return (
-    <footer className={cn('flex items-center justify-center', inter.className)}>
-      <p className="text-black/50 text-xs font-medium">Provided By</p>
+    <footer
+      className={cn('flex items-center gap-2 justify-center', inter.className)}
+    >
+      <p className="text-muted-foreground text-xs font-medium">Provided By</p>
       <Image
         src={'/icons/earn/meteora.svg'}
         width={30}

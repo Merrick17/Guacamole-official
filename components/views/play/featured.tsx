@@ -14,9 +14,8 @@ import { Section } from '@/components/styles';
 
 type FeaturedProps = {};
 const Featured: FC<FeaturedProps> = () => {
-  const pathname = usePathname();
   return (
-    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-white border border-[#E5E7EB]">
+    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-foreground ">
       <div className="flex flex-row gap-[10px] overflow-auto ">
         {GAMES.length > 1 && (
           <Section>
@@ -42,44 +41,3 @@ const Featured: FC<FeaturedProps> = () => {
 };
 
 export default Featured;
-
-type FeaturedGameProps = {
-  name: string;
-  image: string;
-  variant: 'normal' | 'compact';
-};
-const FeaturedGame: FC<FeaturedGameProps> = ({ name, image, variant }) => {
-  const height = variant === 'normal' ? 'h-[150px]' : 'h-[50px]';
-  return (
-    <div
-      className={cn(
-        'relative  w-[150px] overflow-hidden rounded-[5px]',
-        height
-      )}
-    >
-      <Image src={image} fill alt={name} className="object-cover" />
-      {variant === 'normal' && (
-        <div className="absolute bottom-[10px] left-1/2 -translate-x-1/2">
-          <Button className="whitespace-nowrap font-semibold uppercase">
-            {name}
-          </Button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Games = [
-  {
-    name: 'Coin Flip',
-    image: '/images/coin-flip.png',
-  },
-  {
-    name: 'Roulette',
-    image: '/images/roulette.png',
-  },
-  {
-    name: 'Slots',
-    image: '/images/slots.png',
-  },
-];

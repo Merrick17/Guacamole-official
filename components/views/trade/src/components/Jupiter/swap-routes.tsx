@@ -37,10 +37,10 @@ export const SwapRoutes = ({
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className="flex flex-row items-center w-max cursor-pointer text-black/50 text-xs gap-1"
+        className="flex flex-row items-center w-max cursor-pointer text-primary text-xs gap-1"
         onClick={() => hasRoute && setVisible(true)}
       >
-        <div className="flex items-center gap-1 bg-[#E5E7EB] text-black rounded-xl px-2 py-1">
+        <div className="flex items-center gap-1 bg-background rounded-xl px-2 py-1">
           <span>{hasRoute ? routes.length : 0}</span>
           <RiRouteFill className="-rotate-90" />
         </div>
@@ -56,7 +56,7 @@ export const SwapRoutes = ({
       <DialogContent closeBtn={false} className="overflow-auto">
         <DialogHeader>
           <DialogTitle className="relative">
-            <h2 className="text-base  text-black text-center ">Select Route</h2>
+            <h2 className="text-base   text-center ">Select Route</h2>
             <AiOutlineArrowLeft
               className=" absolute w-4 h-4 top-1/2 -left-2 -translate-y-1/2 cursor-pointer"
               onClick={() => setVisible(false)}
@@ -64,7 +64,7 @@ export const SwapRoutes = ({
           </DialogTitle>
           <DialogDescription className="!mt-4">
             <div className="flex flex-col gap-4 px-1">
-              <p className="text-xs text-black/50 mb-10">
+              <p className="text-xs text-muted-foreground mb-10">
                 This Jupiter powered system automatically selects a route with
                 the best price, however you can select a route manually.
               </p>

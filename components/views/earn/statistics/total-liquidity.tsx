@@ -2,18 +2,18 @@ import StatisticsCardContainer from './statistics-card-container';
 
 const TotalLiquidity = () => {
   return (
-    <StatisticsCardContainer className="bg-[#F0FDF4]">
-      <div className="flex  flex-row justify-between items-start font-semibold text-black/50 text-sm">
+    <StatisticsCardContainer>
+      <div className="flex  flex-row justify-between items-start  text-sm">
         <div className="flex flex-col gap-2">
           <header>
-            <p>Total Liquidity</p>
-            <h1 className="text-[#272A32] text-3xl ">Total Liquidity</h1>
+            <p className="text-muted-foreground">Total Liquidity</p>
+            <h1 className=" font-semibold  text-3xl ">32,735.93 SOL</h1>
           </header>
-          <p className="font-normal">$764,829.44</p>
+          <p className=" text-muted-foreground">$764,829.44</p>
         </div>
         <div>
-          <p>APY</p>
-          <h1 className="text-[#272A32] text-3xl ">3.13%</h1>
+          <p className="text-muted-foreground">APY</p>
+          <h1 className=" text-3xl font-semibold ">3.13%</h1>
         </div>
       </div>
     </StatisticsCardContainer>

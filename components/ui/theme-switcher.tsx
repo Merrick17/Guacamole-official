@@ -21,7 +21,7 @@ const ThemeSwitcher = () => {
     if (pathname === routes.home) {
       setTheme('system');
     }
-    if (pathname.includes(routes.swap.root)) {
+    if (pathname.includes(routes.trade.root)) {
       setTheme('violet');
     }
     if (pathname.includes(routes.earn.root)) {
@@ -58,10 +58,10 @@ const ThemeSwitcher = () => {
         />
       </Link>
       <Link
-        href={routes.swap.root}
+        href={routes.trade.root}
         className={cn(
           'p-3 w-max h-max flex items-center justify-center  rounded-tr-lg rounded-br-lg overflow-hidden bg-foreground ',
-          pathname.includes(routes.swap.root) && 'shadow-themeButtonShadow'
+          pathname.includes(routes.trade.root) && 'shadow-themeButtonShadow'
         )}
       >
         <Image

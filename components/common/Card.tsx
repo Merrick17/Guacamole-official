@@ -15,8 +15,8 @@ export function Card({
 }: Props) {
   return (
     <div
-      className="group relative bg-white rounded-[10px] flex flex-col justify-end max-h-full transition-[height] duration-200 ease-in-out overflow-hidden flex-grow-0 flex-shrink-0"
-      style={{ backgroundColor, width, height }}
+      className="group relative bg-background rounded-[10px] flex flex-col justify-end max-h-full transition-[height] duration-200 ease-in-out overflow-hidden flex-grow-0 flex-shrink-0"
+      style={{ width, height }}
     >
       {backgroundImage && (
         <div

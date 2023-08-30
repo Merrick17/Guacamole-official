@@ -19,7 +19,7 @@ export const Option = styled.button<{ $selected?: boolean }>`
   background: none;
   border: none;
   font-size: 24px;
-  color: black;
+  color: #fcfcfc;
   margin: 0;
   padding: 0;
   transition: opacity 0.1s;
@@ -30,7 +30,7 @@ export const Option = styled.button<{ $selected?: boolean }>`
 export const Card = styled.div`
   border-radius: 5px;
   background: white;
-  color: black;
+  color: #fcfcfc;
   font-size: 32px;
   width: 100px;
   height: 120px;
@@ -39,9 +39,9 @@ export const Card = styled.div`
   animation: ${bounce} 0.5s;
   text-align: center;
   position: relative;
-  border: 4px solid #ffffff;
+  border: 4px solid #0f0f0f;
   user-select: none;
-  background-color: #e5e7eb;
+  background-color: #0f0f0f;
   .rank {
     font-weight: bold;
     font-size: 32px;
@@ -54,7 +54,7 @@ export const Card = styled.div`
   }
   .suit {
     font-size: 64px;
-    color: #00000033;
+    color: #fcfcfc;
     position: absolute;
     left: 50%;
     top: 50%;

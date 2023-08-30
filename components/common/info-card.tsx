@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
+import Container from './container';
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -31,32 +32,34 @@ const InfoCard: FC<InfoCardProps> = ({
   disabled = false,
 }) => {
   return (
-    <Link
-      href={!disabled ? href : '#'}
-      target={openNewTab ? '_blank' : undefined}
-      className={cn(
-        'flex  flex-col items-center gap-6 rounded-lg border border-[#E5E7EB] bg-white px-8 py-16 max-w-sm hover:bg-[#F0FDF4] transition-colors',
-        disabled && 'bg-[#E5E7EB80] cursor-not-allowed hover:bg-[#E5E7EB80]'
-      )}
-    >
-      <div className="relative aspect-square w-28">
-        <Image src={image} alt={name} fill />
-      </div>
-      <div className="flex flex-col gap-2">
-        <h1 className="text-center text-lg font-medium uppercase leading-7 text-black">
-          {name}
-        </h1>
-        <p className="text-center text-sm leading-7">{description}</p>
-      </div>
-      {connectWallet && (
-        <WalletMultiButtonDynamic
-          className="rounded-full uppercase"
-          startIcon={undefined}
-        >
-          Connect Wallet
-        </WalletMultiButtonDynamic>
-      )}
-    </Link>
+    <Container className="rounded-lg max-w-xs  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
+      <Link
+        href={!disabled ? href : '#'}
+        target={openNewTab ? '_blank' : undefined}
+        className={cn(
+          'flex  flex-col items-start gap-2   p-4 h-full bg-background rounded-lg  ',
+          disabled && 'cursor-not-allowed opacity-50'
+        )}
+      >
+        <div className="relative aspect-square w-9">
+          <Image src={image} alt={name} fill />
+        </div>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-lg font-medium uppercase leading-7 ">{name}</h1>
+          <p className=" text-sm leading-7 text-muted-foreground">
+            {description}
+          </p>
+        </div>
+        {connectWallet && (
+          <WalletMultiButtonDynamic
+            className="rounded-full uppercase"
+            startIcon={undefined}
+          >
+            Connect Wallet
+          </WalletMultiButtonDynamic>
+        )}
+      </Link>
+    </Container>
   );
 };
 

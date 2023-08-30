@@ -80,7 +80,7 @@ const WalletDrawer = () => {
               </h1>
               <div className="flex items-center gap-2">
                 <Link
-                  href={routes.swap.root}
+                  href={routes.trade.root}
                   className="w-9 h-8 p-1  flex items-center justify-center rounded-lg bg-white border border-[#E5E7EB]"
                 >
                   <Image

@@ -56,7 +56,7 @@ function RecentPlay({ event }: { event: RecentPlayEvent }) {
   })();
 
   return (
-    <div className="p-[10px] border border-solid border-[#E5E7EB] rounded-[5px] flex flex-row items-center justify-between gap-1 h-10 ">
+    <div className="p-[10px]  bg-background rounded-lg flex flex-row items-center justify-between gap-1 h-10 ">
       <div>{content}</div>
       <span>
         <a
@@ -71,25 +71,27 @@ function RecentPlay({ event }: { event: RecentPlayEvent }) {
   );
 }
 
-export function RecentPlays() {
+export function RecentPlays({ compact }: { compact?: boolean }) {
   const { recentPlays } = useGambaUi();
 
   return (
     <>
       {!recentPlays.length ? (
         <>
-          {Array.from({ length: 10 }).map((_, i) => (
+          {Array.from({ length: compact ? 7 : 10 }).map((_, i) => (
             <Skeleton className="h-10 w-full" key={i} />
           ))}
         </>
       ) : (
         recentPlays
-          .slice(0, 10)
+          .slice(0, compact ? 7 : 10)
           .map((event, i) => <RecentPlay key={i} event={event} />)
       )}
-      <div style={{ opacity: 0.5, fontSize: 12 }}>
-        Some transactions may be too old to load
-      </div>
+      {!compact && (
+        <div style={{ opacity: 0.5, fontSize: 12 }}>
+          Some transactions may be too old to load
+        </div>
+      )}
     </>
   );
 }
