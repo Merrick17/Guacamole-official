@@ -27,12 +27,19 @@ const routes = {
 
   tools: {
     root: '/tools',
-    createSplToken: '/tools/create-spl-token',
+    explore: '/tools/explore',
+
     burnNftToken: '/tools/burn-nft-token',
     burnSplToken: '/tools/burn-spl-token',
     tokenMultiSender: '/tools/token-multi-sender',
     emergencySend: '/tools/emergency-send',
     closeTokenAccounts: '/tools/close-token-accounts',
+  },
+
+  launch: {
+    root: '/launch',
+    explore: '/launch/explore',
+    createSplToken: '/launch/create-spl-token',
   },
   info: {
     root: '/info',

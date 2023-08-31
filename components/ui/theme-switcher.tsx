@@ -33,7 +33,7 @@ const ThemeSwitcher = () => {
     if (pathname.includes(routes.tools.root)) {
       setTheme('white');
     }
-    if (pathname.includes(routes.info.root)) {
+    if (pathname.includes(routes.launch.root)) {
       setTheme('red');
     }
   }, [pathname, setTheme]);
@@ -114,10 +114,10 @@ const ThemeSwitcher = () => {
         />
       </Link>
       <Link
-        href={routes.info.root}
+        href={routes.launch.root}
         className={cn(
           'p-3 w-max h-max flex items-center justify-center  rounded-tr-lg rounded-br-lg overflow-hidden bg-foreground ',
-          pathname.includes(routes.info.root) && 'shadow-themeButtonShadow'
+          pathname.includes(routes.launch.root) && 'shadow-themeButtonShadow'
         )}
       >
         <Image

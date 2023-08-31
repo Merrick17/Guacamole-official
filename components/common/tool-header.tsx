@@ -49,13 +49,13 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
             <span className="text-sm font-medium ">Close All Selected</span>
           </Button>
         )}
-        <Link
-          href={tutorialLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-medium capitalize py-[6px] rounded-lg text-white bg-black px-3 hover:bg-black/80 transition-colors "
-        >
-          <span>View tutorial</span>
+        <Link href={tutorialLink} target="_blank" rel="noopener noreferrer">
+          <Button
+            className="text-sm font-medium capitalize py-[6px] h-[32px]"
+            size="sm"
+          >
+            View tutorial
+          </Button>
         </Link>
       </div>
     </header>

@@ -1,4 +1,5 @@
 'use client';
+import Container from '@/components/common/container';
 import Tool from '@/components/common/info-card';
 import NftCard from '@/components/common/nft-card';
 import ToolHeader from '@/components/common/tool-header';
@@ -146,6 +147,7 @@ const CloseTokenAccount = () => {
           <Button
             size="sm"
             variant="default"
+            className="!bg-[#8BD796]"
             onClick={() => {
               setIsSelected(true);
               toClose.push(props.tokenAccount);
@@ -278,7 +280,7 @@ const CloseTokenAccount = () => {
   };
 
   return (
-    <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5  border border-[#E5E7EB] shadow-md">
+    <Container className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg  px-6 py-5  shadow-md">
       <ToolHeader
         title="Close Token Accounts"
         closeAll
@@ -308,7 +310,7 @@ const CloseTokenAccount = () => {
           </p>
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 

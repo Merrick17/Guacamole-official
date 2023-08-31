@@ -33,6 +33,7 @@ import Tool from '@/components/common/info-card';
 import Loading from '@/components/views/trade/src/components/Loading';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import Container from '@/components/common/container';
 
 const BurnNftToken = () => {
   const { connection } = useConnection();
@@ -385,6 +386,7 @@ const BurnNftToken = () => {
           <Button
             size="sm"
             variant="default"
+            className="!bg-[#8BD796]"
             onClick={() => {
               setIsSelected(true);
               toBurn.push(data);
@@ -408,7 +410,7 @@ const BurnNftToken = () => {
     );
   };
   return (
-    <div className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg bg-white px-6 py-5  border border-[#E5E7EB] shadow-md">
+    <Container className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg  px-6 py-5  shadow-md">
       <ToolHeader
         title="Burn NFT To Redeem $SOL"
         burnAll
@@ -434,7 +436,7 @@ const BurnNftToken = () => {
           </p>
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 

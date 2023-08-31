@@ -6,11 +6,13 @@ import {
   GoHourglass,
   GoTools,
   GoInfo,
+  GoRocket,
 } from 'react-icons/go';
 export const Links: {
   name: string;
   href: string;
   Icon: IconType;
+  hide?: boolean;
 
   dropdownItems?: {
     name: string;
@@ -22,6 +24,7 @@ export const Links: {
     name: 'Home',
     href: routes.home,
     Icon: GoHome,
+    hide: true,
   },
   {
     name: 'Trade',
@@ -113,6 +116,22 @@ export const Links: {
       },
     ],
   },
+  {
+    name: 'Launch',
+    href: routes.launch.root,
+    Icon: GoRocket,
+    dropdownItems: [
+      {
+        name: 'Explore All Tools',
+        href: routes.launch.explore,
+      },
+      {
+        name: 'Create Your Own Token',
+
+        href: routes.launch.createSplToken,
+      },
+    ],
+  },
 
   {
     name: 'Tools',
@@ -122,13 +141,9 @@ export const Links: {
     dropdownItems: [
       {
         name: 'Explore All Tools',
-        href: routes.tools.root,
+        href: routes.tools.explore,
       },
-      {
-        name: 'Create Your Own Token',
 
-        href: routes.tools.createSplToken,
-      },
       {
         name: 'Multi-Sender & Airdrops',
 
@@ -158,5 +173,6 @@ export const Links: {
     name: 'Info',
     href: routes.info.root,
     Icon: GoInfo,
+    hide: true,
   },
 ];

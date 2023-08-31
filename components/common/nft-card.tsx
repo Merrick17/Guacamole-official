@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React, { FC, useEffect } from 'react';
 import { Button } from '../ui/button';
+import Container from './container';
 
 type NftCardProps = {
   className?: string;
@@ -15,7 +16,7 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
     console.log('Token', token);
   }, [token]);
   return (
-    <div className="rounded-xl bg-white border-2 border-[#E5E7EB] flex flex-col gap-2 text-xs px-6 py-4  hover:bg-[#F0FDF4] ">
+    <div className="rounded-xl  bg-background flex flex-col gap-2 text-xs px-6 py-4 border border-transparent transition-all ease-in-out duration-500  hover:border-primary ">
       <div className="flex flex-col  items-center">
         <Image
           unoptimized
@@ -40,7 +41,7 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
             }
           }}
         >
-          <span className="text-xs"> View Explorer</span>
+          <span className="text-xs">View Explorer</span>
         </Button>
       </div>
     </div>

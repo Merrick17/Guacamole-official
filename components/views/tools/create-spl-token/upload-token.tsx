@@ -21,7 +21,7 @@ const UploadToken: FC<UploadTokenProps> = ({ tokenIcon, setTokenIcon }) => {
   return (
     <div
       {...getRootProps()}
-      className="flex items-center justify-center w-full border border-[#E5E7EB] min-h-[70px] text-sm font-medium rounded-lg relative"
+      className="flex items-center justify-center w-full bg-background min-h-[70px] text-sm font-medium rounded-lg relative text-muted-foreground"
     >
       {!tokenIcon ? (
         <div>

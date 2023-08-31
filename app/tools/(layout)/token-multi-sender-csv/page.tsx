@@ -1,3 +1,4 @@
+import Container from '@/components/common/container';
 import ToolHeader from '@/components/common/tool-header';
 import TokenMultiSenderCsvForm from '@/components/views/tools/token-multi-sender-csv/token-multi-sender-csv-form';
 import { Metadata } from 'next';
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 const TokenMultiSenderCSV = () => {
   return (
-    <div className=" mx-auto flex w-full max-w-lg flex-col gap-6 rounded-lg bg-white px-6 py-5  border border-[#E5E7EB] shadow-md">
+    <Container className=" mx-auto flex w-full max-w-lg flex-col gap-6 rounded-lg  px-6 py-5  shadow-md">
       <ToolHeader
         title="Token Multi Sender By CSV"
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/token-multi-sender"
@@ -28,7 +29,7 @@ const TokenMultiSenderCSV = () => {
       </div>
 
       <TokenMultiSenderCsvForm />
-    </div>
+    </Container>
   );
 };
 

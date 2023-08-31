@@ -282,17 +282,18 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
       />
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 pb-6">
-        <div className="flex items-center  flex-col gap-2 md:flex-row md:justify-between md:gap-8 "></div>
+        <div className="flex items-center  flex-col gap-5 md:flex-row md:justify-between md:gap-8 "></div>
         {fields.map((f, idx) => (
           <div
             key={idx}
-            className="grid grid-cols-1 gap-2  md:grid-cols-3 md:gap-8  "
+            // className="grid grid-cols-1 gap-2  md:grid-cols-3 md:gap-8  "
+            className="flex flex-col md:flex-row gap-2  "
           >
             <FormField
               control={form.control}
               name={`receivers.${idx}.receiver`}
               render={({ field }) => (
-                <FormItem className="col-span-2">
+                <FormItem className="flex-1 h-full">
                   <FormLabel className=" uppercase">
                     Reciver {idx + 1} Wallet Address
                   </FormLabel>
@@ -326,7 +327,7 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
                 receiver: '',
               });
             }}
-            className="w-max"
+            size="icon"
           >
             <BsPersonAdd />
           </Button>
@@ -335,8 +336,8 @@ const TokenToManyWalletsForm: FC<TokenToManyWalletsFormProps> = () => {
               onClick={() => {
                 remove(fields.length - 1);
               }}
-              className="w-max"
               variant="destructive"
+              size="icon"
             >
               <BsTrash />
             </Button>

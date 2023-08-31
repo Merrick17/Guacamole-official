@@ -59,7 +59,7 @@ const ColorBlocks: FC<Partial<HTMLDivElement>> = ({ className }) => {
         height={16}
         alt="red"
         className={cn(
-          pathname.includes(routes.info.root) ? 'opacity-100' : 'opacity-50'
+          pathname.includes(routes.launch.root) ? 'opacity-100' : 'opacity-50'
         )}
       />
     </div>

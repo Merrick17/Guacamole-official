@@ -25,7 +25,7 @@ const Row = ({
         handleSelect(info);
         setOpen(false);
       }}
-      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-primary "
+      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background border border-transparent hover:border-primary transition-all duration-500 ease-in-out "
     >
       {info && info.token && (
         <img
@@ -87,16 +87,19 @@ export const SelectToken = ({
           {!connected ? (
             <p>Please Connect Your Wallet</p>
           ) : (
-            <>
-              {walletTokens.map((info, idx) => (
-                <Row
-                  key={idx}
-                  info={info}
-                  handleSelect={handleSelect}
-                  setOpen={setOpen}
-                />
-              ))}
-            </>
+            <div className="flex flex-col gap-4">
+              {walletTokens.map(
+                (info, idx) =>
+                  info.token && (
+                    <Row
+                      key={idx}
+                      info={info}
+                      handleSelect={handleSelect}
+                      setOpen={setOpen}
+                    />
+                  )
+              )}
+            </div>
           )}{' '}
         </div>
       </DialogContent>

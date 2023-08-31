@@ -1,9 +1,8 @@
 'use client';
 
 // import { useWallet } from '@solana/wallet-adapter-react';
-import InfoCard from '@/components/common/info-card';
+import ConnectWalletCard from '@/components/ui/connect-wallet-card';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { truncate } from 'fs';
 import { ReactNode } from 'react';
 
 export default function ToolsLayout({ children }: { children: ReactNode }) {
@@ -15,12 +14,9 @@ export default function ToolsLayout({ children }: { children: ReactNode }) {
         <>{children}</>
       ) : (
         <div className="flex items-center justify-center">
-          <InfoCard
+          <ConnectWalletCard
             name="Please connect your wallet"
             description="You will need to connect a supported Solana wallet to continue! Press the button below to explore the options."
-            image="/images/connect-wallet-tool.png"
-            connectWallet
-            href="#"
           />
         </div>
       )}

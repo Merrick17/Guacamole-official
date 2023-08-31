@@ -16,7 +16,6 @@ interface InfoCardProps {
   image: string;
   name: string;
   description: string;
-  connectWallet?: boolean;
   href?: string;
   openNewTab?: boolean;
   disabled?: boolean;
@@ -26,7 +25,6 @@ const InfoCard: FC<InfoCardProps> = ({
   image,
   name,
   description,
-  connectWallet = false,
   href,
   openNewTab = false,
   disabled = false,
@@ -50,14 +48,6 @@ const InfoCard: FC<InfoCardProps> = ({
             {description}
           </p>
         </div>
-        {connectWallet && (
-          <WalletMultiButtonDynamic
-            className="rounded-full uppercase"
-            startIcon={undefined}
-          >
-            Connect Wallet
-          </WalletMultiButtonDynamic>
-        )}
       </Link>
     </Container>
   );

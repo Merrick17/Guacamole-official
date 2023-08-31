@@ -1,3 +1,4 @@
+import Container from '@/components/common/container';
 import ToolHeader from '@/components/common/tool-header';
 import EmergencySendForm from '@/components/views/tools/emergency-send/emergency-send-form';
 import { Metadata } from 'next';
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 const EmergencySend = () => {
   return (
-    <div className=" mx-auto flex w-full max-w-lg flex-col gap-6 rounded-lg bg-white px-6 py-5  border border-[#E5E7EB] shadow-md">
+    <Container className=" mx-auto flex w-full max-w-lg flex-col gap-6 rounded-lg px-6 py-5  shadow-md">
       <ToolHeader
         title="Emergency Send Tool"
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/emergency-send"
@@ -25,7 +26,7 @@ const EmergencySend = () => {
         <p className="font-medium">Please use this tool with caution!</p>
       </div>
       <EmergencySendForm />
-    </div>
+    </Container>
   );
 };
 

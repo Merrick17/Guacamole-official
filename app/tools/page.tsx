@@ -1,79 +1,80 @@
-import InfoCard from '@/components/common/info-card';
+import BackgroundSplash from '@/components/common/background-splash';
+import ColorBlocks from '@/components/common/color-block';
+import HeroHeadline from '@/components/common/hero-headline';
+import HeroList from '@/components/common/hero-list';
+import { Button } from '@/components/ui/button';
+
 import routes from '@/config/routes';
-import { Metadata } from 'next';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import { FC } from 'react';
 
 interface ToolsProps {}
 
-export const metadata: Metadata = {
-  title: 'Useful Tools For All Solana Users | Guacamole',
-  description:
-    'Find a variety of easy to use tools in our suite that can instantly help improve your quality of life while interacting with the Solana blockchain or starting your own project!',
-};
 const Tools: FC<ToolsProps> = () => {
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      <div
-        className={
-          ' mx-auto grid grid-cols-1 sm:grid-cols-2 max-w-6xl lg:grid-cols-3 gap-x-6 gap-y-6'
-        }
+    <>
+      <BackgroundSplash />
+      <main
+        className={cn(
+          'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
+        )}
       >
-        {tools.map((tool, index) => (
-          <InfoCard key={index} {...tool} />
-        ))}
-      </div>
-    </main>
+        <section className="flex flex-col gap-[60px]">
+          {/* <HomeContent className="w-full" /> */}
+          <HeroHeadline
+            className="w-full lg:max-w-none"
+            title={
+              'A growing list of tools focused on cleaning up your crypto portfolio.'
+            }
+          >
+            <>
+              <p className=" text-xl font-medium leading-8 text-muted-foreground">
+                Find a variety of easy to use tools in our suite that can
+                instantly help improve your quality of life while interacting
+                with the Solana blockchain or starting your own project!
+              </p>
+              <Link href={routes.tools.explore}>
+                <Button>BROWSE ALL TOOLS</Button>
+              </Link>
+            </>
+          </HeroHeadline>
+          <HeroList listItems={tools} />
+          <ColorBlocks className="mx-auto" />
+        </section>
+      </main>
+    </>
   );
 };
-
 export default Tools;
 
-const tools: {
-  image: string;
-  name: string;
-  description: string;
-  href?: string;
-}[] = [
+const tools: ListItemProps[] = [
   {
-    image: '/images/tools/create-spl-token.png',
-    name: 'Create SPL Token',
+    image: '/icons/tools/airdrop.svg',
+    title: 'Airdrop Tokens',
     description:
-      'Easily create your own token on the Solana network with this simple interface',
-    href: routes.tools.createSplToken,
-  },
-  {
-    image: '/images/tools/token-multi-sender.png',
-    name: 'Token Multi Sender',
-    description:
-      'Multiple options to send tokens to  Solana addresses and domains. The best way to airdrop tokens!',
+      'Send tokens to  Solana addresses and domains. The best way to airdrop tokens!',
     href: routes.tools.tokenMultiSender,
   },
   {
-    image: '/images/tools/burn-spl-token.png',
-    name: 'BURN SPL Tokens',
+    image: '/icons/tools/emergency-send.svg',
+    title: 'Emergency Send',
     description:
-      'Burn those worthless tokens and scam airdrops in your wallet to reclaim some $SOL back from rent accounts.',
-    href: routes.tools.burnSplToken,
-  },
-  {
-    image: '/images/tools/burn-nft-token.png',
-    name: 'BURN SOLANA NFT',
-    description:
-      'Burn those worthless airdrop and “rugged” NFTs to reclaim some $SOL back from rent accounts.',
-    href: routes.tools.burnNftToken,
-  },
-  {
-    image: '/images/tools/emergency-send.png',
-    name: 'EMERGENCY SEND',
-    description:
-      'Easily send everything from one wallet to a new wallet of your choice. Useful if you suspect your wallet is compromised.',
+      'Easily send everything from one wallet to a new wallet of your choice.',
     href: routes.tools.emergencySend,
   },
   {
-    image: '/images/tools/close-accounts.png',
-    name: 'Close empty accounts',
+    image: '/icons/tools/burn-nft.svg',
+    title: 'Burn NFTs',
     description:
-      'Your wallet may have some unused accounts! You can close these accounts to reclaim some $SOL back!',
+      'Burn those worthless and “rugged” NFTs to reclaim $SOL from rent accounts.',
+    href: routes.tools.burnNftToken,
+  },
+  {
+    image: '/icons/tools/close-accounts.svg',
+    title: 'Close Accounts',
+    description:
+      'Close unused token & NFT accounts to easily reclaim $SOL from rent accounts.',
     href: routes.tools.closeTokenAccounts,
   },
 ];

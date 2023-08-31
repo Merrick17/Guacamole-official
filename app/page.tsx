@@ -1,6 +1,5 @@
 import ColorBlocks from '@/components/common/color-block';
 import HeroHeadline from '@/components/common/hero-headline';
-import ThemeSwitcher from '@/components/ui/theme-switcher';
 import Container from '@/components/common/container';
 import EarnList from '@/components/views/home/earn-list';
 import GamesSection from '@/components/views/home/games-section';

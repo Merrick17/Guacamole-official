@@ -291,7 +291,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
-                  <p className="font-medium text-sm ">
+                  <p className="font-medium text-sm text-muted-foreground ">
                     Enable Freeze Authority
                   </p>
                 </label>
@@ -299,7 +299,6 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </FormItem>
           )}
         />
-        <hr className="border-dashed border-[#E5E7EB]" />
         <Button type="submit" className=" w-full">
           Create My Token
         </Button>
