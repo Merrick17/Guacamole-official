@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useJupiterApiContext } from '../../contexts';
 import { TokenInfo } from '@solana/spl-token-registry';
-import { BiChevronDown, BiLink } from 'react-icons/bi';
+import { BiChevronDown, BiLinkExternal } from 'react-icons/bi';
 import ReactPaginate from 'react-paginate';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import {
@@ -42,12 +42,12 @@ const Row = ({
             href={`https://explorer.solana.com/address/${info.address}`}
             rel="noopener noreferrer"
             target="_blank"
-            className="text-xs flex items-center bg-black/50 text-white  rounded-[4px] px-2 py-1 "
+            className="text-xs flex items-center text-muted-foreground   rounded-[4px] px-2 py-1 "
           >
             <span className="  max-w-[44px] text-ellipsis overflow-hidden">
               {info.address}
             </span>
-            <BiLink />
+            <BiLinkExternal />
           </Link>
         </div>
         <span className="text-sm opacity-80">{info.name}</span>

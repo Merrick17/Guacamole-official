@@ -15,6 +15,7 @@ import Footer from '@/components/ui/footer';
 import WalletDrawer from '@/components/ui/wallet-drawer';
 import { Themes } from '@/context/themes';
 import ThemeSwitcher from '@/components/ui/theme-switcher';
+import LeftSideUtility from '@/components/ui/left-side-utility';
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
@@ -32,7 +33,7 @@ export default function RootLayout({
           <Wallet>
             <Header />
             {/* <WalletDrawer /> */}
-            <ThemeSwitcher />
+            <LeftSideUtility />
             <div className="mt-20 min-h-screen relative">
               <div className="z-10">{children}</div>
             </div>

@@ -54,6 +54,9 @@ const routes = {
     },
   },
 
+  shop: {
+    root: '/shop',
+  },
   others: {
     discord: 'https://discord.com/invite/guac',
     docs: 'https://docs.guacamole.gg/',

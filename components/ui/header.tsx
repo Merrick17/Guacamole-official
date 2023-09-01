@@ -8,6 +8,7 @@ import { Logo } from '../views/trade/src/components/navigation-frame/TopBar/Logo
 import Hamburger from './hamburger';
 import { MenuItems } from './menu-items';
 import { DrawerMenu } from './drawer-menu';
+import routes from '@/config/routes';
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -46,12 +47,12 @@ const Header: FC<HeaderProps> = () => {
 };
 const HeaderLeftArea = () => {
   return (
-    <div className="flex items-center gap-2 mr-16">
+    <Link href={routes.home} className="flex items-center gap-2 mr-16">
       <Logo />
       <h1 className="hidden lg:block text-2xl font-medium uppercase">
         Guacamole
       </h1>
-    </div>
+    </Link>
   );
 };
 
@@ -66,15 +67,8 @@ function HeaderRightArea({
 }) {
   return (
     <div className="order-last flex shrink-0 items-center">
-      <div className="ltr:mr-3.5 rtl:ml-3.5 ltr:sm:mr-5 rtl:sm:ml-5 xl:hidden"></div>
-
       <div className="hidden gap-6 lg:flex 2xl:gap-8">
-        <Link
-          href="https://guac.gg/shop"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="shrink-0"
-        >
+        <Link href={routes.shop.root} className="shrink-0">
           <Image src="/icons/shop.svg" alt="search" width={48} height={48} />
         </Link>
         <Link
@@ -96,12 +90,7 @@ function HeaderRightArea({
       </div>
 
       <div className="flex items-center gap-2 lg:hidden ">
-        <Link
-          href="https://guac.gg/shop"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="shrink-0"
-        >
+        <Link href={routes.shop.root} className="shrink-0">
           <Image src="/icons/shop.svg" alt="search" width={48} height={48} />
         </Link>
         <Link

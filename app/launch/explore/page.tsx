@@ -1,6 +1,10 @@
-import InfoCard from '@/components/common/info-card';
+import Container from '@/components/common/container';
+import { Button } from '@/components/ui/button';
 import routes from '@/config/routes';
+import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
 import { FC } from 'react';
 
 interface ToolsProps {}
@@ -12,14 +16,35 @@ export const metadata: Metadata = {
 };
 const page: FC<ToolsProps> = () => {
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+    <main className="container mx-auto w-full  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
       <div
         className={
           ' mx-auto grid grid-cols-1 sm:grid-cols-2 max-w-6xl lg:grid-cols-3 gap-x-6 gap-y-6'
         }
       >
-        {tools.map((tool, index) => (
-          <InfoCard key={index} {...tool} />
+        {lanchItems.map((item) => (
+          <Container
+            key={item.name}
+            className="border border-transparent min-w-[300px]  duration-500 ease-in-out hover:border-[var(--accent)]  hover:border rounded-lg"
+          >
+            <Link
+              href={`${item.href}`}
+              className={cn(
+                'w-full lg:max-w-[322px] flex flex-col items-center gap-8  transition-colors p-4 rounded-lg cursor-pointer bg-background  ',
+                item.disabled ? 'opacity-50' : ''
+              )}
+            >
+              <header>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={90}
+                  height={90}
+                />
+              </header>
+              <Button className="w-32">{item.name}</Button>
+            </Link>
+          </Container>
         ))}
       </div>
     </main>
@@ -28,52 +53,63 @@ const page: FC<ToolsProps> = () => {
 
 export default page;
 
-const tools: {
+const lanchItems: {
   image: string;
   name: string;
-  description: string;
   href?: string;
+  disabled?: boolean;
 }[] = [
   {
-    image: '/icons/tools/airdrop.svg',
-    name: 'Airdrop Tokens',
-    description:
-      'Send tokens to  Solana addresses and domains. The best way to airdrop tokens!',
-    href: routes.tools.tokenMultiSender,
+    image: '/icons/launch/create-token.svg',
+    name: 'Create SPL TOken',
+    href: routes.launch.createSplToken,
   },
   {
-    image: '/icons/tools/airdrop.svg',
-    name: 'Airdrop via CSV',
-    description:
-      'Send tokens to  Solana addresses and domains. The best way to airdrop tokens!',
-    href: routes.inPageLinks.tokenMultiSender.csv,
+    image: '/icons/launch/mint-cnfts.svg',
+    name: 'create cnfts',
+
+    href: routes.launch.root,
   },
   {
-    image: '/icons/tools/emergency-send.svg',
-    name: 'Emergency Send',
-    description:
-      'Easily send everything from one wallet to a new wallet of your choice.',
-    href: routes.tools.emergencySend,
+    image: '/icons/launch/token-on-shop.svg',
+    name: 'list token on shop',
+
+    href: routes.launch.root,
   },
   {
-    image: '/icons/tools/burn-nft.svg',
-    name: 'Burn Tokens',
-    description:
-      'Burn those worthless and “rugged” NFTs to reclaim $SOL from rent accounts.',
-    href: routes.tools.burnSplToken,
+    image: '/icons/launch/burn.svg',
+    name: 'burn tokens',
+
+    href: routes.launch.root,
   },
   {
-    image: '/icons/tools/burn-nft.svg',
-    name: 'Burn NFTs',
-    description:
-      'Burn those worthless and “rugged” NFTs to reclaim $SOL from rent accounts.',
-    href: routes.tools.burnNftToken,
+    image: '/icons/launch/nft-farm.svg',
+    name: 'add nft farm',
+
+    href: routes.launch.root,
   },
   {
-    image: '/icons/tools/close-accounts.svg',
-    name: 'Close Accounts',
-    description:
-      'Close unused token & NFT accounts to easily reclaim $SOL from rent accounts.',
-    href: routes.tools.closeTokenAccounts,
+    image: '/icons/launch/create-token-22.svg',
+    name: 'create token ‘22',
+    href: routes.launch.root,
+    disabled: true,
+  },
+  {
+    image: '/icons/launch/launch-pool.svg',
+    name: 'launch lp pools',
+    href: routes.launch.root,
+    disabled: true,
+  },
+  {
+    image: '/icons/launch/lock-liquidity.svg',
+    name: 'lock liquidity',
+    href: routes.launch.root,
+    disabled: true,
+  },
+  {
+    image: '/icons/launch/create-lp-farm.svg',
+    name: 'create lp Farm',
+    href: routes.launch.root,
+    disabled: true,
   },
 ];

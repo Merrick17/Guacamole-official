@@ -39,7 +39,7 @@ export default function Home() {
             >
               <p className=" text-xl font-medium leading-8 text-muted-foreground">
                 Experience a fresh take on Solana DeFi with{' '}
-                <span className="text-[#4E8341]">Guacamole</span>. Trade, earn,
+                <span className="text-primary">Guacamole</span>. Trade, earn,
                 and play effortlessly, while enjoying a seamless and
                 user-friendly experience. Get started and unlock a world of
                 possibilities!

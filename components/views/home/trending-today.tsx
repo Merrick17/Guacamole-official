@@ -2,7 +2,7 @@ import { FC } from 'react';
 import Container from '../../common/container';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { BiLink } from 'react-icons/bi';
+import { BiLinkExternal } from 'react-icons/bi';
 
 interface TrendingTodayProps {}
 
@@ -42,7 +42,7 @@ const TrendingItem: FC = () => {
               <span className="  max-w-[44px] text-ellipsis overflow-hidden">
                 EPjF...Dt1v
               </span>
-              <BiLink />
+              <BiLinkExternal />
             </div>
           </div>
           <p className="text-muted-foreground">$0.0₈3252</p>

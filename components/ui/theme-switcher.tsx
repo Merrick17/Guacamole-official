@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect, useLayoutEffect } from 'react';
-import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -9,34 +8,12 @@ import Link from 'next/link';
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
-  const { setTheme } = useTheme();
   const pathname = usePathname();
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useLayoutEffect(() => {
-    if (pathname === routes.home) {
-      setTheme('system');
-    }
-    if (pathname.includes(routes.trade.root)) {
-      setTheme('violet');
-    }
-    if (pathname.includes(routes.earn.root)) {
-      setTheme('orange');
-    }
-    if (pathname.includes(routes.play.root)) {
-      setTheme('yellow');
-    }
-    if (pathname.includes(routes.tools.root)) {
-      setTheme('white');
-    }
-    if (pathname.includes(routes.launch.root)) {
-      setTheme('red');
-    }
-  }, [pathname, setTheme]);
 
   if (!mounted) {
     return null;
