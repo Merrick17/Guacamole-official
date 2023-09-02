@@ -24,7 +24,7 @@ const Page: FC = () => {
               title={
                 <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
                   Trade <span className="text-primary">anything</span> with the
-                  click of a button. It&apos;s really that
+                  click of a button. It&apos;s really that{' '}
                   <span className="text-primary">easy</span>!
                 </h1>
               }

@@ -1,20 +1,13 @@
 import ColorBlocks from '@/components/common/color-block';
 import HeroHeadline from '@/components/common/hero-headline';
-import Container from '@/components/common/container';
-import EarnList from '@/components/views/home/earn-list';
-import GamesSection from '@/components/views/home/games-section';
-import HomeContent from '@/components/views/home/home-content';
-import HomeHeadline from '@/components/views/home/home-headline';
-import HomeList from '@/components/common/hero-list';
-import ShopSection from '@/components/views/home/shop-section';
-import Sponsors from '@/components/views/home/sponsors';
-import Trade from '@/components/views/trade/src/Trade';
+
 import routes from '@/config/routes';
 import { AccentColors } from '@/config/themes';
 import { cn } from '@/lib/utils';
 import HeroList from '@/components/common/hero-list';
 import TrendingToday from '@/components/views/home/trending-today';
 import BackgroundSplash from '@/components/common/background-splash';
+import { Raleway } from 'next/font/google';
 
 export default function Home() {
   return (
@@ -30,10 +23,14 @@ export default function Home() {
             {/* <HomeContent className="w-full" /> */}
             <HeroHeadline
               title={
-                <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
+                <h1
+                  className={
+                    'text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] font-bold '
+                  }
+                >
                   The <span className="text-primary">best ingredients</span> to
                   keep your crypto portfolio{' '}
-                  <span className="text-primary">super fresh.</span>
+                  <span className="text-primary">super fresh</span>.
                 </h1>
               }
             >

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { cn } from '@/lib/utils';
 const DynamicGambaUi = dynamic(
   async () => (await import('@/components/views/play/Provider')).GambaUi,
   { ssr: false }
@@ -20,7 +21,11 @@ export default function PlayLayout({
     <>
       <GambaProvider creator={'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC'}>
         <DynamicGambaUi>
-          <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+          <main
+            className={cn(
+              'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
+            )}
+          >
             {children}
           </main>
         </DynamicGambaUi>
