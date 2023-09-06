@@ -24,7 +24,7 @@ const Featured: FC<FeaturedProps> = () => {
                 <Link key={game.short_name} href={`/play/${game.short_name}`}>
                   <Card
                     width={150}
-                    height={150}
+                    height={50}
                     backgroundImage={game.image}
                     backgroundColor={game.theme_color}
                   >

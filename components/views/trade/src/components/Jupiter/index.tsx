@@ -56,9 +56,10 @@ import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { SwapRoutes } from './swap-routes';
 import { RefreshCw, RefreshCwIcon } from 'lucide-react';
+import { useRouter } from 'next/router';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -71,6 +72,14 @@ interface IJupiterFormProps {
 
 const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const [firstLoad, setFirstLoad] = useState(false);
+
+  const searchParams = useSearchParams();
+
+  const CustomInputMintAddress =
+    searchParams.get('inputMint') ?? INPUT_MINT_ADDRESS;
+  const CustomOutputMintAddress =
+    searchParams.get('outputMint') ?? OUTPUT_MINT_ADDRESS;
+
   const { connected, publicKey, signAllTransactions, sendTransaction } =
     useWallet();
   const { connection } = useConnection();
@@ -84,10 +93,10 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
   const [inputTokenInfo, setInputTokenInfo] = useState<
     TokenInfo | null | undefined
-  >(tokenMap.get(INPUT_MINT_ADDRESS) as TokenInfo);
+  >(tokenMap.get(CustomInputMintAddress) as TokenInfo);
   const [outputTokenInfo, setOutputTokenInfo] = useState<
     TokenInfo | null | undefined
-  >(tokenMap.get(OUTPUT_MINT_ADDRESS) as TokenInfo);
+  >(tokenMap.get(CustomOutputMintAddress) as TokenInfo);
   const [hasRoute, setHasRoute] = useState(false);
   const [swapping, setSwapping] = useState(false);
   const [loadingRoute, setLoadingRoute] = useState(true); // Loading by default
@@ -100,11 +109,10 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
     connection,
     publicKey
   );
-
   useMemo(() => {
-    setInputTokenInfo(tokenMap.get(INPUT_MINT_ADDRESS) as TokenInfo);
-    setOutputTokenInfo(tokenMap.get(OUTPUT_MINT_ADDRESS) as TokenInfo);
-  }, [tokenMap]);
+    setInputTokenInfo(tokenMap.get(CustomInputMintAddress) as TokenInfo);
+    setOutputTokenInfo(tokenMap.get(CustomOutputMintAddress) as TokenInfo);
+  }, [tokenMap, CustomInputMintAddress, CustomOutputMintAddress]);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.Buffer = Buffer;
@@ -458,7 +466,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const pathname = usePathname();
   return (
     <>
-      <div className="w-full rounded-[15px] bg-foreground  sm:w-[450px] ">
+      <div className="w-full rounded-[15px] bg-foreground w-full sm:max-w-[450px] ">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1 !h-7">
             {pathname === '/trade' ? (

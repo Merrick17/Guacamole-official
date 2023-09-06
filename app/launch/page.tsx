@@ -19,8 +19,9 @@ const Page: FC = () => {
       <BackgroundSplash />
       <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
         <section className="flex flex-col gap-[60px]">
-          <div className="flex flex-col lg:flex-row  gap-14 ">
+          <div className="grid grid-cols-1 lg:grid-cols-5  gap-14 ">
             <HeroHeadline
+              className="col-span-3"
               title={
                 <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
                   Make sure your new project stays hot with our{' '}
@@ -35,7 +36,7 @@ const Page: FC = () => {
                 distribution and add utilities.
               </p>
             </HeroHeadline>
-            <CreationWalkthroughs />
+            <CreationWalkthroughs className="col-span-2" />
           </div>
 
           <HeroList listItems={LaunchListItems} />

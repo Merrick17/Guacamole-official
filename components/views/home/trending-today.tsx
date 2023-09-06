@@ -1,54 +1,47 @@
-import { FC } from 'react';
+'use client';
+import { FC, useEffect, useState } from 'react';
 import Container from '../../common/container';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { BiLinkExternal } from 'react-icons/bi';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import routes from '@/config/routes';
+import TrendingItem from './trending-item';
+import { JupiterApiProvider } from '../trade/src/contexts';
+import { useGetTrendingToday } from '@/hooks/use-get-trending-today';
 
-interface TrendingTodayProps {}
+interface TrendingTodayProps {
+  className?: string;
+}
+// USDC, USDT, USDCet, mSOL, bSOL, JitoSOL, stSOL, UXD, ETH, USDTet
 
-const TrendingToday: FC<TrendingTodayProps> = () => {
+const TrendingToday: FC<TrendingTodayProps> = ({ className }) => {
+  const { trending } = useGetTrendingToday({
+    maxNumberOfTokens: 3,
+  });
   return (
-    <Container className="flex flex-col  gap-5 overflow-y-auto">
-      <div className="flex flex-row gap-2 items-center">
-        <div className="shrink-0 w-5 aspect-square">
-          <Image
-            src="/images/home/trending.png"
-            width={20}
-            height={20}
-            alt="trending"
-          />
+    <JupiterApiProvider>
+      <Container
+        className={cn('flex flex-col  gap-5 overflow-y-auto', className)}
+      >
+        <div className="flex flex-row gap-2 items-center">
+          <div className="shrink-0 w-5 aspect-square">
+            <Image
+              src="/images/home/trending.png"
+              width={20}
+              height={20}
+              alt="trending"
+            />
+          </div>
+          <h1 className="text-xl capitalize">Trending Today</h1>
         </div>
-        <h1 className="text-xl capitalize">Trending Today</h1>
-      </div>
-      <TrendingItem />
-      <TrendingItem />
-      <TrendingItem />
-      <TrendingItem />
-    </Container>
+        {trending.map((x) => (
+          <TrendingItem key={x.symbol} {...x} />
+        ))}
+      </Container>
+    </JupiterApiProvider>
   );
 };
 
 export default TrendingToday;
-
-const TrendingItem: FC = () => {
-  return (
-    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background">
-      <div className="flex flex-row items-center gap-5">
-        <Image src="/logo.png" width={40} height={40} alt="logo" />
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <p className="uppercase text-sm">Guac</p>
-            <div className="text-xs flex items-center bg-foreground text-primary  rounded-sm px-2 py-1 ">
-              <span className="  max-w-[44px] text-ellipsis overflow-hidden">
-                EPjF...Dt1v
-              </span>
-              <BiLinkExternal />
-            </div>
-          </div>
-          <p className="text-muted-foreground">$0.0₈3252</p>
-        </div>
-      </div>
-      <Button>Trade</Button>
-    </div>
-  );
-};

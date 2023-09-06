@@ -7,11 +7,17 @@ import { cn } from '@/lib/utils';
 
 type Props = {
   compact?: boolean;
+  className?: string;
 };
 
-const RecentPlay: FC<Props> = ({ compact = false }) => {
+const RecentPlay: FC<Props> = ({ compact = false, className }) => {
   return (
-    <Container className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-foreground  ">
+    <Container
+      className={cn(
+        'flex lg:max-w-[512px] w-full flex-col gap-4 rounded-lg bg-foreground  ',
+        className
+      )}
+    >
       <header className="flex items-center gap-1 ">
         <div className="relative aspect-square w-6">
           <Image src="/images/themes/yellow.png" fill alt="play" />

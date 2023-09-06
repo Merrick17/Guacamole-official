@@ -10,7 +10,7 @@ const Container: FC<ContainerProps> = ({ children, className }) => {
   return (
     <div
       className={cn(
-        'w-full p-6 rounded-lg backdrop:blur-sm bg-foreground',
+        'w-full  p-6 rounded-lg backdrop:blur-sm bg-foreground',
         className
       )}
     >

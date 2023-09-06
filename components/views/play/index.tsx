@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 const Play = () => {
   return (
-    <>
+    <div className="flex justify-center  ">
       {/* <Ready />
       <Banner /> */}
       {
@@ -19,7 +19,7 @@ const Play = () => {
       }
       <div
         className={cn(
-          'grid place-items-center  gap-4 px-4 py-4 grid-cols-1 w-full ',
+          'grid place-items-center   gap-4 px-4 py-4 grid-cols-1 w-max ',
           'md:grid-cols-2 '
         )}
       >
@@ -27,12 +27,12 @@ const Play = () => {
           GAMES.map((game: any) => (
             <Container
               key={game.short_name}
-              className="border border-transparent  duration-500 ease-in-out hover:border-[var(--accent)]  hover:border rounded-lg"
+              className="border border-transparent w-full  min-w-[322px] duration-500 ease-in-out hover:border-[var(--accent)]  hover:border rounded-lg"
             >
               <Link
                 href={`/play/${game.short_name}`}
                 className={cn(
-                  'w-full lg:max-w-[322px] flex flex-col items-center gap-8  transition-colors p-4 rounded-lg cursor-pointer bg-background  '
+                  'w-full  flex flex-col items-center gap-8  transition-colors p-4 rounded-lg cursor-pointer bg-background  '
                 )}
               >
                 <header>
@@ -48,7 +48,7 @@ const Play = () => {
             </Container>
           ))}
       </div>
-    </>
+    </div>
   );
 };
 

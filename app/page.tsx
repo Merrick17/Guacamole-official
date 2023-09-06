@@ -19,9 +19,10 @@ export default function Home() {
         )}
       >
         <section className="flex flex-col gap-[60px]">
-          <div className="flex flex-col lg:flex-row  gap-14 ">
+          <div className="grid grid-cols-1 lg:grid-cols-5  gap-14 ">
             {/* <HomeContent className="w-full" /> */}
             <HeroHeadline
+              className="col-span-3"
               title={
                 <h1
                   className={
@@ -42,7 +43,7 @@ export default function Home() {
                 possibilities!
               </p>
             </HeroHeadline>
-            <TrendingToday />
+            <TrendingToday className="col-span-2" />
           </div>
 
           <HeroList listItems={HomeListItems} />
@@ -92,7 +93,7 @@ const HomeListItems: ListItemProps[] = [
     description:
       'Trade any tokens on Solana in just a few clicks with no hassle and the best fees.',
     image: '/images/themes/violet.png',
-    href: routes.trade.root,
+    href: routes.trade.swap,
     accent: AccentColors.violet,
   },
   {
@@ -100,7 +101,7 @@ const HomeListItems: ListItemProps[] = [
     description:
       'Put your crypto to work for you in various ways and enjoy the fruit of its labor.',
     image: '/images/themes/orange.png',
-    href: routes.earn.root,
+    href: routes.earn.explore,
     accent: AccentColors.orange,
   },
   {
@@ -108,7 +109,7 @@ const HomeListItems: ListItemProps[] = [
     description:
       'Take a chance in fun games where you can win some of your favorite tokens.',
     image: '/images/themes/yellow.png',
-    href: routes.play.root,
+    href: routes.play.explore,
     accent: AccentColors.yellow,
   },
   {
@@ -116,7 +117,7 @@ const HomeListItems: ListItemProps[] = [
     description:
       'Helpful tools make it easy to navigate every step of your journey through crypto.',
     image: '/images/themes/white.png',
-    href: routes.tools.root,
+    href: routes.tools.explore,
     accent: AccentColors.white,
   },
 ];

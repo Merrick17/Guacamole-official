@@ -1,13 +1,16 @@
 import Container from '@/components/common/container';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { FC } from 'react';
 
-interface CreationWalkthroughsProps {}
+interface CreationWalkthroughsProps {
+  className?: string;
+}
 
-const CreationWalkthroughs: FC<CreationWalkthroughsProps> = () => {
+const CreationWalkthroughs: FC<CreationWalkthroughsProps> = ({ className }) => {
   return (
-    <Container className="flex flex-col gap-5">
+    <Container className={cn('flex flex-col gap-5', className)}>
       <div className="flex flex-row gap-2 items-center">
         <div className="shrink-0 w-5 aspect-square">
           <Image
