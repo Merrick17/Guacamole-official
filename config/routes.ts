@@ -2,11 +2,11 @@ const routes = {
   home: '/',
   trade: {
     root: '/trade',
+    bridge: '/trade/bridge',
     swap: '/trade/swap',
     dca: '/trade/dca',
     limit: '/trade/limit',
     liquidity: '/trade/liquidity',
-    bridge: '/trade/bridge',
   },
   earn: {
     root: '/earn',
