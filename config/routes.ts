@@ -3,6 +3,7 @@ const routes = {
   trade: {
     root: '/trade',
     bridge: '/trade/bridge',
+    perpetuals: '/trade/perpetuals',
     swap: '/trade/swap',
     dca: '/trade/dca',
     limit: '/trade/limit',

@@ -14,7 +14,7 @@ const TrendingSwap: FC<TrendingSwapProps> = () => {
     maxNumberOfTokens: 4,
   });
   return (
-    <Container className="py-[10px] flex flex-row items-center overflow-auto max-w-3xl  gap-6 rounded-lg">
+    <Container className="py-[10px] flex flex-row items-center overflow-auto w-full  gap-6 rounded-lg">
       <Button className="whitespace-nowrap">Trending Today</Button>
 
       {trending.map((x, idx) => (

@@ -1,8 +1,10 @@
 'use client';
 import Container from '@/components/common/container';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Script from 'next/script';
+import { useState } from 'react';
 
 const config = {
   appIdentity: {
@@ -37,18 +39,23 @@ const WalletMultiButtonDynamic = dynamic(
   { ssr: false }
 );
 
-const page = () => {
+const Page = () => {
+  const [loading, setLoading] = useState(true);
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      <Container className="bg-foreground px-5 py-7 w-max flex flex-col gap-5 ">
-        <div className="flex items-center justify-between">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
+      <Container className="bg-foreground px-5 py-7 max-w-md w-full flex flex-col items-center  gap-5  min-h-[720px] h-full ">
+        <div className="flex items-center w-full justify-between">
           <Button className=" h-7 rounded-lg text-sm">Bridge Swap</Button>
           <WalletMultiButtonDynamic
             startIcon={undefined}
-            className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex bg-primary text-primary-foreground hover:!bg-primary"
+            className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm flex bg-primary text-primary-foreground hover:!bg-primary"
           />
         </div>
-        <div id="swap_widget" />
+
+        <div id="swap_widget" className="z-20" />
+        {loading && (
+          <Loader2 className="animate-spin h-10 w-10 text-primary   " />
+        )}
       </Container>
       <Script
         src="https://cdn.mayan.finance/widget_ultimate-0-4-5.js"
@@ -56,11 +63,12 @@ const page = () => {
         crossOrigin="anonymous"
         onLoad={() => {
           // @ts-ignore
-          MayanSwap.init('swap_widget', config);
+          MayanSwap.init('swap_widget', config, () => {});
+          setLoading(false);
         }}
       />
     </main>
   );
 };
 
-export default page;
+export default Page;

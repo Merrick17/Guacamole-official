@@ -1,15 +1,8 @@
 'use client';
 import Container from '@/components/common/container';
 import { Button } from '@/components/ui/button';
-import dynamic from 'next/dynamic';
 import Script from 'next/script';
 import { useRef } from 'react';
-
-const WalletMultiButtonDynamic = dynamic(
-  async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
-  { ssr: false }
-);
 
 const TVChart = ({ productSelect }: { productSelect: string }) => {
   console.log('Product SELECT', productSelect);
@@ -84,17 +77,8 @@ const TVChart = ({ productSelect }: { productSelect: string }) => {
   }
 
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
-      <Container className="bg-foreground px-5 py-7  flex flex-col gap-5 ">
-        <div className="flex items-center justify-between">
-          <Button className=" h-7 rounded-lg text-sm">Bridge Swap</Button>
-          <WalletMultiButtonDynamic
-            startIcon={undefined}
-            className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex bg-primary text-primary-foreground hover:!bg-primary"
-          />
-        </div>
-        <div id={containerId.current} style={{ height: 512, width: "100%" }} />
-      </Container>
+    <>
+      <div id={containerId.current} style={{ height: 512, width: '100%' }} />
       <Script
         src="https://s3.tradingview.com/tv.js"
         strategy="lazyOnload"
@@ -110,14 +94,14 @@ const TVChart = ({ productSelect }: { productSelect: string }) => {
               'Overlay.candleStyle.barColorsOnPrevClose': true,
             },
             overrides: {
-              "mainSeriesProperties.candleStyle.upColor": "#32CD99",
-              "mainSeriesProperties.candleStyle.downColor": "#F23B69",
-              "mainSeriesProperties.candleStyle.borderUpColor": "#32CD99",
-              "mainSeriesProperties.candleStyle.borderDownColor": "#F23B69",
-              "mainSeriesProperties.candleStyle.wickUpColor": "#32CD99",
-              "mainSeriesProperties.candleStyle.wickDownColor": "#F23B69",
-              "paneProperties.background": "rgba(0,0,0,0)",
-              "paneProperties.backgroundType": "solid",
+              'mainSeriesProperties.candleStyle.upColor': '#32CD99',
+              'mainSeriesProperties.candleStyle.downColor': '#F23B69',
+              'mainSeriesProperties.candleStyle.borderUpColor': '#32CD99',
+              'mainSeriesProperties.candleStyle.borderDownColor': '#F23B69',
+              'mainSeriesProperties.candleStyle.wickUpColor': '#32CD99',
+              'mainSeriesProperties.candleStyle.wickDownColor': '#F23B69',
+              'paneProperties.background': 'rgba(0,0,0,0)',
+              'paneProperties.backgroundType': 'solid',
               // 'scalesProperties.lineColor': '#262c2e',
             },
             symbol: `PYTH:${handleReturnCoin(productSelect)}`,
@@ -127,7 +111,7 @@ const TVChart = ({ productSelect }: { productSelect: string }) => {
           });
         }}
       />
-    </main>
+    </>
   );
 };
 

@@ -33,12 +33,15 @@ export const Links: {
     dropdownItems: [
       {
         name: 'Swap',
-        href: routes.trade.root,
+        href: routes.trade.swap,
       },
       {
-        name: 'DCA / TWAP',
-        href: '',
-        disabled: true,
+        name: 'Bridge',
+        href: routes.trade.bridge,
+      },
+      {
+        name: 'Perpetuals',
+        href: routes.trade.perpetuals,
       },
       {
         name: 'Limit',
@@ -47,11 +50,6 @@ export const Links: {
       },
       {
         name: 'Liquidity',
-        href: '',
-        disabled: true,
-      },
-      {
-        name: 'Bridge',
         href: '',
         disabled: true,
       },

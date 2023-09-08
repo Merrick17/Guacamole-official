@@ -64,12 +64,11 @@ const TradeListItems: ListItemProps[] = [
     href: routes.trade.bridge,
   },
   {
-    title: 'DCA & Limit Orders',
+    title: 'Trade Perpetuals',
     description:
-      'Set limit or dollar cost averaging orders to swap when you’re not around.',
-    image: '/icons/trade/dca.svg',
-    href: routes.info.root,
-    disabled: true,
+      'Trade gamified perpetual futures markets for BTC, ETH, SOL, and more. ',
+    image: '/icons/trade/perpetuals.svg',
+    href: routes.trade.perpetuals,
   },
   {
     title: 'Liquidity Pools',
