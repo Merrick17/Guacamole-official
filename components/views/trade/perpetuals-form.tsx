@@ -47,7 +47,7 @@ const PerpetualsForm = () => {
   }
 
   return (
-    <Container className="bg-foreground px-5 py-7  flex flex-col gap-5 col-span-2 ">
+    <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
       <div className="flex items-center justify-between">
         <Button className=" h-7 rounded-lg text-sm">Bridge Swap</Button>
         <WalletMultiButtonDynamic

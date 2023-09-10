@@ -27,7 +27,7 @@ const Perceptual = () => {
             'grid  w-full z-20  grid-cols-1 lg:grid-cols-6 gap-[10px] rounded-lg bg-foreground px-5 py-7 '
           )}
         >
-          <div className="flex flex-1  items-center justify-center col-span-4">
+          <div className="flex flex-1 justify-center col-span-4">
             <TVChartContainer productSelect={'SOLUSD-PERP'} />
           </div>
 
