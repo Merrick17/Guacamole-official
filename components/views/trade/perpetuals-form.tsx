@@ -1,9 +1,9 @@
-'use client';
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import dynamic from 'next/dynamic';
-import { useForm } from 'react-hook-form';
+"use client";
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import dynamic from "next/dynamic";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -12,21 +12,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import * as z from 'zod';
-import { BsFillInfoCircleFill } from 'react-icons/bs';
-import { cn } from '@/lib/utils';
-import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi';
-import { SelectTraderAccounts } from '@/components/common/TraderAccountDropDown';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useManifest, useProduct, useTrader } from '@/context/dexterity';
-import { DexterityWallet } from '@hxronetwork/dexterity-ts';
-import { useEffect, useMemo } from 'react';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import * as z from "zod";
+import { BsFillInfoCircleFill } from "react-icons/bs";
+import { cn } from "@/lib/utils";
+import { BiDownArrowAlt, BiUpArrowAlt } from "react-icons/bi";
+import { SelectTraderAccounts } from "@/components/common/TraderAccountDropDown";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useManifest, useProduct, useTrader } from "@/context/dexterity";
+import { DexterityWallet } from "@hxronetwork/dexterity-ts";
+import { useEffect, useMemo, useState } from "react";
+import PreceptualModal from "@/components/common/PreceptualModal";
+
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
 );
 const formSchema = z.object({
@@ -40,9 +42,9 @@ const PerpetualsForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       upOrDown: true,
-      tradeQuantity: '0',
-      slippage: '0',
-      size: '0',
+      tradeQuantity: "0",
+      slippage: "0",
+      size: "0",
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -50,9 +52,11 @@ const PerpetualsForm = () => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
-  const { publicKey, signTransaction, signAllTransactions } = useWallet();
+  const { publicKey, signTransaction, signAllTransactions, connected } =
+    useWallet();
   const { manifest } = useManifest();
   const { trader } = useTrader();
+  const [isOpen, setIsOpen] = useState(false);
   const { selectedProduct, setIndexPrice, setMarkPrice } = useProduct();
 
   useMemo(async () => {
@@ -64,20 +68,38 @@ const PerpetualsForm = () => {
     manifest?.setWallet(DexWallet);
   }, [publicKey, manifest, trader]);
 
-  useEffect(() => {}, [trader, setIndexPrice, setMarkPrice]);
+  useEffect(() => { }, [trader, setIndexPrice, setMarkPrice]);
   return (
-    <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
-      <div className="flex items-center justify-between">
-        <Button className=" h-7 rounded-lg text-sm">Preceptual Swap</Button>
-        <WalletMultiButtonDynamic
-          startIcon={undefined}
-          className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex bg-primary text-primary-foreground hover:!bg-primary"
-        />
-      </div>
-      <Form {...form}>
-        <SelectTraderAccounts />
 
-        {/* <form
+    <>
+     {isOpen &&  <PreceptualModal isOpen={isOpen} handleClose={() => {
+        setIsOpen(false);
+      }} />}
+      <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
+
+        <div className="flex items-center justify-between">
+          <Button className=" h-7 rounded-lg text-sm">Preceptual Swap</Button>
+          {!connected ? (
+            <WalletMultiButtonDynamic
+              startIcon={undefined}
+              className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex bg-primary text-primary-foreground hover:!bg-primary"
+            />
+          ) : (
+            <>
+              {" "}
+              <Button className=" h-7 rounded-lg text-sm" onClick={() => {
+                setIsOpen(true)
+              }}>
+                Deposit / Withdraw
+              </Button>
+
+            </>
+          )}
+        </div>
+        <Form {...form}>
+          <SelectTraderAccounts />
+
+          {/* <form
           onSubmit={form.handleSubmit(onSubmit)}
           className=" bg-background space-y-8 "
         >
@@ -200,20 +222,21 @@ const PerpetualsForm = () => {
             Place Trade
           </Button>
         </form> */}
-      </Form>
-      {/* <p className="text-muted-foreground text-xs">
+        </Form>
+        {/* <p className="text-muted-foreground text-xs">
         View market details and manage all open positions below. Trading fee of
         15bps is applied to all trades.
       </p> */}
-      <div className="text-muted-foreground text-sm flex items-center justify-between gap-4">
-        <p>
-          GUAC/Avotar Discount:{' '}
-          <span className="text-[#8bd796] ">Save up to 50%</span>
-        </p>
+        <div className="text-muted-foreground text-sm flex items-center justify-between gap-4">
+          <p>
+            GUAC/Avotar Discount:{" "}
+            <span className="text-[#8bd796] ">Save up to 50%</span>
+          </p>
 
-        <BsFillInfoCircleFill />
-      </div>
-    </Container>
+          <BsFillInfoCircleFill />
+        </div>
+      </Container>
+    </>
   );
 };
 

@@ -32,7 +32,7 @@ interface TraderAccountDropdownProps {
   onSelect: (value: string) => void;
 }
 
-const TraderAccountDropdown: FC<TraderAccountDropdownProps> = ({
+export const TraderAccountDropdown: FC<TraderAccountDropdownProps> = ({
   accounts,
   onSelect,
 }) => {
@@ -139,7 +139,14 @@ export const SelectTraderAccounts: FC = () => {
                 handleCopy(selectedTrg, 'Trg Pubkey');
               }}
             ></span> */}
-
+          <Button
+            onClick={handleCreateTRG}
+            disabled={!publicKey}
+            className={`w-full `}
+            size="lg"
+          >
+            Create New Trader Account
+          </Button>
           <Button
             onClick={fetchTraderAccounts}
             disabled={!publicKey}
