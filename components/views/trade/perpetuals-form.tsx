@@ -50,21 +50,21 @@ const PerpetualsForm = () => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
-  const { publicKey, signTransaction, signAllTransactions } = useWallet()
-  const { manifest } = useManifest()
-  const { trader } = useTrader()
-  const { selectedProduct, setIndexPrice, setMarkPrice } = useProduct()
+  const { publicKey, signTransaction, signAllTransactions } = useWallet();
+  const { manifest } = useManifest();
+  const { trader } = useTrader();
+  const { selectedProduct, setIndexPrice, setMarkPrice } = useProduct();
 
   useMemo(async () => {
     const DexWallet: DexterityWallet = {
       publicKey,
       signTransaction,
       signAllTransactions,
-    }
-    manifest?.setWallet(DexWallet)
+    };
+    manifest?.setWallet(DexWallet);
   }, [publicKey, manifest, trader]);
 
-  useEffect(() => { }, [trader, setIndexPrice, setMarkPrice])
+  useEffect(() => {}, [trader, setIndexPrice, setMarkPrice]);
   return (
     <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
       <div className="flex items-center justify-between">
@@ -77,7 +77,7 @@ const PerpetualsForm = () => {
       <Form {...form}>
         <SelectTraderAccounts />
 
-        <form
+        {/* <form
           onSubmit={form.handleSubmit(onSubmit)}
           className=" bg-background space-y-8 "
         >
@@ -199,12 +199,12 @@ const PerpetualsForm = () => {
           <Button type="submit" className="w-full " size="lg">
             Place Trade
           </Button>
-        </form>
+        </form> */}
       </Form>
-      <p className="text-muted-foreground text-xs">
+      {/* <p className="text-muted-foreground text-xs">
         View market details and manage all open positions below. Trading fee of
         15bps is applied to all trades.
-      </p>
+      </p> */}
       <div className="text-muted-foreground text-sm flex items-center justify-between gap-4">
         <p>
           GUAC/Avotar Discount:{' '}
