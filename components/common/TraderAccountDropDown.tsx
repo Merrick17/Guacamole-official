@@ -44,7 +44,7 @@ const TraderAccountDropdown: FC<TraderAccountDropdownProps> = ({
     //   <option value="default">Select a Trader Account</option>
 
     // </select>
-    <Select>
+    <Select onValueChange={(value) => onSelect(value)}>
       <SelectTrigger className="w-full bg-foreground h-12 rounded-md px-5 ">
         <SelectValue placeholder="Select An Account" />
       </SelectTrigger>
