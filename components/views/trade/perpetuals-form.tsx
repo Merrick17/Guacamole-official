@@ -18,6 +18,11 @@ import * as z from 'zod';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { cn } from '@/lib/utils';
 import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi';
+import { SelectTraderAccounts } from '@/components/common/TraderAccountDropDown';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useManifest, useProduct, useTrader } from '@/context/dexterity';
+import { DexterityWallet } from '@hxronetwork/dexterity-ts';
+import { useEffect, useMemo } from 'react';
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -45,17 +50,33 @@ const PerpetualsForm = () => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+  const { publicKey, signTransaction, signAllTransactions } = useWallet()
+  const { manifest } = useManifest()
+  const { trader } = useTrader()
+  const { selectedProduct, setIndexPrice, setMarkPrice } = useProduct()
 
+  useMemo(async () => {
+    const DexWallet: DexterityWallet = {
+      publicKey,
+      signTransaction,
+      signAllTransactions,
+    }
+    manifest?.setWallet(DexWallet)
+  }, [publicKey, manifest, trader]);
+
+  useEffect(() => { }, [trader, setIndexPrice, setMarkPrice])
   return (
     <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
       <div className="flex items-center justify-between">
-        <Button className=" h-7 rounded-lg text-sm">Bridge Swap</Button>
+        <Button className=" h-7 rounded-lg text-sm">Preceptual Swap</Button>
         <WalletMultiButtonDynamic
           startIcon={undefined}
           className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex bg-primary text-primary-foreground hover:!bg-primary"
         />
       </div>
       <Form {...form}>
+        <SelectTraderAccounts />
+
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className=" bg-background space-y-8 "
