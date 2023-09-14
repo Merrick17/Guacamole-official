@@ -17,13 +17,12 @@ type TrendingItemProps = {
 };
 const TrendingItem: FC<TrendingItemProps> = ({
   className,
-  symbol,
   amount,
+  symbol,
   mint,
 }) => {
   const { tokenMap } = useJupiterApiContext();
   const token = tokenMap.get(mint);
-  console.log(token);
   const [marketPrice, setMarketPrice] = useState(0);
 
   useEffect(() => {
@@ -40,7 +39,11 @@ const TrendingItem: FC<TrendingItemProps> = ({
   return (
     <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background">
       <div className="flex flex-row items-center gap-5">
-        <img src={token?.logoURI} className="w-10 h-10" alt="logo" />
+        <img
+          src={token?.logoURI}
+          className="w-10 h-10 rounded-full"
+          alt="logo"
+        />
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <p className="uppercase text-sm">{symbol}</p>
