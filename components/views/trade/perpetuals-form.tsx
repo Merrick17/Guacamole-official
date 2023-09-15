@@ -100,14 +100,14 @@ const PerpetualsForm = () => {
             </SelectTrigger>
             <SelectContent className="w-full">
               <SelectGroup>
-                <SelectItem value="future" className="hover:text-black">
-                  Future
-                </SelectItem>
                 <SelectItem value="spot" className="hover:text-black">
                   Spot
                 </SelectItem>
                 <SelectItem value="swap" className="hover:text-black">
                   Swap
+                </SelectItem>
+                <SelectItem value="future" className="hover:text-black">
+                  Future
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
@@ -132,7 +132,7 @@ const PerpetualsForm = () => {
           )}
         </div>
         <Form {...form}>
-          {tab === ('future' || 'spot') && (
+          {tab === 'future' ? (
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className=" bg-background space-y-8 "
@@ -256,8 +256,9 @@ const PerpetualsForm = () => {
                 Place Trade
               </Button>
             </form>
+          ) : (
+            <SelectTraderAccounts />
           )}
-          {tab === 'swap' && <SelectTraderAccounts />}
         </Form>
         {/* <p className="text}
           {tab === 'swap' && <SelectTraderAccounts />}
