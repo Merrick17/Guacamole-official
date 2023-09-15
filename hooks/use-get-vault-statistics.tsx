@@ -1,21 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const NotIncluded = (symbol: string) => {
-  return (
-    symbol === 'USDC' ||
-    symbol === 'USDT' ||
-    symbol === 'SOL' ||
-    symbol === 'USDCet' ||
-    symbol === 'mSOL' ||
-    symbol === 'bSOL' ||
-    symbol === 'JitoSOL' ||
-    symbol === 'stSOL' ||
-    symbol === 'UXD' ||
-    symbol === 'ETH' ||
-    symbol === 'USDTet'
-  );
-};
-
 type props = {
   maxNumberOfTokens?: number;
 };
@@ -31,6 +15,7 @@ export function useGetVaultStatistics({ maxNumberOfTokens = 3 }: props) {
       );
       const json = await data.json();
 
+      setVaultData(json.slice(0, maxNumberOfTokens));
       setLoading(false);
     };
     getTrending();

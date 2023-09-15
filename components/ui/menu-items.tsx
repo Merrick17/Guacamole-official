@@ -27,7 +27,7 @@ export function MenuItems() {
                   >
                     {item.name}
                   </Menu.Button>
-                  <Transition
+                  {/* <Transition
                     as={Fragment}
                     enter="ease-out duration-300"
                     enterFrom="opacity-0 translate-y-4"
@@ -57,7 +57,7 @@ export function MenuItems() {
                         </Menu.Item>
                       ))}
                     </Menu.Items>
-                  </Transition>
+                  </Transition> */}
                 </Menu>
               </div>
             ) : (
