@@ -516,6 +516,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                   <SelectCoin
                     tokenInfo={inputTokenInfo}
                     setCoin={setInputTokenInfo}
+                    isInput={true}
                   />
                 </div>
                 <div className="flex flex-col gap-2 text-right h-full w-full">

@@ -81,7 +81,7 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
   const token = tokenMap.get(token_address);
 
   return (
-    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background">
+    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background ">
       <div className="flex flex-row items-center gap-5">
         <img
           src={token?.logoURI}

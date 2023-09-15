@@ -19,10 +19,10 @@ export default function Home() {
         )}
       >
         <section className="flex flex-col gap-[60px]">
-          <div className="grid grid-cols-1 lg:grid-cols-5    gap-[60px]">
+          <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px]">
             {/* <HomeContent className="w-full" /> */}
             <HeroHeadline
-              className="col-span-1  lg:col-span-3"
+              className="col-span-1  lg:col-span-5"
               title={
                 <h1
                   className={
@@ -43,7 +43,7 @@ export default function Home() {
                 possibilities!
               </p>
             </HeroHeadline>
-            <TrendingToday className="col-span-1 lg:col-span-2" />
+            <TrendingToday className="col-span-1 lg:col-span-3" />
           </div>
 
           <HeroList listItems={HomeListItems} />

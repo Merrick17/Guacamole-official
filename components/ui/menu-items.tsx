@@ -4,11 +4,12 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 export function MenuItems() {
   const pathname = usePathname();
+  const router = useRouter();
   return (
     <div className="flex items-center gap-[30px] text-muted-foreground p-2 bg-background rounded-lg">
       {Links.filter((item) => !item.hide).map((item, index) => {
@@ -21,9 +22,9 @@ export function MenuItems() {
                   <Menu.Button
                     className={cn(
                       'flex items-center gap-3 text-base font-medium capitalize rounded-lg p-2 transition justify-center ',
-
                       isActive && 'bg-primary text-black'
                     )}
+                    onClick={() => router.push(item.href + '/explore')}
                   >
                     {item.name}
                   </Menu.Button>
