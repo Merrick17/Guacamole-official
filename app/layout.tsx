@@ -1,4 +1,4 @@
-import { Wallet } from '@/context/wallet';
+import { ContextProvider } from '@/context/wallet';
 import './globals.css';
 import type { Metadata } from 'next';
 import React from 'react';
@@ -28,12 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-     
+
       </head>
       <body className={kanit.className}>
         <Themes>
           <Disclaimer />
-          <Wallet>
+          <ContextProvider>
             <Header />
             {/* <WalletDrawer /> */}
             <LeftSideUtility />
@@ -41,7 +41,7 @@ export default function RootLayout({
               <div className="z-10">{children}</div>
             </div>
             <Footer />
-          </Wallet>
+          </ContextProvider>
           <Toaster />
         </Themes>
       </body>
