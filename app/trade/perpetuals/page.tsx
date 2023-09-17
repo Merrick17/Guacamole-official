@@ -1,5 +1,6 @@
 'use client';
 
+import PerceptualMarketHeader from '@/components/common/Perceptual-market-header';
 import Container from '@/components/common/container';
 import { Button } from '@/components/ui/button';
 import PerceptualForm from '@/components/views/trade/perpetuals-form';
@@ -28,7 +29,11 @@ const Perceptual = () => {
           )}
         >
           <div className="flex flex-1 justify-center col-span-4">
-            <TVChartContainer productSelect={'SOLUSD-PERP'} />
+            <div className="flex flex-col gap-5 w-full ">
+              <PerceptualMarketHeader />
+              <TVChartContainer productSelect={'SOLUSD-PERP'} />
+
+            </div>
           </div>
 
           <div className="col-span-2 ">

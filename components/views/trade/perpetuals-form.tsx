@@ -20,9 +20,9 @@ import { cn } from '@/lib/utils';
 import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi';
 import { SelectTraderAccounts } from '@/components/common/TraderAccountDropDown';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useManifest, useProduct, useTrader } from '@/context/dexterity';
+import { dexterity, useManifest, useProduct, useTrader } from '@/context/dexterity';
 import { DexterityWallet } from '@hxronetwork/dexterity-ts';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import PreceptualModal from '@/components/common/PreceptualModal';
 
 import {
@@ -34,6 +34,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { PublicKey } from '@solana/web3.js';
+import { toast } from '@/hooks/use-toast';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -46,7 +48,13 @@ const formSchema = z.object({
   size: z.string(),
 });
 const PerpetualsForm = () => {
-  const [tab, setTab] = useState<'future' | 'spot' | 'swap'>('spot');
+  const [tab, setTab] = useState<'future' | 'spot' | 'swap'>('future');
+  const { publicKey, signTransaction, signAllTransactions, connected } =
+    useWallet();
+  const { manifest } = useManifest();
+  const { trader } = useTrader();
+  const [isOpen, setIsOpen] = useState(false);
+  const { selectedProduct, setIndexPrice, setMarkPrice, markPrice } = useProduct();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,18 +65,6 @@ const PerpetualsForm = () => {
       size: '0',
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
-  const { publicKey, signTransaction, signAllTransactions, connected } =
-    useWallet();
-  const { manifest } = useManifest();
-  const { trader } = useTrader();
-  const [isOpen, setIsOpen] = useState(false);
-  const { selectedProduct, setIndexPrice, setMarkPrice } = useProduct();
-
   useMemo(async () => {
     const DexWallet: DexterityWallet = {
       publicKey,
@@ -78,7 +74,69 @@ const PerpetualsForm = () => {
     manifest?.setWallet(DexWallet);
   }, [publicKey, manifest, trader]);
 
-  useEffect(() => {}, [trader, setIndexPrice, setMarkPrice]);
+  useEffect(() => { }, [trader, setIndexPrice, setMarkPrice]);
+  useEffect(() => {
+    const tradeQuantity = form.watch('tradeQuantity');
+    const newSize = (parseFloat(tradeQuantity) * markPrice).toFixed(2);
+    console.log("Mark Price",markPrice)
+    form.setValue('size', newSize);
+  }, [form, markPrice]);
+
+  // Watch changes to size and update tradeQuantity
+  useEffect(() => {
+    const size = form.watch('size');
+    const newTradeQuantity = (parseFloat(size) / markPrice).toFixed(2);
+    form.setValue('tradeQuantity', newTradeQuantity);
+  }, [form, markPrice]);
+
+  const handlePlaceOrder = async (slippage: number, orderType: string, size: number) => {
+
+    const callbacks = {
+      onGettingBlockHashFn: () => { },
+      onGotBlockHashFn: () => { },
+      onConfirm: (txn: string) => toast({ variant: 'success', title: 'Order Placed Successfully!', description: txn })
+    }
+    const priceFraction = dexterity.Fractional.New(orderType === 'SHORT' ? markPrice - ((markPrice * slippage) / 100) : markPrice + ((markPrice * slippage) / 100), 0);
+    const sizeFraction = dexterity.Fractional.New(size * 10 ** selectedProduct.exponent, selectedProduct.exponent);
+    const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET
+
+    try {
+
+      await trader.newOrder(
+        selectedProduct.index,
+        orderType === 'SHORT' ? false : true,
+        priceFraction,
+        sizeFraction,
+        false,
+        new PublicKey(referralTrg),
+        Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+        null,
+        null,
+        callbacks
+      );
+      //setIsSuccess(true);
+    } catch (error: any) {
+      //setIsSuccess(false);
+      toast({ variant: 'destructive', title: 'Placing order failed!', description: error?.message });
+    } finally {
+      toast({ variant: 'success', title: `Market ${orderType} Order Placed Successfully!` });
+      //setIsLoading(false);
+    }
+  }
+
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+    const size = Number(values.size);
+    const slippage = Number(values.slippage);
+    const qty = Number(values.tradeQuantity);
+    const position = values.upOrDown ? "LONG" : "SHORT"
+    await handlePlaceOrder(slippage, position, qty)
+
+  }
+
   return (
     <>
       {isOpen && (
@@ -132,7 +190,7 @@ const PerpetualsForm = () => {
           )}
         </div>
         <Form {...form}>
-          {tab === 'future' ? (
+          {trader ? (
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className=" bg-background space-y-8 "
