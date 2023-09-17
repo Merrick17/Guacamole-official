@@ -10,6 +10,7 @@ import routes from '@/config/routes';
 import TrendingItem from './trending-item';
 import { JupiterApiProvider } from '../trade/src/contexts';
 import { useGetTrendingToday } from '@/hooks/use-get-trending-today';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface TrendingTodayProps {
   className?: string;
@@ -17,9 +18,10 @@ interface TrendingTodayProps {
 // USDC, USDT, USDCet, mSOL, bSOL, JitoSOL, stSOL, UXD, ETH, USDTet
 
 const TrendingToday: FC<TrendingTodayProps> = ({ className }) => {
-  const { trending } = useGetTrendingToday({
+  const { trending, loading } = useGetTrendingToday({
     maxNumberOfTokens: 3,
   });
+
   return (
     <JupiterApiProvider>
       <Container
@@ -36,9 +38,11 @@ const TrendingToday: FC<TrendingTodayProps> = ({ className }) => {
           </div>
           <h1 className="text-xl capitalize">Trending Today</h1>
         </div>
-        {trending.map((x) => (
-          <TrendingItem key={x.symbol} {...x} />
-        ))}
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="w-full h-[92px]" />
+            ))
+          : trending.map((x) => <TrendingItem key={x.symbol} {...x} />)}
       </Container>
     </JupiterApiProvider>
   );

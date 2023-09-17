@@ -19,9 +19,9 @@ const Page: FC = () => {
     <>
       <BackgroundSplash />
       <section className="flex flex-col gap-[60px]">
-        <div className="grid grid-cols-1 lg:grid-cols-5  gap-14 ">
+        <div className="grid grid-cols-1 lg:grid-cols-5  gap-[60px] ">
           <HeroHeadline
-            className="col-span-3"
+            className="col-span-1  lg:col-span-3"
             title={
               <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
                 Play plenty of funky fresh on-chain games and{' '}
@@ -35,9 +35,9 @@ const Page: FC = () => {
               you to play on our game section.
             </p>
           </HeroHeadline>
-          <RecentPlay compact className="col-span-2" />
+          <RecentPlay compact className="col-span-1 lg:col-span-2" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground px-14 py-6  backdrop:blur-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground p-14   backdrop:blur-sm">
           {PlayListItems.map((item, index) => (
             <PlayCard key={index} {...item} />
           ))}
