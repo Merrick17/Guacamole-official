@@ -86,6 +86,7 @@ import { FC, ReactNode, useCallback, useMemo } from 'react';
 import { AutoConnectProvider, useAutoConnect } from './autoconnect';
 import { ManifestProvider, ProductProvider, TraderProvider, useManifest } from './dexterity';
 import { NetworkConfigurationProvider, useNetworkConfiguration } from './network-configuration';
+import { MarketProvider } from './coin-select';
 export const dexterity = dexterityTs
 
 const ReactUIWalletModalProviderDynamic = dynamic(
@@ -155,7 +156,10 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} onError={onError} autoConnect={autoConnect}>
         <ReactUIWalletModalProviderDynamic>
-          {children}
+          <MarketProvider>
+            {children}
+          </MarketProvider>
+
         </ReactUIWalletModalProviderDynamic>
       </WalletProvider>
     </ConnectionProvider>

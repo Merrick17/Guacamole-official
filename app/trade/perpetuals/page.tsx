@@ -1,12 +1,11 @@
 'use client';
 
 import PerceptualMarketHeader from '@/components/common/Perceptual-market-header';
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
 import PerceptualForm from '@/components/views/trade/perpetuals-form';
+import { useMarketContext } from '@/context/coin-select';
 import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect } from 'react';
 const TVChartContainer = dynamic(
   () => import('@/components/views/trade/TVChart'),
   {
@@ -19,6 +18,10 @@ const WalletMultiButtonDynamic = dynamic(
   { ssr: false }
 );
 const Perceptual = () => {
+  const { selectedMarket } = useMarketContext();
+  useEffect(() => {
+    console.log("Selected Market", selectedMarket)
+  }, [selectedMarket])
   return (
     <>
       <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
@@ -30,7 +33,7 @@ const Perceptual = () => {
           <div className="flex flex-1 justify-center col-span-4">
             <div className="flex flex-col gap-5 w-full ">
               <PerceptualMarketHeader />
-              <TVChartContainer productSelect={'SOLUSD-PERP'} />
+              <TVChartContainer productSelect={selectedMarket.name} />
 
             </div>
           </div>
