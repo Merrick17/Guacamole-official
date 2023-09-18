@@ -51,6 +51,7 @@ const TrendingSwapItem: FC<TrendingSwapItemProps> = ({
 }) => {
   const { tokenMap } = useJupiterApiContext();
   const token = tokenMap.get(mint);
+  if (!token) return null;
   return (
     <Link href={routes.trade.swap + `?outputMint=${mint}`}>
       <div className=" bg-background py-[6px] px-3 font-bold text-sm flex flex-row items-center gap-1 rounded-lg">

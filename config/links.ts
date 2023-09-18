@@ -61,23 +61,17 @@ export const Links: {
     Icon: GoHourglass,
     dropdownItems: [
       {
-        name: 'Explore Ways To Earn',
-        href: routes.earn.explore,
-      },
-      {
-        name: 'Token For NFT Staking',
+        name: 'Dynamic Vault',
         href: routes.earn.dynamicVault,
-        disabled: true,
       },
+
       {
-        name: 'NFT Staking Pools',
+        name: 'Dynamic SOL Vault',
         href: routes.earn.statistics,
-        disabled: true,
       },
       {
         name: 'GUAC Staking',
-        href: routes.earn.statistics,
-        disabled: true,
+        href: routes.earn.guacStaking,
       },
       {
         name: 'Liquidity Farming',

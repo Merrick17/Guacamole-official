@@ -1,16 +1,6 @@
 import Container from '@/components/common/container';
-import React, { FC, PureComponent, useEffect, useState } from 'react';
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-} from 'recharts';
+import React, { FC, useEffect, useState } from 'react';
+
 import { useJupiterApiContext } from './src/contexts';
 import { TokenInfo } from '@solana/spl-token-registry';
 import axios from 'axios';

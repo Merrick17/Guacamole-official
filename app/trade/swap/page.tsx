@@ -15,8 +15,8 @@ const Swap = () => {
       <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
         <div
           className={cn(
-            'grid grid-cols-1 gap-14',
-            showCharts && 'lg:grid-cols-2 '
+            'grid grid-cols-1 gap-14 max-w-md w-full',
+            showCharts && 'lg:grid-cols-2 max-w-none'
           )}
         >
           <TrendingSwap
@@ -29,7 +29,7 @@ const Swap = () => {
               className="absolute top-1/2 w-6 h-12 -translate-y-1/2 left-full rounded-lg rounded-tl-none rounded-bl-none  z-10"
               onClick={() => setShowCharts((s) => !s)}
             >
-              <AiFillCaretRight />
+              <AiFillCaretRight className={cn(showCharts && 'rotate-180 ')} />
             </Button>
           </div>
           {showCharts && <SwapCharts />}

@@ -53,9 +53,7 @@ export const SelectToken = ({
   const [open, setOpen] = useState(false);
   const { connected } = useWallet();
   const walletTokens = useWalletTokens();
-  useEffect(() => {
-    console.log('Wallet Tokens', walletTokens);
-  }, [walletTokens]);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full cursor-pointer ">

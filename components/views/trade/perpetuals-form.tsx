@@ -34,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -133,140 +134,186 @@ const PerpetualsForm = () => {
         </div>
         <Form {...form}>
           {tab === 'future' ? (
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className=" bg-background space-y-8 "
-            >
-              <div className="flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground">
-                  Will the price go up or down?
-                </p>
-                <div className="flex items-center justify-between gap-4">
-                  <Button
-                    className={cn(
-                      ' rounded-lg text-sm w-full flex items-center justify-center gap-2',
-                      form.watch('upOrDown')
-                        ? 'bg-[#8bd796] hover:!bg-[#8bd796]'
-                        : 'bg-background hover:!bg-background text-white'
-                    )}
-                    size="lg"
-                    onClick={() => form.setValue('upOrDown', true)}
-                  >
-                    <BiUpArrowAlt />
-                    Up
-                  </Button>
+            <>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className=" bg-background space-y-8 "
+              >
+                <div className="flex flex-col gap-3">
+                  <p className="text-sm text-muted-foreground">
+                    Will the price go up or down?
+                  </p>
+                  <div className="flex items-center justify-between gap-4 font-medium  ">
+                    <Button
+                      className={cn(
+                        ' rounded-lg  w-full flex items-center justify-center gap-2',
+                        form.watch('upOrDown')
+                          ? 'bg-[#8bd796] hover:!bg-[#8bd796]'
+                          : 'bg-background hover:!bg-background text-white'
+                      )}
+                      size="lg"
+                      onClick={() => form.setValue('upOrDown', true)}
+                    >
+                      <BiUpArrowAlt />
+                      Up
+                    </Button>
 
-                  <Button
-                    className={cn(
-                      ' rounded-lg text-sm w-full  flex items-center justify-center gap-2',
-                      !form.watch('upOrDown')
-                        ? 'bg-[#8bd796] hover:!bg-[#8bd796]'
-                        : 'bg-background hover:!bg-background text-white'
-                    )}
-                    size="lg"
-                    onClick={() => form.setValue('upOrDown', false)}
-                  >
-                    <BiDownArrowAlt />
-                    Down
-                  </Button>
+                    <Button
+                      className={cn(
+                        ' rounded-lg text-sm w-full  flex items-center justify-center gap-2',
+                        !form.watch('upOrDown')
+                          ? 'bg-destructive hover:!bg-destructive'
+                          : 'bg-background hover:!bg-background text-white'
+                      )}
+                      size="lg"
+                      onClick={() => form.setValue('upOrDown', false)}
+                    >
+                      <BiDownArrowAlt />
+                      Down
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <FormField
-                control={form.control}
-                name="tradeQuantity"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-muted-foreground">
-                      Trade Quantity
-                    </FormLabel>
-                    <FormControl className="bg-foreground">
-                      <div className="flex items-center justify-between gap-4">
-                        <Input type="number" placeholder="0" {...field} />
-                        <div className="flex items-center gap-1">
-                          <Button
-                            size="icon"
-                            className="text-accent bg-background text-xs"
-                            onClick={() =>
-                              form.setValue(
-                                'tradeQuantity',
-                                String(Number(form.watch('tradeQuantity')) / 2)
-                              )
-                            }
-                          >
-                            1/2
-                          </Button>
-                          <Button
-                            size="icon"
-                            className="text-accent bg-background text-xs"
-                            onClick={() =>
-                              form.setValue(
-                                'tradeQuantity',
-                                String(Number(form.watch('tradeQuantity')) * 2)
-                              )
-                            }
-                          >
-                            x2
-                          </Button>
+                <FormField
+                  control={form.control}
+                  name="tradeQuantity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" capitalizefont-medium text-muted-foreground flex items-center justify-between">
+                        <p>Trade Quantity</p>
+                        <p>Min. Trade: 0.0001</p>
+                      </FormLabel>
+                      <FormControl className="bg-foreground px-4 py-[10px] rounded-lg ">
+                        <div className="flex items-center justify-between gap-4 ">
+                          <img
+                            src="/icons/earn/sol.svg"
+                            alt="sol"
+                            className="w-5 h-5"
+                          />
+                          <Input type="number" placeholder="0" {...field} />
+                          <div className="flex items-center gap-1">
+                            <Button
+                              size="icon"
+                              className="text-accent bg-background text-xs"
+                              onClick={() =>
+                                form.setValue(
+                                  'tradeQuantity',
+                                  String(
+                                    Number(form.watch('tradeQuantity')) / 2
+                                  )
+                                )
+                              }
+                            >
+                              1/2
+                            </Button>
+                            <Button
+                              size="icon"
+                              className="text-accent bg-background text-xs"
+                              onClick={() =>
+                                form.setValue(
+                                  'tradeQuantity',
+                                  String(
+                                    Number(form.watch('tradeQuantity')) * 2
+                                  )
+                                )
+                              }
+                            >
+                              x2
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="slippage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-muted-foreground">
-                      Slippage Tolerance
-                    </FormLabel>
-                    <FormControl className="bg-foreground">
-                      <Input
-                        min={0}
-                        max={1}
-                        step="0.01"
-                        type="number"
-                        placeholder="0"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="size"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center text-muted-foreground justify-between">
-                      <p>trade Size (USDC)</p>{' '}
-                      <p className="text-accent">View Margin Requirements</p>
-                    </FormLabel>
-                    <FormControl className="bg-foreground">
-                      <Input type="number" placeholder="0" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full " size="lg">
-                Place Trade
-              </Button>
-            </form>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="slippage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" capitalizefont-medium text-muted-foreground">
+                        Slippage Tolerance
+                      </FormLabel>
+
+                      <FormControl className=" px-4 py-[10px] bg-foreground w-max rounded-lg">
+                        <div className="flex flex-row items-center gap-2">
+                          <div className="w-full flex items-center ">
+                            <Input
+                              min={0}
+                              max={1}
+                              step="0.01"
+                              type="number"
+                              placeholder="0"
+                              value={Number(form.watch('slippage')).toFixed(2)}
+                              {...field}
+                            />
+                            <span> %</span>
+                          </div>
+                          <div className="h-full w-max flex flex-col text-muted-foreground ">
+                            <button
+                              onClick={() =>
+                                form.setValue(
+                                  'slippage',
+                                  String(Number(form.watch('slippage')) + 0.01)
+                                )
+                              }
+                            >
+                              <ChevronUp className="h-4 w-4  cursor-pointer" />
+                            </button>
+                            <button
+                              onClick={() =>
+                                form.setValue(
+                                  'slippage',
+                                  String(Number(form.watch('slippage')) - 0.01)
+                                )
+                              }
+                            >
+                              <ChevronDown className="h-4 w-4  cursor-pointer" />
+                            </button>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="size"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className=" capitalize font-medium flex items-center text-muted-foreground justify-between">
+                        <p>trade Size (USDC)</p>{' '}
+                        <p className="text-accent">View Margin Requirements</p>
+                      </FormLabel>
+                      <FormControl className=" px-4 py-[10px] bg-foreground w-full rounded-lg ">
+                        <div className="flex flex-row items-center gap-5">
+                          <img
+                            src="/icons/earn/sol.svg"
+                            alt="sol"
+                            className="w-5 h-5"
+                          />
+
+                          <Input type="number" placeholder="0" {...field} />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full " size="lg">
+                  Place Trade
+                </Button>
+              </form>
+              <p className="text-muted-foreground text-xs">
+                View market details and manage all open positions below. Trading
+                fee of 15bps is applied to all trades.
+              </p>
+            </>
           ) : (
             <SelectTraderAccounts />
           )}
         </Form>
-        {/* <p className="text}
-          {tab === 'swap' && <SelectTraderAccounts />}
-
-          {/*-muted-foreground text-xs">
-        View market details and manage all open positions below. Trading fee of
-        15bps is applied to all trades.
-      </p> */}
         <div className="text-muted-foreground text-sm flex items-center justify-between gap-4">
           <p>
             GUAC/Avotar Discount:{' '}
