@@ -12,6 +12,17 @@ import { InlineResponse200MarketInfos } from '@jup-ag/api';
 import { NATIVE_MINT } from '@solana/spl-token';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import Paths from '@/config/routes';
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   WalletDisconnectButton,
   WalletModalProvider,
@@ -56,10 +67,11 @@ import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { SwapRoutes } from './swap-routes';
 import { RefreshCw, RefreshCwIcon } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { Links } from '@/config/links';
+import NavigationList from '@/components/ui/navigation-list';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -283,7 +295,6 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         });
 
         if (swapTransaction) {
-          console.log('HERE', swapTransaction);
           const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
           var transaction =
             VersionedTransaction.deserialize(swapTransactionBuf);
@@ -464,20 +475,21 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   // }, [inputAmout, inputTokenInfo, outputTokenInfo, loadingRoute]);
 
   const pathname = usePathname();
+  const router = useRouter();
   return (
     <>
-      <div className="w-full rounded-[15px] bg-foreground w-full sm:max-w-[450px] ">
+      <div className="w-full rounded-[15px] bg-foreground  sm:max-w-[450px] ">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1 !h-7">
             {pathname === '/trade' ? (
               <Link
-                href={'/trade/swap'}
+                href={'/trade/explore'}
                 className="text-sm bg-primary text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
               >
                 Open Full Page
               </Link>
             ) : (
-              <Button className=" h-7 rounded-lg text-sm">Swap</Button>
+              <NavigationList filter="Trade" />
             )}
           </div>
           <div className=" flex flex-row items-center justify-end gap-1 h-7 text-primary">
@@ -516,6 +528,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                   <SelectCoin
                     tokenInfo={inputTokenInfo}
                     setCoin={setInputTokenInfo}
+                    isInput={true}
                   />
                 </div>
                 <div className="flex flex-col gap-2 text-right h-full w-full">

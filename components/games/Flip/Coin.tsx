@@ -20,7 +20,6 @@ type GLTFResult = GLTF & {
 
 function CoinModel() {
   const coin = useGLTF(assetModel) as GLTFResult;
-  console.log({ coin });
   const [heads, tails] = useTexture([headsSrc, tailsSrc]);
   return (
     <>

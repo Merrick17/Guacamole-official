@@ -48,7 +48,6 @@ const Page = () => {
             </StatisticsCardContainer>
           </div>
         </div>
-        <EarnFooter />
       </div>
     </main>
   );

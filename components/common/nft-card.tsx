@@ -12,9 +12,6 @@ type NftCardProps = {
   SelectButton?: React.ReactNode;
 };
 const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
-  useEffect(() => {
-    console.log('Token', token);
-  }, [token]);
   return (
     <div className="rounded-xl  bg-background flex flex-col gap-2 text-xs px-6 py-4 border border-transparent transition-all ease-in-out duration-500  hover:border-primary ">
       <div className="flex flex-col  items-center">

@@ -8,11 +8,13 @@ const PlayCard = ({
   image,
   href,
   disabled,
+  className,
 }: {
   title: string;
   image: string;
   href: string;
   disabled?: boolean;
+  className?: string;
 }) => {
   return (
     <Link
@@ -21,7 +23,8 @@ const PlayCard = ({
       className={cn(
         'w-full lg:max-w-[322px] flex flex-col items-center gap-8  transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
-        !disabled && ` hover:border-[var(--accent)]  hover:border`
+        !disabled && ` hover:border-[var(--accent)]  hover:border`,
+        className
       )}
     >
       <header>

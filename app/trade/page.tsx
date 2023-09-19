@@ -19,9 +19,9 @@ const Page: FC = () => {
       <BackgroundSplash />
       <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
         <section className="flex flex-col gap-[60px]">
-          <div className="grid grid-cols-1 lg:grid-cols-5  gap-[60px] ">
+          <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px] ">
             <HeroHeadline
-              className="col-span-1  lg:col-span-3"
+              className="col-span-1  lg:col-span-5"
               title={
                 <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
                   Trade <span className="text-primary">anything</span> with the
@@ -37,7 +37,7 @@ const Page: FC = () => {
                 orders, or bridge from other chains.
               </p>
             </HeroHeadline>
-            <Trade showDetails={false} className="col-span-1 lg:col-span-2" />
+            <Trade showDetails={false} className="col-span-1 lg:col-span-3" />
           </div>
 
           <HeroList listItems={TradeListItems} />

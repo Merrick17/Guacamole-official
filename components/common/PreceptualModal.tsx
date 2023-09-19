@@ -130,13 +130,11 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
         async (selectedValue: string) => {
             if (selectedValue == "default") return;
             setSelectedTrg(selectedValue);
-            console.log({ selectedValue });
             const trader = new dexterity.Trader(
                 manifest,
                 new PublicKey(selectedValue)
             );
             const trg = await manifest.getTRG(new PublicKey(selectedValue));
-            console.log("Huh ", { trg });
             await trader.update();
             await manifest.updateOrderbooks(new PublicKey(mpgPubkey));
 

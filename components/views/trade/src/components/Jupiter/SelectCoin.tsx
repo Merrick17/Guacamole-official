@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useJupiterApiContext } from '../../contexts';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { BiChevronDown, BiLinkExternal } from 'react-icons/bi';
@@ -16,18 +16,47 @@ import {
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import routes from '@/config/routes';
+import { token } from '@metaplex-foundation/js';
 
 const Row = ({
   info,
   handleSelect,
+  isInput,
 }: {
   info: TokenInfo;
   handleSelect: (e: TokenInfo) => void;
+  isInput: boolean;
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams()!;
+
+  // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
   return (
     <button
       key={info.address}
-      onClick={() => handleSelect(info)}
+      onClick={() => {
+        handleSelect(info);
+        isInput
+          ? router.push(
+              pathname + '?' + createQueryString('inputMint', info.address)
+            )
+          : router.push(
+              pathname + '?' + createQueryString('outputMint', info.address)
+            );
+      }}
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background "
     >
       <img
@@ -81,9 +110,11 @@ const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
 export const SelectCoin = ({
   tokenInfo,
   setCoin,
+  isInput = false,
 }: {
   tokenInfo: TokenInfo | null | undefined;
   setCoin: React.Dispatch<React.SetStateAction<TokenInfo | null | undefined>>;
+  isInput?: boolean;
 }) => {
   const { tokenMap } = useJupiterApiContext();
   const [search, setSearch] = useState('');
@@ -140,23 +171,29 @@ export const SelectCoin = ({
           items={originalList}
           handleSelect={handleSelect}
           itemsPerPage={50}
+          isInput={isInput}
         />
       </DialogContent>
     </Dialog>
   );
 };
 
-const Rows = ({ currentItems, handleSelect }) => {
+const Rows = ({ currentItems, handleSelect, isInput }) => {
   return (
     <div className="flex flex-col gap-4">
       {currentItems.map((e) => (
-        <Row key={e.address} info={e} handleSelect={handleSelect} />
+        <Row
+          key={e.address}
+          info={e}
+          handleSelect={handleSelect}
+          isInput={isInput}
+        />
       ))}
     </div>
   );
 };
 
-function PaginatedItems({ itemsPerPage, items, handleSelect }) {
+function PaginatedItems({ itemsPerPage, items, handleSelect, isInput }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -181,7 +218,11 @@ function PaginatedItems({ itemsPerPage, items, handleSelect }) {
   return (
     <>
       <DialogDescription className="h-[50vh] max-h-[50vh] overflow-auto">
-        <Rows currentItems={currentItems} handleSelect={handleSelect} />
+        <Rows
+          currentItems={currentItems}
+          handleSelect={handleSelect}
+          isInput={isInput}
+        />
       </DialogDescription>
       <DialogFooter className="w-full">
         <ReactPaginate

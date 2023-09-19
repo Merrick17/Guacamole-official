@@ -18,7 +18,6 @@ export default function Page({ params }: { params: { shortName: string } }) {
     [shortName]
   );
   const play = true;
-  console.log({ GAMES, shortName: shortName });
   return (
     <>
       <div

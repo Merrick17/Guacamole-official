@@ -51,9 +51,10 @@ const ListItem: FC<ListItemProps> = ({
         !disabled && ` hover:border-[var(--accent)]  hover:border`
       )}
     >
-      <header>
-        <Image src={image} alt={title} width={36} height={36} />
-      </header>
+      <div className="w-8 h-8 rounded-full relative">
+        <Image src={image} alt={title} fill />
+      </div>
+
       <h1 className="text-2xl font-medium">{title}</h1>
       <p className="text-lg font-normal text-muted-foreground ">
         {description}

@@ -5,7 +5,18 @@ import { Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Script from 'next/script';
 import { useState } from 'react';
-
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Links } from '@/config/links';
+import NavigationList from '@/components/ui/navigation-list';
 const config = {
   appIdentity: {
     name: 'Start Bridge Swap',
@@ -41,11 +52,13 @@ const WalletMultiButtonDynamic = dynamic(
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
       <Container className="bg-foreground px-5 py-7 max-w-md w-full flex flex-col items-center  gap-5  min-h-[720px] h-full ">
         <div className="flex items-center w-full justify-between">
-          <Button className=" h-7 rounded-lg text-sm">Bridge Swap</Button>
+          <NavigationList filter="Trade" />
           <WalletMultiButtonDynamic
             startIcon={undefined}
             className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm flex bg-primary text-primary-foreground hover:!bg-primary"
