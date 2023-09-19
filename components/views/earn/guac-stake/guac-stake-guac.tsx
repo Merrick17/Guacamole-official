@@ -21,6 +21,7 @@ import Image from 'next/image';
 
 const formSchema = z.object({
   stake: z.boolean(),
+  amount: z.number().positive(),
 });
 
 const GuacStakeForm = () => {
@@ -29,6 +30,7 @@ const GuacStakeForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       stake: true,
+      amount: 0,
     },
   });
 
@@ -45,8 +47,48 @@ const GuacStakeForm = () => {
         className="flex flex-col gap-6 p-6 rounded-lg border border-[#1A1E1D]"
       >
         <div className="flex items-center gap-4 w-full">
-          <Button className="w-full">Stake GUAC</Button>
-          <Button className="w-full">Unstake GUAC</Button>
+          <FormField
+            control={form.control}
+            name="stake"
+            render={({ field }) => (
+              <FormItem className="w-full p-0">
+                <FormControl>
+                  <Button
+                    className="w-full"
+                    size="sm"
+                    type="button"
+                    onClick={() => form.setValue('stake', true)}
+                    variant={
+                      form.watch('stake') === true ? 'default' : 'secondary'
+                    }
+                  >
+                    Stake GUAC
+                  </Button>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="stake"
+            render={({ field }) => (
+              <FormItem className="w-full p-0">
+                <FormControl>
+                  <Button
+                    className="w-full"
+                    size="sm"
+                    type="button"
+                    onClick={() => form.setValue('stake', false)}
+                    variant={
+                      form.watch('stake') === false ? 'default' : 'secondary'
+                    }
+                  >
+                    Unstake GUAC
+                  </Button>
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </div>
 
         <p className="text-muted-foreground">Enter deposit amount:</p>
@@ -60,17 +102,30 @@ const GuacStakeForm = () => {
           />
           <div className="w-full">
             <h1 className="font-semibold">SOL</h1>
-            <p className="text-muted-foreground  text-xs ">
-              Balance 22.936590397
+            <p className=" text-xs ">
+              <span className="text-white/50">Balance </span>
+              <span className="text-white/[0.35]">22.936590397</span>
             </p>
           </div>
-          <Input
-            placeholder="0.00"
-            className="w-full  h-full  text-right  laceholder:text-xl text-xl font-semibold"
-            type="number"
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    placeholder="0.00"
+                    className="w-full  h-full  text-right  placeholder:text-xl text-xl font-semibold"
+                    type="number"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
           />
         </div>
-        <Button disabled>GUAC Staking Is Not Available Yet</Button>
+        <Button disabled variant="secondary">
+          GUAC Staking Is Not Available Yet
+        </Button>
         <div className="flex items-center justify-between text-muted-foreground text-sm">
           <p>You Will Receive</p>
           <p>--</p>

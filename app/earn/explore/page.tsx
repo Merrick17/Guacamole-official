@@ -45,7 +45,7 @@ const tools: {
     description:
       'Stake your Solana and earn while being able to swap & participate in DeFi.',
     image: '/icons/earn/liquidity-staking.svg',
-    href: routes.earn.root,
+    href: routes.earn.liquidityStaking,
   },
   {
     image: '/icons/earn/liquidity-farming.svg',
