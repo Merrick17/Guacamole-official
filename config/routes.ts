@@ -15,6 +15,7 @@ const routes = {
     dynamicVault: '/earn/dynamic-vault',
     statistics: '/earn/statistics',
     guacStaking: '/earn/guac-staking',
+    liquidityStaking: '/earn/liquidity-staking',
   },
   play: {
     root: '/play',

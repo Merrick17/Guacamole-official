@@ -21,7 +21,6 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
   const { loading, vaultData } = useGetVaultStatistics({
     maxNumberOfTokens: 4,
   });
-  console.log('vault data', vaultData);
   return (
     <JupiterApiProvider>
       <Container

@@ -13,13 +13,15 @@ const DepositForm: FC<DepositFormProps> = () => {
         <Image src="/icons/earn/sol.svg" width={32} height={32} alt="solana" />
         <div className="w-full">
           <h1 className="font-semibold">SOL</h1>
-          <p className="text-muted-foreground  text-xs ">
-            Balance 22.936590397
+
+          <p className="  text-xs ">
+            <span className="text-white/50">Balance </span>
+            <span className="text-white/[0.35]">22.936590397</span>
           </p>
         </div>
         <Input
           placeholder="0.00"
-          className="w-full  h-full  text-right  laceholder:text-xl text-xl font-semibold"
+          className="w-full  h-full  text-right  placeholder:text-xl text-xl font-semibold"
           type="number"
         />
       </form>

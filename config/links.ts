@@ -70,13 +70,12 @@ export const Links: {
         href: routes.earn.statistics,
       },
       {
-        name: 'GUAC Staking',
-        href: routes.earn.guacStaking,
+        name: 'Liquidity staking',
+        href: routes.earn.liquidityStaking,
       },
       {
-        name: 'Liquidity Farming',
-        href: routes.earn.statistics,
-        disabled: true,
+        name: 'GUAC Staking',
+        href: routes.earn.guacStaking,
       },
     ],
   },
