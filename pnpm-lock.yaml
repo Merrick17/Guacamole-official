@@ -32,6 +32,9 @@ dependencies:
   '@jup-ag/react-hook':
     specifier: 4.0.0-beta.17
     version: 4.0.0-beta.17(@project-serum/serum@0.13.65)(@solana/web3.js@1.78.0)(bn.js@5.2.1)(encoding@0.1.13)(react@18.2.0)
+  '@marinade.finance/marinade-ts-sdk':
+    specifier: 5.0.5-alpha
+    version: 5.0.5-alpha(@solana/web3.js@1.78.0)(bn.js@5.2.1)(encoding@0.1.13)(jsbi@4.3.0)
   '@metaplex-foundation/js':
     specifier: ^0.19.4
     version: 0.19.4(encoding@0.1.13)
@@ -173,6 +176,9 @@ dependencies:
   next-themes:
     specifier: ^0.2.1
     version: 0.2.1(next@13.4.10)(react-dom@18.2.0)(react@18.2.0)
+  numeral:
+    specifier: ^2.0.6
+    version: 2.0.6
   papaparse:
     specifier: ^5.4.1
     version: 5.4.1
@@ -1900,6 +1906,32 @@ packages:
       - utf-8-validate
     dev: false
 
+  /@coral-xyz/anchor@0.28.0(encoding@0.1.13):
+    resolution: {integrity: sha512-kQ02Hv2ZqxtWP30WN1d4xxT4QqlOXYDxmEd3k/bbneqhV3X5QMO4LAtoUFs7otxyivOgoqam5Il5qx81FuI4vw==}
+    engines: {node: '>=11'}
+    dependencies:
+      '@coral-xyz/borsh': 0.28.0(@solana/web3.js@1.78.0)
+      '@solana/web3.js': 1.78.0(encoding@0.1.13)
+      base64-js: 1.5.1
+      bn.js: 5.2.1
+      bs58: 4.0.1
+      buffer-layout: 1.2.2
+      camelcase: 6.3.0
+      cross-fetch: 3.1.8(encoding@0.1.13)
+      crypto-hash: 1.3.0
+      eventemitter3: 4.0.7
+      js-sha256: 0.9.0
+      pako: 2.1.0
+      snake-case: 3.0.4
+      superstruct: 0.15.5
+      toml: 3.0.0
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
+
   /@coral-xyz/anchor@0.28.1-beta.1(encoding@0.1.13):
     resolution: {integrity: sha512-JdKr4IQqY719wts0wzhHIffpAo4fdJ25gPLfFN75d6LMfCKvwPupyDUigaT+ac6UWTw/bDdBbJFY6QSRvlTnrA==}
     engines: {node: '>=11'}
@@ -2982,6 +3014,46 @@ packages:
 
   /@ledgerhq/logs@6.10.1:
     resolution: {integrity: sha512-z+ILK8Q3y+nfUl43ctCPuR4Y2bIxk/ooCQFwZxhtci1EhAtMDzMAx2W25qx8G1PPL9UUOdnUax19+F0OjXoj4w==}
+    dev: false
+
+  /@marinade.finance/directed-stake-sdk@0.0.4(@solana/web3.js@1.78.0)(bn.js@5.2.1)(encoding@0.1.13)(jsbi@4.3.0):
+    resolution: {integrity: sha512-5WTBDRg8hbCHS54wUUhPUuXj9JiQE3Bc1+nmDI3JivQPHu7VsDaPB3w1SHRh0bfARnZQg9oKg8s6jVwNiScCsQ==}
+    engines: {node: '>10'}
+    peerDependencies:
+      '@solana/web3.js': ^1.74.0
+      bn.js: ^5.2.1
+      jsbi: ^4.3.0
+    dependencies:
+      '@coral-xyz/anchor': 0.27.0(encoding@0.1.13)
+      '@solana/web3.js': 1.78.0(encoding@0.1.13)
+      bn.js: 5.2.1
+      bs58: 5.0.0
+      jsbi: 4.3.0
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /@marinade.finance/marinade-ts-sdk@5.0.5-alpha(@solana/web3.js@1.78.0)(bn.js@5.2.1)(encoding@0.1.13)(jsbi@4.3.0):
+    resolution: {integrity: sha512-UVd52iG48D8KCnLxzMknMBGt95ufrHsUURdlwDdzcFwgp60NmmpYyLlBI7FQWMShVQH14hIB//kkrbrVHSg5Yg==}
+    engines: {anchor: '>=0.28.0', node: '>=16.0.0'}
+    dependencies:
+      '@coral-xyz/anchor': 0.28.0(encoding@0.1.13)
+      '@marinade.finance/directed-stake-sdk': 0.0.4(@solana/web3.js@1.78.0)(bn.js@5.2.1)(encoding@0.1.13)(jsbi@4.3.0)
+      '@solana/spl-stake-pool': 0.6.5(encoding@0.1.13)
+      '@solana/spl-token-3.x': /@solana/spl-token@0.3.8(@solana/web3.js@1.78.0)(encoding@0.1.13)
+      borsh: 0.7.0
+      bs58: 5.0.0
+    transitivePeerDependencies:
+      - '@solana/web3.js'
+      - bn.js
+      - bufferutil
+      - encoding
+      - jsbi
+      - supports-color
+      - utf-8-validate
     dev: false
 
   /@mercurial-finance/optimist@0.2.0(@solana/spl-token@0.1.8)(@solana/web3.js@1.72.0)(bn.js@5.2.1):
@@ -4839,6 +4911,22 @@ packages:
       borsh: 0.7.0
       js-sha3: 0.8.0
       typescript-collections: 1.3.3
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /@solana/spl-stake-pool@0.6.5(encoding@0.1.13):
+    resolution: {integrity: sha512-gAYjX4LlRem3Bje1csZOOBStX8wAH8b8tu4sublUTIoJxLMdEbXqnwc8RJ2lAsmFkjxxomEM9Hk65F8jcvv15A==}
+    dependencies:
+      '@project-serum/borsh': 0.2.5(@solana/web3.js@1.78.0)
+      '@solana/buffer-layout': 4.0.1
+      '@solana/spl-token': 0.1.8(encoding@0.1.13)
+      '@solana/web3.js': 1.78.0(encoding@0.1.13)
+      bn.js: 5.2.1
+      buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -11634,6 +11722,10 @@ packages:
     dependencies:
       bn.js: 4.11.6
       strip-hex-prefix: 1.0.0
+    dev: false
+
+  /numeral@2.0.6:
+    resolution: {integrity: sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==}
     dev: false
 
   /o3@1.0.3:

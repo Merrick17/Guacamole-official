@@ -1,8 +1,10 @@
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import Image from 'next/image';
-import { FC } from 'react';
-import { AiOutlineQuestionCircle } from 'react-icons/ai';
+"use client"
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
+import { FC } from "react";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { useJupiterApiContext } from "../../trade/src/contexts";
 export type DynmaicVaultItemProps = {
   image: string;
   title: string;
@@ -11,6 +13,7 @@ export type DynmaicVaultItemProps = {
   VirtualPrice: string;
   TVL: string;
   estimatedAPY: string;
+  item?: any;
 };
 const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   image,
@@ -20,7 +23,11 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   VirtualPrice,
   TVL,
   estimatedAPY,
+  item,
 }) => {
+  const { tokenMap } = useJupiterApiContext();
+  const token = tokenMap.get(item.token_address);
+  console.log("Item", token);
   return (
     <div className="py-4 px-5 border border-transparent bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center ">
       <header className="flex items-center justify-center">
