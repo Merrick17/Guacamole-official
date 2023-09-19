@@ -26,6 +26,7 @@ const routes = {
     slots: '/play/slots',
     hilo: '/play/hilo',
     mines: '/play/mines',
+    dice: '/dice',
   },
 
   tools: {

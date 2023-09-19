@@ -1,10 +1,8 @@
-// @ts-nocheck
+import { GameBundle } from 'gamba/react-ui'
+import HiLo from './HiLo'
+import Mines from './Mines'
+import Roulette from './Roulette'
+import Slots from './Slots'
+import Dice from './Dice'
 
-import { GameBundle } from 'gamba/react-ui';
-import Flip from './Flip';
-import Mines from './Mines';
-import Roulette from './Roulette';
-import Slots from './Slots';
-import HiLo from './HiLo';
-
-export const GAMES: GameBundle[] = [Roulette, Slots, HiLo, Mines];
+export const GAMES: GameBundle[] = [Dice, Roulette, Slots, HiLo, Mines]

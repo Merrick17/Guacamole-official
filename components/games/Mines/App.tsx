@@ -1,230 +1,219 @@
-'use client';
-import { solToLamports } from 'gamba';
-import { useGamba } from 'gamba/react';
-import { formatLamports } from 'gamba/react-ui';
-import React, { useMemo, useState } from 'react';
-import * as Tone from 'tone';
-import { Dropdown } from '../../common/Dropdown';
-import { Cell, Container, Grid, Overlay, OverlayText } from './styles';
-import winSrc from './win.mp3';
-import tickSrc from './tick.mp3';
-import loseSrc from './lose.mp3';
-import { GambaConnectButton } from 'gamba/react-ui';
-import { ActionBar } from '@/components/common/ActionBar';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { RiAccountCircleLine } from 'react-icons/ri';
-import { ResponsiveSize } from '@/components/common/ResponsiveSize';
-import { useGambaUi } from '@/context/gamba-ui';
-
-const GRID_SIZE = 25;
-const MINE_COUNT = 5;
-
-const MINE_SELECT = [1, 3, 5, 10, 15, 20, 24];
-const WAGER_AMOUNTS = [0.05, 0.1, 0.25, 0.5, 1, 3].map(solToLamports);
-
-const createSound = (url: string) => new Tone.Player({ url }).toDestination();
-
-const soundTick = createSound(tickSrc);
-const soundWin = createSound(winSrc);
-const soundLose = createSound(loseSrc);
-
-const pitchIncreaseFactor = 1.06;
+import { lamportsToSol } from 'gamba'
+import { useGamba } from 'gamba/react'
+import { GameUi, formatLamports } from 'gamba/react-ui'
+import React from 'react'
+import styles from './App.module.css'
+import { GRID_SIZE, ICON_MINE, MINE_SELECT, PITCH_INCREASE_FACTOR, SOUND_FINISH, SOUND_LOSE, SOUND_TICK, SOUND_WIN, WAGER_OPTIONS } from './constants'
+import { GameConfig } from './types'
+import { generateGrid, revealAllMines, revealGold } from './utils'
 
 function Mines() {
-  const gamba = useGamba();
-  const [grid, setGrid] = useState(() => generateGrid());
-  const [unclickedSquares, setUnclickedSquares] = useState(GRID_SIZE);
-  const [loading, setLoading] = useState(false);
-  const [mines, setMines] = useState(MINE_COUNT);
-  const [firstPlay, setFirstPlay] = useState(true);
-  const [claiming, setClaiming] = useState(false);
-  const [wager, setWager] = useState(WAGER_AMOUNTS[0]);
-  const [playbackRate, setPlaybackRate] = useState(1);
+  const gamba = useGamba()
+  const sounds = GameUi.useSounds({
+    tick: SOUND_TICK,
+    win: SOUND_WIN,
+    lose: SOUND_LOSE,
+    finish: SOUND_FINISH,
+  })
 
-  const playWinSound = () => {
-    soundWin.playbackRate = playbackRate;
-    soundWin.start();
-  };
+  const [grid, setGrid] = React.useState(generateGrid(GRID_SIZE))
+  const [currentLevel, setLevel] = React.useState(0)
+  const [selected, setSelected] = React.useState(-1)
+  const [claiming, setClaiming] = React.useState(false)
+  const [totalGain, setTotalGain] = React.useState(0)
+  const [loading, setLoading] = React.useState(false)
+  const [started, setStarted] = React.useState(false)
 
-  const hasClaimableBalance = gamba.balances.user > 0;
+  const [config, setConfig] = React.useState<GameConfig>({
+    wager: WAGER_OPTIONS[0],
+    mines: MINE_SELECT[2],
+  })
 
-  const resetGame = async () => {
-    if (gamba.balances.user > 0) {
-      setClaiming(true);
-      await gamba.withdraw();
-      setClaiming(false);
-    }
-    setGrid(generateGrid());
-    setUnclickedSquares(GRID_SIZE);
-    setLoading(false);
-    setFirstPlay(true);
-    setPlaybackRate(1);
-  };
+  const remainingCells = GRID_SIZE - currentLevel
+  const gameFinished = remainingCells <= config.mines
+  const needsReset = gameFinished
 
-  const multiplier = useMemo(() => {
-    return 1 / ((unclickedSquares - mines) / unclickedSquares);
-  }, [unclickedSquares, mines]);
+  const canPlay = started && !loading && !claiming && !needsReset
 
-  const handleClick = async (index: number) => {
-    if (grid[index].status !== 'hidden') {
-      return;
-    }
+  const bet = React.useMemo(
+    () => Array
+      .from({ length: remainingCells })
+      .map((_, i, arr) => {
+        return i < config.mines ? 0 : arr.length / (arr.length - config.mines)
+      }),
+    [remainingCells, config],
+  )
 
-    setLoading(true);
+  const start = () => {
+    setGrid(generateGrid(GRID_SIZE))
+    setLoading(false)
+    setLevel(0)
+    setTotalGain(0)
+    setStarted(true)
+  }
 
+  const endGame = async () => {
     try {
-      const bet = new Array(unclickedSquares).fill(multiplier);
-      for (let i = 0; i < mines; i++) {
-        bet[i] = 0;
-      }
-
-      const WAGER_AMOUNTSum = bet.reduce((sum, val) => sum + val, 0);
-      if (WAGER_AMOUNTSum > bet.length) {
-        const overflow = WAGER_AMOUNTSum - bet.length;
-        bet[bet.length - 1] -= overflow;
-      }
-
-      let wagerInput = wager;
-      let res;
-
-      if (!firstPlay) {
-        wagerInput = gamba.balances.user;
-        res = await gamba.play(bet, wagerInput, { deductFees: true });
-      } else {
-        res = await gamba.play(bet, wagerInput, { deductFees: false });
-      }
-
-      soundTick.start();
-      const result = await res.result();
-      const win = result.payout > 0;
-      setFirstPlay(false);
-
-      const updatedGrid = [...grid];
-      if (win) {
-        updatedGrid[index].status = 'gold';
-        setUnclickedSquares(unclickedSquares - 1);
-        soundTick.stop();
-        playWinSound();
-        setPlaybackRate(playbackRate * pitchIncreaseFactor);
-      } else if (!win) {
-        updatedGrid[index].status = 'mine';
-        revealRandomMines(updatedGrid, mines - 1, index);
-        setFirstPlay(true);
-        soundTick.stop();
-        soundLose.start();
-        setPlaybackRate(1);
-      }
-      setGrid(updatedGrid);
-    } catch (err) {
-      console.error(err);
+      setClaiming(true)
+      await gamba.withdraw()
+      await gamba.anticipate((state, prev) => state.user.balance < prev.user.balance)
+      sounds.finish.play()
+      reset()
     } finally {
-      setLoading(false);
-    }
-  };
-  const { setModal } = useGambaUi();
-  const { connected, publicKey } = useWallet();
-  const needsReset = firstPlay && hasClaimableBalance;
-
-  return (
-    <>
-      <ResponsiveSize>
-        <Container>
-          <div
-            style={{
-              textAlign: 'center',
-              marginBottom: '1rem',
-              fontSize: '1.5rem',
-            }}
-          >
-            Multiplier: {multiplier.toFixed(4)}
-          </div>
-          {needsReset && !loading && (
-            <Overlay>
-              <OverlayText>Reset to start</OverlayText>
-            </Overlay>
-          )}
-          <Grid>
-            {grid.map((cell, index) => (
-              <Cell
-                key={index}
-                status={cell.status}
-                onClick={() => handleClick(index)}
-                disabled={needsReset}
-              />
-            ))}
-          </Grid>
-        </Container>
-      </ResponsiveSize>
-      <ActionBar>
-        {firstPlay ? (
-          <>
-            {connected && publicKey && (
-              <Button
-                onClick={() => {
-                  setModal(true);
-                }}
-              >
-                <RiAccountCircleLine />
-              </Button>
-            )}
-            <Dropdown
-              value={wager}
-              label=""
-              format={(value) => formatLamports(value)}
-              onChange={setWager}
-              options={WAGER_AMOUNTS.map((value) => ({
-                label: formatLamports(value),
-                value,
-              }))}
-            />
-            <Dropdown
-              label=""
-              value={mines}
-              format={(value) => value + ' Mines'}
-              onChange={setMines}
-              options={MINE_SELECT.map((value) => ({
-                label: value + ' SOL',
-                value,
-              }))}
-            />
-          </>
-        ) : (
-          <div>
-            <Button
-              disabled={firstPlay || claiming || loading}
-              onClick={() => resetGame()}
-            >
-              {(firstPlay || claiming || loading) && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Claim {formatLamports(gamba.balances.user)}
-            </Button>
-          </div>
-        )}
-        <Button disabled={!needsReset} onClick={resetGame}>
-          Reset
-        </Button>
-      </ActionBar>
-    </>
-  );
-}
-
-function generateGrid() {
-  const grid = Array.from({ length: GRID_SIZE }, () => ({ status: 'hidden' }));
-  return grid;
-}
-
-function revealRandomMines(grid: any[], count: number, excludeIndex: number) {
-  let revealed = 0;
-  while (revealed < count) {
-    const randomIndex = Math.floor(Math.random() * GRID_SIZE);
-    if (grid[randomIndex].status === 'hidden' && randomIndex !== excludeIndex) {
-      grid[randomIndex].status = 'mine';
-      revealed++;
+      setClaiming(false)
     }
   }
+
+  const reset = () => {
+    setGrid(generateGrid(GRID_SIZE))
+    setLoading(false)
+    setLevel(0)
+    setTotalGain(0)
+    setStarted(false)
+  }
+
+  const play = async (cellIndex: number) => {
+    setLoading(true)
+    setSelected(cellIndex)
+    try {
+      await gamba.play({
+        bet,
+        wager: config.wager + totalGain,
+      })
+
+      sounds.tick.play({ playbackRate: 1.5 })
+
+      const result = await gamba.nextResult()
+
+      sounds.tick.player.stop()
+
+      // Lose
+      if (result.payout === 0) {
+        // setGameStatus('lost')
+        setStarted(false)
+        setGrid(revealAllMines(grid, cellIndex, config.mines))
+        sounds.lose.play()
+        return
+      }
+
+      const nextLevel = currentLevel + 1
+      setLevel(nextLevel)
+      setGrid(revealGold(grid, cellIndex, result.profit))
+      setTotalGain(totalGain + result.profit)
+
+      if (nextLevel < GRID_SIZE - config.mines) {
+        sounds.win.play({ playbackRate: Math.pow(PITCH_INCREASE_FACTOR, currentLevel) })
+      } else {
+        sounds.win.play({ playbackRate: .9 })
+        sounds.finish.play()
+      }
+    } catch (err) {
+      // setGameStatus('playing')
+    } finally {
+      setLoading(false)
+      setSelected(-1)
+    }
+  }
+
+  return (
+    <GameUi.Fullscreen maxScale={1.25}>
+      <GameUi.Controls disabled={started}>
+        <GameUi.Select.Root
+          value={config.wager}
+          label="Wager"
+          onChange={(wager) => setConfig({ ...config, wager })}
+          format={(wager) => formatLamports(wager)}
+        >
+          {WAGER_OPTIONS.map((wager) => (
+            <GameUi.Select.Option key={wager} value={wager}>
+              {formatLamports(wager)}
+            </GameUi.Select.Option>
+          ))}
+        </GameUi.Select.Root>
+        <GameUi.Select.Root
+          value={config.mines}
+          label="Mines"
+          onChange={(mines) => setConfig({ ...config, mines })}
+          format={(mines) => mines + ' Mines'}
+        >
+          {MINE_SELECT.map((mines) => (
+            <GameUi.Select.Option key={mines} value={mines}>
+              {mines} Mines
+            </GameUi.Select.Option>
+          ))}
+        </GameUi.Select.Root>
+        <GameUi.Button variant="primary" onClick={start}>
+          Start
+        </GameUi.Button>
+      </GameUi.Controls>
+
+      <div className={styles.container}>
+        <div className={styles.statusBar}>
+          <div>
+            <span>
+              +{formatLamports(totalGain)}
+            </span>
+            <span>
+              Mines: {config.mines}
+            </span>
+          </div>
+          {totalGain > 0 && (
+            <button
+              className={styles.reset}
+              disabled={loading || claiming}
+              onClick={endGame}
+            >
+              Cashout
+            </button>
+          )}
+        </div>
+        <div className={styles.levels}>
+          {Array.from({ length: 4 })
+            .map((_, i) => {
+              const level = currentLevel + i
+              if (level >= GRID_SIZE - config.mines) {
+                return (
+                  <div key={i}>
+                    -
+                  </div>
+                )
+              }
+              const unrevealed = GRID_SIZE - level
+              const multiplier = unrevealed / (unrevealed - config.mines)
+              return (
+                <div key={i}>
+                  <div>
+                    LEVEL {level + 1}
+                  </div>
+                  <div>
+                    {parseFloat(multiplier.toFixed(3))}x
+                  </div>
+                </div>
+              )
+            })}
+        </div>
+        <div className={styles.grid}>
+          {grid.map((cell, index) => (
+            <button
+              key={index}
+              className={styles.cell}
+              data-status={cell.status}
+              data-selected={selected === index}
+              onClick={() => play(index)}
+              disabled={!canPlay || cell.status !== 'hidden'}
+            >
+              {(cell.status === 'hidden' || cell.status === 'mine') && <img src={ICON_MINE} />}
+              {(cell.status === 'gold') && (
+                <div>
+                  +{parseFloat(lamportsToSol(cell.profit).toFixed(3))}
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </GameUi.Fullscreen>
+  )
 }
 
-export default Mines;
+export default Mines

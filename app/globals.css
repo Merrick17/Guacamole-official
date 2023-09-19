@@ -166,3 +166,124 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+.gamba-ui-controls-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.gamba-ui-select-container {
+  position: relative;
+}
+
+.gamba-ui-select-option {
+  width: 100%;
+  background: #272735;
+  color: white;
+  border: none;
+  margin: 0;
+  padding: 10px 5px;
+  cursor: pointer;
+}
+
+.gamba-ui-select-option.selected {
+  background: #2e2e40;
+}
+
+.gamba-ui-select-popup {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 10px;
+  display: grid;
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 100%;
+  border-radius: 5px;
+}
+
+.gamba-game-button {
+  margin: 0;
+  pointer-events: auto;
+  border: none;
+  background: #272735;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.gamba-game-button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.gamba-game-button:not(:disabled):hover {
+  background: #2e2e40;
+}
+
+.gamba-game-button.primary {
+  min-width: 100px;
+  background: var(--primary);
+  color: var(--background);
+}
+
+.gamba-game-button.primary:hover {
+  background: var(--primary);
+}
+
+.gamba-game-ui-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.gamba-game-button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.gamba-ui-select-container {
+  min-width: 100px;
+}
+
+.gamba-ui-select-container button {
+  width: 100%;
+}
+
+.gamba-game-button.selected {
+  background: #515182 !important;
+}
+
+.gamba-game-button:active {
+  transition: opacity 0.2s, transform 0.1s ease;
+  opacity: 1;
+}
+
+.gamba-game-ui-wager-input {
+  display: flex;
+  gap: 2px;
+}
+
+.gamba-game-ui-wager-input input {
+  background: #272735;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0;
+}
+
+.gamba-game-ui-wager-input input {
+  width: 120px;
+}
+
+.gamba-wager-input-field {
+  display: flex;
+}

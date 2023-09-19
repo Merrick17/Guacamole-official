@@ -1,8 +1,7 @@
-import React, { PropsWithChildren, useRef } from 'react';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import styled from 'styled-components';
-import { StylelessButton } from '../games/Roulette/styles';
-import Image from 'next/image';
+import React, { PropsWithChildren, useRef } from 'react'
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
+import styled from 'styled-components'
+import Image from 'next/image'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -20,13 +19,13 @@ export const Wrapper = styled.div`
   & > * {
     scroll-snap-align: start;
   }
-`;
+`
 
 export function Slider({ children }: PropsWithChildren) {
-  const ref = useRef<HTMLDivElement>(null!);
+  const ref = useRef<HTMLDivElement>(null!)
   const scrll = (x: number) => {
-    ref.current.scrollBy({ left: 1 * x, behavior: 'smooth' });
-  };
+    ref.current.scrollBy({ left: 1 * x, behavior: 'smooth' })
+  }
 
   return (
     <>
@@ -45,16 +44,16 @@ export function Slider({ children }: PropsWithChildren) {
         </header>
 
         <div style={{ display: 'flex', gap: '20px' }}>
-          <StylelessButton onClick={() => scrll(-1)}>
+          <button onClick={() => scrll(-1)}>
             <FaArrowLeft />
-          </StylelessButton>
-          <StylelessButton onClick={() => scrll(1)}>
+          </button>
+          <button onClick={() => scrll(1)}>
             <FaArrowRight />
-          </StylelessButton>
+          </button>
         </div>
       </div>
 
       <Wrapper ref={ref}>{children}</Wrapper>
     </>
-  );
+  )
 }

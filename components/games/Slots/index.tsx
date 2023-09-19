@@ -1,12 +1,14 @@
-import React from 'react';
+import React from 'react'
+import App from './App'
 
 const game = {
   name: 'Slots',
   short_name: 'slots',
-  description: '',
-  creator: 'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC',
+  description: `
+    Play and pray. At the top of the slot machine you can see your potential rewards. Always fair.
+  `,
   image: '/icons/play/slots.png',
-  theme_color: '#ad6bff',
-  app: React.lazy(() => import('./App')),
-};
-export default game;
+  app: () => <App />,
+}
+
+export default game
