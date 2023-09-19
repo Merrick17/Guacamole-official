@@ -1,18 +1,18 @@
-"use client"
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
-import { FC } from "react";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { useJupiterApiContext } from "../../trade/src/contexts";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import Image from 'next/image';
+import { FC } from 'react';
+import { AiOutlineQuestionCircle } from 'react-icons/ai';
+import { useJupiterApiContext } from '../../trade/src/contexts';
 export type DynmaicVaultItemProps = {
-  image: string;
-  title: string;
-  walletBalance: string;
-  yourDeposit: string;
-  VirtualPrice: string;
-  TVL: string;
-  estimatedAPY: string;
+  image?: string;
+  title?: string;
+  walletBalance?: string;
+  yourDeposit?: string;
+  VirtualPrice?: string;
+  TVL?: string;
+  estimatedAPY?: string;
   item?: any;
 };
 const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
@@ -27,11 +27,11 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
 }) => {
   const { tokenMap } = useJupiterApiContext();
   const token = tokenMap.get(item.token_address);
-  console.log("Item", token);
+  console.log('Item', token);
   return (
     <div className="py-4 px-5 border border-transparent bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center ">
       <header className="flex items-center justify-center">
-        <Image src={image} width={40} height={40} alt={title} />
+        <Image src={token.logoURI} width={40} height={40} alt={title} />
       </header>
       <h1 className="text-3xl">{title}</h1>
       <Separator className="bg-foreground" />
