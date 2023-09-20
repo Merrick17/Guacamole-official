@@ -1,5 +1,5 @@
-'use client';
-import ColorBlocks from '@/components/common/color-block';
+'use client'
+import ColorBlocks from '@/components/common/color-block'
 
 const Ready = () => {
   return (
@@ -15,7 +15,7 @@ const Ready = () => {
         where you can potentially win SOL, GUAC, and more!
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default Ready;
+export default Ready

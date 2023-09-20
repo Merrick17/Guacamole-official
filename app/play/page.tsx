@@ -1,8 +1,8 @@
 import BackgroundSplash from '@/components/common/background-splash';
 import ColorBlocks from '@/components/common/color-block';
 import HeroHeadline from '@/components/common/hero-headline';
+import RecentPlays from '@/components/common/recent-plays';
 import PlayCard from '@/components/ui/play-card';
-import RecentPlay from '@/components/views/play/recent-play';
 import routes from '@/config/routes';
 import { Metadata } from 'next';
 
@@ -19,9 +19,9 @@ const Page: FC = () => {
     <>
       <BackgroundSplash />
       <section className="flex flex-col gap-[60px]">
-        <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px] ">
+        <div className="grid grid-cols-1 lg:grid-cols-8  gap-14 ">
           <HeroHeadline
-            className="col-span-1  lg:col-span-5"
+            className="col-span-1 lg:col-span-5"
             title={
               <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
                 Play plenty of funky fresh on-chain games and{' '}
@@ -35,11 +35,12 @@ const Page: FC = () => {
               you to play on our game section.
             </p>
           </HeroHeadline>
-          <RecentPlay compact className="col-span-1 lg:col-span-3" />
+          {/* <WalletMultiButtonDynamic /> */}
+          <RecentPlays className="col-span-1 lg:col-span-3" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground p-14   backdrop:blur-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground px-14 py-6  backdrop:blur-sm">
           {PlayListItems.map((item, index) => (
-            <PlayCard key={index} {...item} className="!h-[226px]" />
+            <PlayCard key={index} {...item} />
           ))}
         </div>
         <ColorBlocks className="mx-auto" />
@@ -67,13 +68,16 @@ const PlayListItems: {
   {
     title: 'HiLo',
     image: '/icons/play/hilo.png',
-
     href: routes.play.hilo,
   },
   {
     title: 'Mines',
     image: '/icons/play/mines.png',
-
+    href: routes.play.mines,
+  },
+  {
+    title: 'Dice',
+    image: '/icons/play/dice.png',
     href: routes.play.mines,
   },
 ];

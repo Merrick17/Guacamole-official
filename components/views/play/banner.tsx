@@ -1,9 +1,8 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { FC } from 'react';
+'use client'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
+import { FC } from 'react'
 type BannerProps = {
   className?: string;
   btnClassName?: string;
@@ -18,13 +17,13 @@ const Banner: FC<BannerProps> = ({
   title,
   path,
 }) => {
-  const router = useRouter();
+  const router = useRouter()
   return (
     <div
       onClick={() => path && router.push(path)}
       className={cn(
         'group flex max-w-[512px] w-full flex-col gap-[10px] rounded-lg cursor-pointer',
-        className
+        className,
       )}
     >
       <div className="relative h-[136px] w-full overflow-hidden rounded-[5px]">
@@ -40,7 +39,7 @@ const Banner: FC<BannerProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Banner;
+export default Banner

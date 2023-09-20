@@ -1,97 +1,109 @@
+'use client';
+
+import { GameResult, lamportsToSol } from 'gamba';
+import { useEventFetcher, useGamba } from 'gamba/react';
 import { formatLamports } from 'gamba/react-ui';
-import { useGamba } from 'gamba/react';
-import { RecentPlayEvent, solToLamports } from 'gamba';
-import { Time } from './Time';
-import { Skeleton } from '../ui/skeleton';
-import { useGambaUi } from '@/context/gamba-ui';
+import React from 'react';
+import { Section } from '../styles';
+import { cn } from '@/lib/utils';
 
-function RecentPlay({ event }: { event: RecentPlayEvent }) {
-  const { wallet } = useGamba();
-  const you = !!wallet && event.player.equals(wallet.publicKey);
-  const wager = event.wager;
-  const multiplier = event.resultMultiplier;
-  const profit = wager * multiplier - wager;
-  const win = profit >= 0;
+const VERIFY_URL = 'https://explorer.gamba.so/tx';
 
-  const who = <span>{you ? 'You ' : 'Someone '}</span>;
-
-  const content = (() => {
-    if (multiplier >= 2) {
-      return (
-        <>
-          {who} bet {formatLamports(event.wager)} and{' '}
-          <span
-            style={{
-              color: win ? '#4E8341' : '#A63B3D',
-            }}
-          >
-            {multiplier}x
-          </span>
-        </>
-      );
+const TimeDiff: React.FC<{ time: number }> = ({ time }) => {
+  const diff = Date.now() - time;
+  return React.useMemo(() => {
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    if (hours >= 1) {
+      return hours + 'h ago';
     }
-
-    if (profit < solToLamports(-0.01)) {
-      return (
-        <>
-          {who} bet{' '}
-          <span className="text-[#A63B3D]">{formatLamports(event.wager)} </span>{' '}
-          and lost
-        </>
-      );
+    if (minutes >= 1) {
+      return minutes + 'm ago';
     }
+    return 'Just now';
+  }, [diff]);
+};
 
-    return (
-      <>
-        {who} {win ? 'won' : 'lost'}{' '}
-        <span
-          style={{
-            color: profit >= 0 ? '#4E8341' : '#A63B3D',
-          }}
-        >
-          {formatLamports(Math.abs(profit))}
-        </span>
-      </>
-    );
-  })();
+interface RecentPlayProps {
+  result: GameResult;
+  isSelf: boolean;
+  signature: string;
+  time: number;
+}
+
+function RecentPlay({ time, signature, result, isSelf }: RecentPlayProps) {
+  const wager = result.wager;
+  const multiplier = result.multiplier;
+  const payout = wager * multiplier;
+  const isRekt = payout === 0;
+  const whaleScore = Math.log10(lamportsToSol(wager) / 0.1);
+  const litScore = multiplier - 1;
 
   return (
-    <div className="p-[10px]  bg-background rounded-lg flex flex-row items-center justify-between gap-1 h-10 ">
-      <div>{content}</div>
+    <a
+      className="flex gap-1 p-2 justify-between"
+      href={`${VERIFY_URL}/${signature}`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <div className="flex gap-1">
+        <span>{isSelf ? 'You ' : 'Someone '}</span>
+        made
+        <span>
+          <span>
+            {formatLamports(payout)} from {formatLamports(wager)}
+          </span>
+        </span>
+        <span>
+          {whaleScore > 0 && '🐋'.repeat(whaleScore)}
+          {isRekt && '💀'}
+          {litScore > 0 && '🌶️'.repeat(litScore)}
+        </span>
+      </div>
       <span>
-        <a
-          target="_blank"
-          href={`https://solscan.io/tx/${event.signature}`}
-          rel="noreferrer"
-        >
-          <Time time={event.estimatedTime} />
-        </a>
+        <TimeDiff time={time} />
       </span>
-    </div>
+    </a>
   );
 }
 
-export function RecentPlays({ compact }: { compact?: boolean }) {
-  const { recentPlays } = useGambaUi();
+export default function RecentPlays({ className }: { className?: string }) {
+  const gamba = useGamba();
+  const events = useEventFetcher();
+
+  React.useEffect(() => {
+    events.fetch({ signatureLimit: 40 });
+    return events.listen();
+  }, [events]);
+
+  const results = React.useMemo(() => {
+    return events.transactions.filter((x) => !!x.event.gameResult);
+  }, [events.transactions]);
 
   return (
-    <>
-      {!recentPlays.length ? (
-        <>
-          {Array.from({ length: compact ? 7 : 10 }).map((_, i) => (
-            <Skeleton className="h-10 w-full" key={i} />
-          ))}
-        </>
-      ) : (
-        recentPlays
-          .slice(0, compact ? 7 : 10)
-          .map((event, i) => <RecentPlay key={i} event={event} />)
+    <div
+      className={cn(
+        'flex max-w-[512px] w-full flex-col p-2 gap-4 rounded-lg bg-foreground ',
+        className
       )}
-      {!compact && (
-        <div style={{ opacity: 0.5, fontSize: 12 }}>
-          Some transactions may be too old to load
-        </div>
-      )}
-    </>
+    >
+      <div>
+        {results.map((transaction) => (
+          <RecentPlay
+            key={transaction.signature}
+            time={transaction.time}
+            signature={transaction.signature}
+            result={transaction.event.gameResult!}
+            isSelf={transaction.event.gameResult!.player.equals(
+              gamba.wallet.publicKey
+            )}
+          />
+        ))}
+        {!events.latestSig
+          ? Array.from({ length: 5 }).map((_, i) => <div key={i} />)
+          : !results.length && <div>No events</div>}
+      </div>
+    </div>
   );
 }
