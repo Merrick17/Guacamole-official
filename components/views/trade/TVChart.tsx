@@ -94,7 +94,7 @@ const TVChart = ({ productSelect }: { productSelect: string }) => {
           symbol: `PYTH:${handleReturnCoin(productSelect)}`, // Update the symbol
           interval: "1",
           container_id: containerId.current,
-          backgroundColor: "#000000",
+          backgroundColor: "#141414",
         });
       }
     }

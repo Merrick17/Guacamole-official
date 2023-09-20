@@ -19,6 +19,7 @@
     "@jup-ag/math": "4.0.0-beta.21",
     "@jup-ag/react-hook": "4.0.0-beta.17",
     "@marinade.finance/marinade-ts-sdk": "5.0.5-alpha",
+    "@mercurial-finance/vault-sdk": "^0.5.1",
     "@metaplex-foundation/js": "^0.19.4",
     "@metaplex-foundation/mpl-token-metadata": "^2.13.0",
     "@onsol/tldparser": "^0.5.3",

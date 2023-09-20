@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const fetchMarinadeData = async () => {
-  const apyUrl = "https://api.marinade.finance/msol/apy/7d";
+  const apyUrl = "https://api.marinade.finance/msol/apy/1y";
   const msolPriceUrl = "https://api.marinade.finance/msol/price_sol";
   const tlvUrl = "https://api.marinade.finance/tlv";
 
