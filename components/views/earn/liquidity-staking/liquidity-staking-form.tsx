@@ -1,44 +1,149 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi';
-import Image from 'next/image';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
+import { MarinadeUtils } from "@marinade.finance/marinade-ts-sdk";
+import { WalletError } from "@solana/wallet-adapter-base";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import useMarinadeData from "@/hooks/use-marinade-data";
+import numeral from "numeral";
+import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
+import { useMarinade } from "@/context/Marinade";
 const formSchema = z.object({
   stake: z.boolean(),
   amount: z.number().positive(),
 });
 
 const LiquidityStackingForm = () => {
+  const [solBalance, setSolBalance] = useState<number>(0);
+  const { connected, publicKey, sendTransaction } = useWallet();
+  const { toast } = useToast();
+  const { data, isLoading } = useMarinadeData();
+  const { connection } = useConnection();
+  const { marinade } = useMarinade();
+
+  const fetchSolBalance = async () => {
+    try {
+      const balance = await connection.getBalance(publicKey);
+      setSolBalance(balance / LAMPORTS_PER_SOL);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    console.log("Data", data);
+    if (connected && publicKey) {
+      fetchSolBalance();
+    }
+  }, [publicKey, isLoading]);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       stake: true,
-      amount: 0,
+      amount: 1,
     },
   });
+  const stakeSol = async () => {
+    try {
+      console.log("Val", form.getValues("amount"));
+      const { transaction } = await marinade.deposit(
+        MarinadeUtils.solToLamports(form.getValues("amount"))
+      );
+      const transactionSignature = await sendTransaction(
+        transaction,
+        connection,
+        { skipPreflight: true }
+      );
+      console.log("TX", transactionSignature);
+      toast({
+        variant: "success",
+        title: "Success",
+        description: (
+          <div className="flex flex-col gap-2">
+            <p>Your SOL has been staked!</p>
+            <Link
+              href={`https://solscan.com/tx/${transactionSignature}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"
+            >
+              View on solscan
+            </Link>
+          </div>
+        ),
+      });
+    } catch (err) {
+      console.log("Error", err);
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      });
+    } finally {
+    }
+  };
+  const unstakeSol = async () => {
+    try {
+      const { transaction } = await marinade.liquidUnstake(
+        MarinadeUtils.solToLamports(form.getValues("amount"))
+      );
+      const transactionSignature = await sendTransaction(
+        transaction,
+        connection
+      );
+      toast({
+        variant: "success",
+        title: "Success",
+        description: (
+          <div className="flex flex-col gap-2">
+            <p>Your SOL has been staked!</p>
+            <Link
+              href={`https://solscan.com/tx/${transactionSignature}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"
+            >
+              View on solscan
+            </Link>
+          </div>
+        ),
+      });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      });
+    } finally {
+    }
+  };
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("Form submitted with values:", values);
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    if (values.stake) {
+      console.log(values);
+      await stakeSol();
+    } else {
+      await unstakeSol();
+    }
   }
   return (
     <>
@@ -58,9 +163,9 @@ const LiquidityStackingForm = () => {
                       className="w-full"
                       size="sm"
                       type="button"
-                      onClick={() => form.setValue('stake', true)}
+                      onClick={() => form.setValue("stake", true)}
                       variant={
-                        form.watch('stake') === true ? 'default' : 'secondary'
+                        form.watch("stake") === true ? "default" : "secondary"
                       }
                     >
                       Stake SOL
@@ -79,9 +184,9 @@ const LiquidityStackingForm = () => {
                       className="w-full"
                       size="sm"
                       type="button"
-                      onClick={() => form.setValue('stake', false)}
+                      onClick={() => form.setValue("stake", false)}
                       variant={
-                        form.watch('stake') === false ? 'default' : 'secondary'
+                        form.watch("stake") === false ? "default" : "secondary"
                       }
                     >
                       Unstake mSOL
@@ -105,7 +210,10 @@ const LiquidityStackingForm = () => {
               <h1 className="font-semibold">SOL</h1>
               <p className="text-xs ">
                 <span className="text-white/50">Balance </span>
-                <span className="text-white/[0.35]">22.936590397</span>
+                <span className="text-white/[0.35]">
+                  {" "}
+                  {!connected ? "connect to display balance" : solBalance}
+                </span>
               </p>
             </div>
             <FormField
@@ -115,32 +223,49 @@ const LiquidityStackingForm = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      {...field}
                       placeholder="0.00"
                       className="w-full  h-full  text-right  placeholder:text-xl text-xl font-semibold"
                       type="number"
+                      onChange={(e) => {
+                        const numericValue = parseFloat(e.target.value);
+                        field.onChange(numericValue);
+                      }}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <Button>
-            {form.watch('stake') === true ? 'Stake' : 'Unstake'} SOL for mSOL
+          <Button type="submit">
+            {form.watch("stake") === true ? "Stake" : "Unstake"} SOL for mSOL
           </Button>
           <div className="flex items-center justify-between text-muted-foreground text-sm">
             <p>You Will Receive</p>
-            <p>--</p>
+            <p>
+              {!isLoading && data["currentPrice"]
+                ? (form.watch("amount") * data["currentPrice"]).toFixed(3)
+                : "--"}
+            </p>
           </div>
         </form>
       </Form>
       <div className="flex flex-col gap-4 p-3 rounded-lg text-sm text-muted-foreground border border-[#1A1E1D]">
         <div className="flex items-center justify-between">
           <p>Total SOL Staked</p>
-          <p>5,317,716.15 SOL</p>
+          <p>
+            {!isLoading &&
+              data &&
+              numeral(data["tlv"].staked_sol).format("0,0")}{" "}
+            SOL
+          </p>
         </div>
         <div className="flex items-center justify-between">
           <p>Total mSOL Supply</p>
-          <p>4,693,993.01</p>
+          <p>
+            {!isLoading && data && numeral(data["totalSupply"]).format("0,0")}
+          </p>
         </div>
         <div className="flex items-center justify-between">
           <p>Shared Between</p>

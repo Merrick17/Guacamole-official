@@ -1,4 +1,4 @@
-'use client';
+"use client";
 // import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 // import {
 //   ConnectionProvider,
@@ -14,7 +14,7 @@
 // import { NetworkConfigurationProvider } from "./network-configuration";
 
 // // Default styles that can be overridden by your app
-require('@solana/wallet-adapter-react-ui/styles.css');
+require("@solana/wallet-adapter-react-ui/styles.css");
 
 // interface WalletProps {
 //   children: React.ReactNode;
@@ -70,39 +70,40 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 
 //   );
 // };
-import dexterityTs, { DexterityWallet } from '@hxronetwork/dexterity-ts';
-import { WalletAdapterNetwork, WalletError } from '@solana/wallet-adapter-base';
+import dexterityTs, { DexterityWallet } from "@hxronetwork/dexterity-ts";
+import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
   WalletProvider,
   useWallet,
-} from '@solana/wallet-adapter-react';
+} from "@solana/wallet-adapter-react";
 import {
   BackpackWalletAdapter,
   PhantomWalletAdapter,
   SolflareWalletAdapter,
   UnsafeBurnerWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl } from '@solana/web3.js';
-import dynamic from 'next/dynamic';
-import { FC, ReactNode, useCallback, useMemo } from 'react';
+} from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl } from "@solana/web3.js";
+import dynamic from "next/dynamic";
+import { FC, ReactNode, useCallback, useMemo } from "react";
 // import { notify } from "../utils/notifications";
-import { AutoConnectProvider, useAutoConnect } from './autoconnect';
+import { AutoConnectProvider, useAutoConnect } from "./autoconnect";
 import {
   ManifestProvider,
   ProductProvider,
   TraderProvider,
   useManifest,
-} from './dexterity';
+} from "./dexterity";
 import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
-} from './network-configuration';
+} from "./network-configuration";
+import { MarinadeProvider } from "./Marinade";
 export const dexterity = dexterityTs;
 
 const ReactUIWalletModalProviderDynamic = dynamic(
   async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletModalProvider,
+    (await import("@solana/wallet-adapter-react-ui")).WalletModalProvider,
   { ssr: false }
 );
 
@@ -114,7 +115,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   //const endpoint ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
   const endpoint =
-    'https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/';
+    "https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
   const wallets = useMemo(
     () => [
       /**
@@ -152,10 +153,10 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     };
     console.log({ DexWallet });
     const rpc =
-      'https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/';
+      "https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
     //clusterApiUrl(network)
     const manifest = await dexterity.getManifest(rpc, true, DexWallet);
-    console.log('Manifest: ', manifest);
+    console.log("Manifest: ", manifest);
     setManifest(manifest);
   }, [publicKey]);
 
@@ -183,7 +184,9 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
           <ManifestProvider>
             <TraderProvider>
               <ProductProvider>
-                <WalletContextProvider>{children}</WalletContextProvider>
+                <WalletContextProvider>
+                  <MarinadeProvider>{children}</MarinadeProvider>
+                </WalletContextProvider>
               </ProductProvider>
             </TraderProvider>
           </ManifestProvider>
