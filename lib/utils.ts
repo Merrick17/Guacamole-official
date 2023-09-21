@@ -1,6 +1,14 @@
+import { AccountLayout } from "@solana/spl-token";
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  Token,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token-v1";
+import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import BN from "bn.js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-
+const SOL_MINT = new PublicKey("So11111111111111111111111111111111111111112");
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -54,4 +62,46 @@ export const handleCopy = (textToCopy: string, item: string) => {
     .catch(() => {
       //notify({ type: 'error', message: `Could not copy ${item} to clipbpard` })
     });
+};
+export const fromLamports = (amount: number, decimals: number) => {
+  const result = amount / Math.pow(10, decimals);
+  return Number(result);
+};
+
+export const toLamports = (amount: number, decimals: number) => {
+  const result = (amount * Math.pow(10, decimals)).toFixed(0);
+  return Number(result);
+};
+export const getUserbalance = async (
+  connection: Connection,
+  mint: PublicKey,
+  owner: PublicKey
+) => {
+  try {
+    if (mint.equals(SOL_MINT)) {
+      const accountInfo = await connection.getAccountInfo(owner);
+      if (!accountInfo) {
+        return 0;
+      }
+      return accountInfo.lamports;
+    }
+
+    const address = await Token.getAssociatedTokenAddress(
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      mint,
+      owner
+    );
+    const balanceInfo = await connection.getAccountInfo(address);
+    if (!balanceInfo || balanceInfo.owner.equals(SystemProgram.programId)) {
+      return 0;
+    }
+    const account = AccountLayout.decode(balanceInfo.data);
+    const balance = new BN(account.amount, "le");
+
+    return balance.toNumber();
+  } catch (error) {
+    console.log("Error getting user balance", error);
+    return 0;
+  }
 };
