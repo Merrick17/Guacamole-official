@@ -61,6 +61,7 @@
     "file-loader": "^6.2.0",
     "framer-motion": "^10.14.0",
     "gamba": "^0.8.3",
+    "gsap": "^3.12.2",
     "jsbi": "^4.3.0",
     "lodash": "^4.17.21",
     "lokijs": "1.x",

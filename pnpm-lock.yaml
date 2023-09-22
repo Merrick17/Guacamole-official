@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 dependencies:
   '@bonfida/hooks':
     specifier: ^0.0.16
@@ -161,6 +157,9 @@ dependencies:
   gamba:
     specifier: ^0.8.3
     version: 0.8.3(@coral-xyz/anchor@0.28.1-beta.1)(@solana/wallet-adapter-base@0.9.22)(@solana/wallet-adapter-react@0.15.32)(@solana/web3.js@1.78.0)(gamba-core@0.5.2)(gamba-react-ui@0.4.3)(gamba-react@0.3.3)(react@18.2.0)
+  gsap:
+    specifier: ^3.12.2
+    version: 3.12.2
   jsbi:
     specifier: ^4.3.0
     version: 4.3.0
@@ -5460,7 +5459,7 @@ packages:
     engines: {node: '>= 10'}
     dependencies:
       '@babel/runtime': 7.22.6
-      '@solana/web3.js': 1.78.0(encoding@0.1.13)
+      '@solana/web3.js': 1.78.5(encoding@0.1.13)
       bn.js: 5.2.1
       buffer: 6.0.3
       buffer-layout: 1.2.2
@@ -10682,6 +10681,10 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: false
 
+  /gsap@3.12.2:
+    resolution: {integrity: sha512-EkYnpG8qHgYBFAwsgsGEqvT1WUidX0tt/ijepx7z8EUJHElykg91RvW1XbkT59T0gZzzszOpjQv7SE41XuIXyQ==}
+    dev: false
+
   /has-bigints@1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
     dev: false
@@ -15884,3 +15887,7 @@ packages:
     version: 5.4.7
     engines: {node: '>=0.11'}
     dev: false
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
