@@ -68,7 +68,13 @@ function RecentPlay({ time, signature, result, isSelf }: RecentPlayProps) {
   );
 }
 
-export default function RecentPlays({ className }: { className?: string }) {
+export default function RecentPlays({
+  className,
+  compact = false,
+}: {
+  className?: string;
+  compact?: boolean;
+}) {
   const gamba = useGamba();
   const events = useEventFetcher();
 

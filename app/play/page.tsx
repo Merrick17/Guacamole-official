@@ -57,27 +57,23 @@ const PlayListItems: {
 }[] = [
   {
     title: 'Roulette',
-    image: '/icons/play/roulette.png',
+    image: '/images/play/roulette.png',
     href: routes.play.roulette,
   },
   {
     title: 'Slots',
-    image: '/icons/play/slots.png',
+    image: '/images/play/slots.png',
     href: routes.play.slots,
   },
   {
-    title: 'HiLo',
-    image: '/icons/play/hilo.png',
-    href: routes.play.hilo,
+    title: 'Dice',
+    image: '/images/play/dice.png',
+    href: routes.play.dice,
   },
+
   {
     title: 'Mines',
-    image: '/icons/play/mines.png',
-    href: routes.play.mines,
-  },
-  {
-    title: 'Dice',
-    image: '/icons/play/dice.png',
+    image: '/images/play/mines.png',
     href: routes.play.mines,
   },
 ];

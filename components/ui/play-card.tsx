@@ -21,16 +21,19 @@ const PlayCard = ({
       href={href}
       aria-disabled={disabled}
       className={cn(
-        'w-full lg:max-w-[322px] flex flex-col items-center gap-8  transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out',
+        'w-full lg:max-w-[322px]  overflow-hidden h-[216px] group flex flex-col items-center gap-8  relative transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         !disabled && ` hover:border-[var(--accent)]  hover:border`,
         className
       )}
     >
-      <header>
-        <Image src={image} alt={title} width={90} height={90} />
-      </header>
-      <Button className="w-32">{title}</Button>
+      <Image
+        src={image}
+        alt={title}
+        fill
+        className="opacity-50 group-hover:scale-105 transition-all duration-500 ease-in-out"
+      />
+      <Button className="w-32 absolute bottom-4">{title}</Button>
     </Link>
   );
 };

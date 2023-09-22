@@ -1,4 +1,6 @@
 import Container from '@/components/common/container';
+import ExploreCard from '@/components/common/explore-card';
+import InfoCard from '@/components/common/info-card';
 import { Button } from '@/components/ui/button';
 import routes from '@/config/routes';
 import { cn } from '@/lib/utils';
@@ -22,29 +24,11 @@ const page: FC<ToolsProps> = () => {
           ' mx-auto grid grid-cols-1 sm:grid-cols-2 max-w-6xl lg:grid-cols-3 gap-x-6 gap-y-6'
         }
       >
-        {lanchItems.map((item) => (
-          <Container
-            key={item.name}
-            className="border border-transparent min-w-[300px]  duration-500 ease-in-out hover:border-[var(--accent)]  hover:border rounded-lg"
-          >
-            <Link
-              href={`${item.href}`}
-              className={cn(
-                'w-full lg:max-w-[322px] flex flex-col items-center gap-8  transition-colors p-4 rounded-lg cursor-pointer bg-background  ',
-                item.disabled ? 'opacity-50' : ''
-              )}
-            >
-              <header>
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={90}
-                  height={90}
-                />
-              </header>
-              <Button className="w-32">{item.name}</Button>
-            </Link>
-          </Container>
+        {featuredLaunch.map((tool, index) => (
+          <ExploreCard key={index} {...tool} />
+        ))}
+        {LaunchItems.map((tool, index) => (
+          <InfoCard key={index} {...tool} />
         ))}
       </div>
     </main>
@@ -53,29 +37,101 @@ const page: FC<ToolsProps> = () => {
 
 export default page;
 
+const featuredLaunch: {
+  image: string;
+  title: string;
+  description: string;
+  href: string;
+  buttonTxt?: string;
+  disabled?: boolean;
+}[] = [
+  {
+    title: 'Create Your Token',
+    description:
+      'Create your own token in just 2 minutes using our no-code creation interface.',
+    href: routes.launch.createSplToken,
+    image: '/images/launch/create-spl-token.png',
+    buttonTxt: 'Create',
+  },
+  {
+    title: 'List Token On Shop',
+    description:
+      'Allow your community to purchase games, software, and more with your token.',
+    image: '/images/launch/popular-subscription.png',
+    href: routes.launch.root,
+    buttonTxt: 'List',
+  },
+  {
+    title: 'Mint Your cNFTs',
+    description:
+      'Easily create a compressed NFT collection using our no-code interfaces.',
+    image: '/images/play/slots.png',
+    href: '',
+    buttonTxt: 'Coming Soon',
+    disabled: true,
+  },
+];
+
+const LaunchItems: {
+  image: string;
+  name: string;
+  description: string;
+  href?: string;
+  disabled?: boolean;
+}[] = [
+  {
+    image: '/icons/launch/burn.svg',
+    name: 'burn tokens',
+    description: 'Burn portions of token supply or liquidity pool tokens.',
+    href: routes.launch.root,
+  },
+  {
+    name: 'add nft farm',
+    description:
+      'Create your own Tokenized NFT Farm to reward stakers with NFTs.',
+    image: '/icons/launch/nft-farm.svg',
+    href: routes.launch.root,
+    disabled: true,
+  },
+
+  {
+    image: '/icons/launch/launch-pool.svg',
+    name: 'Launch Liquidity Pools',
+    description: 'Create pools for your token on Guacamole and other DEX’s.',
+    href: routes.tools.root,
+    disabled: true,
+  },
+  {
+    image: '/icons/launch/create-lp-farm.svg',
+    name: 'Launch Liquidity Farm',
+    description:
+      'Incentivize liquidity pool deposits with extra token rewards.',
+    href: routes.tools.root,
+    disabled: true,
+  },
+  {
+    image: '/icons/launch/lock-liquidity.svg',
+    name: 'Lock Your Liquidity',
+    description:
+      'Verifiably lock liquidity tokens in time-vested contracts or forever!',
+    href: routes.tools.root,
+    disabled: true,
+  },
+  {
+    image: '/icons/launch/project-manager.svg',
+    name: 'Project Manager',
+    description: 'Manage your whole ecosystem from one simplified admin panel.',
+    href: routes.tools.root,
+    disabled: true,
+  },
+];
+
 const lanchItems: {
   image: string;
   name: string;
   href?: string;
   disabled?: boolean;
 }[] = [
-  {
-    image: '/icons/launch/create-token.svg',
-    name: 'Create SPL TOken',
-    href: routes.launch.createSplToken,
-  },
-  {
-    image: '/icons/launch/mint-cnfts.svg',
-    name: 'create cnfts',
-
-    href: routes.launch.root,
-  },
-  {
-    image: '/icons/launch/token-on-shop.svg',
-    name: 'list token on shop',
-
-    href: routes.launch.root,
-  },
   {
     image: '/icons/launch/burn.svg',
     name: 'burn tokens',

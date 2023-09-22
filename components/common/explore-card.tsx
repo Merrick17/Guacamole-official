@@ -8,6 +8,7 @@ type ExploreCardProps = {
   image: string;
   href: string;
   buttonTxt?: string;
+  disabled?: boolean;
 };
 const ExploreCard: FC<ExploreCardProps> = ({
   description,
@@ -15,6 +16,7 @@ const ExploreCard: FC<ExploreCardProps> = ({
   image,
   title,
   buttonTxt = 'Explore',
+  disabled,
 }) => {
   return (
     <div className="rounded-lg max-w-xs  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
@@ -27,7 +29,7 @@ const ExploreCard: FC<ExploreCardProps> = ({
         </a>
         <p className=" text-lg text-muted-foreground">{description}</p>
         <Link href={href}>
-          <Button>
+          <Button disabled={disabled}>
             {buttonTxt}
             <svg
               className="w-3.5 h-3.5 ml-2"
