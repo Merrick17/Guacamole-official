@@ -1,3 +1,4 @@
+import ExploreCard from '@/components/common/explore-card';
 import InfoCard from '@/components/common/info-card';
 import routes from '@/config/routes';
 
@@ -9,6 +10,9 @@ const Page = () => {
           ' mx-auto grid grid-cols-1 sm:grid-cols-2 max-w-6xl lg:grid-cols-3 gap-x-6 gap-y-6'
         }
       >
+        {featuredTools.map((tool, index) => (
+          <ExploreCard key={index} {...tool} />
+        ))}
         {tools.map((tool, index) => (
           <InfoCard key={index} {...tool} />
         ))}
@@ -19,6 +23,39 @@ const Page = () => {
 
 export default Page;
 
+const featuredTools: {
+  image: string;
+  title: string;
+  description: string;
+  href: string;
+  buttonTxt?: string;
+}[] = [
+  {
+    title: 'Swap Aggregator',
+    description:
+      'Easily find the best trading routes to ensure you get the best bang for your buck!',
+    href: routes.trade.swap,
+    image: '/images/trade/swap.png',
+    buttonTxt: 'Swap',
+  },
+  {
+    title: 'Bridge Swaps',
+    description:
+      'Bridge your ETH, BNB, AVAX, and ARB to Solana and pick up tokens like GUAC.',
+    image: '/images/trade/bridge.png',
+    href: routes.trade.bridge,
+    buttonTxt: 'Bridge',
+  },
+  {
+    title: 'Crypto Futures',
+    description:
+      'Use margin to trade gamified perpetual futures markets for BTC, ETH, SOL, and more. ',
+    image: '/images/trade/crypto-future.png',
+    href: routes.trade.perpetuals,
+    buttonTxt: 'Trade',
+  },
+];
+
 const tools: {
   image: string;
   name: string;
@@ -26,27 +63,6 @@ const tools: {
   href?: string;
   disabled?: boolean;
 }[] = [
-  {
-    image: '/icons/trade/swap-aggregator.svg',
-    name: 'Swap Aggregator',
-    description:
-      'Easily find the best trading routes to ensure you get the best bang for your buck!',
-    href: routes.trade.swap,
-  },
-  {
-    name: 'Bridge Swaps',
-    description:
-      'Bridge your ETH, BNB, AVAX, and ARB to Solana and pick up tokens like GUAC.',
-    image: '/icons/trade/bridge-swap.svg',
-    href: routes.trade.bridge,
-  },
-  {
-    name: 'Trade Perpetuals',
-    description:
-      'Trade gamified perpetual futures markets for BTC, ETH, SOL, and more.',
-    image: '/icons/trade/perpetuals.svg',
-    href: routes.trade.perpetuals,
-  },
   {
     image: '/icons/trade/dca.svg',
     name: 'Place Limit Orders',
