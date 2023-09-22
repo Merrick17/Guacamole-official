@@ -3,6 +3,7 @@ import EarnHeader from '@/components/common/earn-header';
 import ApyPerformance from '@/components/views/earn/statistics/apy-performance';
 import LiquidityAllocation from '@/components/views/earn/statistics/liquidity-allocation';
 import StatisticsCardContainer from '@/components/views/earn/statistics/statistics-card-container';
+import StatisticsForm from '@/components/views/earn/statistics/statistics-form';
 import StatisticsForms from '@/components/views/earn/statistics/statistics-forms';
 import TotalLiquidity from '@/components/views/earn/statistics/total-liquidity';
 import YourDeposit from '@/components/views/earn/statistics/your-deposit';
@@ -23,15 +24,11 @@ interface pageProps {
 const Page: FC<pageProps> = ({ params }) => {
   console.log('slug', params.slug);
   return (
-    <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-14 px-8 py-6 md:px-16 md:py-12 w-full  max-w-[1440px]">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
-        <EarnHeader
-          title="Dynamic SOL Vault"
-          tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"
-          viewAll={true}
-        />
+        <EarnHeader title="Dynamic SOL Vault" viewAll={true} />
         <hr className="border-dashed border-background" />
-        <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
+        {/* <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
           <div className="lg:col-span-3">
             <TotalLiquidity />
           </div>
@@ -54,7 +51,8 @@ const Page: FC<pageProps> = ({ params }) => {
               </h1>
             </StatisticsCardContainer>
           </div>
-        </div>
+        </div> */}
+        <StatisticsForm />
       </div>
     </main>
   );

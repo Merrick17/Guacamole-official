@@ -22,7 +22,7 @@ interface EarnHeaderProps {
   viewAll?: boolean;
   hideSecondBtn?: boolean;
   title: string;
-  tutorialLink: string;
+  tutorialLink?: string;
 }
 
 const EarnHeader: FunctionComponent<EarnHeaderProps> = ({
@@ -62,14 +62,16 @@ const EarnHeader: FunctionComponent<EarnHeaderProps> = ({
             <span>{viewAll ? 'View All Vaults' : 'View Statistics'}</span>
           </Link>
         )}
-        <Link
-          href={tutorialLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-medium capitalize py-[6px] rounded-lg text-primary-foreground bg-primary px-3 transition-colors  hidden lg:block"
-        >
-          <span>View tutorial</span>
-        </Link>
+        {tutorialLink && (
+          <Link
+            href={tutorialLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium capitalize py-[6px] rounded-lg text-primary-foreground bg-primary px-3 transition-colors  hidden lg:block"
+          >
+            <span>View tutorial</span>
+          </Link>
+        )}
       </div>
     </header>
   );
