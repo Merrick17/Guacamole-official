@@ -7,6 +7,7 @@ import { useJupiterApiContext } from './src/contexts';
 import routes from '@/config/routes';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import CustomTicker from '@/components/common/custom-ticker';
 
 interface TrendingSwapProps {
   className?: string;
@@ -24,11 +25,11 @@ const TrendingSwap: FC<TrendingSwapProps> = ({ className }) => {
       )}
     >
       <Button className="whitespace-nowrap">Trending Today</Button>
-      <djv className="overflow-x-auto flex flex-row items-center ">
+      <CustomTicker>
         {trending.map((x, idx) => (
           <TrendingSwapItem key={x.symbol} {...x} idx={idx + 1} />
         ))}
-      </djv>
+      </CustomTicker>
     </Container>
   );
 };
