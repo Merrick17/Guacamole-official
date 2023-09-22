@@ -39,8 +39,8 @@ const Preloader = () => {
   return (
     <div
       className={cn(
-        ` text-white flex flex-col md:flex-row items-center  justify-center  gap-4   fixed inset-0 bg-black w-screen h-screen z-50 will-change-transform transition-all duration-500 ease-in-out ${
-          openPreloader ? 'opacity-100' : 'opacity-0'
+        ` text-white pointer-events-none flex flex-col md:flex-row items-center  justify-center  gap-4   fixed inset-0 bg-black w-screen h-screen z-50 will-change-transform transition-all duration-500 ease-in-out ${
+          openPreloader ? 'opacity-100 ' : 'opacity-0'
         }`
       )}
       ref={containerRef}
