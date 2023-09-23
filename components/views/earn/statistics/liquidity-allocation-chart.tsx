@@ -6,7 +6,7 @@ const LiquidityAllocationChart = ({
 }: {
   data: {
     name: string;
-    value: number;
+    allocation: number;
     color: string;
   }[];
 }) => {
@@ -20,7 +20,7 @@ const LiquidityAllocationChart = ({
           labelLine={false}
           outerRadius={60}
           fill="#8884d8"
-          dataKey="value"
+          dataKey="allocation"
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />

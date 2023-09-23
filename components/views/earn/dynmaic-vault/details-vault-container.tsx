@@ -84,7 +84,6 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
       const item = data.find((elm) => elm.token_address == tokenAdr);
       setVaultInfo(item);
     }
- 
   }, [isLoading, vaultInfo]);
   const initVaultImpl = useCallback(async () => {
     if (token && connection) {
@@ -95,7 +94,6 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
       });
 
       vault.getAffiliateInfo().then((resp) => {
-      
         setInfo(resp);
       });
 
@@ -205,7 +203,6 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
           userTokenBalance: 0,
         }));
       }
-     
     }
   }, [
     publicKey,
@@ -322,54 +319,14 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
         viewAll={true}
       />
       <hr className="border-dashed border-background" />
-      <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
-        <div className="lg:col-span-3">
-          <TotalLiquidity
-            tvl={uiState.tvl}
-            apy={vaultInfo ? vaultInfo.average_apy : 0}
-            lp={vaultInfo ? vaultInfo.lp_supply : 0}
-            symbol={token ? token.symbol : "SOL"}
-          />
-        </div>
-        <div className="lg:col-span-2">
-          <YourDeposit
-            uiState={uiState}
-            symbol={token ? token.symbol : "SOL"}
-            decimals={token ? token.decimals : 0}
-          />
-        </div>
-        <div className="lg:col-span-3">
-          <LiquidityAllocation
-            symbol={token ? token.symbol : ""}
-            allocations={uiState.strategyAllocation.map((elm) => {
-              return {
-                ...elm,
-                allocation: Number(elm.allocation),
-                color: getColorByName(
-                  elm.name.replaceAll(" ", "").toUpperCase()
-                ),
-              };
-            })}
-          />
-        </div>
-        <div className="lg:col-span-2">
-          <StatisticsForms
-            uiState={uiState}
-            vaultImpl={vaultImpl}
-            token={token}
-            deposit={depositToken}
-            withdrawBalance={withdrawBalance}
-          />
-        </div>
-        <div className="lg:col-span-3">
-          <ApyPerformance />
-        </div>
-        <div className="lg:col-span-2">
-          <StatisticsCardContainer>
-            <h1 className="text-lg font-semibold">What Are Dynamic Vaults?</h1>
-          </StatisticsCardContainer>
-        </div>
-      </div>
+
+      <StatisticsForms
+        uiState={uiState}
+        vaultImpl={vaultImpl}
+        token={token}
+        deposit={depositToken}
+        withdrawBalance={withdrawBalance}
+      />
     </div>
   );
 };
