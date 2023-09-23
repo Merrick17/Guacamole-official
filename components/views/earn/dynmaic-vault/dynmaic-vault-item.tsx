@@ -269,7 +269,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       </div>
       <Button
         onClick={() => {
-          router.push(`/earn/${token.address}`);
+          router.push(`/earn/single-vault/${token.address}`);
         }}
       >
         View Vault
