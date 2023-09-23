@@ -1,5 +1,5 @@
-import React from 'react'
-import App from './App'
+import React from 'react';
+import App from './App';
 
 const game = {
   name: 'Roulette',
@@ -7,8 +7,8 @@ const game = {
   description: `
     A miniature version of Roulette. WYSIWYG!
   `,
-  image: '/icons/play/roulette.png',
+  image: '/images/play/roulette.png',
   app: () => <App />,
-}
+};
 
-export default game
+export default game;

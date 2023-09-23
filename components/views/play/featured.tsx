@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { Card } from '@/components/common/Card'
-import { Slider } from '@/components/common/Slider'
-import { GAMES } from '@/components/games'
-import { Section } from '@/components/styles'
-import { useGamba } from 'gamba/react'
-import Link from 'next/link'
-import { FC } from 'react'
+import { Card } from '@/components/common/Card';
+import { Slider } from '@/components/common/Slider';
+import { GAMES } from '@/components/games';
+import { Section } from '@/components/styles';
+import { useGamba } from 'gamba/react';
+import Link from 'next/link';
+import { FC } from 'react';
 
 const Featured: FC = () => {
-  const gamba = useGamba()
-  console.log(gamba.seed)
+  const gamba = useGamba();
+  console.log(gamba.seed);
   return (
     <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg bg-foreground ">
       <div className="flex flex-row gap-[10px] overflow-auto ">
@@ -32,7 +32,7 @@ const Featured: FC = () => {
         </Section>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Featured
+export default Featured;

@@ -53,7 +53,7 @@ const LaunchListItems: ListItemProps[] = [
     description:
       'Create your own token in just 2 minutes using our no-code creation interface.',
     image: '/icons/launch/create-token.svg',
-    href: routes.launch.root,
+    href: routes.launch.createSplToken,
   },
   {
     title: 'Mint Your cNFTs',
@@ -67,7 +67,7 @@ const LaunchListItems: ListItemProps[] = [
     description:
       'Reward token stakers in your community with points-based NFT rewards.',
     image: '/icons/launch/nft-farm.svg',
-    href: routes.info.root,
+    href: routes.earn.stakingFarms,
   },
   {
     title: 'List Token On Shop',

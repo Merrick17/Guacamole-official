@@ -83,7 +83,7 @@ const LaunchItems: {
     image: '/icons/launch/burn.svg',
     name: 'burn tokens',
     description: 'Burn portions of token supply or liquidity pool tokens.',
-    href: routes.launch.root,
+    href: routes.tools.burnSplToken,
   },
   {
     name: 'add nft farm',

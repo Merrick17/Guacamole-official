@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren } from 'react';
 interface Props extends PropsWithChildren {
   backgroundImage?: string;
   backgroundColor?: string;
@@ -19,11 +19,11 @@ export function Card({
     >
       {backgroundImage && (
         <div
-          className="group-hover:scale-110 absolute top-0 left-0 w-full h-full bg-cover bg-center transition-transform duration-200 ease-in-out"
+          className="group-hover:scale-110 absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-200 ease-in-out"
           style={{
             backgroundImage: 'url(' + backgroundImage + ')',
             backgroundRepeat: 'no-repeat',
-            backgroundSize: 'contain',
+            backgroundSize: 'cover',
           }}
         />
       )}
@@ -31,5 +31,5 @@ export function Card({
         {children}
       </div>
     </div>
-  )
+  );
 }

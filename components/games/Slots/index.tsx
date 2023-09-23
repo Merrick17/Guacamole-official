@@ -1,5 +1,5 @@
-import React from 'react'
-import App from './App'
+import React from 'react';
+import App from './App';
 
 const game = {
   name: 'Slots',
@@ -7,8 +7,8 @@ const game = {
   description: `
     Play and pray. At the top of the slot machine you can see your potential rewards. Always fair.
   `,
-  image: '/icons/play/slots.png',
+  image: '/images/play/slots.png',
   app: () => <App />,
-}
+};
 
-export default game
+export default game;
