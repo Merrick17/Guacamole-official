@@ -105,3 +105,33 @@ export const getUserbalance = async (
     return 0;
   }
 };
+export function getRandomHexColor() {
+  // Generate random values for red, green, and blue components
+  const red = Math.floor(Math.random() * 256); // 0 to 255
+  const green = Math.floor(Math.random() * 256); // 0 to 255
+  const blue = Math.floor(Math.random() * 256); // 0 to 255
+
+  // Convert the decimal values to hexadecimal format
+  const redHex = red.toString(16).padStart(2, "0"); // Convert to hex and ensure two digits
+  const greenHex = green.toString(16).padStart(2, "0");
+  const blueHex = blue.toString(16).padStart(2, "0");
+
+  // Create a hex color string using the converted values
+  const hexColor = `#${redHex}${greenHex}${blueHex}`;
+
+  return hexColor;
+}
+export function getColorByName(name: string) {
+  console.log("Name",name)
+  const colorMap = {
+    FRANCIUM: "#832941",
+    TULIP: "#E74267",
+    VAULTRESERVES: "#FF6901",
+    FRAKTABC: "#FDB703",
+    FRAKTDEGODS: "#18DFB4",
+    OTHERS: "#24AEEF",
+  };
+
+  // Check if the name exists in the color map, if not, return a default color
+  return colorMap[name] || getRandomHexColor(); // Default to black if name not found
+}

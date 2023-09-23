@@ -12,6 +12,7 @@ import { fromLamports, getUserbalance } from "@/lib/utils";
 import { useJupiterApiContext } from "../../trade/src/contexts";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
 
 export type DynmaicVaultItemProps = {
   image?: string;
@@ -57,6 +58,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   estimatedAPY,
   item,
 }) => {
+  const router = useRouter();
   const { tokenMap } = useJupiterApiContext();
   const { publicKey, connected } = useWallet();
   const { connection } = useConnection();
@@ -99,7 +101,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       });
 
       vault.getAffiliateInfo().then((resp) => {
-        console.log("Resp", resp);
+      
         setInfo(resp);
       });
 
@@ -158,7 +160,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   useEffect(() => {
     const vaultInfo = item;
     if (vaultImpl && info) {
-      console.log("ITEM INFO", item);
+    
       const virtualPrice =
         vaultUnlockedAmount / vaultImpl.lpSupply.toNumber() || 0;
       // Vault reserves + all strategy allocations
@@ -211,7 +213,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
           userTokenBalance: 0,
         }));
       }
-      console.log("initialData", uiState);
+      
     }
   }, [
     publicKey,
@@ -265,7 +267,13 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
           <AiOutlineQuestionCircle />
         </div>
       </div>
-      <Button>View Vault</Button>
+      <Button
+        onClick={() => {
+          router.push(`/earn/${token.address}`);
+        }}
+      >
+        View Vault
+      </Button>
     </div>
   );
 };

@@ -1,26 +1,33 @@
-import StatisticsCardContainer from './statistics-card-container';
+import { getRandomHexColor } from "@/lib/utils";
+import StatisticsCardContainer from "./statistics-card-container";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const LiquidityAllocationChart = dynamic(
-  () => import('./liquidity-allocation-chart'),
+  () => import("./liquidity-allocation-chart"),
   { ssr: false }
 );
 
-const LiquidityAllocation = () => {
+const LiquidityAllocation = ({
+  allocations,
+  symbol,
+}: {
+  allocations: any[];
+  symbol: string;
+}) => {
   return (
     <StatisticsCardContainer className="flex flex-col gap-6">
       <header className="text-lg font-semibold">Liquidity Allocation</header>
       <div className="flex flex-row items-center justify-between gap-4">
         <ul className="flex flex-col  w-full gap-3">
-          {list.map((item, index) => (
-            <LiquidityItem key={index} {...item} />
+          {allocations.map((item, index) => (
+            <LiquidityItem key={index} {...item} symbol={symbol} />
           ))}
         </ul>
-        <LiquidityAllocationChart data={list} />
+        <LiquidityAllocationChart data={allocations} />
       </div>
       <div className="border-t border-[#E5E7EB] pt-4 flex items-center gap-4 ">
-        <Icon />{' '}
+        <Icon />{" "}
         <p className="text-sm text-muted-foreground font-medium">
           Finding the best yield
         </p>
@@ -65,7 +72,7 @@ const Icon = () => {
   );
 };
 
-const LiquidityItem = ({ name, value, color }) => {
+const LiquidityItem = ({ name, liquidity, color, symbol }) => {
   return (
     <li className=" w-full flex flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
       <div className="flex items-center gap-2 capitalize">
@@ -76,7 +83,7 @@ const LiquidityItem = ({ name, value, color }) => {
         <span className="">{name}</span>
       </div>
       <span className="uppercase">
-        {new Intl.NumberFormat('en-US').format(value)} SOL
+        {new Intl.NumberFormat("en-US").format(liquidity)} {symbol}
       </span>
     </li>
   );
@@ -84,33 +91,33 @@ const LiquidityItem = ({ name, value, color }) => {
 
 const list = [
   {
-    name: 'Francium',
+    name: "Francium",
     value: 11082.62,
-    color: '#832941',
+    color: "#832941",
   },
   {
-    name: 'Tulip',
+    name: "Tulip",
     value: 6383.58,
-    color: '#E74267',
+    color: "#E74267",
   },
   {
-    name: 'Vault Reserve',
+    name: "Vault Reserve",
     value: 2537.33,
-    color: '#FF6901',
+    color: "#FF6901",
   },
   {
-    name: 'Frakt ABC',
+    name: "Frakt ABC",
     value: 2228.24,
-    color: '#FDB703',
+    color: "#FDB703",
   },
   {
-    name: 'Frakt DeGods',
+    name: "Frakt DeGods",
     value: 2228.24,
-    color: '#18DFB4',
+    color: "#18DFB4",
   },
   {
-    name: 'Others',
+    name: "Others",
     value: 8275.92,
-    color: '#24AEEF',
+    color: "#24AEEF",
   },
 ];

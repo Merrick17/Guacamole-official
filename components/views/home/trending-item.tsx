@@ -37,7 +37,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
       }
     };
     getMarketCap();
-  }, []);
+  }, [token]);
 
   return (
     <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background">

@@ -26,16 +26,16 @@ const Page = () => {
         <hr className="border-dashed border-background" />
         <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
           <div className="lg:col-span-3">
-            <TotalLiquidity />
+            {/* <TotalLiquidity /> */}
           </div>
           <div className="lg:col-span-2">
-            <YourDeposit />
+            {/* <YourDeposit /> */}
           </div>
           <div className="lg:col-span-3">
-            <LiquidityAllocation />
+            {/* <LiquidityAllocation /> */}
           </div>
           <div className="lg:col-span-2">
-            <StatisticsForms />
+            {/* <StatisticsForms /> */}
           </div>
           <div className="lg:col-span-3">
             <ApyPerformance />

@@ -60,7 +60,7 @@ const LiquidityStackingForm = () => {
   });
   const stakeSol = async () => {
     try {
-      console.log("Val", form.getValues("amount"));
+    
       const { transaction } = await marinade.deposit(
         MarinadeUtils.solToLamports(form.getValues("amount"))
       );
@@ -69,7 +69,7 @@ const LiquidityStackingForm = () => {
         connection,
         { skipPreflight: true }
       );
-      console.log("TX", transactionSignature);
+    
       toast({
         variant: "success",
         title: "Success",
