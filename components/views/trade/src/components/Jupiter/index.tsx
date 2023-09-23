@@ -621,7 +621,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               <Button
                 onClick={handleSwap}
                 disabled={swapping || !loaded || !hasRoute}
-                className="h-[50px] w-full rounded-xl bg-black p-2 font-bold uppercase"
+                className="flex bg-primary hover:!bg-primary text-primary-foreground items-center justify-center w-full py-5 h-14"
               >
                 {swapping ? (
                   <div className="flex flex-row justify-center text-black">
@@ -637,7 +637,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             <div className="mt-4 flex flex-row justify-center">
               <WalletMultiButtonDynamic
                 startIcon={undefined}
-                className="h-full flex bg-primary hover:!bg-primary text-primary-foreground items-center justify-center w-full "
+                className=" flex bg-primary hover:!bg-primary text-primary-foreground items-center justify-center w-full py-5 h-14"
                 style={{ borderRadius: '12px' }}
               >
                 Connect Wallet

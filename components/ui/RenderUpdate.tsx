@@ -10,7 +10,6 @@ export const RenderUpdate = ({
   signatures?: string[];
   load?: boolean;
 }) => {
-  console.log('signatures', signatures);
   if (signatures) {
     return (
       <div className="flex flex-col">

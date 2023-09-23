@@ -67,14 +67,14 @@ const tools: {
     image: '/icons/trade/dca.svg',
     name: 'Place Limit Orders',
     description:
-      'Set limit orders through the swap aggregator or view orderbooks for markets.',
+      'Setup limit on-chain limit orders or view aggregated orderbooks.',
     href: routes.tools.root,
     disabled: true,
   },
   {
     name: 'Dollar Cost Average',
     description:
-      'Buy or sell tokens in time-based increments to automate your trades.',
+      'Setup limit on-chain limit orders or view aggregated orderbooks.',
     image: '/icons/trade/dollar-cost-avg.svg',
     href: routes.tools.root,
     disabled: true,
@@ -83,7 +83,7 @@ const tools: {
     image: '/icons/trade/Thumbs up down.svg',
     name: 'Trading Arena',
     description:
-      'Place bets on market price movement in an interactive PvP arena setting.',
+      'Trade futures in an interactive PvP setting to move up the ranks.',
     href: routes.tools.root,
     disabled: true,
   },
@@ -91,7 +91,7 @@ const tools: {
     image: '/icons/trade/Hot tub.svg',
     name: 'Liquidity Pools',
     description:
-      'Place bets on market price movement in an interactive PvP arena setting.',
+      'Provide liquidity for a variety of protocols in the Solana ecosystem.',
     href: routes.tools.root,
     disabled: true,
   },
@@ -99,7 +99,7 @@ const tools: {
     image: '/icons/trade/nft-marketplace.svg',
     name: 'NFT Marketplace',
     description:
-      'Browse, sell, and purchase your favorite NFTs with our integrated aggegation.',
+      'Browse, sell, and buy your favorite NFTs through market integrations.',
     href: routes.tools.root,
     disabled: true,
   },
@@ -107,7 +107,7 @@ const tools: {
     image: '/icons/trade/liq-pool.svg',
     name: 'NFT Liquidity Pools',
     description:
-      'Setup a position to buy and sell NFTs across a specified range (bonding curve).',
+      'Provide liquidity for NFTs across a specified range (bonding curve).',
     href: routes.tools.root,
     disabled: true,
   },

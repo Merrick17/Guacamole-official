@@ -13,21 +13,6 @@ const RalewayFont = Raleway({
   subsets: ['latin'],
 });
 const GamesSection = () => {
-  // useEffect(() => {
-  //   const getTotalPlayedVolume = async () => {
-  //     const { data } = await axios.get(
-  //       `https://209.38.229.113.nip.io:3001/top-creators/total-wager?start=1677724800&end=${Date.now()}`,
-  //       {
-  //         headers: {
-  //           'Access-Control-Allow-Origin': '*',
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     );
-  //     console.log('wa333', data);
-  //   };
-  //   getTotalPlayedVolume();
-  // }, []);
   return (
     <section className="flex flex-col gap-[60px]">
       <div className="flex flex-col lg:flex-row gap-14 justify-between w-full">

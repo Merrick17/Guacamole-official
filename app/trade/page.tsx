@@ -64,7 +64,7 @@ const TradeListItems: ListItemProps[] = [
     href: routes.trade.bridge,
   },
   {
-    title: 'Trade Perpetuals',
+    title: 'Crypto Futures',
     description:
       'Trade gamified perpetual futures markets for BTC, ETH, SOL, and more. ',
     image: '/icons/trade/perpetuals.svg',

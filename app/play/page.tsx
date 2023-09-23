@@ -3,6 +3,7 @@ import ColorBlocks from '@/components/common/color-block';
 import HeroHeadline from '@/components/common/hero-headline';
 import RecentPlays from '@/components/common/recent-plays';
 import PlayCard from '@/components/ui/play-card';
+import RecentPlaysFeatured from '@/components/views/play/recent-plays-featured';
 import routes from '@/config/routes';
 import { Metadata } from 'next';
 
@@ -36,7 +37,7 @@ const Page: FC = () => {
             </p>
           </HeroHeadline>
           {/* <WalletMultiButtonDynamic /> */}
-          <RecentPlays compact className="col-span-1 lg:col-span-3" />
+          <RecentPlaysFeatured className="col-span-1 lg:col-span-3" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground px-14 py-6  backdrop:blur-sm">
           {PlayListItems.map((item, index) => (

@@ -46,7 +46,6 @@ const StatisticsForm = () => {
     } catch (error) {}
   };
   useEffect(() => {
-    console.log('Data', data);
     if (connected && publicKey) {
       fetchSolBalance();
     }

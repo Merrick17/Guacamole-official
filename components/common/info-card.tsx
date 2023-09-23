@@ -37,13 +37,15 @@ const InfoCard: FC<InfoCardProps> = ({
         <Image src={image} alt={name} fill />
       </div>
       <a href="#">
-        <h5 className="mb-2 text-2xl font-semibold tracking-tight ">{name}</h5>
+        <h5 className="mb-2 text-2xl font-semibold tracking-tight capitalize">
+          {name}
+        </h5>
       </a>
       <p className="mb-3 font-normal text-muted-foreground">{description}</p>
       <Link
         href={href}
         className={cn(
-          'inline-flex items-center text-primary hover:underline',
+          'inline-flex items-center text-primary hover:underline mt-auto',
           disabled && 'cursor-not-allowed opacity-50'
         )}
       >

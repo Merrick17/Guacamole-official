@@ -69,8 +69,6 @@ const BurnSplToken = () => {
     );
     const tokenInfo = (await tokenResponse.json()).result;
 
-    console.log(tokenInfo);
-
     const tokens = tokenInfo.filter((m: any) => {
       const balance = m.balance;
       return balance != 0;
