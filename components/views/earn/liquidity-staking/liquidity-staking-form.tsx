@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
-import { MarinadeUtils } from "@marinade.finance/marinade-ts-sdk";
-import { WalletError } from "@solana/wallet-adapter-base";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import useMarinadeData from "@/hooks/use-marinade-data";
-import numeral from "numeral";
-import { useToast } from "@/hooks/use-toast";
-import Link from "next/link";
-import { useMarinade } from "@/context/Marinade";
+import { MarinadeUtils } from '@marinade.finance/marinade-ts-sdk';
+import { WalletError } from '@solana/wallet-adapter-base';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import useMarinadeData from '@/hooks/use-marinade-data';
+import numeral from 'numeral';
+import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
+import { useMarinade } from '@/context/Marinade';
 const formSchema = z.object({
   stake: z.boolean(),
   amount: z.number().positive(),
@@ -45,7 +45,6 @@ const LiquidityStackingForm = () => {
     } catch (error) {}
   };
   useEffect(() => {
-    console.log("Data", data);
     if (connected && publicKey) {
       fetchSolBalance();
     }
@@ -60,19 +59,18 @@ const LiquidityStackingForm = () => {
   });
   const stakeSol = async () => {
     try {
-      console.log("Val", form.getValues("amount"));
       const { transaction } = await marinade.deposit(
-        MarinadeUtils.solToLamports(form.getValues("amount"))
+        MarinadeUtils.solToLamports(form.getValues('amount'))
       );
       const transactionSignature = await sendTransaction(
         transaction,
         connection,
         { skipPreflight: true }
       );
-      console.log("TX", transactionSignature);
+      console.log('TX', transactionSignature);
       toast({
-        variant: "success",
-        title: "Success",
+        variant: 'success',
+        title: 'Success',
         description: (
           <div className="flex flex-col gap-2">
             <p>Your SOL has been staked!</p>
@@ -88,11 +86,11 @@ const LiquidityStackingForm = () => {
         ),
       });
     } catch (err) {
-      console.log("Error", err);
+      console.log('Error', err);
       toast({
-        title: "Error",
+        title: 'Error',
         description: err.message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     } finally {
     }
@@ -100,15 +98,15 @@ const LiquidityStackingForm = () => {
   const unstakeSol = async () => {
     try {
       const { transaction } = await marinade.liquidUnstake(
-        MarinadeUtils.solToLamports(form.getValues("amount"))
+        MarinadeUtils.solToLamports(form.getValues('amount'))
       );
       const transactionSignature = await sendTransaction(
         transaction,
         connection
       );
       toast({
-        variant: "success",
-        title: "Success",
+        variant: 'success',
+        title: 'Success',
         description: (
           <div className="flex flex-col gap-2">
             <p>Your SOL has been staked!</p>
@@ -125,9 +123,9 @@ const LiquidityStackingForm = () => {
       });
     } catch (err) {
       toast({
-        title: "Error",
+        title: 'Error',
         description: err.message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     } finally {
     }
@@ -135,7 +133,7 @@ const LiquidityStackingForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Form submitted with values:", values);
+    console.log('Form submitted with values:', values);
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     if (values.stake) {
@@ -163,9 +161,9 @@ const LiquidityStackingForm = () => {
                       className="w-full"
                       size="sm"
                       type="button"
-                      onClick={() => form.setValue("stake", true)}
+                      onClick={() => form.setValue('stake', true)}
                       variant={
-                        form.watch("stake") === true ? "default" : "secondary"
+                        form.watch('stake') === true ? 'default' : 'secondary'
                       }
                     >
                       Stake SOL
@@ -184,9 +182,9 @@ const LiquidityStackingForm = () => {
                       className="w-full"
                       size="sm"
                       type="button"
-                      onClick={() => form.setValue("stake", false)}
+                      onClick={() => form.setValue('stake', false)}
                       variant={
-                        form.watch("stake") === false ? "default" : "secondary"
+                        form.watch('stake') === false ? 'default' : 'secondary'
                       }
                     >
                       Unstake mSOL
@@ -211,8 +209,8 @@ const LiquidityStackingForm = () => {
               <p className="text-xs ">
                 <span className="text-white/50">Balance </span>
                 <span className="text-white/[0.35]">
-                  {" "}
-                  {!connected ? "connect to display balance" : solBalance}
+                  {' '}
+                  {!connected ? 'connect to display balance' : solBalance}
                 </span>
               </p>
             </div>
@@ -239,14 +237,14 @@ const LiquidityStackingForm = () => {
             />
           </div>
           <Button type="submit">
-            {form.watch("stake") === true ? "Stake" : "Unstake"} SOL for mSOL
+            {form.watch('stake') === true ? 'Stake' : 'Unstake'} SOL for mSOL
           </Button>
           <div className="flex items-center justify-between text-muted-foreground text-sm">
             <p>You Will Receive</p>
             <p>
-              {!isLoading && data["currentPrice"]
-                ? (form.watch("amount") * data["currentPrice"]).toFixed(3)
-                : "--"}
+              {!isLoading && data['currentPrice']
+                ? (form.watch('amount') * data['currentPrice']).toFixed(3)
+                : '--'}
             </p>
           </div>
         </form>
@@ -257,14 +255,14 @@ const LiquidityStackingForm = () => {
           <p>
             {!isLoading &&
               data &&
-              numeral(data["tlv"].staked_sol).format("0,0")}{" "}
+              numeral(data['tlv'].staked_sol).format('0,0')}{' '}
             SOL
           </p>
         </div>
         <div className="flex items-center justify-between">
           <p>Total mSOL Supply</p>
           <p>
-            {!isLoading && data && numeral(data["totalSupply"]).format("0,0")}
+            {!isLoading && data && numeral(data['totalSupply']).format('0,0')}
           </p>
         </div>
         <div className="flex items-center justify-between">

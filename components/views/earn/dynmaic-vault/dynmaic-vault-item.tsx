@@ -1,17 +1,17 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { useWallet } from "@solana/wallet-adapter-react";
-import VaultImpl, { KEEPER_URL } from "@mercurial-finance/vault-sdk";
-import { PublicKey } from "@solana/web3.js";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { useNetworkConfiguration } from "@/context/network-configuration";
-import { VaultStateAPI } from "@/lib/dynamic-vaults";
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
+import { AiOutlineQuestionCircle } from 'react-icons/ai';
+import { useWallet } from '@solana/wallet-adapter-react';
+import VaultImpl, { KEEPER_URL } from '@mercurial-finance/vault-sdk';
+import { PublicKey } from '@solana/web3.js';
+import { useConnection } from '@solana/wallet-adapter-react';
+import { useNetworkConfiguration } from '@/context/network-configuration';
+import { VaultStateAPI } from '@/lib/dynamic-vaults';
 
-import { fromLamports, getUserbalance } from "@/lib/utils";
-import { useJupiterApiContext } from "../../trade/src/contexts";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { fromLamports, getUserbalance } from '@/lib/utils';
+import { useJupiterApiContext } from '../../trade/src/contexts';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 export type DynmaicVaultItemProps = {
   image?: string;
@@ -87,19 +87,19 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   // User interaction
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [depositAmount, setDepositAmount] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
 
   const initVaultImpl = useCallback(async () => {
     if (token && connection) {
       const vault = await VaultImpl.create(connection, token, {
         affiliateId: new PublicKey(
-          "EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"
+          'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC'
         ), // Replace with your own Partner ID
       });
 
       vault.getAffiliateInfo().then((resp) => {
-        console.log("Resp", resp);
+        console.log('Resp', resp);
         setInfo(resp);
       });
 
@@ -143,7 +143,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       );
       setUserTokenBalanceInLamports(userTokenBalance);
     } catch (error) {
-      console.log("Error getting user lp or token balance", error);
+      console.log('Error getting user lp or token balance', error);
     }
   }, [token, vaultImpl, publicKey, connection]);
 
@@ -158,7 +158,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   useEffect(() => {
     const vaultInfo = item;
     if (vaultImpl && info) {
-      console.log("ITEM INFO", item);
+      console.log('ITEM INFO', item);
       const virtualPrice =
         vaultUnlockedAmount / vaultImpl.lpSupply.toNumber() || 0;
       // Vault reserves + all strategy allocations
@@ -192,7 +192,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
             maxAllocation: item.max_allocation,
           }))
           .concat({
-            name: "Vault Reserves",
+            name: 'Vault Reserves',
             liquidity: vaultStateAPI.token_amount,
             allocation: (
               (vaultStateAPI.token_amount / totalAllocation) *
@@ -211,7 +211,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
           userTokenBalance: 0,
         }));
       }
-      console.log("initialData", uiState);
+      console.log('initialData', uiState);
     }
   }, [
     publicKey,
@@ -223,9 +223,10 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
     vaultStateAPI,
     token,
   ]);
+  if (!token) return null;
 
   return (
-    <div className="py-4 px-5 border border-transparent bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center">
+    <div className="py-4 px-5 border border-transparent bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center w-full min-w-[300px]">
       <header className="flex items-center justify-center">
         {token && (
           <Image src={token.logoURI} width={40} height={40} alt={title} />
@@ -236,19 +237,19 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       <div className="flex flex-col gap-1 capitalize text-muted-foreground">
         <div className="flex items-center justify-between">
           <h2>Wallet Balance</h2>
-          <p>{uiState.userTokenBalance}</p>
+          <p>{uiState.userTokenBalance.toFixed(2)}</p>
         </div>
         <div className="flex items-center justify-between">
           <h2>Your Deposits</h2>
-          <p>{`${uiState.userTVL.toFixed(token.decimals)} ${token.symbol}`}</p>
+          <p>{`${uiState.userTVL.toFixed(2)} ${token.symbol}`}</p>
         </div>
         <div className="flex items-center justify-between">
           <h2>Virtual Price</h2>
-          <p>{uiState.virtualPrice}</p>
+          <p>{uiState.virtualPrice.toFixed(2)}</p>
         </div>
         <div className="flex items-center justify-between">
           <h2>TVL</h2>
-          <p>{uiState.tvl}</p>
+          <p>{uiState.tvl.toFixed(2)}</p>
         </div>
       </div>
       <Separator className="bg-foreground" />

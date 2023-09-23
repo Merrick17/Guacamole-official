@@ -44,7 +44,7 @@ export default function RootLayout({
               <Footer />
             </ContextProvider>
             <Toaster />
-            <Preloader key={'perloader'} />
+            {/* <Preloader key={'perloader'} /> */}
           </TransitionContextProvider>
         </Themes>
       </body>

@@ -19,7 +19,7 @@ export default function Home() {
         )}
       >
         <section className="flex flex-col gap-[60px]">
-          <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px]">
+          <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full">
             {/* <HomeContent className="w-full" /> */}
             <HeroHeadline
               className="col-span-1  lg:col-span-5"

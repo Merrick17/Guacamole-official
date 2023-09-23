@@ -66,8 +66,8 @@ export const Links: {
       },
 
       {
-        name: 'Dynamic SOL Vault',
-        href: routes.earn.statistics,
+        name: 'Tokenized NFT Farms',
+        href: routes.earn.stakingFarms,
       },
       {
         name: 'Liquidity staking',

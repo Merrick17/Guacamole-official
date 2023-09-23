@@ -151,6 +151,20 @@
     @apply bg-background text-[#fcfcfc] min-h-screen	overflow-x-hidden;
   }
 }
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
 
 .text-shadow {
   text-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.5);

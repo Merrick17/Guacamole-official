@@ -95,31 +95,19 @@ export default function RecentPlays({
       )}
     >
       <div>
-        {compact
-          ? results
-              .slice(0, 10)
-              .map((transaction) => (
-                <RecentPlay
-                  key={transaction.signature}
-                  time={transaction.time}
-                  signature={transaction.signature}
-                  result={transaction.event.gameResult!}
-                  isSelf={transaction.event.gameResult!.player.equals(
-                    gamba.wallet.publicKey
-                  )}
-                />
-              ))
-          : results.map((transaction) => (
-              <RecentPlay
-                key={transaction.signature}
-                time={transaction.time}
-                signature={transaction.signature}
-                result={transaction.event.gameResult!}
-                isSelf={transaction.event.gameResult!.player.equals(
-                  gamba.wallet.publicKey
-                )}
-              />
-            ))}
+        <div className="flex flex-col gap-5">
+          {results.map((transaction) => (
+            <RecentPlay
+              key={transaction.signature}
+              time={transaction.time}
+              signature={transaction.signature}
+              result={transaction.event.gameResult!}
+              isSelf={transaction.event.gameResult!.player.equals(
+                gamba.wallet.publicKey
+              )}
+            />
+          ))}
+        </div>
         {!events.latestSig
           ? Array.from({ length: 5 }).map((_, i) => <div key={i} />)
           : !results.length && <div>No events</div>}
