@@ -70,7 +70,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
     <>
       <div className="w-full bg-background p-2 rounded-lg">
         <p className="text-center text-muted-foreground">
-          Guacamole NFT Farm #1
+          Dynamic SOL Lending Vault
         </p>
       </div>
       <Container className="w-full rounded-lg bg-background p-6  flex flex-row items-center justify-between">
