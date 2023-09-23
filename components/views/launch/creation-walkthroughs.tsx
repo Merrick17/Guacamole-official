@@ -36,7 +36,7 @@ const CreationWalkthroughsItem = ({ title, description }) => {
     <div className="flex flex-col bg-background p-5 rounded-lg">
       <h2 className="text-base ">{title}</h2>
       <p className="text-sm text-muted-foreground">{description}</p>
-      <Button className="mt-3 w-max">Start Walkthrough</Button>
+      <Button className="mt-3 w-max">View Tutorial</Button>
     </div>
   );
 };
