@@ -1,13 +1,13 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import routes from '@/config/routes';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
-import { BiLinkExternal } from 'react-icons/bi';
-import { useJupiterApiContext } from '../trade/src/contexts';
-import axios from 'axios';
-import { convert } from '@/lib/numbers';
+"use client";
+import { Button } from "@/components/ui/button";
+import routes from "@/config/routes";
+import Image from "next/image";
+import Link from "next/link";
+import { FC, useEffect, useState } from "react";
+import { BiLinkExternal } from "react-icons/bi";
+import { useJupiterApiContext } from "../trade/src/contexts";
+import axios from "axios";
+import { convert } from "@/lib/numbers";
 
 type TrendingItemProps = {
   className?: string;
@@ -27,11 +27,14 @@ const TrendingItem: FC<TrendingItemProps> = ({
 
   useEffect(() => {
     const getMarketCap = async () => {
-      const { data } = await axios.get(
-        'https://api.coingecko.com/api/v3/coins/' + token.extensions.coingeckoId
-      );
+      if (token &&  token.extensions) {
+        const { data } = await axios.get(
+          "https://api.coingecko.com/api/v3/coins/" +
+            token.extensions.coingeckoId
+        );
 
-      setMarketPrice(data.market_data.current_price.usd);
+        setMarketPrice(data.market_data.current_price.usd);
+      }
     };
     getMarketCap();
   }, []);
@@ -54,7 +57,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
               <BiLinkExternal />
             </div>
           </div>
-          <p className="text-muted-foreground">{'$' + convert(marketPrice)}</p>
+          <p className="text-muted-foreground">{"$" + convert(marketPrice)}</p>
         </div>
       </div>
       <Link href={routes.trade.swap + `?outputMint=${mint}`}>

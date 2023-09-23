@@ -240,7 +240,11 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
         </div>
         <div className="flex items-center justify-between">
           <h2>Your Deposits</h2>
-          <p>{`${uiState.userTVL.toFixed(token.decimals)} ${token.symbol}`}</p>
+          {token && (
+            <p>{`${uiState.userTVL.toFixed(token.decimals)} ${
+              token.symbol
+            }`}</p>
+          )}
         </div>
         <div className="flex items-center justify-between">
           <h2>Virtual Price</h2>
