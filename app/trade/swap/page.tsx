@@ -1,7 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import Trade from '@/components/views/trade/src/Trade';
-import { JupiterApiProvider } from '@/components/views/trade/src/contexts';
 import SwapCharts from '@/components/views/trade/swap-charts';
 import TrendingSwap from '@/components/views/trade/trending-swap';
 import { cn } from '@/lib/utils';
@@ -12,7 +11,7 @@ const Swap = () => {
   const [showCharts, setShowCharts] = useState(false);
   return (
     <>
-      <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+      <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12 w-full  max-w-[1200px]">
         <div
           className={cn(
             'grid grid-cols-1 gap-14 max-w-md w-full place-content-center',
