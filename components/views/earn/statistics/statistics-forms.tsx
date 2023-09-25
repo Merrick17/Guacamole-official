@@ -1,25 +1,26 @@
-'use client';
-import { FC, useState } from 'react';
-import StatisticsCardContainer from './statistics-card-container';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import DepositForm from './deposit-form';
-import WithdrawForm from './withdraw-form';
-import { TokenInfo } from '@solana/spl-token-registry';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Image from 'next/image';
-import * as z from 'zod';
-
+"use client";
+import { FC, useState } from "react";
+import StatisticsCardContainer from "./statistics-card-container";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DepositForm from "./deposit-form";
+import WithdrawForm from "./withdraw-form";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import numeral from "numeral";
+import * as z from "zod";
+import useTokenPrice from "@/hooks/useTokenPrice";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import Container from '@/components/common/container';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from "@/components/ui/form";
+import Container from "@/components/common/container";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 interface IData {
   virtualPrice: number;
   tvl: number;
@@ -52,6 +53,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
   deposit,
   withdrawBalance,
 }) => {
+  const { loading, priceData } = useTokenPrice(token ? token.symbol : "USDC");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,16 +72,25 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
     <>
       <div className="w-full bg-background p-2 rounded-lg">
         <p className="text-center text-muted-foreground">
-          Dynamic SOL Lending Vault
+          Dynamic {token ? token.symbol : ""} Lending Vault
         </p>
       </div>
       <Container className="w-full rounded-lg bg-background p-6  flex flex-row items-center justify-between">
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm">
-            Your SOL Vault Deposits
+            Your {token ? token.symbol : ""} Vault Deposits
           </p>
-          <h1 className=" text-3xl font-medium ">102.42 SOL</h1>
-          <p className="text-muted-foreground text-xs">$2,042.34</p>
+          <h1 className=" text-3xl font-medium ">
+            {" "}
+            {uiState.userLPBalance} {token ? token.symbol : ""}
+          </h1>
+          <p className="text-muted-foreground text-xs">
+            $
+            {(!loading && priceData &&  token && priceData["data"][token.symbol]) 
+              ? numeral(priceData["data"][token.symbol].price * uiState.userLPBalance).format(
+                  "0,0.000")
+              : 0}
+          </p>
         </div>
         <div className="text-muted-foreground bg-foreground font-medium px-4 py-2 rounded-lg">
           Redeem
@@ -101,14 +112,14 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                       className="w-full"
                       size="sm"
                       type="button"
-                      onClick={() => form.setValue('depositOrWithdraw', true)}
+                      onClick={() => form.setValue("depositOrWithdraw", true)}
                       variant={
-                        form.watch('depositOrWithdraw') === true
-                          ? 'default'
-                          : 'secondary'
+                        form.watch("depositOrWithdraw") === true
+                          ? "default"
+                          : "secondary"
                       }
                     >
-                      Deposit SOL
+                      Deposit {token ? token.symbol : ""}
                     </Button>
                   </FormControl>
                 </FormItem>
@@ -124,21 +135,21 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                       className="w-full"
                       size="sm"
                       type="button"
-                      onClick={() => form.setValue('depositOrWithdraw', false)}
+                      onClick={() => form.setValue("depositOrWithdraw", false)}
                       variant={
-                        form.watch('depositOrWithdraw') === false
-                          ? 'default'
-                          : 'secondary'
+                        form.watch("depositOrWithdraw") === false
+                          ? "default"
+                          : "secondary"
                       }
                     >
-                      Withdraw SOL
+                      Withdraw {token ? token.symbol : ""}
                     </Button>
                   </FormControl>
                 </FormItem>
               )}
             />
           </div>
-          {form.watch('depositOrWithdraw') ? (
+          {form.watch("depositOrWithdraw") ? (
             <>
               <header className="text-muted-foreground">
                 Enter deposit amount:
@@ -201,7 +212,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                 )}
 
                 <div className="w-full">
-                  <h1 className="font-semibold">{token ? token.symbol : ''}</h1>
+                  <h1 className="font-semibold">{token ? token.symbol : ""}</h1>
 
                   <p className="  text-xs ">
                     <span className="text-white/50">Balance </span>
