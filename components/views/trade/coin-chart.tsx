@@ -46,7 +46,7 @@ const CoinChart: FC<CoinChartProps> = ({ coinMint }) => {
         </div>
         <p className="font-semibold text-base lg:text-2xl">${convert(price)}</p>
       </div>
-      <div className="bg-black rounded-lg border border-gray-800 py-5 flex flex-col gap-5 w-full text-black font-medium text-xs capitalize">
+      <div className="bg-background rounded-lg border border-[#fcfcfc1a] py-5 flex flex-col gap-5 w-full text-black font-medium text-xs capitalize">
         <div
           className="w-full rounded-lg bg-[#8BD796] h-10  flex items-center justify-start p-3 "
           style={{

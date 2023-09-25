@@ -60,7 +60,6 @@ const StatisticsForm = () => {
   });
   const stakeSol = async () => {
     try {
-      console.log('Val', form.getValues('amount'));
       const { transaction } = await marinade.deposit(
         MarinadeUtils.solToLamports(form.getValues('amount'))
       );

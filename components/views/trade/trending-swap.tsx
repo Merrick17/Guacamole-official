@@ -54,12 +54,15 @@ const TrendingSwapItem: FC<TrendingSwapItemProps> = ({
   const token = tokenMap.get(mint);
   if (!token) return null;
   return (
-    <Link href={routes.trade.swap + `?outputMint=${mint}`}>
-      <div className=" bg-background py-[6px] px-3 font-bold text-sm flex flex-row items-center gap-1 rounded-lg">
-        <p className="uppercase">#{idx}</p>
+    <Link
+      href={routes.trade.swap + `?outputMint=${mint}`}
+      className=" w-full   py-[6px] px-3 font-bold text-sm flex flex-row items-center gap-1 rounded-lg"
+    >
+      <p className="uppercase">#{idx}</p>
+      <div className="w-6 h-6 rounded-full">
         <img src={token.logoURI} className="w-6 h-6 rounded-full" alt="logo" />
-        <p className="uppercase">{token.symbol}</p>
       </div>
+      <p className="uppercase">{token.symbol}</p>
     </Link>
   );
 };

@@ -36,7 +36,7 @@ export const Links: {
         href: routes.trade.swap,
       },
       {
-        name: 'Bridge',
+        name: 'Bridge Swap',
         href: routes.trade.bridge,
       },
       {

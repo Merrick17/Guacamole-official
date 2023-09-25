@@ -1,8 +1,8 @@
-"use client"
-import useTokenPrice from "@/hooks/useTokenPrice";
-import StatisticsCardContainer from "./statistics-card-container";
-import numeral from "numeral";
-import { useEffect } from "react";
+'use client';
+import useTokenPrice from '@/hooks/useTokenPrice';
+import StatisticsCardContainer from './statistics-card-container';
+import numeral from 'numeral';
+import { useEffect } from 'react';
 const TotalLiquidity = ({
   tvl,
   lp,
@@ -15,9 +15,7 @@ const TotalLiquidity = ({
   symbol: string;
 }) => {
   const { priceData, loading } = useTokenPrice(symbol);
-  useEffect(() => {
-    console.log("Price Data", priceData);
-  }, [priceData]);
+
   return (
     <StatisticsCardContainer>
       <div className="flex  flex-row justify-between items-start  text-sm">
@@ -25,13 +23,13 @@ const TotalLiquidity = ({
           <header>
             <p className="text-muted-foreground">Total Liquidity</p>
             <h1 className=" font-semibold  text-3xl ">
-              {numeral(lp).format("0,0")} {symbol}
+              {numeral(lp).format('0,0')} {symbol}
             </h1>
           </header>
           <p className=" text-muted-foreground">
-            ${" "}
-            {!loading && priceData &&  priceData["data"][symbol] 
-              ? numeral(priceData["data"][symbol].price * lp).format("0,0")
+            ${' '}
+            {!loading && priceData && priceData['data'][symbol]
+              ? numeral(priceData['data'][symbol].price * lp).format('0,0')
               : 0}
           </p>
         </div>
