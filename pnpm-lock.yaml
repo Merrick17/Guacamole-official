@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@bonfida/hooks':
     specifier: ^0.0.16
@@ -163,6 +167,9 @@ dependencies:
   jsbi:
     specifier: ^4.3.0
     version: 4.3.0
+  lightweight-charts:
+    specifier: ^4.0.1
+    version: 4.0.1
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -10119,6 +10126,10 @@ packages:
     engines: {node: '> 0.1.90'}
     dev: false
 
+  /fancy-canvas@2.1.0:
+    resolution: {integrity: sha512-nifxXJ95JNLFR2NgRV4/MxVP45G9909wJTEKz5fg/TZS20JJZA6hfgRVh/bC9bwl2zBtBNcYPjiBE4njQHVBwQ==}
+    dev: false
+
   /fast-copy@3.0.1:
     resolution: {integrity: sha512-Knr7NOtK3HWRYGtHoJrjkaWepqT8thIVGAwt0p0aUs1zqkAzXZV4vo9fFNwyb5fcqK1GKYFYxldQdIDVKhUAfA==}
     dev: false
@@ -11638,6 +11649,12 @@ packages:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
+    dev: false
+
+  /lightweight-charts@4.0.1:
+    resolution: {integrity: sha512-p+j6w41PVzf9Vn7IrmpmCJacunpN0kKsl0IZoxMOySSkDcSagZ7Is9pb6pclIfN/usHdta0aYm9FktkYpAQe0g==}
+    dependencies:
+      fancy-canvas: 2.1.0
     dev: false
 
   /lil-gui@0.17.0:
@@ -15887,7 +15904,3 @@ packages:
     version: 5.4.7
     engines: {node: '>=0.11'}
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
