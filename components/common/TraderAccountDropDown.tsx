@@ -1,14 +1,14 @@
-import React, { FC, useState, useEffect, useCallback } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
+import React, { FC, useState, useEffect, useCallback } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import {
   useManifest,
   useTrader,
   dexterity,
   useProduct,
-} from '../../context/dexterity';
-import { PublicKey } from '@solana/web3.js';
-import { Button } from '../ui/button';
-import { formatPubKey, handleCopy } from '@/lib/utils';
+} from "../../context/dexterity";
+import { PublicKey } from "@solana/web3.js";
+import { Button } from "../ui/button";
+import { formatPubKey, handleCopy } from "@/lib/utils";
 //import { notify } from "../utils/notifications";
 //import { formatPubKey, handleCopy } from 'utils/util';
 
@@ -20,7 +20,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
 
 type TraderAccount = {
   pubkey: PublicKey;
@@ -66,7 +67,7 @@ export const SelectTraderAccounts: FC = () => {
   const { publicKey } = useWallet();
   const { manifest } = useManifest(); // Assuming createTRG is the function to create a new TRG
   const [trgsArr, setTrgsArr] = useState<TraderAccount[]>([]);
-  const [selectedTrg, setSelectedTrg] = useState<string>('');
+  const [selectedTrg, setSelectedTrg] = useState<string>("");
   const { setTrader } = useTrader();
   const { mpgPubkey } = useProduct();
 
@@ -75,6 +76,7 @@ export const SelectTraderAccounts: FC = () => {
   }, [publicKey]);
 
   const fetchTraderAccounts = useCallback(async () => {
+    //alert("Working");
     if (!publicKey) return;
     if (!manifest) return;
     if (!manifest.fields) return;
@@ -87,23 +89,32 @@ export const SelectTraderAccounts: FC = () => {
         new PublicKey(mpgPubkey)
       );
       setTrgsArr(trgs);
+      console.log("TGRS", trgs);
     } catch (error: any) {
-      //notify({ type: 'error', message: `Selecting Trader Account failed!`, description: error?.message });
+      toast({
+        variant: "destructive",
+        title: `Selecting Trader Account failed!`,
+        description: error?.message,
+      });
     }
   }, [publicKey, manifest]);
 
   const handleCreateTRG = useCallback(async () => {
     try {
       await manifest.createTrg(new PublicKey(mpgPubkey));
-      //fetchTraderAccounts();
+      fetchTraderAccounts();
     } catch (error: any) {
-      //notify({ type: 'error', message: `Creating Trader Account failed!`, description: error?.message });
+      toast({
+        variant: "destructive",
+        title: `Creating Trader Account failed!`,
+        description: error?.message,
+      });
     }
   }, [fetchTraderAccounts, manifest]);
 
   const handleSelection = useCallback(
     async (selectedValue: string) => {
-      if (selectedValue == 'default') return;
+      if (selectedValue == "default") return;
       setSelectedTrg(selectedValue);
       const trader = new dexterity.Trader(
         manifest,

@@ -98,6 +98,7 @@ import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
 } from "./network-configuration";
+
 import { MarinadeProvider } from "./Marinade";
 export const dexterity = dexterityTs;
 
@@ -169,7 +170,9 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
         autoConnect={autoConnect}
       >
         <ReactUIWalletModalProviderDynamic>
-          {children}
+        
+            <MarinadeProvider>{children}</MarinadeProvider>
+          
         </ReactUIWalletModalProviderDynamic>
       </WalletProvider>
     </ConnectionProvider>
@@ -184,9 +187,7 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
           <ManifestProvider>
             <TraderProvider>
               <ProductProvider>
-                <WalletContextProvider>
-                  <MarinadeProvider>{children}</MarinadeProvider>
-                </WalletContextProvider>
+                <WalletContextProvider>{children}</WalletContextProvider>
               </ProductProvider>
             </TraderProvider>
           </ManifestProvider>
