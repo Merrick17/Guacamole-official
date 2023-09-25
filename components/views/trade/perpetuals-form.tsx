@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import NavigationList from '@/components/ui/navigation-list';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -92,27 +93,8 @@ const PerpetualsForm = () => {
       )}
       <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
         <div className="flex items-center justify-between">
-          <Select
-            defaultValue="spot"
-            onValueChange={(value: 'future' | 'spot' | 'swap') => setTab(value)}
-          >
-            <SelectTrigger className="text-black bg-primary w-max h-7 rounded-lg text-sm ">
-              <SelectValue placeholder="Spot" />
-            </SelectTrigger>
-            <SelectContent className="w-full">
-              <SelectGroup>
-                <SelectItem value="spot" className="hover:text-black">
-                  Spot
-                </SelectItem>
-                <SelectItem value="swap" className="hover:text-black">
-                  Swap
-                </SelectItem>
-                <SelectItem value="future" className="hover:text-black">
-                  Future
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <NavigationList filter="Trade" />
+
           {!connected ? (
             <WalletMultiButtonDynamic
               startIcon={undefined}

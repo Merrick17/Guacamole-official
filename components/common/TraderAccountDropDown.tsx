@@ -94,11 +94,9 @@ export const SelectTraderAccounts: FC = () => {
 
   const handleCreateTRG = useCallback(async () => {
     try {
-      console.log('MPG KEY', mpgPubkey);
       await manifest.createTrg(new PublicKey(mpgPubkey));
       //fetchTraderAccounts();
     } catch (error: any) {
-      console.log('Error creating', error);
       //notify({ type: 'error', message: `Creating Trader Account failed!`, description: error?.message });
     }
   }, [fetchTraderAccounts, manifest]);
@@ -107,13 +105,11 @@ export const SelectTraderAccounts: FC = () => {
     async (selectedValue: string) => {
       if (selectedValue == 'default') return;
       setSelectedTrg(selectedValue);
-      console.log({ selectedValue });
       const trader = new dexterity.Trader(
         manifest,
         new PublicKey(selectedValue)
       );
       const trg = await manifest.getTRG(new PublicKey(selectedValue));
-      console.log('Huh ', { trg });
       await trader.update();
       await manifest.updateOrderbooks(new PublicKey(mpgPubkey));
       setTrader(trader);

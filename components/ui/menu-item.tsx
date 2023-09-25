@@ -39,7 +39,6 @@ const MenuItem: FC<MenuItemProps> = ({
   const [ref, { height }] = useMeasure<HTMLUListElement>();
   const isChildrenActive =
     dropdownItems && dropdownItems.some((item) => item.href === pathname);
-  console.log({ pathname, isChildrenActive, href });
   useEffect(() => {
     if (isChildrenActive) {
       setIsOpen(true);

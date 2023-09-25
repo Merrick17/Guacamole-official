@@ -25,9 +25,9 @@ export default function RootLayout({
     <ContextProvider>
       <Gamba creator={'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC'}>
         <main
-          className={
-            'container mx-auto my-auto flex flex-col  min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
-          }
+          className={cn(
+            'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
+          )}
         >
           {children}
         </main>

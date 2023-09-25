@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const VaultItemsContainer = () => {
   const { data, isLoading, error } = useVaultInfo();
 
+  console.log('dynamicVault', data);
   useEffect(() => {}, [isLoading]);
   return (
     <Container
@@ -19,9 +20,11 @@ const VaultItemsContainer = () => {
       {!isLoading
         ? data &&
           data.length > 0 &&
-          data.map((item, index) => (
-            <DynmaicVaultItem key={index} item={item} />
-          ))
+          data
+            .sort((a, b) => {
+              return a.long_apy > b.long_apy ? -1 : 1;
+            })
+            .map((item, index) => <DynmaicVaultItem key={index} item={item} />)
         : Array.from({ length: 7 }).map((_, index) => (
             <Skeleton
               key={index}
