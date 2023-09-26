@@ -22,7 +22,7 @@ const RecentPlaysFeatured: FC<RecentPlaysFeaturedProps> = ({ className }) => {
     <JupiterApiProvider>
       <Container
         className={cn(
-          'flex flex-col max-h-[560px]   gap-5 overflow-y-auto ',
+          'flex flex-col max-h-[560px]   gap-5 overflow-y-auto  ',
           className
         )}
       >
@@ -38,7 +38,7 @@ const RecentPlaysFeatured: FC<RecentPlaysFeaturedProps> = ({ className }) => {
           <h1 className="text-xl capitalize">Recent Plays</h1>
         </div>
         <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
-          <RecentPlays />
+          <RecentPlays className="p-0" />
         </div>
       </Container>
     </JupiterApiProvider>

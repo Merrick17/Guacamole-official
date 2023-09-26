@@ -42,24 +42,26 @@ function RecentPlay({ time, signature, result, isSelf }: RecentPlayProps) {
 
   return (
     <a
-      className="flex gap-1 p-2 justify-between"
+      className="flex gap-1 p-[10px] justify-between bg-background rounded-lg"
       href={`${VERIFY_URL}/${signature}`}
       target="_blank"
       rel="noreferrer"
     >
       <div className="flex gap-1">
-        <span>{isSelf ? 'You ' : 'Someone '}</span>
-        made
         <span>
-          <span>
-            {formatLamports(payout)} from {formatLamports(wager)}
-          </span>
-        </span>
-        <span>
-          {whaleScore > 0 && '🐋'.repeat(whaleScore)}
+          {(whaleScore > 0 || litScore > 0) && '🎉'}
           {isRekt && '💀'}
-          {litScore > 0 && '🌶️'.repeat(litScore)}
         </span>
+        <span>{isSelf ? 'You ' : 'Someone '}</span>
+        {(whaleScore > 0 || litScore > 0) && 'won'}
+        {isRekt && 'lost'}
+
+        {(whaleScore > 0 || litScore > 0) && (
+          <span className="text-[#8BD796]"> {formatLamports(payout)}</span>
+        )}
+        {isRekt && (
+          <span className="text-destructive">{formatLamports(wager)}</span>
+        )}
       </div>
       <span>
         <TimeDiff time={time} />
@@ -90,7 +92,7 @@ export default function RecentPlays({
   return (
     <div
       className={cn(
-        'flex max-w-[512px] w-full flex-col p-2 gap-4 rounded-lg bg-foreground ',
+        'flex max-w-[512px] w-full flex-col  gap-4 rounded-lg bg-foreground p-5',
         className
       )}
     >
