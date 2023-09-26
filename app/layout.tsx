@@ -18,6 +18,7 @@ import ThemeSwitcher from '@/components/ui/theme-switcher';
 import LeftSideUtility from '@/components/ui/left-side-utility';
 import { TransitionContextProvider } from '@/context/transition-context';
 import Preloader from '@/components/common/preloader';
+import BackgroundSplash from '@/components/common/background-splash';
 const kanit = Kanit({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
@@ -44,7 +45,7 @@ export default function RootLayout({
               <Footer />
             </ContextProvider>
             <Toaster />
-            {/* <Preloader key={'perloader'} /> */}
+            <Preloader key={'perloader'} />
           </TransitionContextProvider>
         </Themes>
       </body>

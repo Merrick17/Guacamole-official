@@ -18,6 +18,8 @@ type CoinChartProps = {
 };
 const CoinChart: FC<CoinChartProps> = ({ coinMint }) => {
   const [price, setPrice] = useState(0);
+  const [buyPercent, setBuyPercent] = useState<string>('0');
+  const [sellPercent, setSellPercent] = useState<string>('0');
 
   const getValueInUsd = async (token: TokenInfo, amount: number) => {
     if (!token) return;
@@ -30,10 +32,27 @@ const CoinChart: FC<CoinChartProps> = ({ coinMint }) => {
       break;
     }
   };
+  const getSellAndBuy = async (token: TokenInfo) => {
+    const data = await fetch('https://stats.jup.ag/info/day');
+    const json = await data.json();
+    const buy = Number(
+      json.lastXTopBuy.filter((x: any) => x.symbol === token.symbol)[0].amount
+    );
+    const sell = Number(
+      json.lastXTopSell.filter((x: any) => x.symbol === token.symbol)[0].amount
+    );
+
+    const buyPercent = ((buy / (buy + sell)) * 100).toFixed(3);
+    const sellPercent = ((sell / (buy + sell)) * 100).toFixed(3);
+    setBuyPercent(buyPercent);
+    setSellPercent(sellPercent);
+  };
+
   const { tokenMap } = useJupiterApiContext();
   const coin = tokenMap.get(coinMint);
   useEffect(() => {
     getValueInUsd(coin, 1);
+    getSellAndBuy(coin);
   }, [coin]);
   return (
     <Container className="bg-background flex flex-col gap-10">
@@ -50,18 +69,18 @@ const CoinChart: FC<CoinChartProps> = ({ coinMint }) => {
         <div
           className="w-full rounded-lg bg-[#8BD796] h-10  flex items-center justify-start p-3 "
           style={{
-            width: '48.9%',
+            width: buyPercent + '%',
           }}
         >
-          <h1>BUYS: 48.9%</h1>
+          <h1>BUYS: {buyPercent}%</h1>
         </div>
         <div
           className="w-full rounded-lg bg-[#FF8F8F] h-10  flex items-center justify-start p-3"
           style={{
-            width: '51.1%',
+            width: sellPercent + '%',
           }}
         >
-          <h1>SELLS: 51.1%</h1>
+          <h1>SELLS: {sellPercent}%</h1>
         </div>
       </div>
     </Container>

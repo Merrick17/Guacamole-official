@@ -8,11 +8,11 @@ import { useConnection } from '@solana/wallet-adapter-react';
 import { useNetworkConfiguration } from '@/context/network-configuration';
 import { VaultStateAPI } from '@/lib/dynamic-vaults';
 
-import { fromLamports, getUserbalance } from "@/lib/utils";
-import { useJupiterApiContext } from "../../trade/src/contexts";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { useRouter } from "next/navigation";
+import { fromLamports, getUserbalance } from '@/lib/utils';
+import { useJupiterApiContext } from '../../trade/src/contexts';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { useRouter } from 'next/navigation';
 
 export type DynmaicVaultItemProps = {
   image?: string;
@@ -101,7 +101,6 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       });
 
       vault.getAffiliateInfo().then((resp) => {
-      
         setInfo(resp);
       });
 
@@ -160,7 +159,6 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   useEffect(() => {
     const vaultInfo = item;
     if (vaultImpl && info) {
-    
       const virtualPrice =
         vaultUnlockedAmount / vaultImpl.lpSupply.toNumber() || 0;
       // Vault reserves + all strategy allocations
@@ -213,7 +211,6 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
           userTokenBalance: 0,
         }));
       }
-      
     }
   }, [
     publicKey,
@@ -244,9 +241,11 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
         <div className="flex items-center justify-between">
           <h2>Your Deposits</h2>
           {token && (
-            <p>{`${uiState.userTVL.toFixed(token.decimals)} ${
-              token.symbol
-            }`}</p>
+            <p>{`${
+              uiState.userTVL === 0
+                ? 0
+                : uiState.userTVL.toFixed(token.decimals)
+            } ${token.symbol}`}</p>
           )}
         </div>
         <div className="flex items-center justify-between">
@@ -255,7 +254,10 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
         </div>
         <div className="flex items-center justify-between">
           <h2>TVL</h2>
-          <p>{uiState.tvl.toFixed(2)}</p>
+          <p>
+            {new Intl.NumberFormat('en-US', {}).format(uiState.tvl)}{' '}
+            {token.symbol}
+          </p>
         </div>
       </div>
       <Separator className="bg-foreground" />

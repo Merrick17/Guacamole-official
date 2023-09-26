@@ -26,11 +26,11 @@ const page: FC<ToolsProps> = () => {
         ))}
         <Container className=" col-span-1 sm:col-span-2 lg:col-span-3 p-6 rounded-lg  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
           <h5 className="mb-2 text-2xl font-semibold tracking-tight capitalize">
-            Secure Your Assets With Def3nder Vaults
+            Secure Your Assets With D3fenders
           </h5>
           <p className="mb-3 font-normal text-muted-foreground">
-            Use the def3nders vault system for an extra layer of asset
-            protection
+            Use the D3fenders decentralized vault system for an additional layer
+            of asset protection.
           </p>
           <Link
             href={''}

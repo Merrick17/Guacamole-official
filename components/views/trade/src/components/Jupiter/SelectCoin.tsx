@@ -57,7 +57,7 @@ const Row = ({
               pathname + '?' + createQueryString('outputMint', info.address)
             );
       }}
-      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background "
+      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background  "
     >
       <img
         src={info.logoURI as string}
@@ -66,12 +66,12 @@ const Row = ({
       />
       <div className=" flex flex-col items-start  ">
         <div className="flex items-center gap-2">
-          <h1 className="text-sm">{info.symbol}</h1>
+          <h1 className="text-sm text-[#FCFCFC]">{info.symbol}</h1>
           <Link
             href={`https://explorer.solana.com/address/${info.address}`}
             rel="noopener noreferrer"
             target="_blank"
-            className="text-xs flex items-center text-muted-foreground   rounded-[4px] px-2 py-1 "
+            className="text-xs flex items-center text-accent   rounded-[4px] px-2 py-1 "
           >
             <span className="  max-w-[44px] text-ellipsis overflow-hidden">
               {info.address}
@@ -79,7 +79,7 @@ const Row = ({
             <BiLinkExternal />
           </Link>
         </div>
-        <span className="text-sm opacity-80">{info.name}</span>
+        <span className="text-sm text-muted-foreground">{info.name}</span>
       </div>
     </button>
   );
@@ -161,7 +161,7 @@ export const SelectCoin = ({
               type="text"
               id="search-token"
               placeholder="Search"
-              className=" mt-4  w-full rounded-xl !border-none !bg-foreground  text-xs placeholder:text-muted-foreground !outline-none sm:text-lg p-2"
+              className=" mt-4  w-full rounded-xl !border-none !bg-background  text-xs placeholder:text-muted-foreground !outline-none sm:text-lg p-2"
               spellCheck={false}
             />
           </DialogDescription>

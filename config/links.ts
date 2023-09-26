@@ -3,11 +3,12 @@ import routes from './routes';
 import {
   GoHome,
   GoArrowSwitch,
-  GoHourglass,
   GoTools,
   GoInfo,
   GoRocket,
 } from 'react-icons/go';
+import { BiGame } from 'react-icons/bi';
+import { TbPigMoney } from 'react-icons/tb';
 export const Links: {
   name: string;
   href: string;
@@ -40,7 +41,7 @@ export const Links: {
         href: routes.trade.bridge,
       },
       {
-        name: 'Perpetuals',
+        name: 'Future',
         href: routes.trade.perpetuals,
       },
       {
@@ -58,7 +59,7 @@ export const Links: {
   {
     name: 'Earn',
     href: routes.earn.root,
-    Icon: GoHourglass,
+    Icon: TbPigMoney,
     dropdownItems: [
       {
         name: 'Dynamic Vault',
@@ -83,7 +84,7 @@ export const Links: {
   {
     name: 'Play',
     href: routes.play.root,
-    Icon: GoHourglass,
+    Icon: BiGame,
     dropdownItems: [
       {
         name: 'Explore All Games',
@@ -104,6 +105,10 @@ export const Links: {
       {
         name: 'Mines',
         href: routes.play.mines,
+      },
+      {
+        name: 'Dice',
+        href: routes.play.dice,
       },
     ],
   },

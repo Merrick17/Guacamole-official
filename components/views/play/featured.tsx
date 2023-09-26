@@ -17,7 +17,7 @@ const Featured: FC = () => {
         <Section>
           <Slider>
             {GAMES.map((game) => (
-              <Link key={game.short_name} href={`/${game.short_name}`}>
+              <Link key={game.short_name} href={`/play/${game.short_name}`}>
                 <Card
                   width={150}
                   height={75}

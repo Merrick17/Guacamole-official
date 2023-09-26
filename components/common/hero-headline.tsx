@@ -30,7 +30,7 @@ const HeroHeadline: FC<HeroHeadlineProps> = ({
       <header className={cn('flex flex-col gap-6', RalewayFont.className)}>
         <ColorBlocks />
         {typeof title === 'string' ? (
-          <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
+          <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
             {title}
           </h1>
         ) : (

@@ -16,7 +16,7 @@ const HomeContent: FC<HomeContentProps & Partial<HTMLDListElement>> = ({
     >
       <header className="flex flex-col gap-6">
         <ColorBlocks />
-        <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
+        <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
           Purchase games, subs, and more with crypto.
         </h1>
       </header>
