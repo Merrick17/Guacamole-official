@@ -134,6 +134,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
       new PhantomWalletAdapter(),
 
       new BackpackWalletAdapter(),
+      new SolflareWalletAdapter(),
 
       //new SlopeWalletAdapter(),
     ],
