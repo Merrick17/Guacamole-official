@@ -91,7 +91,7 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
   useEffect(() => {
     if (selectedMarket) {
       ws.current = new WebSocket(
-        `ws://hloc-dexterity.up.railway.app/${selectedMarket.name.toLowerCase()}?api-key=${apiKey}`
+        `wss://hloc-dexterity.up.railway.app/${selectedMarket.name.toLowerCase()}?api-key=${apiKey}`
       );
 
       ws.current.onmessage = (message) => {

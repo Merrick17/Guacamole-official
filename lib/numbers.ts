@@ -77,10 +77,10 @@ export function convert(n) {
 
   const [integerPart, trailingZeros, nonZeroDigits] =
     extractTrailingZerosAndDigits(str);
-  console.log('INT', integerPart); // Output: "123"
-  console.log('TRAILING', trailingZeros); // Output: "0000000"
-  console.log('ZERO', nonZeroDigits); // Output: "11586"
-  console.log('SubSript', getSubscriptForNumber(trailingZeros.length));
+  // console.log('INT', integerPart); // Output: "123"
+  // console.log('TRAILING', trailingZeros); // Output: "0000000"
+  // console.log('ZERO', nonZeroDigits); // Output: "11586"
+  // console.log('SubSript', getSubscriptForNumber(trailingZeros.length));
   return `${integerPart}.0${getSubscriptForNumber(
     trailingZeros.length
   )}${nonZeroDigits}`;

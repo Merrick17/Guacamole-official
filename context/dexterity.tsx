@@ -1,18 +1,22 @@
-"use client"
 import React, { ReactNode, createContext, useContext, useState } from "react";
-import dexterityTs from '@hxronetwork/dexterity-ts'
-import { useNetworkConfiguration } from "./network-configuration";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-export const dexterity = dexterityTs
+import dexterityTs from "@hxronetwork/dexterity-ts";
+
+export const dexterity = dexterityTs;
 
 interface ManifestContextProps {
   manifest: InstanceType<typeof dexterity.Manifest>;
-  setManifest: React.Dispatch<React.SetStateAction<InstanceType<typeof dexterity.Manifest>>>;
+  setManifest: React.Dispatch<
+    React.SetStateAction<InstanceType<typeof dexterity.Manifest>>
+  >;
 }
 
-const ManifestContext = createContext<ManifestContextProps | undefined>(undefined);
+const ManifestContext = createContext<ManifestContextProps | undefined>(
+  undefined
+);
 
-export const ManifestProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const ManifestProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [manifest, setManifest] = useState(null);
 
   return (
@@ -47,7 +51,9 @@ type OrderData = {
 
 interface TraderContextProps {
   trader: InstanceType<typeof dexterity.Trader>;
-  setTrader: React.Dispatch<React.SetStateAction<InstanceType<typeof dexterity.Trader>>>;
+  setTrader: React.Dispatch<
+    React.SetStateAction<InstanceType<typeof dexterity.Trader>>
+  >;
   cashBalance: number;
   setCashBalance: React.Dispatch<React.SetStateAction<number>>;
   openPositionsValue: number;
@@ -70,28 +76,32 @@ interface TraderContextProps {
   setLastUpdated: React.Dispatch<React.SetStateAction<number>>;
   orderData: OrderData[];
   setOrderData: React.Dispatch<React.SetStateAction<OrderData[]>>;
+  positionsData: any[];
+  setPositionsData: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const TraderContext = createContext<TraderContextProps | undefined>(undefined);
 
-export const TraderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-
+export const TraderProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [trader, setTrader] = useState(null);
   const [cashBalance, setCashBalance] = useState(null);
   const [openPositionsValue, setOpenPositionsValue] = useState(null);
-  const [portfolioValue, setPortfolioValue] = useState(null);  
-  const [initialMarginReq, setInitialMarginReq] = useState(null); 
-  const [maintananceMarginReq, setMaintananceMarginReq] = useState(null); 
+  const [portfolioValue, setPortfolioValue] = useState(null);
+  const [initialMarginReq, setInitialMarginReq] = useState(null);
+  const [maintananceMarginReq, setMaintananceMarginReq] = useState(null);
   const [accountHealth, setAccountHealth] = useState(null);
-  const [accountLeverage, setAccountLeverage] = useState(null);  
-  const [allTimePnl, setAllTimePnl] = useState(null); 
+  const [accountLeverage, setAccountLeverage] = useState(null);
+  const [allTimePnl, setAllTimePnl] = useState(null);
   const [updated, setUpdated] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [orderData, setOrderData] = useState(null);
+  const [positionsData, setPositionsData] = useState(null);
 
   return (
-    <TraderContext.Provider value={
-      {
+    <TraderContext.Provider
+      value={{
         trader,
         setTrader,
         cashBalance,
@@ -115,9 +125,11 @@ export const TraderProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         lastUpdated,
         setLastUpdated,
         orderData,
-        setOrderData
-      }
-    }>
+        setOrderData,
+        positionsData,
+        setPositionsData,
+      }}
+    >
       {children}
     </TraderContext.Provider>
   );
@@ -135,7 +147,7 @@ export interface Product {
   index: number;
   name: string;
   minSize: number;
-  exponent: number
+  exponent: number;
 }
 
 interface ProductContextProps {
@@ -149,37 +161,51 @@ interface ProductContextProps {
   setMarkPrice: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ProductContext = createContext<ProductContextProps | undefined>(undefined);
+const ProductContext = createContext<ProductContextProps | undefined>(
+  undefined
+);
 
-export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-
-  const { networkConfiguration } = useNetworkConfiguration();
-  const network = networkConfiguration as WalletAdapterNetwork;
-
+export const ProductProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  // const { networkConfiguration } = useNetworkConfiguration();
+  // const network = networkConfiguration as WalletAdapterNetwork;
+  const network = "mainnet-beta";
   // if (devnet) BITCCOIN MPG; else if (mainnet) MAJORS MPG
   let defaultMpg =
-    network == 'devnet' ? 'HyWxreWnng9ZBDPYpuYugAfpCMkRkJ1oz93oyoybDFLB' :
-      network == 'mainnet-beta' ? '4cKB5xKtDpv4xo6ZxyiEvtyX3HgXzyJUS1Y8hAfoNkMT' : null;
+    network == "mainnet-beta"
+      ? "4cKB5xKtDpv4xo6ZxyiEvtyX3HgXzyJUS1Y8hAfoNkMT"
+      : null;
 
   let defaultProduct: Product = {
     index: 0,
-    name: 'BTCUSD-PERP',
+    name: "BTCUSD-PERP",
     minSize: 0.0001,
     exponent: 4,
-  }
+  };
 
-  const [mpgPubkey, setMpgPubkey] = useState(defaultMpg)
-  const [selectedProduct, setSelectedProductIndex] = useState(defaultProduct)
-  const [indexPrice, setIndexPrice] = useState(0)
-  const [markPrice, setMarkPrice] = useState(0)
+  const [mpgPubkey, setMpgPubkey] = useState(defaultMpg);
+  const [selectedProduct, setSelectedProductIndex] = useState(defaultProduct);
+  const [indexPrice, setIndexPrice] = useState(0);
+  const [markPrice, setMarkPrice] = useState(0);
 
   return (
-    <ProductContext.Provider value={{ mpgPubkey, setMpgPubkey, selectedProduct, setSelectedProductIndex, indexPrice, setIndexPrice, markPrice, setMarkPrice }}>
+    <ProductContext.Provider
+      value={{
+        mpgPubkey,
+        setMpgPubkey,
+        selectedProduct,
+        setSelectedProductIndex,
+        indexPrice,
+        setIndexPrice,
+        markPrice,
+        setMarkPrice,
+      }}
+    >
       {children}
     </ProductContext.Provider>
   );
-
-}
+};
 
 export const useProduct = () => {
   const context = useContext(ProductContext);
