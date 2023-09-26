@@ -5,6 +5,7 @@ import RecentPlays from '@/components/common/recent-plays';
 import PlayCard from '@/components/ui/play-card';
 import RecentPlaysFeatured from '@/components/views/play/recent-plays-featured';
 import routes from '@/config/routes';
+import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 
 import { FC } from 'react';
@@ -19,33 +20,39 @@ const Page: FC = () => {
   return (
     <>
       <BackgroundSplash />
-      <section className="flex flex-col gap-[60px]">
-        <div className="grid grid-cols-1 lg:grid-cols-8  gap-14 ">
-          <HeroHeadline
-            className="col-span-1 lg:col-span-5"
-            title={
-              <h1 className="text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] ">
-                Play plenty of funky fresh on-chain games and{' '}
-                <span className="text-primary">win prizes</span>!
-              </h1>
-            }
-          >
-            <p className=" text-xl font-medium leading-8 text-muted-foreground">
-              Take a chance in fun games where you can win SOL and some of your
-              favorite coins and tokens. Flips, mines, dice, and more await for
-              you to play on our game section.
-            </p>
-          </HeroHeadline>
-          {/* <WalletMultiButtonDynamic /> */}
-          <RecentPlaysFeatured className="col-span-1 lg:col-span-3" />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground px-14 py-6  backdrop:blur-sm">
-          {PlayListItems.map((item, index) => (
-            <PlayCard key={index} {...item} />
-          ))}
-        </div>
-        <ColorBlocks className="mx-auto" />
-      </section>
+      <main
+        className={cn(
+          'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
+        )}
+      >
+        <section className="flex flex-col gap-[60px] ">
+          <div className="grid grid-cols-1 lg:grid-cols-8  gap-14   h-full lg:h-[560px] overflow-hidden">
+            <HeroHeadline
+              className="col-span-1 lg:col-span-5"
+              title={
+                <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
+                  Play plenty of funky fresh on-chain games and{' '}
+                  <span className="text-primary">win prizes</span>!
+                </h1>
+              }
+            >
+              <p className=" text-xl font-medium leading-8 text-muted-foreground">
+                Take a chance in fun games where you can win SOL and some of
+                your favorite coins and tokens. Flips, mines, dice, and more
+                await for you to play on our game section.
+              </p>
+            </HeroHeadline>
+            {/* <WalletMultiButtonDynamic /> */}
+            <RecentPlaysFeatured className="col-span-1 lg:col-span-3" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground px-14 py-6  backdrop:blur-sm">
+            {PlayListItems.map((item, index) => (
+              <PlayCard key={index} {...item} />
+            ))}
+          </div>
+          <ColorBlocks className="mx-auto" />
+        </section>
+      </main>
     </>
   );
 };

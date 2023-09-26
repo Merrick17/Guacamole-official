@@ -18,14 +18,14 @@ const Earn: FC = () => {
     <>
       <BackgroundSplash />
       <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
-        <section className="flex flex-col gap-[60px]">
-          <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px] ">
+        <section className="flex flex-col gap-[60px]  ">
+          <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px] lg:h-[560px] overflow-hidden  ">
             <HeroHeadline
               className="col-span-1  lg:col-span-5"
               title={
                 <h1
                   className={
-                    'text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] font-bold '
+                    'text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] font-bold '
                   }
                 >
                   Explore several ways to earn{' '}

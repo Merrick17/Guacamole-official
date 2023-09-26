@@ -19,14 +19,14 @@ export default function Home() {
         )}
       >
         <section className="flex flex-col gap-[60px]">
-          <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full lg:h-[560px] overflow-hidden">
             {/* <HomeContent className="w-full" /> */}
             <HeroHeadline
               className="col-span-1  lg:col-span-5"
               title={
                 <h1
                   className={
-                    'text-3xl sm:text-6xl lg:text-[64px] lg:leading-[72px] font-bold '
+                    'text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] font-bold '
                   }
                 >
                   The <span className="text-primary">best ingredients</span> to

@@ -20,10 +20,10 @@ const Tools: FC<ToolsProps> = () => {
           'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
         )}
       >
-        <section className="flex flex-col gap-[60px]">
+        <section className="flex flex-col gap-[60px] ">
           {/* <HomeContent className="w-full" /> */}
           <HeroHeadline
-            className="w-full lg:max-w-none"
+            className="w-full lg:max-w-none  h-full lg:h-[560px] overflow-hidden"
             title={
               'A growing list of tools focused on cleaning up your crypto portfolio.'
             }
@@ -34,7 +34,7 @@ const Tools: FC<ToolsProps> = () => {
                 instantly help improve your quality of life while interacting
                 with the Solana blockchain or starting your own project!
               </p>
-              <Link href={routes.tools.explore}>
+              <Link href={routes.tools.explore} className="mt-auto">
                 <Button>BROWSE ALL TOOLS</Button>
               </Link>
             </>

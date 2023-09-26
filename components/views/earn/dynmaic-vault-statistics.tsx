@@ -25,7 +25,10 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
   return (
     <JupiterApiProvider>
       <Container
-        className={cn('flex flex-col  gap-5 overflow-y-auto', className)}
+        className={cn(
+          'flex flex-col  gap-5 overflow-y-auto h-[560px]',
+          className
+        )}
       >
         <div className="flex flex-row gap-2 items-center">
           <div className="shrink-0 w-5 aspect-square">
@@ -38,7 +41,7 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
           </div>
           <h1 className="text-xl capitalize">Dynamic Vault Statistics</h1>
         </div>
-        <div className="max-h-[420px] flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+        <div className="flex flex-col  gap-5 overflow-y-auto no-scrollbar">
           {loading ? (
             Array.from({ length: 10 }).map((_, i) => (
               <Skeleton key={i} className="w-full  min-h-[92px]" />
