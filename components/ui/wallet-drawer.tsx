@@ -10,6 +10,7 @@ import routes from '@/config/routes';
 import useWalletTokens from '@/lib/tokens/useWalletTokens';
 import axios from 'axios';
 import { Skeleton } from './skeleton';
+import { useRouter } from 'next/navigation';
 
 const WalletDrawer = () => {
   const [open, setOpen] = useState(false);
@@ -155,10 +156,17 @@ const Row = ({ token }: { token: any }) => {
       : 0;
   }, [token.account.amount, token.decimals]);
 
+  const router = useRouter();
+
   return (
-    <div
-      key={token.token.address}
+    <button
+      key={token.pubkey}
       className="flex items-center justify-start gap-5 w-full rounded-xl p-3 bg-background"
+      onClick={() =>
+        router.push(
+          routes.trade.swap + `?outputMint=${token.account.mint.toBase58()}`
+        )
+      }
     >
       <img
         src={token.token.logoURI as string}
@@ -188,6 +196,6 @@ const Row = ({ token }: { token: any }) => {
           <span>${(token.price * amount).toFixed(2)}</span>
         </div>
       </div>
-    </div>
+    </button>
   );
 };

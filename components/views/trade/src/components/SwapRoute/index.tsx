@@ -19,8 +19,8 @@ export const SwapRoute = ({
   return (
     <div
       className={clsx(
-        'relative',
-        selected && 'bg-black border-2 border-primary border-solid ',
+        'relative text-[#fcfcfc] bg-background ',
+        selected && 'border-2 border-primary border-solid ',
         'rounded-xl '
       )}
     >
