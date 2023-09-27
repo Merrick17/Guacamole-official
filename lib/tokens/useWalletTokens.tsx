@@ -29,7 +29,7 @@ const useWalletTokens = () => {
   const initUserTokens = async () => {
     try {
       const tokens: TokenInfo[] = await getTokens();
-      console.log("Tokens", tokenAccounts.accounts.map((elm) => elm.account.mint.toBase58()));
+     
 
       // Map tokenAccounts and find each token that has the same mint
       const updatedAccounts = tokenAccounts.accounts.map((account) => {

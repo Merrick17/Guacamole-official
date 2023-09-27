@@ -45,9 +45,7 @@ const PerceptualMarketHeader = () => {
                 candles[candles.length - 1] ? candles[candles.length - 1].h : ""
               }
               low={
-                candles[candles.length - 1]
-                  ? candles[candles.length - 1].l
-                  : ""
+                candles[candles.length - 1] ? candles[candles.length - 1].l : ""
               }
             />
             <Button size="icon">
@@ -91,10 +89,10 @@ const PerceptualMarketHeader = () => {
                     name: "ETHUSD-PERP",
                   });
                   setSelectedProductIndex({
-                    index: 0,
+                    index: 1,
                     name: "ETHUSD-PERP",
-                    minSize: 0.0001,
-                    exponent: 4,
+                    minSize: 0.001,
+                    exponent: 3,
                   });
                 }}
               />
@@ -113,10 +111,10 @@ const PerceptualMarketHeader = () => {
                     name: "SOLUSD-PERP",
                   });
                   setSelectedProductIndex({
-                    index: 0,
+                    index: 2,
                     name: "SOLUSD-PERP",
-                    minSize: 0.0001,
-                    exponent: 4,
+                    minSize: 0.1,
+                    exponent: 1,
                   });
                 }}
               />

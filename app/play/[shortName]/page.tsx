@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
 const GameProvider = dynamic(
-  () => import('gamba/react-ui').then((mod) => mod.GameUi.Provider),
+  () => import("gamba/react-ui").then((mod) => mod.GameUi.Provider),
   { ssr: false } // Disable SSR for GameProvider
 );
 const WalletMultiButtonDynamic = dynamic(
   async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
 );
 
-import { GAMES } from '@/components/games';
-import { Button } from '@/components/ui/button';
-import { Modal } from '@/components/views/play/Modal';
-import UserModal from '@/components/views/play/user-modal';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { useGamba, useGambaError } from 'gamba/react';
-import { GameUi, formatLamports } from 'gamba/react-ui';
-import dynamic from 'next/dynamic';
-import { useMemo, useState } from 'react';
+import { GAMES } from "@/components/games";
+import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/views/play/Modal";
+import UserModal from "@/components/views/play/user-modal";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { useGamba, useGambaError } from "gamba/react";
+import { GameUi, formatLamports } from "gamba/react-ui";
+import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
 
 export default function Page({ params }: { params: { shortName: string } }) {
   const gamba = useGamba();
@@ -58,7 +58,16 @@ export default function Page({ params }: { params: { shortName: string } }) {
             ) : (
               <WalletMultiButtonDynamic className="!rounded-lg  h-11 px-3 py-1 font-normal text-sm flex bg-primary text-primary-foreground hover:!bg-primary" />
             )}
-            <Button className="h-11">Claim</Button>
+            {gamba.balances.user > 1000 && (
+              <Button
+                className="h-11"
+                onClick={() => {
+                  gamba.methods.withdraw(gamba.balances.user);
+                }}
+              >
+                Claim
+              </Button>
+            )}
           </div>
         </GameProvider>
       </div>

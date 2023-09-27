@@ -48,8 +48,8 @@ const formSchema = z.object({
 const PerpetualsForm = () => {
   const [tab, setTab] = useState<"future" | "spot" | "swap">("future");
   const [upOrDown, setUpOrDown] = useState(true);
-  const [tradeQuantity, setTradeQuantity] = useState("0");
-  const [slippage, setSlippage] = useState("0");
+
+  const [slippage, setSlippage] = useState("1");
   const [size, setSize] = useState("0");
   const { publicKey, signTransaction, signAllTransactions, connected } =
     useWallet();
@@ -61,6 +61,9 @@ const PerpetualsForm = () => {
   const { selectedProduct, setIndexPrice, setMarkPrice, markPrice } =
     useProduct();
   const [marketPrice, setMarketPrice] = useState(0);
+  const [tradeQuantity, setTradeQuantity] = useState(
+    selectedProduct.minSize.toString()
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,15 +81,19 @@ const PerpetualsForm = () => {
     };
     manifest?.setWallet(DexWallet);
   }, [publicKey, manifest, trader]);
-
+  useEffect(() => {
+    setSize((selectedProduct.minSize * marketPrice).toString());
+  }, [selectedProduct, marketPrice]);
   useEffect(() => {
     if (candles.length > 0) {
       setMarketPrice(Number(candles[candles.length - 1].o));
     }
-  }, [trader, setIndexPrice, candles]);
+  }, [trader, setIndexPrice, candles, markPrice]);
   const callbacks = {
-    onGettingBlockHashFn: () => {},
-    onGotBlockHashFn: () => {},
+    onGettingBlockHashFn: () =>
+      toast({ variant: "default", title: "Fetching BlockHash..." }),
+    onGotBlockHashFn: () =>
+      toast({ variant: "success", title: "Got BlockHash!" }),
     onConfirm: (txn: string) =>
       toast({
         variant: "success",
@@ -172,68 +179,165 @@ const PerpetualsForm = () => {
   //     //setIsLoading(false);
   //   }
   // };
-  const handlePlaceOrder = useCallback(
-    async (orderType: string, slippage: number, size: number) => {
-      if (
-        !markPrice ||
-        !slippage ||
-        !size ||
-        !publicKey ||
-        !manifest ||
-        !selectedProduct
-      )
-        return;
+  // const handlePlaceOrder = useCallback(
+  //   async (orderType: string, slippage: number, size: number) => {
+  //     console.log(
+  //       markPrice,
+  //       slippage,
+  //       size,
+  //       publicKey.toBase58(),
+  //       manifest,
+  //       selectedProduct
+  //     );
+  //     if (
+  //       !markPrice ||
+  //       !slippage ||
+  //       !size ||
+  //       !publicKey ||
+  //       !manifest ||
+  //       !selectedProduct
+  //     )
+  //       return;
 
-      const priceFraction = dexterity.Fractional.New(
-        orderType === "SHORT"
-          ? markPrice - (markPrice * slippage) / 100
-          : markPrice + (markPrice * slippage) / 100,
-        0
-      );
-      const sizeFraction = dexterity.Fractional.New(
-        size * 10 ** selectedProduct.exponent,
-        selectedProduct.exponent
-      );
-      const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET;
+  //     const priceFraction = dexterity.Fractional.New(
+  //       orderType === "SHORT"
+  //         ? markPrice - (markPrice * slippage) / 100
+  //         : markPrice + (markPrice * slippage) / 100,
+  //       0
+  //     );
+  //     const sizeFraction = dexterity.Fractional.New(
+  //       size * 10 ** selectedProduct.exponent,
+  //       selectedProduct.exponent
+  //     );
+  //     const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET;
 
-      try {
-        await trader.newOrder(
-          selectedProduct.index,
-          orderType === "SHORT" ? false : true,
-          priceFraction,
-          sizeFraction,
-          false,
-          new PublicKey(referralTrg),
-          Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
-          null,
-          null,
-          callbacks
-        );
-      } catch (error: any) {
-        toast({
-          variant: "destructive",
+  //     try {
+  //       await trader.newOrder(
+  //         selectedProduct.index,
+  //         orderType === "SHORT" ? false : true,
+  //         priceFraction,
+  //         sizeFraction,
+  //         false,
+  //         new PublicKey(referralTrg),
+  //         Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+  //         null,
+  //         null,
+  //         callbacks
+  //       );
+  //     } catch (error: any) {
+  //       toast({
+  //         variant: "destructive",
 
-          title: "Placing order failed!",
-          description: error?.message,
-        });
-      } finally {
-        toast({
-          variant: "success",
-          title: `Market ${orderType} Order Placed Successfully!`,
-        });
-      }
-    },
-    [
+  //         title: "Placing order failed!",
+  //         description: error?.message,
+  //       });
+  //     } finally {
+  //       toast({
+  //         variant: "success",
+  //         title: `Market ${orderType} Order Placed Successfully!`,
+  //       });
+  //     }
+  //   },
+  //   [
+  //     slippage,
+  //     size,
+  //     upOrDown,
+  //     publicKey,
+  //     manifest,
+  //     trader,
+  //     selectedProduct,
+  //     markPrice,
+  //   ]
+  // );
+  const handlePlaceOrder = async (
+    orderType: string,
+    slippage: number,
+    size: number
+  ) => {
+    console.log(
+      markPrice,
       slippage,
       size,
-      upOrDown,
-      publicKey,
+      publicKey.toBase58(),
       manifest,
-      trader,
-      selectedProduct,
-      markPrice,
-    ]
-  );
+      selectedProduct
+    );
+    if (
+      !markPrice ||
+      !slippage ||
+      !size ||
+      !publicKey ||
+      !manifest ||
+      !selectedProduct
+    ) {
+      console.log("Market Price", markPrice);
+      if (!markPrice) {
+        console.log("markPrice is falsy");
+      }
+
+      if (!slippage) {
+        console.log("slippage is falsy");
+      }
+
+      if (!size) {
+        console.log("size is falsy");
+      }
+
+      if (!publicKey) {
+        console.log("publicKey is falsy");
+      }
+
+      if (!manifest) {
+        console.log("manifest is falsy");
+      }
+
+      if (!selectedProduct) {
+        console.log("selectedProduct is falsy");
+      }
+      return;
+    }
+
+    const priceFraction = dexterity.Fractional.New(
+      orderType === "SHORT"
+        ? markPrice - (markPrice * slippage) / 100
+        : markPrice + (markPrice * slippage) / 100,
+      0
+    );
+    const sizeFraction = dexterity.Fractional.New(
+      size * 10 ** selectedProduct.exponent,
+      selectedProduct.exponent
+    );
+    const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET || "EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC";
+
+    try {
+      await trader.newOrder(
+        selectedProduct.index,
+        orderType === "SHORT" ? false : true,
+        priceFraction,
+        sizeFraction,
+        false,
+        new PublicKey(referralTrg),
+        Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+        null,
+        null,
+        callbacks
+      );
+       toast({
+        variant: "success",
+        title: `Market ${orderType} Order Placed Successfully!`,
+      });
+    } catch (error: any) {
+      console.log(error)
+      toast({
+        variant: "destructive",
+
+        title: "Placing order failed!",
+        description: error?.message,
+      });
+    } finally {
+     
+    }
+  };
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -246,7 +350,7 @@ const PerpetualsForm = () => {
   }
   const placeOrder = async () => {
     const position = upOrDown ? "LONG" : "SHORT";
-    await handlePlaceOrder(position, Number(slippage), Number(size));
+    await handlePlaceOrder(position, Number(slippage), Number(tradeQuantity));
   };
   return (
     <>
@@ -284,7 +388,7 @@ const PerpetualsForm = () => {
         <Form {...form}>
           {trader ? (
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={(e) => e.preventDefault()}
               className=" bg-background space-y-8 "
             >
               <div className="flex flex-col gap-3">
@@ -386,7 +490,7 @@ const PerpetualsForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-muted-foreground">
-                      Slippage Tolerance
+                      Slippage Tolerance (%)
                     </FormLabel>
                     <FormControl className="bg-foreground">
                       <Input
