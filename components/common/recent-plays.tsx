@@ -1,7 +1,7 @@
 'use client';
 
 import { GameResult, lamportsToSol } from 'gamba';
-import { useEventFetcher, useGamba } from 'gamba/react';
+import { useEventFetcher, useGamba,useGambaEvents } from 'gamba/react';
 import { formatLamports } from 'gamba/react-ui';
 import React from 'react';
 import { Section } from '../styles';
@@ -78,16 +78,16 @@ export default function RecentPlays({
   compact?: boolean;
 }) {
   const gamba = useGamba();
-  const events = useEventFetcher();
+  const events = useGambaEvents();
 
-  React.useEffect(() => {
-    events.fetch({ signatureLimit: 40 });
-    return events.listen();
-  }, [events]);
+  // React.useEffect(() => {
+  //   events.fetch({ signatureLimit: 40 });
+  //   return events.listen();
+  // }, [events]);
 
-  const results = React.useMemo(() => {
-    return events.transactions.filter((x) => !!x.event.gameResult);
-  }, [events.transactions]);
+  // const results = React.useMemo(() => {
+  //   return events.transactions.filter((x) => !!x.event.gameResult);
+  // }, [events.transactions]);
 
   return (
     <div
@@ -98,7 +98,7 @@ export default function RecentPlays({
     >
       <div>
         <div className="flex flex-col gap-5">
-          {results.map((transaction) => (
+          {events.map((transaction) => (
             <RecentPlay
               key={transaction.signature}
               time={transaction.time}
@@ -110,9 +110,9 @@ export default function RecentPlays({
             />
           ))}
         </div>
-        {!events.latestSig
+        {/* {!events.latestSig
           ? Array.from({ length: 5 }).map((_, i) => <div key={i} />)
-          : !results.length && <div>No events</div>}
+          : !results.length && <div>No events</div>} */}
       </div>
     </div>
   );

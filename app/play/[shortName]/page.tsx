@@ -44,17 +44,11 @@ export default function Page({ params }: { params: { shortName: string } }) {
           <div className="relative max-w-[512px] min-h-[400px] w-full z-10  bg-foreground rounded-lg ">
             <game.app />
           </div>
-          <div className="max-w-[512px]  w-full z-10  bg-foreground rounded-lg min-h-[60px]">
-            <GameUi.ControlView className="w-full p-5 flex flex-wrap items-center gap-1 justify-evenly rounded-lg backdrop:blur-[50px]" />
-            {wallet.connected ? (
-              <button onClick={() => setModal(true)}>
-                {formatLamports(gamba.balances.total)}
-              </button>
-            ) : (
-              <button onClick={() => walletModal.setVisible(true)}>
-                Connect!
-              </button>
-            )}
+          <div className="max-w-[512px]  w-full z-10  bg-foreground rounded-lg min-h-[60px] flex flex-wrap items-center">
+            <GameUi.ControlView className="p-5 w-full flex flex-wrap items-center gap-1 justify-evenly rounded-lg backdrop:blur-[50px]"/>
+          
+          
+           
           </div>
         </GameProvider>
       </div>

@@ -13,10 +13,10 @@ const WalletMultiButtonDynamic = dynamic(
 
 export default function UserModal() {
   const gamba = useGamba();
-  const bonus = useBonusToken();
-  useEffect(()=>{
-console.log("Bonus",bonus)
-  },[bonus])
+  //   const bonus = useBonusToken();
+  //   useEffect(()=>{
+  // console.log("Bonus",bonus)
+  //   },[bonus])
   return (
     <>
       <h1>{formatLamports(gamba.balances.total)}</h1>
@@ -26,11 +26,18 @@ console.log("Bonus",bonus)
           <Button onClick={gamba.methods.initializeAccount}>Create</Button>
         )}
         {gamba.user.created && (
-          <Button onClick={gamba.methods.closeAccount}>
-            Close account
+          <Button onClick={gamba.methods.closeAccount}>Close account</Button>
+        )}
+        {gamba.balances.user >= 1000 && (
+          <Button
+            onClick={() => {
+              gamba.methods.withdraw(gamba.balances.user);
+            }}
+          >
+            Claim {formatLamports(gamba.balances.user)}
           </Button>
         )}
-        {bonus.balance > 0 && (
+        {/* {bonus.balance > 0 && (
           <Button
             onClick={() =>
               gamba.methods.redeemBonusToken(
@@ -42,7 +49,7 @@ console.log("Bonus",bonus)
           >
             Redeem Bonus {formatLamports(bonus.balance)}
           </Button>
-        )}
+        )} */}
       </div>
       {/* <WalletMultiButtonDynamic /> */}
     </>
