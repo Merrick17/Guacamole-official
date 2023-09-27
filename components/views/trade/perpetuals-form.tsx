@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DexterityWallet } from "@hxronetwork/dexterity-ts";
 import { useWallet } from "@solana/wallet-adapter-react";
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiDownArrowAlt, BiUpArrowAlt } from "react-icons/bi";
 import { BsFillInfoCircleFill } from "react-icons/bs";
@@ -84,7 +84,21 @@ const PerpetualsForm = () => {
       setMarketPrice(Number(candles[candles.length - 1].o));
     }
   }, [trader, setIndexPrice, candles]);
-
+  const callbacks = {
+    onGettingBlockHashFn: () => {},
+    onGotBlockHashFn: () => {},
+    onConfirm: (txn: string) =>
+      toast({
+        variant: "success",
+        title: "Order Placed Successfully!",
+        description: (
+          <div className="flex flex-col gap-1">
+            <p>Transaction sent successfully.</p>
+            <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+          </div>
+        ),
+      }),
+  };
   // Watch changes to size and update tradeQuantity
   // useMemo(() => {
   //   const tradeQuantity = form.watch("tradeQuantity");
@@ -97,68 +111,129 @@ const PerpetualsForm = () => {
   //   const newTradeQuantity = (parseFloat(size) / marketPrice).toFixed(2);
   //   form.setValue("tradeQuantity", newTradeQuantity);
   // }, [form.getValues('size'), candles]);
-  const handlePlaceOrder = async (
-    slippage: number,
-    orderType: string,
-    size: number
-  ) => {
-    const callbacks = {
-      onGettingBlockHashFn: () => {},
-      onGotBlockHashFn: () => {},
-      onConfirm: (txn: string) =>
+  // const handlePlaceOrder = async (
+  //   slippage: number,
+  //   orderType: string,
+  //   size: number
+  // ) => {
+  //   const callbacks = {
+  //     onGettingBlockHashFn: () => {},
+  //     onGotBlockHashFn: () => {},
+  //     onConfirm: (txn: string) =>
+  //       toast({
+  //         variant: "success",
+  //         title: "Order Placed Successfully!",
+  //         description: (
+  //           <div className="flex flex-col gap-1">
+  //             <p>Transaction sent successfully.</p>
+  //             <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+  //           </div>
+  //         ),
+  //       }),
+  //   };
+  //   const priceFraction = dexterity.Fractional.New(
+  //     orderType === "SHORT"
+  //       ? marketPrice - (marketPrice * slippage) / 100
+  //       : marketPrice + (marketPrice * slippage) / 100,
+  //     0
+  //   );
+  //   const sizeFraction = dexterity.Fractional.New(
+  //     size * 10 ** selectedProduct.exponent,
+  //     selectedProduct.exponent
+  //   );
+  //   const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET;
+
+  //   try {
+  //     await trader.newOrder(
+  //       selectedProduct.index,
+  //       orderType === "SHORT" ? false : true,
+  //       priceFraction,
+  //       sizeFraction,
+  //       false,
+  //       new PublicKey(referralTrg),
+  //       Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+  //       null,
+  //       null,
+  //       callbacks
+  //     );
+  //     //setIsSuccess(true);
+  //   } catch (error: any) {
+  //     //setIsSuccess(false);
+  //     toast({
+  //       variant: "destructive",
+  //       title: "Placing order failed!",
+  //       description: error?.message,
+  //     });
+  //   } finally {
+  //     toast({
+  //       variant: "success",
+  //       title: `Market ${orderType} Order Placed Successfully!`,
+  //     });
+  //     //setIsLoading(false);
+  //   }
+  // };
+  const handlePlaceOrder = useCallback(
+    async (orderType: string, slippage: number, size: number) => {
+      if (
+        !markPrice ||
+        !slippage ||
+        !size ||
+        !publicKey ||
+        !manifest ||
+        !selectedProduct
+      )
+        return;
+
+      const priceFraction = dexterity.Fractional.New(
+        orderType === "SHORT"
+          ? markPrice - (markPrice * slippage) / 100
+          : markPrice + (markPrice * slippage) / 100,
+        0
+      );
+      const sizeFraction = dexterity.Fractional.New(
+        size * 10 ** selectedProduct.exponent,
+        selectedProduct.exponent
+      );
+      const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET;
+
+      try {
+        await trader.newOrder(
+          selectedProduct.index,
+          orderType === "SHORT" ? false : true,
+          priceFraction,
+          sizeFraction,
+          false,
+          new PublicKey(referralTrg),
+          Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+          null,
+          null,
+          callbacks
+        );
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+
+          title: "Placing order failed!",
+          description: error?.message,
+        });
+      } finally {
         toast({
           variant: "success",
-          title: "Order Placed Successfully!",
-          description: (
-            <div className="flex flex-col gap-1">
-              <p>Transaction sent successfully.</p>
-              <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
-            </div>
-          ),
-        }),
-    };
-    const priceFraction = dexterity.Fractional.New(
-      orderType === "SHORT"
-        ? marketPrice - (marketPrice * slippage) / 100
-        : marketPrice + (marketPrice * slippage) / 100,
-      0
-    );
-    const sizeFraction = dexterity.Fractional.New(
-      size * 10 ** selectedProduct.exponent,
-      selectedProduct.exponent
-    );
-    const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET;
-
-    try {
-      await trader.newOrder(
-        selectedProduct.index,
-        orderType === "SHORT" ? false : true,
-        priceFraction,
-        sizeFraction,
-        false,
-        new PublicKey(referralTrg),
-        Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
-        null,
-        null,
-        callbacks
-      );
-      //setIsSuccess(true);
-    } catch (error: any) {
-      //setIsSuccess(false);
-      toast({
-        variant: "destructive",
-        title: "Placing order failed!",
-        description: error?.message,
-      });
-    } finally {
-      toast({
-        variant: "success",
-        title: `Market ${orderType} Order Placed Successfully!`,
-      });
-      //setIsLoading(false);
-    }
-  };
-
+          title: `Market ${orderType} Order Placed Successfully!`,
+        });
+      }
+    },
+    [
+      slippage,
+      size,
+      upOrDown,
+      publicKey,
+      manifest,
+      trader,
+      selectedProduct,
+      markPrice,
+    ]
+  );
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -171,7 +246,7 @@ const PerpetualsForm = () => {
   }
   const placeOrder = async () => {
     const position = upOrDown ? "LONG" : "SHORT";
-    await handlePlaceOrder(Number(slippage), position, Number(size));
+    await handlePlaceOrder(position, Number(slippage), Number(size));
   };
   return (
     <>

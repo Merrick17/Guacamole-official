@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
 const GameProvider = dynamic(
-  () => import('gamba/react-ui').then((mod) => mod.GameUi.Provider),
+  () => import("gamba/react-ui").then((mod) => mod.GameUi.Provider),
   { ssr: false } // Disable SSR for GameProvider
 );
 
-import { GAMES } from '@/components/games';
-import { Modal } from '@/components/views/play/Modal';
-import UserModal from '@/components/views/play/user-modal';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { useGamba, useGambaError } from 'gamba/react';
-import { GameUi, formatLamports } from 'gamba/react-ui';
-import dynamic from 'next/dynamic';
-import { useMemo, useState } from 'react';
+import { GAMES } from "@/components/games";
+import { Modal } from "@/components/views/play/Modal";
+import UserModal from "@/components/views/play/user-modal";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { useGamba, useGambaError } from "gamba/react";
+import { GameUi, formatLamports, } from "gamba/react-ui";
+import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
 
 export default function Page({ params }: { params: { shortName: string } }) {
   const gamba = useGamba();
@@ -36,6 +36,7 @@ export default function Page({ params }: { params: { shortName: string } }) {
       {modal && (
         <Modal onClose={() => setModal(false)}>
           <UserModal />
+          
         </Modal>
       )}
       <div className="w-full flex flex-col items-center gap-4">

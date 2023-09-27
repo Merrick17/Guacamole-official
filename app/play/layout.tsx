@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     // <ContextProvider>
-      <Gamba creator={'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC'}>
+      <Gamba creator={'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC'} >
         {children}
       </Gamba>
     // </ContextProvider>

@@ -71,7 +71,7 @@ require("@solana/wallet-adapter-react-ui/styles.css");
 //   );
 // };
 import dexterityTs, { DexterityWallet } from "@hxronetwork/dexterity-ts";
-import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
+import { WalletError } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
   WalletProvider,
@@ -80,10 +80,8 @@ import {
 import {
   BackpackWalletAdapter,
   PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  UnsafeBurnerWalletAdapter,
+  SolflareWalletAdapter
 } from "@solana/wallet-adapter-wallets";
-import { clusterApiUrl } from "@solana/web3.js";
 import dynamic from "next/dynamic";
 import { FC, ReactNode, useCallback, useMemo } from "react";
 // import { notify } from "../utils/notifications";
