@@ -1,8 +1,8 @@
-'use client';
-import PreceptualModal from '@/components/common/PreceptualModal';
-import { SelectTraderAccounts } from '@/components/common/TraderAccountDropDown';
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
+"use client";
+import PreceptualModal from "@/components/common/PreceptualModal";
+import { SelectTraderAccounts } from "@/components/common/TraderAccountDropDown";
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,38 +10,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   dexterity,
   useManifest,
   useProduct,
   useTrader,
-} from '@/context/dexterity';
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { DexterityWallet } from '@hxronetwork/dexterity-ts';
-import { useWallet } from '@solana/wallet-adapter-react';
-import dynamic from 'next/dynamic';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+} from "@/context/dexterity";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DexterityWallet } from "@hxronetwork/dexterity-ts";
+import { useWallet } from "@solana/wallet-adapter-react";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   BiChevronDown,
   BiChevronUp,
   BiDownArrowAlt,
   BiUpArrowAlt,
-} from 'react-icons/bi';
-import { BsFillInfoCircleFill } from 'react-icons/bs';
-import * as z from 'zod';
+} from "react-icons/bi";
+import { BsFillInfoCircleFill } from "react-icons/bs";
+import * as z from "zod";
 
-import NavigationList from '@/components/ui/navigation-list';
-import { useWebSocket } from '@/context/websocket';
-import { useToast } from '@/hooks/use-toast';
-import { PublicKey } from '@solana/web3.js';
-import Link from 'next/link';
+import NavigationList from "@/components/ui/navigation-list";
+import { useWebSocket } from "@/context/websocket";
+import { useToast } from "@/hooks/use-toast";
+import { PublicKey } from "@solana/web3.js";
+import Link from "next/link";
 const WalletMultiButtonDynamic = dynamic(
   async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
 );
 const formSchema = z.object({
@@ -51,20 +51,21 @@ const formSchema = z.object({
   size: z.string(),
 });
 const PerpetualsForm = () => {
-  const [tab, setTab] = useState<'future' | 'spot' | 'swap'>('future');
+  const [tab, setTab] = useState<"future" | "spot" | "swap">("future");
   const [upOrDown, setUpOrDown] = useState(true);
 
-  const [slippage, setSlippage] = useState('1');
-  const [size, setSize] = useState('0');
+  const [slippage, setSlippage] = useState("1");
+  const [size, setSize] = useState("0");
   const { publicKey, signTransaction, signAllTransactions, connected } =
     useWallet();
   const { manifest } = useManifest();
-  const { trader } = useTrader();
+  const { trader, cashBalance } = useTrader();
   const { toast } = useToast();
   const { candles } = useWebSocket();
   const [isOpen, setIsOpen] = useState(false);
   const { selectedProduct, setIndexPrice, setMarkPrice, markPrice } =
     useProduct();
+  const { selectedMarket } = useWebSocket();
   const [marketPrice, setMarketPrice] = useState(0);
   const [tradeQuantity, setTradeQuantity] = useState(
     selectedProduct.minSize.toString()
@@ -73,9 +74,9 @@ const PerpetualsForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       upOrDown: true,
-      tradeQuantity: '0.10',
-      slippage: '0',
-      size: '0',
+      tradeQuantity: "0.10",
+      slippage: "0",
+      size: "0",
     },
   });
   useMemo(async () => {
@@ -96,13 +97,13 @@ const PerpetualsForm = () => {
   }, [trader, setIndexPrice, candles, markPrice]);
   const callbacks = {
     onGettingBlockHashFn: () =>
-      toast({ variant: 'default', title: 'Fetching BlockHash...' }),
+      toast({ variant: "default", title: "Fetching BlockHash..." }),
     onGotBlockHashFn: () =>
-      toast({ variant: 'success', title: 'Got BlockHash!' }),
+      toast({ variant: "success", title: "Got BlockHash!" }),
     onConfirm: (txn: string) =>
       toast({
-        variant: 'success',
-        title: 'Order Placed Successfully!',
+        variant: "success",
+        title: "Order Placed Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
@@ -275,35 +276,35 @@ const PerpetualsForm = () => {
       !manifest ||
       !selectedProduct
     ) {
-      console.log('Market Price', markPrice);
+      console.log("Market Price", markPrice);
       if (!markPrice) {
-        console.log('markPrice is falsy');
+        console.log("markPrice is falsy");
       }
 
       if (!slippage) {
-        console.log('slippage is falsy');
+        console.log("slippage is falsy");
       }
 
       if (!size) {
-        console.log('size is falsy');
+        console.log("size is falsy");
       }
 
       if (!publicKey) {
-        console.log('publicKey is falsy');
+        console.log("publicKey is falsy");
       }
 
       if (!manifest) {
-        console.log('manifest is falsy');
+        console.log("manifest is falsy");
       }
 
       if (!selectedProduct) {
-        console.log('selectedProduct is falsy');
+        console.log("selectedProduct is falsy");
       }
       return;
     }
 
     const priceFraction = dexterity.Fractional.New(
-      orderType === 'SHORT'
+      orderType === "SHORT"
         ? markPrice - (markPrice * slippage) / 100
         : markPrice + (markPrice * slippage) / 100,
       0
@@ -312,12 +313,14 @@ const PerpetualsForm = () => {
       size * 10 ** selectedProduct.exponent,
       selectedProduct.exponent
     );
-    const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET || "2G7UzceMvGWAxa37dXTu1MXbSe9P9G3Xeu22UD9HCwUw";
+    const referralTrg =
+      process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET ||
+      "2G7UzceMvGWAxa37dXTu1MXbSe9P9G3Xeu22UD9HCwUw";
 
     try {
       await trader.newOrder(
         selectedProduct.index,
-        orderType === 'SHORT' ? false : true,
+        orderType === "SHORT" ? false : true,
         priceFraction,
         sizeFraction,
         false,
@@ -328,15 +331,15 @@ const PerpetualsForm = () => {
         callbacks
       );
       toast({
-        variant: 'success',
+        variant: "success",
         title: `Market ${orderType} Order Placed Successfully!`,
       });
     } catch (error: any) {
       console.log(error);
       toast({
-        variant: 'destructive',
+        variant: "destructive",
 
-        title: 'Placing order failed!',
+        title: "Placing order failed!",
         description: error?.message,
       });
     } finally {
@@ -353,7 +356,7 @@ const PerpetualsForm = () => {
     // await handlePlaceOrder(slippage, position, size);
   }
   const placeOrder = async () => {
-    const position = upOrDown ? 'LONG' : 'SHORT';
+    const position = upOrDown ? "LONG" : "SHORT";
     await handlePlaceOrder(position, Number(slippage), Number(tradeQuantity));
   };
   return (
@@ -387,10 +390,10 @@ const PerpetualsForm = () => {
                 <div className="flex items-center justify-between gap-4">
                   <Button
                     className={cn(
-                      ' rounded-lg text-sm w-full  gap-2',
+                      " rounded-lg text-sm w-full  gap-2",
                       upOrDown
-                        ? 'bg-[#8bd796] hover:!bg-[#8bd796]'
-                        : 'bg-background hover:!bg-background text-white'
+                        ? "bg-[#8bd796] hover:!bg-[#8bd796]"
+                        : "bg-background hover:!bg-background text-white"
                     )}
                     size="lg"
                     onClick={() => {
@@ -405,10 +408,10 @@ const PerpetualsForm = () => {
 
                   <Button
                     className={cn(
-                      ' rounded-lg text-sm w-full ',
+                      " rounded-lg text-sm w-full ",
                       !upOrDown
-                        ? 'bg-destructive hover:!bg-destructive'
-                        : 'bg-background hover:!bg-background text-white'
+                        ? "bg-destructive hover:!bg-destructive"
+                        : "bg-background hover:!bg-background text-white"
                     )}
                     size="lg"
                     onClick={() => {
@@ -429,14 +432,15 @@ const PerpetualsForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
-                      <p> Trade Size {'(BTC)'}</p> <p> Min. Trade: 0.0001</p>
+                      <p> Trade Size ({selectedMarket.name})</p>{" "}
+                      <p> Min. Trade: {selectedProduct.minSize}</p>
                     </FormLabel>
                     <FormControl className="bg-foreground px-4 py-2 h-10">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-5">
                           <div className="w-5 h-5 shrink-0">
                             <img
-                              src="/static/coins/bitcoin.png"
+                              src={selectedMarket.coinLogo}
                               alt="usdc"
                               className="w-5 h-5"
                             />
@@ -459,10 +463,19 @@ const PerpetualsForm = () => {
                             size="icon"
                             className="text-accent bg-background text-xs h-6 w-9 py-1 px-[10px]"
                             onClick={() =>
-                              form.setValue(
-                                'tradeQuantity',
-                                String(Number(form.watch('tradeQuantity')) / 2)
-                              )
+                              // form.setValue(
+                              //   "tradeQuantity",
+                              //   String(Number(form.watch("tradeQuantity")) / 2)
+                              // )
+                              {
+                                setTradeQuantity((prevVal) =>
+                                  (Number(prevVal) / 2).toString()
+                                );
+                                const newSize = (
+                                  parseFloat(tradeQuantity) * marketPrice
+                                ).toFixed(2);
+                                setSize(newSize);
+                              }
                             }
                           >
                             1/2
@@ -470,12 +483,15 @@ const PerpetualsForm = () => {
                           <Button
                             size="icon"
                             className="text-accent bg-background text-xs h-6 w-9  py-1 px-[10px]"
-                            onClick={() =>
-                              form.setValue(
-                                'tradeQuantity',
-                                String(Number(form.watch('tradeQuantity')) * 2)
-                              )
-                            }
+                            onClick={() => {
+                              setTradeQuantity((prevVal) =>
+                                (Number(prevVal) * 2).toString()
+                              );
+                              const newSize = (
+                                parseFloat(tradeQuantity) * marketPrice
+                              ).toFixed(2);
+                              setSize(newSize);
+                            }}
                           >
                             x2
                           </Button>
@@ -545,8 +561,10 @@ const PerpetualsForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
-                      <p>Estimated {'(USDC)'}</p>{' '}
-                      <p className="text-accent">Cash Balance: $10,042.24</p>
+                      <p>Estimated {"(USDC)"}</p>{" "}
+                      <p className="text-accent">
+                        Cash Balance: $ {cashBalance ? cashBalance : 0}
+                      </p>
                     </FormLabel>
                     <FormControl className="bg-foreground px-4 py-2 h-10">
                       <div className=" flex items-center gap-5">
@@ -557,7 +575,7 @@ const PerpetualsForm = () => {
                             className="w-5 h-5"
                           />
                         </div>
-                        <h5 className="text-sm font-medium">2,562.02</h5>
+                        <h5 className="text-sm font-medium">{size}</h5>
                         {/* <Input
                           type="number"
                           placeholder="0"
@@ -596,7 +614,7 @@ const PerpetualsForm = () => {
 
         <div className="text-muted-foreground text-sm flex items-center justify-between gap-4">
           <p>
-            GUAC/Avotar Discount:{' '}
+            GUAC/Avotar Discount:{" "}
             <span className="text-[#8bd796] ">Save up to 40%</span>
           </p>
 

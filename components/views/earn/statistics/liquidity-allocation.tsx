@@ -1,7 +1,8 @@
-import { getRandomHexColor } from "@/lib/utils";
+import { getColorByName, getRandomHexColor } from "@/lib/utils";
 import StatisticsCardContainer from "./statistics-card-container";
 
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
 const LiquidityAllocationChart = dynamic(
   () => import("./liquidity-allocation-chart"),
@@ -24,7 +25,15 @@ const LiquidityAllocation = ({
             <LiquidityItem key={index} {...item} symbol={symbol} />
           ))}
         </ul>
-        <LiquidityAllocationChart data={allocations} />
+        <LiquidityAllocationChart
+          data={allocations.map((elm) => {
+            return {
+              ...elm,
+              color: getColorByName(elm.name.toUpperCase()),
+              allocation: Number(elm.allocation),
+            };
+          })}
+        />
       </div>
       <div className="border-t border-[#E5E7EB] pt-4 flex items-center gap-4 ">
         <Icon />{" "}

@@ -52,7 +52,9 @@ const CandleChart = ({}) => {
     }
 
     if (chartRef.current) {
-      chartRef.current.innerHTML = "";
+      if (chartRef && chartRef.current) {
+        chartRef.current.innerHTML = "";
+      }
     }
 
     const chart = createChart(chartRef.current, {
@@ -72,9 +74,7 @@ const CandleChart = ({}) => {
         horzLines: {
           color: "rgba(252, 252, 252, 0.1)",
         },
-        
       },
-    
     });
     const candlestickSeries = chart.addCandlestickSeries();
     const seriesData = candles.map((candle) => ({
@@ -108,7 +108,6 @@ const CandleChart = ({}) => {
 
   return (
     <div>
-  
       <div ref={chartRef} style={{ width: "800px", height: "100%" }}></div>
     </div>
   );

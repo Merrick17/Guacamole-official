@@ -1,15 +1,16 @@
-import { useProduct, useTrader } from '@/context/dexterity';
-import { useWebSocket } from '@/context/websocket';
-import { BsChevronDown } from 'react-icons/bs';
-import { Button } from '../ui/button';
+import { useProduct, useTrader } from "@/context/dexterity";
+import { useWebSocket } from "@/context/websocket";
+import { BsChevronDown } from "react-icons/bs";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { SelectedCoin } from './SelectCoin';
-import Container from './container';
+} from "../ui/dropdown-menu";
+import { SelectedCoin } from "./SelectCoin";
+import Container from "./container";
+import { useEffect } from "react";
 
 type SelectedCoinProps = {
   high: string;
@@ -28,6 +29,7 @@ const PerceptualMarketHeader = () => {
   const { selectedMarket, selectMarket, candles } = useWebSocket();
   const { trader } = useTrader();
   const { setSelectedProductIndex } = useProduct();
+  useEffect(() => {}, [candles]);
 
   return (
     <Container className="w-full flex justify-between items-center bg-background py-6 px-9">
@@ -55,18 +57,18 @@ const PerceptualMarketHeader = () => {
           <DropdownMenuContent className="w-full">
             <DropdownMenuItem>
               <SelectedCoin
-                coin={['BTC', 'Bitcoin', 'PYTH:BTCUSD']}
+                coin={["BTC", "Bitcoin", "PYTH:BTCUSD"]}
                 onClick={() => {
                   selectMarket({
-                    high: '25,901.41',
-                    low: '25,534.37',
-                    coin: ['BTC', 'Bitcoin', 'PYTH:BTCUSD'],
-                    coinLogo: '/images/tokens/BTC.png',
-                    name: 'BTCUSD-PERP',
+                    high: "25,901.41",
+                    low: "25,534.37",
+                    coin: ["BTC", "Bitcoin", "PYTH:BTCUSD"],
+                    coinLogo: "/images/tokens/BTC.png",
+                    name: "BTCUSD-PERP",
                   });
                   setSelectedProductIndex({
                     index: 0,
-                    name: 'BTCUSD-PERP',
+                    name: "BTCUSD-PERP",
                     minSize: 0.0001,
                     exponent: 4,
                   });
@@ -75,18 +77,18 @@ const PerceptualMarketHeader = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <SelectedCoin
-                coin={['ETH', 'Ethereum', 'PYTH:ETHUSD']}
+                coin={["ETH", "Ethereum", "PYTH:ETHUSD"]}
                 onClick={() => {
                   selectMarket({
-                    high: '25,901.41',
-                    low: '25,534.37',
-                    coin: ['ETH', 'Ethereum', 'PYTH:ETHUSD'],
-                    coinLogo: '/images/tokens/ETH.png',
-                    name: 'ETHUSD-PERP',
+                    high: "25,901.41",
+                    low: "25,534.37",
+                    coin: ["ETH", "Ethereum", "PYTH:ETHUSD"],
+                    coinLogo: "/images/tokens/ETH.png",
+                    name: "ETHUSD-PERP",
                   });
                   setSelectedProductIndex({
                     index: 1,
-                    name: 'ETHUSD-PERP',
+                    name: "ETHUSD-PERP",
                     minSize: 0.001,
                     exponent: 3,
                   });
@@ -95,18 +97,18 @@ const PerceptualMarketHeader = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <SelectedCoin
-                coin={['SOL', 'Solana', 'PYTH:SOLUSD']}
+                coin={["SOL", "Solana", "PYTH:SOLUSD"]}
                 onClick={() => {
                   selectMarket({
-                    high: '25,901.41',
-                    low: '25,534.37',
-                    coin: ['SOL', 'Solana', 'PYTH:SOLUSD'],
-                    coinLogo: '/images/tokens/SOL.png',
-                    name: 'SOLUSD-PERP',
+                    high: "25,901.41",
+                    low: "25,534.37",
+                    coin: ["SOL", "Solana", "PYTH:SOLUSD"],
+                    coinLogo: "/images/tokens/SOL.png",
+                    name: "SOLUSD-PERP",
                   });
                   setSelectedProductIndex({
                     index: 2,
-                    name: 'SOLUSD-PERP',
+                    name: "SOLUSD-PERP",
                     minSize: 0.1,
                     exponent: 1,
                   });
@@ -121,17 +123,17 @@ const PerceptualMarketHeader = () => {
           $
           {candles[candles.length - 1] ? (
             <>
-              {candles[candles.length - 1].o.split('.')[0]}
+              {candles[candles.length - 1].o.split(".")[0]}
               <span className="text-lg">
-                .{candles[candles.length - 1].o.split('.')[1]}
+                .{candles[candles.length - 1].o.split(".")[1]}
               </span>
             </>
           ) : (
-            'N/A' // Display "N/A" or any other default value when candles[candles.length - 1].o is undefined
+            "N/A" // Display "N/A" or any other default value when candles[candles.length - 1].o is undefined
           )}
         </p>
         <p className="text-muted-foreground text-[10px] text-right">
-          INDEX PRICE: $25,655.24
+          INDEX PRICE: $ {markPrice ? markPrice : "N/A"}
         </p>
       </div>
     </Container>

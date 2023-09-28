@@ -103,7 +103,7 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
 
       ws.current.onopen = () => {
         ws.current?.send(
-          JSON.stringify({ command: "stream", params: { newTime: "1_m" } })
+          JSON.stringify({ command: "stream" })
         );
       };
 

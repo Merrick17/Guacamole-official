@@ -119,7 +119,10 @@ export function PerceptualTable() {
                   <TableCell>{qty}</TableCell>
                   <TableCell>${value.toLocaleString()}</TableCell>
                   <TableCell>
-                    <Button variant="ghost">Close Trade</Button>
+                    <Button variant="ghost" onClick={async ()=>{
+                      console.log("Position",position); 
+                     // await trader.cancelOrder(selectedProduct.index,position.)
+                    }}>Close Trade</Button>
                   </TableCell>
                 </TableRow>
               );
