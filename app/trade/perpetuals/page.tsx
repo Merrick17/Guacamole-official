@@ -1,23 +1,24 @@
-"use client";
+'use client';
 
-import { PerceptualTable } from "@/components/views/trade/perceptual-table";
-import PerceptualForm from "@/components/views/trade/perpetuals-form";
-import TableDetails from "@/components/views/trade/table-details";
-import { dexterity, useProduct, useTrader } from "@/context/dexterity";
-import { WebSocketProvider } from "@/context/websocket";
-import { cn } from "@/lib/utils";
-import { PublicKey } from "@solana/web3.js";
-import dynamic from "next/dynamic";
-import { useCallback, useMemo } from "react";
+import { PerceptualTable } from '@/components/views/trade/perceptual-table';
+import PerceptualForm from '@/components/views/trade/perpetuals-form';
+import SelectTradingAccount from '@/components/views/trade/select-trading-account';
+import TableDetails from '@/components/views/trade/table-details';
+import { dexterity, useProduct, useTrader } from '@/context/dexterity';
+import { WebSocketProvider } from '@/context/websocket';
+import { cn } from '@/lib/utils';
+import { PublicKey } from '@solana/web3.js';
+import dynamic from 'next/dynamic';
+import { useCallback, useMemo } from 'react';
 const TVChartContainer = dynamic(
-  () => import("@/components/views/trade/TVChart"),
+  () => import('@/components/views/trade/TVChart'),
   {
     ssr: false,
   }
 );
 const WalletMultiButtonDynamic = dynamic(
   async () =>
-    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
   { ssr: false }
 );
 const Perceptual = () => {
@@ -29,7 +30,7 @@ const Perceptual = () => {
     selectedProduct,
   } = useProduct();
   const { trader } = useTrader();
-  const UNINITIALIZED = new PublicKey("11111111111111111111111111111111");
+  const UNINITIALIZED = new PublicKey('11111111111111111111111111111111');
 
   const updatePrices = useCallback(async () => {
     if (trader) {
@@ -76,22 +77,27 @@ const Perceptual = () => {
         <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
           <div
             className={cn(
-              "grid  w-full z-20  grid-cols-1 lg:grid-cols-6 gap-[10px] rounded-lg bg-foreground px-5 py-7 "
+              'flex flex-col gap-10  w-full z-20  rounded-lg bg-background  '
             )}
           >
-            <div className="flex flex-1 justify-center col-span-4">
-              <TVChartContainer productSelect={"SOLUSD-PERP"} />
+            <div className="w-full bg-foreground grid  z-20  grid-cols-1 lg:grid-cols-12 gap-[10px] px-5 py-7">
+              <div className="flex flex-1 justify-center col-span-1 lg:col-span-8">
+                <TVChartContainer productSelect={'SOLUSD-PERP'} />
+              </div>
+              <div className="col-span-1 lg:col-span-4 ">
+                <PerceptualForm />
+              </div>
             </div>
-
-            <div className="col-span-2 ">
-              <PerceptualForm />
-            </div>
-            <div className="flex flex-1 justify-center col-span-4">
-              <PerceptualTable />
-            </div>
-
-            <div className="col-span-2 ">
-              <TableDetails />
+            <div className="w-full bg-foreground grid  z-20  grid-cols-1 lg:grid-cols-12 gap-[10px] px-5 py-7">
+              <div className="flex flex-1 justify-center  col-span-1  lg:col-span-4">
+                <PerceptualTable />
+              </div>
+              <div className="col-span-1 lg:col-span-4 ">
+                <TableDetails />
+              </div>
+              <div className="col-span-1 lg:col-span-4 ">
+                <SelectTradingAccount />
+              </div>
             </div>
           </div>
         </main>
