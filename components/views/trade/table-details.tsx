@@ -1,7 +1,7 @@
-import Container from "@/components/common/container";
-import { useProduct, useTrader } from "@/context/dexterity";
-import { timeSince } from "@/lib/utils";
-import { useCallback, useEffect } from "react";
+import Container from '@/components/common/container';
+import { useProduct, useTrader } from '@/context/dexterity';
+import { cn, timeSince } from '@/lib/utils';
+import { useCallback, useEffect } from 'react';
 
 const TableDetails = () => {
   const { selectedProduct } = useProduct();
@@ -42,16 +42,16 @@ const TableDetails = () => {
     const maintananceMarginReq = Number(trader.getRequiredMaintenanceMargin());
     const accountHealth =
       portfolioValue > initialMarginReq * 2
-        ? "Very Healthy"
+        ? 'Very Healthy'
         : portfolioValue > initialMarginReq * 1.5
-        ? "Healthy"
+        ? 'Healthy'
         : portfolioValue > initialMarginReq
-        ? "Healthy, at risk"
+        ? 'Healthy, at risk'
         : portfolioValue > maintananceMarginReq * 1.5
-        ? "Unhealthy, at risk"
+        ? 'Unhealthy, at risk'
         : portfolioValue > maintananceMarginReq
-        ? "Very unhealthy, reduce your risk"
-        : "Liquidatable";
+        ? 'Very unhealthy, reduce your risk'
+        : 'Liquidatable';
     const allTimePnl = Number(trader.getPnL());
     const positions = Array.from(trader.getPositions());
 
@@ -87,7 +87,7 @@ const TableDetails = () => {
     <Container className="p-3 flex flex-col gap-4 bg-background text-muted-foreground rounded-xl">
       {updated && (
         <>
-          {" "}
+          {' '}
           <div className="flex items-center justify-between">
             <p>Cash Balance</p>
             <p>${cashBalance.toLocaleString()}</p>
@@ -118,7 +118,13 @@ const TableDetails = () => {
           </div>
           <div className="flex items-center justify-between">
             <p>All Time PnL</p>
-            <p>${allTimePnl.toLocaleString()}</p>
+            <p
+              className={cn(
+                allTimePnl > 0 ? 'text-destructive' : 'text-[#8BD796]'
+              )}
+            >
+              ${allTimePnl.toLocaleString()}
+            </p>
           </div>
           <div className="flex items-center justify-between">
             <p>Last Updated</p>
