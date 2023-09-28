@@ -307,7 +307,7 @@ const PerpetualsForm = () => {
       size * 10 ** selectedProduct.exponent,
       selectedProduct.exponent
     );
-    const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET || "EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC";
+    const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET || "2G7UzceMvGWAxa37dXTu1MXbSe9P9G3Xeu22UD9HCwUw";
 
     try {
       await trader.newOrder(
