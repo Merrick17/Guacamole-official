@@ -65,7 +65,7 @@ const featuredLaunch: {
     title: 'Mint Your cNFTs',
     description:
       'Easily create a compressed NFT collection using our no-code interfaces.',
-    image: '/images/play/slots.png',
+    image: '/images/launch/cNFT.png',
     href: '',
     buttonTxt: 'Coming Soon',
     disabled: true,
