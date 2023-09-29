@@ -1,14 +1,19 @@
-'use client';
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { dexterity, useManifest, useProduct, useTrader } from '@/context/dexterity';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { PublicKey } from '@solana/web3.js';
-import { useCallback, useState } from 'react';
+"use client";
+import { TraderAccountDropdown } from "@/components/common/TraderAccountDropDown";
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  dexterity,
+  useManifest,
+  useProduct,
+  useTrader,
+} from "@/context/dexterity";
 import { useToast } from "@/hooks/use-toast";
-import Link from 'next/link';
-
+import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 type TraderAccount = {
   pubkey: PublicKey;
   trg: any;
@@ -33,12 +38,127 @@ const SelectTradingAccount = () => {
   const { selectedProduct } = useProduct();
   const {
     trader,
+    cashBalance,
+    setCashBalance,
+    openPositionsValue,
+    setOpenPositionsValue,
+    portfolioValue,
+    setPortfolioValue,
+    initialMarginReq,
+    setInitialMarginReq,
+    maintananceMarginReq,
+    setMaintananceMarginReq,
+    accountHealth,
+    setAccountHealth,
+    allTimePnl,
+    setAllTimePnl,
+    updated,
+    setUpdated,
+    lastUpdated,
+    setLastUpdated,
+    setAccountLeverage,
+    accountLeverage,
+    setOrderData,
+    setPositionsData,
   } = useTrader();
 
+  const updateAccountInfo = useCallback(async () => {
+    if (!trader) return;
+    const cashBalance = Number(
+      trader.getExcessInitialMarginWithoutOpenOrders()
+    );
+    const openPositionsValue = Number(trader.getPositionValue());
+    const portfolioValue = Number(trader.getPortfolioValue());
+    const initialMarginReq = Number(trader.getRequiredInitialMargin());
+    const maintananceMarginReq = Number(trader.getRequiredMaintenanceMargin());
+    const accountHealth =
+      portfolioValue > initialMarginReq * 2
+        ? "Very Healthy"
+        : portfolioValue > initialMarginReq * 1.5
+        ? "Healthy"
+        : portfolioValue > initialMarginReq
+        ? "Healthy, at risk"
+        : portfolioValue > maintananceMarginReq * 1.5
+        ? "Unhealthy, at risk"
+        : portfolioValue > maintananceMarginReq
+        ? "Very unhealthy, reduce your risk"
+        : "Liquidatable";
+    const allTimePnl = Number(trader.getPnL());
+    const positions = Array.from(trader.getPositions());
+
+    setOrderData(
+      //@ts-ignore
+      Array.from(
+        await Promise.all(trader.getOpenOrders([selectedProduct.name]))
+      )
+    );
+    setPositionsData(positions);
+    setCashBalance(cashBalance);
+    setOpenPositionsValue(openPositionsValue);
+    setPortfolioValue(portfolioValue);
+    setInitialMarginReq(initialMarginReq);
+    setMaintananceMarginReq(maintananceMarginReq);
+    setAccountHealth(accountHealth);
+    setAllTimePnl(allTimePnl);
+    setUpdated(true);
+    setAccountLeverage(portfolioValue / initialMarginReq);
+    setLastUpdated(Date.now());
+  }, [trader, selectedProduct]); // Removed markPrice and indexPrice
+
+  useEffect(() => {
+    if (trader) {
+      trader.connect(updateAccountInfo, updateAccountInfo);
+
+      return () => {
+        trader.disconnect();
+      };
+    }
+  }, [updateAccountInfo, trader]);
+  useEffect(() => {
+    fetchTraderAccounts();
+  }, [publicKey]);
+
+  const fetchTraderAccounts = useCallback(async () => {
+    if (!publicKey) return;
+    if (!manifest) return;
+    if (!manifest.fields) return;
+    if (!manifest.fields.wallet) return;
+    if (!manifest.fields.wallet.publicKey) return;
+
+    try {
+      const trgs = await manifest.getTRGsOfOwner(
+        publicKey,
+        new PublicKey(mpgPubkey)
+      );
+      setTrgsArr(trgs);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: `Selecting Trader Account failed!`,
+        description: error?.message,
+      });
+    }
+  }, [publicKey, manifest]);
+
+  const handleSelection = useCallback(
+    async (selectedValue: string) => {
+      if (selectedValue == "default") return;
+      setSelectedTrg(selectedValue);
+      const trader = new dexterity.Trader(
+        manifest,
+        new PublicKey(selectedValue)
+      );
+      const trg = await manifest.getTRG(new PublicKey(selectedValue));
+      await trader.update();
+      await manifest.updateOrderbooks(new PublicKey(mpgPubkey));
+      setTrader(trader);
+    },
+    [manifest, setTrader]
+  );
 
   const callbacks = {
-    onGettingBlockHashFn: () => { },
-    onGotBlockHashFn: () => { },
+    onGettingBlockHashFn: () => {},
+    onGotBlockHashFn: () => {},
     onConfirm: async (txn: string) => {
       toast({
         variant: "success",
@@ -56,10 +176,7 @@ const SelectTradingAccount = () => {
   };
 
   const handleDeposit = useCallback(async () => {
-    if (!amount || !publicKey || !manifest) {
-      console.log({ amount, publicKey })
-      return
-    };
+    if (!amount || !publicKey || !manifest) return;
     try {
       setIsLoading(true);
       setDepositStatus("processing");
@@ -103,7 +220,10 @@ const SelectTradingAccount = () => {
       setIsLoading(false);
     }
   }, [amount, publicKey, manifest, trader, selectedProduct]);
-
+  
+  useEffect(() => {
+    fetchTraderAccounts();
+  }, [publicKey]);
 
   return (
     <Container className="p-3 bg-background flex flex-col gap-4">
@@ -112,6 +232,7 @@ const SelectTradingAccount = () => {
           Select A Trading Account
         </p>
       </div>
+      <TraderAccountDropdown accounts={trgsArr} onSelect={handleSelection} />
       <div className="flex flex-col gap-3">
         <p className="text-xs font-medium text-muted-foreground">
           Withdraw or Deposit {'(USDC)'}
@@ -126,16 +247,18 @@ const SelectTradingAccount = () => {
         </div>
       </div>
       <Button
-        color="primary"
-        className="w-full h-14 mb-4 uppercase bg-[#8BD796] "
+        size="lg"
+        variant="success"
+        className="font-extrabold uppercase text-xs "
         onClick={handleDeposit}
         disabled={amount === null || isLoading}
       >
         Deposit
       </Button>
       <Button
-        color="primary"
-        className="w-full h-14 mb-4 uppercase bg-[#FF8F8F]"
+        size="lg"
+        variant="destructive"
+        className="font-extrabold uppercase text-xs"
         onClick={handleWithdraw}
         disabled={amount === null || isLoading}
       >

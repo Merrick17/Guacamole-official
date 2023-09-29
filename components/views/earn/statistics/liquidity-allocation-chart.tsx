@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
 const LiquidityAllocationChart = ({
@@ -10,6 +11,9 @@ const LiquidityAllocationChart = ({
     color: string;
   }[];
 }) => {
+  useEffect(() => {
+    console.log("Allocations", data);
+  }, [data]);
   return (
     <div className="w-max flex items-center justify-center">
       <PieChart width={150} height={150}>

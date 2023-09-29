@@ -50,6 +50,7 @@ const Page: FC<pageProps> = ({ params }) => {
           </div>
         </div> */}
       {/* <StatisticsForm /> */}
+     
       <DetailVaultContainer tokenAdr={params.slug} />
     </main>
   );

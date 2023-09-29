@@ -1,3 +1,4 @@
+import { useWebSocket } from '@/context/websocket';
 import { cn } from '@/lib/utils';
 import { FC, Fragment } from 'react';
 
@@ -6,6 +7,7 @@ type SelectedCoinProps = {
   onClick?: () => void;
 };
 const SelectedCoin: FC<SelectedCoinProps> = ({ coin, onClick }) => {
+const {selectedMarket} = useWebSocket(); 
   return (
     <div className="flex flex-col items-start w-full" onClick={onClick}>
       <p className="text-muted-foreground font-medium">
@@ -20,7 +22,7 @@ const SelectedCoin: FC<SelectedCoinProps> = ({ coin, onClick }) => {
       </p>
 
       <p className="text-muted-foreground text-[10px] ">
-        ID: <span>{'(INSERT MARKET ID HERE)'}</span>
+        ID: <span>{selectedMarket.name}</span>
       </p>
     </div>
   );

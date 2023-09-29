@@ -19,6 +19,7 @@ import useVaultInfo from "@/hooks/use-vault-info";
 import BN from "bn.js";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import LiquidityAllocationChart from "../statistics/liquidity-allocation-chart";
 
 interface IData {
   virtualPrice: number;
@@ -327,6 +328,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
         deposit={depositToken}
         withdrawBalance={withdrawBalance}
       />
+     
     </div>
   );
 };

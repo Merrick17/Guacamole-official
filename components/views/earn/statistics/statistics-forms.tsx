@@ -21,6 +21,8 @@ import {
 import Container from "@/components/common/container";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import LiquidityAllocation from "./liquidity-allocation";
+import { Modal } from "../../play/Modal";
 interface IData {
   virtualPrice: number;
   tvl: number;
@@ -54,6 +56,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
   withdrawBalance,
 }) => {
   const { loading, priceData } = useTokenPrice(token ? token.symbol : "USDC");
+  const [showDetails, setShowDetails] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,6 +73,18 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
   }
   return (
     <>
+      {showDetails && (
+        <Modal
+          onClose={() => {
+            setShowDetails(false);
+          }}
+        >
+          <LiquidityAllocation
+            allocations={uiState.strategyAllocation}
+            symbol={token ? token.symbol : ""}
+          />
+        </Modal>
+      )}
       <div className="w-full bg-background p-2 rounded-lg">
         <p className="text-center text-muted-foreground">
           Dynamic {token ? token.symbol : ""} Lending Vault
@@ -86,15 +101,16 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
           </h1>
           <p className="text-muted-foreground text-xs">
             $
-            {(!loading && priceData &&  token && priceData["data"][token.symbol]) 
-              ? numeral(priceData["data"][token.symbol].price * uiState.userLPBalance).format(
-                  "0,0.000")
+            {!loading && priceData && token && priceData["data"][token.symbol]
+              ? numeral(
+                  priceData["data"][token.symbol].price * uiState.userLPBalance
+                ).format("0,0.000")
               : 0}
           </p>
         </div>
-        <div className="text-muted-foreground bg-foreground font-medium px-4 py-2 rounded-lg">
+        <Button className="text-muted-foreground bg-foreground font-medium px-4 py-2 rounded-lg">
           Redeem
-        </div>
+        </Button>
       </Container>
       <Form {...form}>
         <form
@@ -256,8 +272,15 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
         </footer>
       </div>
       <div className="p-6 w-full">
-        <Button size="lg" className="w-full" variant="secondary">
-          <p className="text-primary">View The Contents Of This Pool</p>
+        <Button
+          size="lg"
+          className="w-full"
+          variant="secondary"
+          onClick={() => {
+            setShowDetails(true);
+          }}
+        >
+          <p className="text-primary">View Vault Allocation Breakdown</p>
         </Button>
       </div>
     </>
