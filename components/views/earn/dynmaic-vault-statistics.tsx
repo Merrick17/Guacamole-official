@@ -1,17 +1,17 @@
-"use client";
-import Container from "@/components/common/container";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGetVaultStatistics } from "@/hooks/use-get-vault-statistics";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { FC, useState } from "react";
+'use client';
+import Container from '@/components/common/container';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetVaultStatistics } from '@/hooks/use-get-vault-statistics';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import { FC, useState } from 'react';
 import {
   JupiterApiProvider,
   useJupiterApiContext,
-} from "../trade/src/contexts";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+} from '../trade/src/contexts';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface DynamicVaultStatisticsProps {
   className?: string;
@@ -27,7 +27,7 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
     <JupiterApiProvider>
       <Container
         className={cn(
-          "flex flex-col  gap-5 overflow-y-auto h-[560px]",
+          'flex flex-col  gap-5 overflow-y-auto h-[560px]',
           className
         )}
       >
@@ -94,36 +94,37 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
 
   return (
     <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background ">
-      <div className="flex flex-row items-center gap-5">
+      <div className="flex flex-row items-center gap-2 lg:gap-5">
         <img
           src={token?.logoURI}
-          className="w-10 h-10 rounded-full hidden"
+          className="w-5 h-5 lg:w-10 lg:h-10 rounded-full hidden"
           alt="logo"
           onLoad={(e) => {
             setLoading(false);
-            e.currentTarget.classList.remove("hidden");
+            e.currentTarget.classList.remove('hidden');
           }}
         />
-        {loading && <Loader2 className="w-10 h-10 rounded-full animate-spin" />}
+        {loading && (
+          <Loader2 className="w-5 h-5 lg:w-10 lg:h-10rounded-full animate-spin" />
+        )}
 
         <div className="flex flex-col gap-1">
-          <p className="uppercase text-sm">{symbol}</p>
-          <p className="text-muted-foreground">
-            TVL:{" "}
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-              compactDisplay: "short",
-              notation: "compact",
+          <p className="uppercase text-xs lg:text-sm">{symbol}</p>
+          <p className="text-xs  text-ellipsis overflow-hidden text-muted-foreground">
+            TVL:{' '}
+            {new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              compactDisplay: 'short',
+              notation: 'compact',
             }).format(tvl)}
           </p>
         </div>
       </div>
       <Button
+        className="h-8 px-3 lg:h-10 lg:px-4 lg:py-2"
         onClick={() => {
-          router.push(
-            `http://localhost:3000/earn/single-vault/${token_address}`
-          );
+          router.push(`/earn/single-vault/${token_address}`);
         }}
       >
         {apy.toFixed(2)}% APY

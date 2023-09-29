@@ -17,7 +17,7 @@ const Trade: FC<TradeProps> = ({ showDetails = true, className }) => {
   return (
     <div
       className={cn(
-        'flex w-full z-20 lg:max-w-lg flex-col gap-[10px] rounded-lg bg-foreground px-5 py-7  min-w-full',
+        'flex w-full z-20 lg:max-w-lg flex-col gap-[10px] rounded-lg bg-foreground px-5 py-7 ',
         className
       )}
     >

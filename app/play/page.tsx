@@ -45,7 +45,7 @@ const Page: FC = () => {
             {/* <WalletMultiButtonDynamic /> */}
             <RecentPlaysFeatured className="col-span-1 lg:col-span-3" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground px-14 py-6  backdrop:blur-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10  rounded-lg bg-foreground p-6 lg:px-14 lg:py-6  backdrop:blur-sm">
             {PlayListItems.map((item, index) => (
               <PlayCard key={index} {...item} />
             ))}
