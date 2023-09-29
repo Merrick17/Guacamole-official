@@ -10,7 +10,6 @@ type SelectedCoinProps = {
 const SelectedCoin: FC<SelectedCoinProps> = ({ coin, onClick }) => {
   const { selectedMarket } = useWebSocket();
   const { productLeverage } = useProduct();
-  console.log("Product Lever", productLeverage);
   const [levDisplay, setLevDisplay] = useState(null);
   useMemo(() => {
     if (productLeverage) {

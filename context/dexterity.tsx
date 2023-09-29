@@ -74,8 +74,6 @@ interface TraderContextProps {
   setUpdated: React.Dispatch<React.SetStateAction<boolean>>;
   lastUpdated: number;
   setLastUpdated: React.Dispatch<React.SetStateAction<number>>;
-  orderData: OrderData[];
-  setOrderData: React.Dispatch<React.SetStateAction<OrderData[]>>;
   positionsData: any[];
   setPositionsData: React.Dispatch<React.SetStateAction<any[]>>;
 }
@@ -96,7 +94,6 @@ export const TraderProvider: React.FC<{ children: ReactNode }> = ({
   const [allTimePnl, setAllTimePnl] = useState(null);
   const [updated, setUpdated] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
-  const [orderData, setOrderData] = useState(null);
   const [positionsData, setPositionsData] = useState(null);
 
   return (
@@ -124,8 +121,6 @@ export const TraderProvider: React.FC<{ children: ReactNode }> = ({
         setUpdated,
         lastUpdated,
         setLastUpdated,
-        orderData,
-        setOrderData,
         positionsData,
         setPositionsData,
       }}

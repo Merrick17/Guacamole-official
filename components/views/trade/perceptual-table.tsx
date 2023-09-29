@@ -19,7 +19,6 @@ import { Product, ProductMap } from './perpetual-constants';
 
 export function PerceptualTable() {
   const {
-    orderData,
     lastUpdated,
     updated,
     trader,
@@ -56,8 +55,8 @@ export function PerceptualTable() {
     selectedProduct: Product,
     orderType: boolean,
     size: number,
-    slippage = 0.5
   ) => {
+    let slippage = selectedProduct.index === 4 ? 5 : 0.5
     console.log(
       markPrice,
       0.5,
@@ -146,6 +145,7 @@ export function PerceptualTable() {
         null,
         callbacks
       );
+
       toast({
         variant: 'success',
         title: `Successfully closed ${!orderType? 'LONG' : 'SHORT'} Position!`,
@@ -182,7 +182,7 @@ export function PerceptualTable() {
               const qty =
                 parseFloat(position[1].m) /
                 Math.pow(10, parseInt(position[1].exp));
-                const product = ProductMap.get(position[0].trim())
+                const product = position[0].includes('OPOS0D') ? ProductMap.get('OPOS0D') : ProductMap.get(position[0].trim())
               const selectedMarketPrice = (markPrice.find((p) => p.index === product.index)).price
 
               const value = qty * selectedMarketPrice;

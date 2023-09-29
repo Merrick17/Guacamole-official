@@ -60,65 +60,12 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
     setLastUpdated,
     setAccountLeverage,
     accountLeverage,
-    setOrderData,
     setPositionsData,
   } = useTrader();
-
-  const updateAccountInfo = useCallback(async () => {
-    if (!trader) return;
-    const cashBalance = Number(
-      trader.getExcessInitialMarginWithoutOpenOrders()
-    );
-    const openPositionsValue = Number(trader.getPositionValue());
-    const portfolioValue = Number(trader.getPortfolioValue());
-    const initialMarginReq = Number(trader.getRequiredInitialMargin());
-    const maintananceMarginReq = Number(trader.getRequiredMaintenanceMargin());
-    const accountHealth =
-      portfolioValue > initialMarginReq * 2
-        ? "Very Healthy"
-        : portfolioValue > initialMarginReq * 1.5
-        ? "Healthy"
-        : portfolioValue > initialMarginReq
-        ? "Healthy, at risk"
-        : portfolioValue > maintananceMarginReq * 1.5
-        ? "Unhealthy, at risk"
-        : portfolioValue > maintananceMarginReq
-        ? "Very unhealthy, reduce your risk"
-        : "Liquidatable";
-    const allTimePnl = Number(trader.getPnL());
-    const positions = Array.from(trader.getPositions());
-
-    setOrderData(
-      //@ts-ignore
-      Array.from(
-        await Promise.all(trader.getOpenOrders([selectedProduct.name]))
-      )
-    );
-    setPositionsData(positions);
-    setCashBalance(cashBalance);
-    setOpenPositionsValue(openPositionsValue);
-    setPortfolioValue(portfolioValue);
-    setInitialMarginReq(initialMarginReq);
-    setMaintananceMarginReq(maintananceMarginReq);
-    setAccountHealth(accountHealth);
-    setAllTimePnl(allTimePnl);
-    setUpdated(true);
-    setAccountLeverage(portfolioValue / initialMarginReq);
-    setLastUpdated(Date.now());
-  }, [trader, selectedProduct]); // Removed markPrice and indexPrice
-
-  useEffect(() => {
-    if (trader) {
-      trader.connect(updateAccountInfo, updateAccountInfo);
-
-      return () => {
-        trader.disconnect();
-      };
-    }
-  }, [updateAccountInfo, trader]);
+  
   useEffect(() => {
     fetchTraderAccounts();
-  }, [publicKey]);
+  }, [publicKey, trader]);
 
   const fetchTraderAccounts = useCallback(async () => {
     if (!publicKey) return;

@@ -74,6 +74,13 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
       coin: ["SOL", "Solana", "HXRO:SOLUSD"],
       coinLogo: "/images/tokens/SOL.png",
     },
+    {
+      name: "OPOS0D",
+      high: "25,901.41",
+      low: "25,534.37",
+      coin: ["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D"],
+      coinLogo: "/static/coins/opos-logo.png",
+    },
   ]);
 
   const selectMarket = (market: Market | null) => {

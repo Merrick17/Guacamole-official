@@ -105,8 +105,12 @@ const Perceptual = () => {
         for (const [productName, obj] of dexterity.Manifest.GetProductsOfMPG(
           trader.mpg
         )) {
-          if (!ProductMap.get(productName.trim())) {
-            continue;
+          if (!productName.includes('OPOS0D')) {
+
+            if (!ProductMap.get(productName.trim())) {
+              continue;
+            }
+
           }
           const { index: productIndex, product } = obj;
           const meta = dexterity.productToMeta(product);
@@ -127,6 +131,7 @@ const Perceptual = () => {
         }
         setMarkPrice(productMarkArray);
         setIndexPrice(productIndexArray);
+        console.log({productMarkArray, productIndexArray})
       } catch (error) {
         console.error("Error updating prices:", error);
       }

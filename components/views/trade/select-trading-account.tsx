@@ -58,7 +58,6 @@ const SelectTradingAccount = () => {
     setLastUpdated,
     setAccountLeverage,
     accountLeverage,
-    setOrderData,
     setPositionsData,
   } = useTrader();
 
@@ -86,12 +85,6 @@ const SelectTradingAccount = () => {
     const allTimePnl = Number(trader.getPnL());
     const positions = Array.from(trader.getPositions());
 
-    setOrderData(
-      //@ts-ignore
-      Array.from(
-        await Promise.all(trader.getOpenOrders([selectedProduct.name]))
-      )
-    );
     setPositionsData(positions);
     setCashBalance(cashBalance);
     setOpenPositionsValue(openPositionsValue);
@@ -114,6 +107,7 @@ const SelectTradingAccount = () => {
       };
     }
   }, [updateAccountInfo, trader]);
+  
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey]);
