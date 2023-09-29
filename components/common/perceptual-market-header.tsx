@@ -60,12 +60,12 @@ const PerceptualMarketHeader = () => {
           <DropdownMenuContent className="w-full">
             <DropdownMenuItem>
               <SelectedCoin
-                coin={["BTC", "Bitcoin", "PYTH:BTCUSD"]}
+                coin={["BTC", "Bitcoin", "HXRO:BTCUSD"]}
                 onClick={() => {
                   selectMarket({
                     high: "25,901.41",
                     low: "25,534.37",
-                    coin: ["BTC", "Bitcoin", "PYTH:BTCUSD"],
+                    coin: ["BTC", "Bitcoin", "HXRO:BTCUSD"],
                     coinLogo: "/images/tokens/BTC.png",
                     name: "BTCUSD-PERP",
                   });
@@ -80,12 +80,12 @@ const PerceptualMarketHeader = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <SelectedCoin
-                coin={["ETH", "Ethereum", "PYTH:ETHUSD"]}
+                coin={["ETH", "Ethereum", "HXRO:ETHUSD"]}
                 onClick={() => {
                   selectMarket({
                     high: "25,901.41",
                     low: "25,534.37",
-                    coin: ["ETH", "Ethereum", "PYTH:ETHUSD"],
+                    coin: ["ETH", "Ethereum", "HXRO:ETHUSD"],
                     coinLogo: "/images/tokens/ETH.png",
                     name: "ETHUSD-PERP",
                   });
@@ -100,12 +100,12 @@ const PerceptualMarketHeader = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <SelectedCoin
-                coin={["SOL", "Solana", "PYTH:SOLUSD"]}
+                coin={["SOL", "Solana", "HXRO:SOLUSD"]}
                 onClick={() => {
                   selectMarket({
                     high: "25,901.41",
                     low: "25,534.37",
-                    coin: ["SOL", "Solana", "PYTH:SOLUSD"],
+                    coin: ["SOL", "Solana", "HXRO:SOLUSD"],
                     coinLogo: "/images/tokens/SOL.png",
                     name: "SOLUSD-PERP",
                   });
