@@ -18,7 +18,7 @@ const formSchema = z.object({
   amount: z.number().positive(),
 });
 
-const GuacStakeForm = () => {
+const NftStakeForm = () => {
   const [solBalance, setSolBalance] = useState(0);
   const { publicKey, connected } = useWallet();
   const { connection } = useConnection();
@@ -115,7 +115,9 @@ const GuacStakeForm = () => {
         <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
           <Image src={"/images/logo.png"} width={32} height={32} alt="solana" />
           <div className="w-full">
-            <h1 className="font-semibold">{"GUAC"}</h1>
+            <h1 className="font-semibold">
+            GUAC
+            </h1>
             <p className=" text-xs ">
               <span className="text-white/50">Balance </span>
               <span className="text-white/[0.35]">
@@ -143,15 +145,33 @@ const GuacStakeForm = () => {
           />
         </div>
         <Button disabled variant="secondary">
-          GUAC Staking Is Not Available Yet
+          Coming Soon
         </Button>
         <div className="flex items-center justify-between text-muted-foreground text-sm">
-          <p>You Will Receive</p>
+          <p>Estimated Points Per Day</p>
+          <p>--</p>
+        </div>
+        <div className="flex items-center justify-between text-muted-foreground text-sm">
+          <p>Points to required for NFT</p>
+          <p>--</p>
+        </div>
+        <div className="flex items-center justify-between text-muted-foreground text-sm">
+          <p>Total GUAC Staked In Pool</p>
           <p>--</p>
         </div>
       </form>
+      <div className="p-6 w-full">
+        <Button
+          size="lg"
+          className="w-full"
+          variant="secondary"
+         
+        >
+          <p className="text-primary">Contents Of This Pool Not Loaded Yet.</p>
+        </Button>
+      </div>
     </Form>
   );
 };
 
-export default GuacStakeForm;
+export default NftStakeForm;

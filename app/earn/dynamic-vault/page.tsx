@@ -20,7 +20,7 @@ const Page = () => {
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg  px-6 py-5 bg-foreground shadow-md">
         <EarnHeader
           title="Dynamic Vaults"
-          tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"
+          tutorialLink="https://docs.guacamole.gg/products-and-features/earn/dynamic-lending-vaults"
           hideSecondBtn
         />
         <hr className="border-dashed border-background" />

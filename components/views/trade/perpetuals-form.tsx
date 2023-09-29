@@ -34,12 +34,14 @@ import {
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import * as z from "zod";
 
-import NavigationList from '@/components/ui/navigation-list';
-import { useWebSocket } from '@/context/websocket';
-import { useToast } from '@/hooks/use-toast';
-import { PublicKey } from '@solana/web3.js';
-import Link from 'next/link';
-import { Product, ProductMap } from './perpetual-constants';
+import NavigationList from "@/components/ui/navigation-list";
+import { useWebSocket } from "@/context/websocket";
+import { useToast } from "@/hooks/use-toast";
+import { PublicKey } from "@solana/web3.js";
+import Link from "next/link";
+import { Product, ProductMap } from "./perpetual-constants";
+import useWalletTokens from "@/lib/tokens/useWalletTokens";
+import { useRouter } from "next/navigation";
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -52,9 +54,8 @@ const formSchema = z.object({
   size: z.string(),
 });
 const PerpetualsForm = () => {
-  const [tab, setTab] = useState<"future" | "spot" | "swap">("future");
+  const router = useRouter();
   const [upOrDown, setUpOrDown] = useState(true);
-
   const [slippage, setSlippage] = useState("1");
   const [size, setSize] = useState("0");
   const { publicKey, signTransaction, signAllTransactions, connected } =
@@ -66,11 +67,27 @@ const PerpetualsForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { selectedProduct, setIndexPrice, setMarkPrice, markPrice } =
     useProduct();
-  const { selectedMarket } = useWebSocket();
+  const [guac, setGuac] = useState(null);
+  const [guacBalance, setGuacBalance] = useState(0);
   const [marketPrice, setMarketPrice] = useState(0);
+  const walletTokens = useWalletTokens();
   const [tradeQuantity, setTradeQuantity] = useState(
     selectedProduct.minSize.toString()
   );
+  const getFeesBps = (number: number) => {
+    switch (true) {
+      case number > 4000000000 && number < 10000000000:
+        return 9;
+      case number >= 10000000000 && number < 20000000000:
+        return 8;
+      case number >= 20000000000 && number < 40000000000:
+        return 7;
+      case number >= 40000000000:
+        return 6;
+      default:
+        return 10;
+    }
+  };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,6 +97,23 @@ const PerpetualsForm = () => {
       size: "0",
     },
   });
+  useEffect(() => {
+    if (connected && publicKey) {
+      console.log("Wallet", walletTokens);
+      const guacInfo = walletTokens.find(
+        (elm) =>
+          elm.account.mint.toBase58() ==
+          "AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"
+      );
+      console.log("MsOL", guacInfo);
+      if (guacInfo) {
+        const balance = Number(guacInfo.account.amount) / guacInfo.decimals;
+        console.log("Balance", balance);
+        setGuacBalance(balance);
+        setGuac(guacInfo);
+      }
+    }
+  }, [publicKey, walletTokens]);
   useMemo(async () => {
     const DexWallet: DexterityWallet = {
       publicKey,
@@ -96,6 +130,7 @@ const PerpetualsForm = () => {
       setMarketPrice(Number(candles[candles.length - 1].o));
     }
   }, [trader, setIndexPrice, candles, markPrice]);
+
   const callbacks = {
     onGettingBlockHashFn: () =>
       toast({ variant: "default", title: "Fetching BlockHash..." }),
@@ -108,7 +143,7 @@ const PerpetualsForm = () => {
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            
+
             <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
           </div>
         ),
@@ -116,153 +151,10 @@ const PerpetualsForm = () => {
   };
 
   const selectedMarketPrice = useMemo(() => {
-    if (!markPrice || !selectedProduct || !(markPrice.length > 0)) return 0
-    return markPrice.find((p) => p.index === selectedProduct.index).price
-  }, [selectedProduct, markPrice])
+    if (!markPrice || !selectedProduct || !(markPrice.length > 0)) return 0;
+    return markPrice.find((p) => p.index === selectedProduct.index).price;
+  }, [selectedProduct, markPrice]);
 
-  // Watch changes to size and update tradeQuantity
-  // useMemo(() => {
-  //   const tradeQuantity = form.watch("tradeQuantity");
-  //   const newSize = (parseFloat(tradeQuantity) * marketPrice).toFixed(2);
-
-  //   form.setValue("size", newSize);
-  // }, [form.getValues('tradeQuantity'), candles]);
-  // useMemo(() => {
-  //   const size = form.watch("size");
-  //   const newTradeQuantity = (parseFloat(size) / marketPrice).toFixed(2);
-  //   form.setValue("tradeQuantity", newTradeQuantity);
-  // }, [form.getValues('size'), candles]);
-  // const handlePlaceOrder = async (
-  //   slippage: number,
-  //   orderType: string,
-  //   size: number
-  // ) => {
-  //   const callbacks = {
-  //     onGettingBlockHashFn: () => {},
-  //     onGotBlockHashFn: () => {},
-  //     onConfirm: (txn: string) =>
-  //       toast({
-  //         variant: "success",
-  //         title: "Order Placed Successfully!",
-  //         description: (
-  //           <div className="flex flex-col gap-1">
-  //             <p>Transaction sent successfully.</p>
-  //             <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
-  //           </div>
-  //         ),
-  //       }),
-  //   };
-  //   const priceFraction = dexterity.Fractional.New(
-  //     orderType === "SHORT"
-  //       ? marketPrice - (marketPrice * slippage) / 100
-  //       : marketPrice + (marketPrice * slippage) / 100,
-  //     0
-  //   );
-  //   const sizeFraction = dexterity.Fractional.New(
-  //     size * 10 ** selectedProduct.exponent,
-  //     selectedProduct.exponent
-  //   );
-  //   const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET;
-
-  //   try {
-  //     await trader.newOrder(
-  //       selectedProduct.index,
-  //       orderType === "SHORT" ? false : true,
-  //       priceFraction,
-  //       sizeFraction,
-  //       false,
-  //       new PublicKey(referralTrg),
-  //       Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
-  //       null,
-  //       null,
-  //       callbacks
-  //     );
-  //     //setIsSuccess(true);
-  //   } catch (error: any) {
-  //     //setIsSuccess(false);
-  //     toast({
-  //       variant: "destructive",
-  //       title: "Placing order failed!",
-  //       description: error?.message,
-  //     });
-  //   } finally {
-  //     toast({
-  //       variant: "success",
-  //       title: `Market ${orderType} Order Placed Successfully!`,
-  //     });
-  //     //setIsLoading(false);
-  //   }
-  // };
-  // const handlePlaceOrder = useCallback(
-  //   async (orderType: string, slippage: number, size: number) => {
-  //     console.log(
-  //       markPrice,
-  //       slippage,
-  //       size,
-  //       publicKey.toBase58(),
-  //       manifest,
-  //       selectedProduct
-  //     );
-  //     if (
-  //       !markPrice ||
-  //       !slippage ||
-  //       !size ||
-  //       !publicKey ||
-  //       !manifest ||
-  //       !selectedProduct
-  //     )
-  //       return;
-
-  //     const priceFraction = dexterity.Fractional.New(
-  //       orderType === "SHORT"
-  //         ? markPrice - (markPrice * slippage) / 100
-  //         : markPrice + (markPrice * slippage) / 100,
-  //       0
-  //     );
-  //     const sizeFraction = dexterity.Fractional.New(
-  //       size * 10 ** selectedProduct.exponent,
-  //       selectedProduct.exponent
-  //     );
-  //     const referralTrg = process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET;
-
-  //     try {
-  //       await trader.newOrder(
-  //         selectedProduct.index,
-  //         orderType === "SHORT" ? false : true,
-  //         priceFraction,
-  //         sizeFraction,
-  //         false,
-  //         new PublicKey(referralTrg),
-  //         Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
-  //         null,
-  //         null,
-  //         callbacks
-  //       );
-  //     } catch (error: any) {
-  //       toast({
-  //         variant: "destructive",
-
-  //         title: "Placing order failed!",
-  //         description: error?.message,
-  //       });
-  //     } finally {
-  //       toast({
-  //         variant: "success",
-  //         title: `Market ${orderType} Order Placed Successfully!`,
-  //       });
-  //     }
-  //   },
-  //   [
-  //     slippage,
-  //     size,
-  //     upOrDown,
-  //     publicKey,
-  //     manifest,
-  //     trader,
-  //     selectedProduct,
-  //     markPrice,
-  //   ]
-  // );
   const handlePlaceOrder = async (
     orderType: string,
     slippage: number,
@@ -312,10 +204,22 @@ const PerpetualsForm = () => {
     }
 
     const priceFraction = dexterity.Fractional.New(
-      orderType === 'SHORT'
-      ? (Number((selectedMarketPrice - ((selectedMarketPrice * slippage) / 100)).toFixed(ProductMap.get(selectedProduct.index).priceTrim)) * 10 ** 10)
-      : (Number((selectedMarketPrice + ((selectedMarketPrice * slippage) / 100)).toFixed(ProductMap.get(selectedProduct.index).priceTrim)) * 10 ** 10),
-        10
+      orderType === "SHORT"
+        ? Number(
+            (
+              selectedMarketPrice -
+              (selectedMarketPrice * slippage) / 100
+            ).toFixed(ProductMap.get(selectedProduct.index).priceTrim)
+          ) *
+            10 ** 10
+        : Number(
+            (
+              selectedMarketPrice +
+              (selectedMarketPrice * slippage) / 100
+            ).toFixed(ProductMap.get(selectedProduct.index).priceTrim)
+          ) *
+            10 ** 10,
+      10
     );
     const sizeFraction = dexterity.Fractional.New(
       size * 10 ** selectedProduct.exponent,
@@ -325,19 +229,22 @@ const PerpetualsForm = () => {
       process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET ||
       "2G7UzceMvGWAxa37dXTu1MXbSe9P9G3Xeu22UD9HCwUw";
 
-      console.log(JSON.stringify({open: {
-        index: selectedProduct.index,
-        orderType: orderType === 'SHORT' ? false : true,
-        priceFraction,
-        sizeFraction,
-        isIOC: false,
-        referPubkey: new PublicKey(referralTrg),
-        bpsfee: Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
-        clientOrderId: null,
-        matchLimit: null,
-        callbacks
-      }})
-      )
+    console.log(
+      JSON.stringify({
+        open: {
+          index: selectedProduct.index,
+          orderType: orderType === "SHORT" ? false : true,
+          priceFraction,
+          sizeFraction,
+          isIOC: false,
+          referPubkey: new PublicKey(referralTrg),
+          bpsfee: getFeesBps(guacBalance),
+          clientOrderId: null,
+          matchLimit: null,
+          callbacks,
+        },
+      })
+    );
 
     try {
       await trader.newOrder(
@@ -383,13 +290,13 @@ const PerpetualsForm = () => {
     await handlePlaceOrder(position, Number(slippage), Number(tradeQuantity));
   };
 
-  const [product, setProduct] = useState<Product>(ProductMap.get(0))
+  const [product, setProduct] = useState<Product>(ProductMap.get(0));
 
   useMemo(() => {
-    setProduct(ProductMap.get(selectedProduct.index))
-    setTradeQuantity(selectedProduct.minSize.toString())
-  }, [selectedProduct])
-  
+    setProduct(ProductMap.get(selectedProduct.index));
+    setTradeQuantity(selectedProduct.minSize.toString());
+  }, [selectedProduct]);
+
   return (
     <>
       {isOpen && (
@@ -404,8 +311,19 @@ const PerpetualsForm = () => {
         <div className="flex items-center justify-between">
           <NavigationList filter="Trade" />
 
-          <Button size="sm" className="h-7">
-            view Tutorial
+          <Button
+            size="sm"
+            className="h-7"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.open(
+                  `https://docs.guacamole.gg/products-and-features/trade/gamified-crypto-futures`,
+                  "_blank"
+                );
+              }
+            }}
+          >
+            View Tutorial
           </Button>
         </div>
         <Form {...form}>
@@ -463,7 +381,8 @@ const PerpetualsForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
-                      <p> Trade Size {`(${product.base})`}</p> <p> Min. Trade: {product.minSize}</p>
+                      <p> Trade Size {`(${product.base})`}</p>{" "}
+                      <p> Min. Trade: {product.minSize}</p>
                     </FormLabel>
                     <FormControl className="bg-foreground px-4 py-2 h-10">
                       <div className="flex items-center justify-between gap-4">
@@ -476,7 +395,7 @@ const PerpetualsForm = () => {
                             />
                           </div>
                           <Input
-                          min={product.minSize}
+                            min={product.minSize}
                             type="number"
                             placeholder="0"
                             value={tradeQuantity}
@@ -591,8 +510,10 @@ const PerpetualsForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
-                      <p>Estimated {`(${product.quote})`}</p>{' '}
-                      <p className="text-accent">Cash Balance: {(cashBalance ?? 0).toLocaleString()}</p>
+                      <p>Estimated {`(${product.quote})`}</p>{" "}
+                      <p className="text-accent">
+                        Cash Balance: {(cashBalance ?? 0).toLocaleString()}
+                      </p>
                     </FormLabel>
                     <FormControl className="bg-foreground px-4 py-2 h-10">
                       <div className=" flex items-center gap-5">
@@ -603,7 +524,14 @@ const PerpetualsForm = () => {
                             className="w-5 h-5"
                           />
                         </div>
-                        <h5 className="text-sm font-medium">${(selectedMarketPrice * Number(tradeQuantity ?? 0) - (Number(slippage) / 100 * (selectedMarketPrice * Number(tradeQuantity ?? 0)))).toLocaleString()}</h5>
+                        <h5 className="text-sm font-medium">
+                          $
+                          {(
+                            selectedMarketPrice * Number(tradeQuantity ?? 0) -
+                            (Number(slippage) / 100) *
+                              (selectedMarketPrice * Number(tradeQuantity ?? 0))
+                          ).toLocaleString()}
+                        </h5>
                         {/* <Input
                           type="number"
                           placeholder="0"

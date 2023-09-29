@@ -1,16 +1,17 @@
-'use client';
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useGetVaultStatistics } from '@/hooks/use-get-vault-statistics';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import { FC, useState } from 'react';
+"use client";
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGetVaultStatistics } from "@/hooks/use-get-vault-statistics";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { FC, useState } from "react";
 import {
   JupiterApiProvider,
   useJupiterApiContext,
-} from '../trade/src/contexts';
-import { Loader2 } from 'lucide-react';
+} from "../trade/src/contexts";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface DynamicVaultStatisticsProps {
   className?: string;
@@ -26,7 +27,7 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
     <JupiterApiProvider>
       <Container
         className={cn(
-          'flex flex-col  gap-5 overflow-y-auto h-[560px]',
+          "flex flex-col  gap-5 overflow-y-auto h-[560px]",
           className
         )}
       >
@@ -86,6 +87,7 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
   symbol,
   token_address,
 }) => {
+  const router = useRouter();
   const { tokenMap } = useJupiterApiContext();
   const token = tokenMap.get(token_address);
   const [loading, setLoading] = useState(true);
@@ -99,7 +101,7 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
           alt="logo"
           onLoad={(e) => {
             setLoading(false);
-            e.currentTarget.classList.remove('hidden');
+            e.currentTarget.classList.remove("hidden");
           }}
         />
         {loading && <Loader2 className="w-10 h-10 rounded-full animate-spin" />}
@@ -107,17 +109,25 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
         <div className="flex flex-col gap-1">
           <p className="uppercase text-sm">{symbol}</p>
           <p className="text-muted-foreground">
-            TVL:{' '}
-            {new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              compactDisplay: 'short',
-              notation: 'compact',
+            TVL:{" "}
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              compactDisplay: "short",
+              notation: "compact",
             }).format(tvl)}
           </p>
         </div>
       </div>
-      <Button>{apy.toFixed(2)}% APY</Button>
+      <Button
+        onClick={() => {
+          router.push(
+            `http://localhost:3000/earn/single-vault/${token_address}`
+          );
+        }}
+      >
+        {apy.toFixed(2)}% APY
+      </Button>
     </div>
   );
 };

@@ -1,14 +1,14 @@
-'use client';
-import { cn } from '@/lib/utils';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FC } from 'react';
-import Container from './container';
+"use client";
+import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+import { FC } from "react";
+import Container from "./container";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
 );
 
@@ -20,6 +20,7 @@ interface InfoCardProps {
   openNewTab?: boolean;
   disabled?: boolean;
   buttonTxt?: string;
+  target?: string;
 }
 
 const InfoCard: FC<InfoCardProps> = ({
@@ -28,8 +29,9 @@ const InfoCard: FC<InfoCardProps> = ({
   description,
   href,
   openNewTab = false,
-  buttonTxt = 'Explore',
+  buttonTxt = "Explore",
   disabled = false,
+  target,
 }) => {
   return (
     <Container className=" p-6 rounded-lg max-w-xs  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
@@ -44,12 +46,13 @@ const InfoCard: FC<InfoCardProps> = ({
       <p className="mb-3 font-normal text-muted-foreground">{description}</p>
       <Link
         href={href}
+        target={target ? target : undefined}
         className={cn(
-          'inline-flex items-center text-primary hover:underline mt-auto',
-          disabled && 'cursor-not-allowed opacity-50'
+          "inline-flex items-center text-primary hover:underline mt-auto",
+          disabled && "cursor-not-allowed opacity-50"
         )}
       >
-        {disabled ? 'Coming Soon' : buttonTxt}
+        {disabled ? "Coming Soon" : buttonTxt}
 
         <svg
           className="w-3 h-3 ml-2.5"

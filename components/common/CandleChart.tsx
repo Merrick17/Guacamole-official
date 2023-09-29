@@ -1,64 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import { useWebSocket } from "@/context/websocket";
 
-interface Candle {
-  h: string;
-  l: string;
-  o: string;
-  c: string;
-  timestamp: Date;
-}
-
-const list = ["btcusd-perp", "solusd-perp", "ethusd-perp"];
-const times = ["1_m", "10_m", "1_h", "1_d"];
-
-const CandleChart = ({}) => {
+const CandleChart = () => {
   const { candles } = useWebSocket();
-  const chartContainer = document.getElementById("chart-container");
-
-  //   const [asset, setAsset] = useState(initialAsset);
-  //   const [timeFrame, setTimeFrame] = useState(initialTimeFrame);
-  //const [candles, setCandles] = useState<Candle[]>([]);
-  const ws = useRef<WebSocket | null>(null);
-  const chartRef = useRef<any>(null);
-  const apiKey = "4031cf86-bfff-4483-a12d-7be0cd06769c-guac";
-  //   useEffect(() => {
-  //     ws.current = new WebSocket(
-  //       "ws://hloc-dexterity.up.railway.app/" + market + "?api-key=" + apiKey
-  //     );
-
-  //     ws.current.onmessage = (message) => {
-  //       console.log({ message });
-  //       const data = JSON.parse(message.data);
-  //       console.log({ data });
-  //       if (data.candles) {
-  //         setCandles(data.candles);
-  //       }
-  //     };
-
-  //     ws.current.onopen = () => {
-  //       ws.current?.send(JSON.stringify({ command: "stream", params: {} }));
-  //     };
-
-  //     return () => {
-  //       ws.current?.close();
-  //     };
-  //   }, [market]);
+  const chartRef = useRef(null);
 
   useEffect(() => {
-    if (!chartRef.current) {
+    if (!chartRef.current || !candles.length) {
       return;
     }
 
-    if (chartRef.current) {
-      if (chartRef && chartRef.current) {
-        chartRef.current.innerHTML = "";
-      }
-    }
-
     const chart = createChart(chartRef.current, {
-      width: 800,
+      width: chartRef.current.clientWidth, // Set initial width based on container size
       height: 530,
       layout: {
         textColor: "#FFFF",
@@ -75,7 +29,14 @@ const CandleChart = ({}) => {
           color: "rgba(252, 252, 252, 0.1)",
         },
       },
+      rightPriceScale: {
+        scaleMargins: {
+          top: 0.3,
+          bottom: 0.25,
+        },
+      },
     });
+
     const candlestickSeries = chart.addCandlestickSeries();
     const seriesData = candles.map((candle) => ({
       time: new Date(candle.timestamp).getTime() / 1000,
@@ -86,33 +47,23 @@ const CandleChart = ({}) => {
     }));
 
     candlestickSeries.setData(seriesData as any);
+    
+    // Handle chart resizing when the container size changes
+    const handleResize = () => {
+      chart.resize(chartRef.current.clientWidth, 650); // Set the height as needed
+    };
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
-      if (chartRef.current) {
-        if (chartRef && chartRef.current) {
-          chartRef.current.innerHTML = "";
-        }
-      }
+      window.removeEventListener("resize", handleResize);
+      chart.remove();
     };
   }, [candles]);
 
-  //   const handleAssetChange = (newAsset: string) => {
-  //     setAsset(newAsset);
-  //     ws.current?.send(
-  //       JSON.stringify({ command: "change-asset", params: { newAsset } })
-  //     );
-  //     setTimeFrame("1_m");
-  //   };
-
-  //   const handleTimeFrameChange = (newTime: string) => {
-  //     setTimeFrame(newTime);
-  //     ws.current?.send(
-  //       JSON.stringify({ command: "change-time", params: { newTime } })
-  //     );
-  //   };
-
   return (
     <div>
-      <div ref={chartRef} style={{ width: "800px", height: "100%" }}></div>
+      <div ref={chartRef} style={{ maxWidth: "800px", height: "100%" }}></div>
     </div>
   );
 };

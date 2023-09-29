@@ -44,7 +44,7 @@ const featuredTools: {
     description:
       'Stake tokens to receive points which can be utilized to redeem vaulted NFTs.',
     title: 'Tokenized NFT Farms',
-    href: routes.earn.root,
+    href: routes.earn.stakingFarms,
     buttonTxt: 'Farm',
   },
   {

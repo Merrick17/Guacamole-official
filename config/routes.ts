@@ -16,7 +16,7 @@ const routes = {
     statistics: '/earn/statistics',
     guacStaking: '/earn/guac-staking',
     liquidityStaking: '/earn/liquidity-staking',
-    stakingFarms: '/earn/staking-farms',
+    stakingFarms: '/earn/tokenized-nft-farm',
   },
   play: {
     root: '/play',

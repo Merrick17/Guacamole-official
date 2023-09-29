@@ -19,7 +19,8 @@ export default function Home() {
         )}
       >
         <section className="flex flex-col gap-[60px]">
-          <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full lg:h-[560px] overflow-hidden">
+          {/* {lg:h-[560px]} */}
+          <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full  overflow-hidden">
             {/* <HomeContent className="w-full" /> */}
             <HeroHeadline
               className="col-span-1  lg:col-span-5"
@@ -43,7 +44,7 @@ export default function Home() {
                 possibilities!
               </p>
             </HeroHeadline>
-            <TrendingToday className="col-span-1 lg:col-span-3" />
+            <TrendingToday className="col-span-1 lg:col-span-3  lg:h-full" />
           </div>
 
           <HeroList listItems={HomeListItems} />

@@ -44,7 +44,48 @@ function getSubscriptForNumber(number) {
   }
   return subscriptString;
 }
-export function convert(n) {
+// export function convert(n) {
+//   let str = '';
+//   var sign = +n < 0 ? '-' : '',
+//     toStr = n.toString();
+//   if (!/e/i.test(toStr)) {
+//     str = n;
+//   }
+//   var [lead, decimal, pow] = n
+//     .toString()
+//     .replace(/^-/, '')
+//     .replace(/^([0-9]+)(e.*)/, '$1.$2')
+//     .split(/e|\./);
+
+//   // Handle the case when decimal is undefined
+//   if (decimal === undefined) {
+//     return `${sign}${lead}`;
+//   }
+
+//   str =
+//     +pow < 0
+//       ? sign +
+//         '0.' +
+//         '0'.repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+//         lead +
+//         decimal
+//       : sign +
+//         lead +
+//         (+pow >= decimal.length
+//           ? decimal + '0'.repeat(Math.max(+pow - decimal.length || 0, 0))
+//           : decimal.slice(0, +pow) + '.' + decimal.slice(+pow));
+
+//   const [integerPart, trailingZeros, nonZeroDigits] =
+//     extractTrailingZerosAndDigits(str);
+//   // console.log('INT', integerPart); // Output: "123"
+//   // console.log('TRAILING', trailingZeros); // Output: "0000000"
+//   // console.log('ZERO', nonZeroDigits); // Output: "11586"
+//   // console.log('SubSript', getSubscriptForNumber(trailingZeros.length));
+//   return `${integerPart}.0${getSubscriptForNumber(
+//     trailingZeros.length
+//   )}${nonZeroDigits}`;
+// }
+export  function convert(n) {
   let str = '';
   var sign = +n < 0 ? '-' : '',
     toStr = n.toString();
@@ -77,15 +118,13 @@ export function convert(n) {
 
   const [integerPart, trailingZeros, nonZeroDigits] =
     extractTrailingZerosAndDigits(str);
-  // console.log('INT', integerPart); // Output: "123"
-  // console.log('TRAILING', trailingZeros); // Output: "0000000"
-  // console.log('ZERO', nonZeroDigits); // Output: "11586"
-  // console.log('SubSript', getSubscriptForNumber(trailingZeros.length));
-  return `${integerPart}.0${getSubscriptForNumber(
-    trailingZeros.length
-  )}${nonZeroDigits}`;
-}
 
+  if (trailingZeros.length === 0) {
+    return `${integerPart}.${nonZeroDigits}`;
+  } else {
+    return `${integerPart}.0${getSubscriptForNumber(trailingZeros.length)}${nonZeroDigits}`;
+  }
+}
 export function formatNumber(number) {
   // Remove the exponent from the number.
   var exponent = number.match(/e-(\d+)/)[1];

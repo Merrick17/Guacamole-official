@@ -1,16 +1,16 @@
-import BackgroundSplash from '@/components/common/background-splash';
-import ColorBlocks from '@/components/common/color-block';
-import HeroHeadline from '@/components/common/hero-headline';
-import HeroList from '@/components/common/hero-list';
-import CreationWalkthroughs from '@/components/views/launch/creation-walkthroughs';
-import routes from '@/config/routes';
-import { Metadata } from 'next';
-import { FC } from 'react';
+import BackgroundSplash from "@/components/common/background-splash";
+import ColorBlocks from "@/components/common/color-block";
+import HeroHeadline from "@/components/common/hero-headline";
+import HeroList from "@/components/common/hero-list";
+import CreationWalkthroughs from "@/components/views/launch/creation-walkthroughs";
+import routes from "@/config/routes";
+import { Metadata } from "next";
+import { FC } from "react";
 
 export const metadata: Metadata = {
-  title: 'Easily Swap Solana Based Tokens | Guacamole',
+  title: "Easily Swap Solana Based Tokens | Guacamole",
   description:
-    'Guacamole Swap allows you to launch any tokens on Solana in just a few clicks with no hassle and the best fees.',
+    "Guacamole Swap allows you to launch any tokens on Solana in just a few clicks with no hassle and the best fees.",
 };
 
 const Page: FC = () => {
@@ -24,7 +24,7 @@ const Page: FC = () => {
               className="col-span-1  lg:col-span-5"
               title={
                 <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
-                  Make sure your new project stays hot with our{' '}
+                  Make sure your new project stays hot with our{" "}
                   <span className="text-primary">spicy features</span>.
                 </h1>
               }
@@ -49,31 +49,32 @@ const Page: FC = () => {
 
 const LaunchListItems: ListItemProps[] = [
   {
-    title: 'Create Your Token',
+    title: "Create Your Token",
     description:
-      'Create your own token in just 2 minutes using our no-code creation interface.',
-    image: '/icons/launch/create-token.svg',
+      "Create your own token in just 2 minutes using our no-code creation interface.",
+    image: "/icons/launch/create-token.svg",
     href: routes.launch.createSplToken,
   },
   {
-    title: 'Mint Your cNFTs',
+    title: "Mint Your cNFTs",
     description:
-      'Easily create a compressed NFT collection using our no-code interfaces.',
-    image: '/icons/launch/mint-cnfts.svg',
+      "Easily create a compressed NFT collection using our no-code interfaces.",
+    //image: '/icons/launch/mint-cnfts.svg',
+    image: "/icons/launch/CNFT_MInter_Guac.png",
     href: routes.launch.root,
   },
   {
-    title: 'Add NFT Farm',
+    title: "Add NFT Farm",
     description:
-      'Reward token stakers in your community with points-based NFT rewards.',
-    image: '/icons/launch/nft-farm.svg',
+      "Reward token stakers in your community with points-based NFT rewards.",
+    image: "/icons/launch/nft-farm.svg",
     href: routes.earn.stakingFarms,
   },
   {
-    title: 'List Token On Shop',
+    title: "List Token On Shop",
     description:
-      'Allow your community to purchase games, software, and more with your token.',
-    image: '/icons/launch/token-on-shop.svg',
+      "Allow your community to purchase games, software, and more with your token.",
+    image: "/icons/launch/token-on-shop.svg",
     href: routes.tools.root,
   },
 ];

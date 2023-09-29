@@ -20,7 +20,7 @@ const Page = async () => {
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
         <EarnHeader
           title="Dynamic SOL Vault"
-          tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"
+          tutorialLink="https://docs.guacamole.gg/products-and-features/earn/liquid-solana-staking"
           hideSecondBtn
         />
         <hr className="border-dashed border-background" />

@@ -1,14 +1,14 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import routes from '@/config/routes';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
-import { BiLinkExternal } from 'react-icons/bi';
-import { useJupiterApiContext } from '../trade/src/contexts';
-import axios from 'axios';
-import { convert } from '@/lib/numbers';
-import { Loader2 } from 'lucide-react';
+"use client";
+import { Button } from "@/components/ui/button";
+import routes from "@/config/routes";
+import Image from "next/image";
+import Link from "next/link";
+import { FC, useEffect, useState } from "react";
+import { BiLinkExternal } from "react-icons/bi";
+import { useJupiterApiContext } from "../trade/src/contexts";
+import axios from "axios";
+import { convert } from "@/lib/numbers";
+import { Loader2 } from "lucide-react";
 
 type TrendingItemProps = {
   className?: string;
@@ -26,9 +26,20 @@ const TrendingItem: FC<TrendingItemProps> = ({
   const token = tokenMap.get(mint);
   const [marketPrice, setMarketPrice] = useState(0);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    const getMarketCapV2 = async () => {
+      if (token) {
+        const { data } = await axios.get(
+          `https://price.jup.ag/v4/price?ids=${token.address}`
+        );
+        console.log("Market Data", data["data"][token.address]["price"]);
+        setMarketPrice(data["data"][token.address]["price"]);
+      }
+    };
     const getMarketCap = async () => {
-      if (token &&  token.extensions) {
+      console.log("TOKEN", token);
+      if (token && token.extensions) {
         const { data } = await axios.get(
           "https://api.coingecko.com/api/v3/coins/" +
             token.extensions.coingeckoId
@@ -37,7 +48,8 @@ const TrendingItem: FC<TrendingItemProps> = ({
         setMarketPrice(data.market_data.current_price.usd);
       }
     };
-    getMarketCap();
+    // getMarketCap();
+    getMarketCapV2();
   }, [token]);
 
   return (
@@ -49,7 +61,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
           alt="logo"
           onLoad={(e) => {
             setLoading(false);
-            e.currentTarget.classList.remove('hidden');
+            e.currentTarget.classList.remove("hidden");
           }}
         />
         {loading && <Loader2 className="w-10 h-10 rounded-full animate-spin" />}

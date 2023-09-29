@@ -46,6 +46,7 @@ interface StatisticsFormsProps {
   token: TokenInfo;
   deposit: (amount: number) => void;
   withdrawBalance: (amount: number) => void;
+  vaultInfo?: any;
 }
 
 const StatisticsForms: FC<StatisticsFormsProps> = ({
@@ -54,6 +55,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
   uiState,
   deposit,
   withdrawBalance,
+  vaultInfo,
 }) => {
   const { loading, priceData } = useTokenPrice(token ? token.symbol : "USDC");
   const [showDetails, setShowDetails] = useState(false);
@@ -109,7 +111,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
           </p>
         </div>
         <Button className="text-muted-foreground bg-foreground font-medium px-4 py-2 rounded-lg">
-          Redeem
+          {vaultInfo ? vaultInfo.long_apy.toFixed(3) : "N/A"}
         </Button>
       </Container>
       <Form {...form}>

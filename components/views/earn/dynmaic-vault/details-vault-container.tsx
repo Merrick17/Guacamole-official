@@ -152,6 +152,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
 
   useEffect(() => {
     if (vaultImpl && info && vaultInfo) {
+      console.log("Vault INFO",vaultInfo)
       const virtualPrice =
         vaultUnlockedAmount / vaultImpl.lpSupply.toNumber() || 0;
       // Vault reserves + all strategy allocations
@@ -316,7 +317,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
     <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
       <EarnHeader
         title={`Dynamic $${token ? token.symbol : ""} Vault`}
-        tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"
+        tutorialLink="https://docs.guacamole.gg/products-and-features/earn/dynamic-lending-vaults"
         viewAll={true}
       />
       <hr className="border-dashed border-background" />
@@ -327,6 +328,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
         token={token}
         deposit={depositToken}
         withdrawBalance={withdrawBalance}
+        vaultInfo={vaultInfo}
       />
      
     </div>

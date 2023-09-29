@@ -39,34 +39,57 @@ function RecentPlay({ time, signature, result, isSelf }: RecentPlayProps) {
   const isRekt = payout === 0;
   const whaleScore = Math.log10(lamportsToSol(wager) / 0.1);
   const litScore = multiplier - 1;
-
+  const outcome = (whaleScore > 0 || litScore > 0) ? 'won' : (isRekt ? 'lost' : '');
   return (
-    <a
-      className="flex gap-1 p-[10px] justify-between bg-background rounded-lg"
-      href={`${VERIFY_URL}/${signature}`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <div className="flex gap-1">
-        <span>
-          {(whaleScore > 0 || litScore > 0) && '🎉'}
-          {isRekt && '💀'}
-        </span>
-        <span>{isSelf ? 'You ' : 'Someone '}</span>
-        {(whaleScore > 0 || litScore > 0) && 'won'}
-        {isRekt && 'lost'}
+    // <a
+    //   className="flex gap-1 p-[10px] justify-between bg-background rounded-lg"
+    //   href={`${VERIFY_URL}/${signature}`}
+    //   target="_blank"
+    //   rel="noreferrer"
+    // >
+    //   <div className="flex gap-1">
+    //     <span>
+    //       {(whaleScore > 0 || litScore > 0) && '🎉'}
+    //       {isRekt && '💀'}
+    //     </span>
+    //     <span>{isSelf ? 'You ' : 'Someone '}</span>
+    //     {(whaleScore > 0 || litScore > 0) && 'won'}
+    //     {isRekt && 'lost'}
 
-        {(whaleScore > 0 || litScore > 0) && (
-          <span className="text-[#8BD796]"> {formatLamports(payout)}</span>
-        )}
-        {isRekt && (
-          <span className="text-destructive">{formatLamports(wager)}</span>
-        )}
-      </div>
+    //     {(whaleScore > 0 || litScore > 0) && (
+    //       <span className="text-[#8BD796]"> {formatLamports(payout)}</span>
+    //     )}
+    //     {isRekt && (
+    //       <span className="text-destructive">{formatLamports(wager)}</span>
+    //     )}
+    //   </div>
+    //   <span>
+    //     <TimeDiff time={time} />
+    //   </span>
+    // </a>
+    <a
+    className="flex gap-1 p-[10px] justify-between bg-background rounded-lg"
+    href={`${VERIFY_URL}/${signature}`}
+    target="_blank"
+    rel="noreferrer"
+  >
+    <div className="flex gap-1">
       <span>
-        <TimeDiff time={time} />
+        {(whaleScore > 0 || litScore > 0) && '🎉'}
+        {isRekt && '💀'}
       </span>
-    </a>
+      <span>{isSelf ? 'You ' : 'Someone '}</span>
+      {outcome && `${outcome} `}
+      {outcome && (outcome === 'won' ? (
+        <span className="text-[#8BD796]"> {formatLamports(payout)}</span>
+      ) : (
+        <span className="text-destructive">{formatLamports(wager)}</span>
+      ))}
+    </div>
+    <span>
+      <TimeDiff time={time} />
+    </span>
+  </a>
   );
 }
 

@@ -49,7 +49,7 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
     name: "BTCUSD-PERP",
     high: "25,901.41",
     low: "25,534.37",
-    coin: ["BTC", "Bitcoin", "PYTH:BTCUSD"],
+    coin: ["BTC", "Bitcoin", "HXRO:BTCUSD"],
     coinLogo: "/images/tokens/BTC.png",
   });
   const [marketList, setMarketList] = useState<Market[]>([
@@ -57,21 +57,21 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
       name: "BTCUSD-PERP",
       high: "25,901.41",
       low: "25,534.37",
-      coin: ["BTC", "Bitcoin", "PYTH:BTCUSD"],
+      coin: ["BTC", "Bitcoin", "HXRO:BTCUSD"],
       coinLogo: "/images/tokens/BTC.png",
     },
     {
       name: "ETHUSD-PERP",
       high: "25,901.41",
       low: "25,534.37",
-      coin: ["ETH", "Ethereum", "PYTH:ETHUSD"],
+      coin: ["ETH", "Ethereum", "HXRO:ETHUSD"],
       coinLogo: "/images/tokens/ETH.png",
     },
     {
       name: "SOLUSD-PERP",
       high: "25,901.41",
       low: "25,534.37",
-      coin: ["SOL", "Solana", "PYTH:SOLUSD"],
+      coin: ["SOL", "Solana", "HXRO:SOLUSD"],
       coinLogo: "/images/tokens/SOL.png",
     },
   ]);
