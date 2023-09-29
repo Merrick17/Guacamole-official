@@ -70,9 +70,9 @@ const TableDetails = () => {
     setAccountHealth(accountHealth);
     setAllTimePnl(allTimePnl);
     setUpdated(true);
-    setAccountLeverage(portfolioValue / initialMarginReq);
+    setAccountLeverage(portfolioValue / (portfolioValue - Math.abs(openPositionsValue)));
     setLastUpdated(Date.now());
-  }, [trader, selectedProduct]); // Removed markPrice and indexPrice
+  }, [trader, selectedProduct]); 
 
   useEffect(() => {
     if (trader) {

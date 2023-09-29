@@ -17,7 +17,7 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   Token,
   TOKEN_PROGRAM_ID,
-} from '@solana/spl-token-v1';
+} from '@solana/spl-token';
 import {
   createBurnEditionNftInstruction,
   createBurnNftInstruction,

@@ -39,6 +39,7 @@ import { useWebSocket } from '@/context/websocket';
 import { useToast } from '@/hooks/use-toast';
 import { PublicKey } from '@solana/web3.js';
 import Link from 'next/link';
+import { Product, ProductMap } from './perpetual-constants';
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -59,7 +60,7 @@ const PerpetualsForm = () => {
   const { publicKey, signTransaction, signAllTransactions, connected } =
     useWallet();
   const { manifest } = useManifest();
-  const { trader } = useTrader();
+  const { trader, cashBalance } = useTrader();
   const { toast } = useToast();
   const { candles } = useWebSocket();
   const [isOpen, setIsOpen] = useState(false);
@@ -106,11 +107,18 @@ const PerpetualsForm = () => {
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
+            
             <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
           </div>
         ),
       }),
   };
+
+  const selectedMarketPrice = useMemo(() => {
+    if (!markPrice || !selectedProduct || !(markPrice.length > 0)) return 0
+    return markPrice.find((p) => p.index === selectedProduct.index).price
+  }, [selectedProduct, markPrice])
+
   // Watch changes to size and update tradeQuantity
   // useMemo(() => {
   //   const tradeQuantity = form.watch("tradeQuantity");
@@ -304,9 +312,9 @@ const PerpetualsForm = () => {
 
     const priceFraction = dexterity.Fractional.New(
       orderType === 'SHORT'
-        ? markPrice - (markPrice * slippage) / 100
-        : markPrice + (markPrice * slippage) / 100,
-      0
+      ? (Number((selectedMarketPrice - ((selectedMarketPrice * slippage) / 100)).toFixed(ProductMap.get(selectedProduct.index).priceTrim)) * 10 ** 10)
+      : (Number((selectedMarketPrice + ((selectedMarketPrice * slippage) / 100)).toFixed(ProductMap.get(selectedProduct.index).priceTrim)) * 10 ** 10),
+        10
     );
     const sizeFraction = dexterity.Fractional.New(
       size * 10 ** selectedProduct.exponent,
@@ -316,13 +324,27 @@ const PerpetualsForm = () => {
       process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET ||
       'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC';
 
+      console.log(JSON.stringify({open: {
+        index: selectedProduct.index,
+        orderType: orderType === 'SHORT' ? false : true,
+        priceFraction,
+        sizeFraction,
+        isIOC: false,
+        referPubkey: new PublicKey(referralTrg),
+        bpsfee: Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+        clientOrderId: null,
+        matchLimit: null,
+        callbacks
+      }})
+      )
+
     try {
       await trader.newOrder(
         selectedProduct.index,
         orderType === 'SHORT' ? false : true,
         priceFraction,
         sizeFraction,
-        false,
+        true,
         new PublicKey(referralTrg),
         Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
         null,
@@ -344,6 +366,7 @@ const PerpetualsForm = () => {
     } finally {
     }
   };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -358,6 +381,14 @@ const PerpetualsForm = () => {
     const position = upOrDown ? 'LONG' : 'SHORT';
     await handlePlaceOrder(position, Number(slippage), Number(tradeQuantity));
   };
+
+  const [product, setProduct] = useState<Product>(ProductMap.get(0))
+
+  useMemo(() => {
+    setProduct(ProductMap.get(selectedProduct.index))
+    setTradeQuantity(selectedProduct.minSize.toString())
+  }, [selectedProduct])
+  
   return (
     <>
       {isOpen && (
@@ -431,19 +462,20 @@ const PerpetualsForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
-                      <p> Trade Size {'(BTC)'}</p> <p> Min. Trade: 0.0001</p>
+                      <p> Trade Size {`(${product.base})`}</p> <p> Min. Trade: {product.minSize}</p>
                     </FormLabel>
                     <FormControl className="bg-foreground px-4 py-2 h-10">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-5">
                           <div className="w-5 h-5 shrink-0">
                             <img
-                              src="/static/coins/bitcoin.png"
-                              alt="usdc"
+                              src={product.baseLogo}
+                              alt={product.base}
                               className="w-5 h-5"
                             />
                           </div>
                           <Input
+                          min={product.minSize}
                             type="number"
                             placeholder="0"
                             value={tradeQuantity}
@@ -505,7 +537,6 @@ const PerpetualsForm = () => {
                             step="0.01"
                             type="number"
                             placeholder="0"
-                            // {...field}
                             value={slippage}
                             onChange={(e) => {
                               setSlippage(e.target.value);
@@ -547,19 +578,19 @@ const PerpetualsForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
-                      <p>Estimated {'(USDC)'}</p>{' '}
-                      <p className="text-accent">Cash Balance: $10,042.24</p>
+                      <p>Estimated {`(${product.quote})`}</p>{' '}
+                      <p className="text-accent">Cash Balance: {(cashBalance ?? 0).toLocaleString()}</p>
                     </FormLabel>
                     <FormControl className="bg-foreground px-4 py-2 h-10">
                       <div className=" flex items-center gap-5">
                         <div className="w-5 h-5">
                           <img
-                            src="/icons/earn/usd-coin-usdc-logo.svg"
-                            alt="usdc"
+                            src={product.quoteLogo}
+                            alt={product.quote}
                             className="w-5 h-5"
                           />
                         </div>
-                        <h5 className="text-sm font-medium">2,562.02</h5>
+                        <h5 className="text-sm font-medium">${(selectedMarketPrice * Number(tradeQuantity ?? 0) - (Number(slippage) / 100 * (selectedMarketPrice * Number(tradeQuantity ?? 0)))).toLocaleString()}</h5>
                         {/* <Input
                           type="number"
                           placeholder="0"

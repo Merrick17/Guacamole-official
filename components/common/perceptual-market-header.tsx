@@ -19,10 +19,7 @@ type SelectedCoinProps = {
 };
 const PerceptualMarketHeader = () => {
   const {
-    markPrice,
     indexPrice,
-    setIndexPrice,
-    setMarkPrice,
     selectedProduct,
   } = useProduct();
   const { selectedMarket, selectMarket, candles } = useWebSocket();

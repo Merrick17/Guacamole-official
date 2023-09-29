@@ -188,7 +188,10 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
   };
 
   const handleDeposit = useCallback(async () => {
-    if (!amount || !publicKey || !manifest) return;
+    if (!amount || !publicKey || !manifest) {
+      console.log({amount, publicKey})
+      return
+    };
     try {
       setIsLoading(true);
       setDepositStatus("processing");
@@ -234,6 +237,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
       handleClose();
     }
   }, [amount, publicKey, manifest, trader, selectedProduct]);
+  
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey]);
@@ -254,7 +258,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
             />
             <div className="flex flex-row items-center justify-between">
               <span className="text-sm mb-4 text-muted-foreground">
-                withdraw or Deposit (USDC)
+                Withdraw or Deposit (USDC)
               </span>
               <span className="text-sm mb-4 text-muted-primary">
                 {" "}
@@ -275,7 +279,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
                 onClick={handleDeposit}
                 disabled={amount === null || isLoading}
               >
-                deposit
+                Deposit
               </Button>
               <Button
                 color="primary"

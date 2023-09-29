@@ -8,82 +8,159 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useProduct, useTrader } from '@/context/dexterity';
+import { Price, dexterity, useManifest, useProduct, useTrader } from '@/context/dexterity';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { useCallback, useState } from 'react';
-
-const invoices = [
-  {
-    invoice: 'INV001',
-    paymentStatus: 'Paid',
-    totalAmount: '$250.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV002',
-    paymentStatus: 'Pending',
-    totalAmount: '$150.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV003',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$350.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV004',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV005',
-    paymentStatus: 'Paid',
-    totalAmount: '$550.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV006',
-    paymentStatus: 'Pending',
-    totalAmount: '$200.00',
-    paymentMethod: 'Bank Transfer',
-  },
-];
+import { useWallet } from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Product, ProductMap } from './perpetual-constants';
 
 export function PerceptualTable() {
   const {
-    orderData, // ordeData: OrderData[]
+    orderData,
     lastUpdated,
     updated,
     trader,
     positionsData,
   } = useTrader();
-  const { selectedProduct } = useProduct();
   const [requested, setRequested] = useState(false);
   const { markPrice } = useProduct();
-  const cancelOrders = useCallback(async () => {
-    setRequested(true);
-    let ordersArr: any[];
-    try {
-      ordersArr = await trader.cancelAllOrders([selectedProduct.name]);
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: `Error canceling all orders, ${error}`,
-      });
-    } finally {
+
+  const callbacks = {
+    onGettingBlockHashFn: () =>
+      toast({ variant: 'default', title: 'Fetching BlockHash...' }),
+    onGotBlockHashFn: () =>
+      toast({ variant: 'success', title: 'Got BlockHash!' }),
+    onConfirm: (txn: string) =>
       toast({
         variant: 'success',
-        description: `Canceled all orders`,
-        title: 'Success',
-        // txid: ordersArr[0],
-      });
+        title: 'Order Placed Successfully!',
+        description: (
+          <div className="flex flex-col gap-1">
+            <p>Transaction sent successfully.</p>
+            <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+          </div>
+        ),
+      }),
+  };
+
+  const { manifest } = useManifest();
+  const { publicKey } = useWallet();
+
+  useEffect(() => {
+  }, [markPrice, manifest, publicKey, trader])
+
+  const handleCloseOrder = async (
+    selectedProduct: Product,
+    orderType: boolean,
+    size: number,
+    slippage = 0.5
+  ) => {
+    console.log(
+      markPrice,
+      0.5,
+      size,
+      publicKey.toBase58(),
+      manifest,
+      selectedProduct
+    );
+    if (
+      !markPrice ||
+      !size ||
+      !publicKey ||
+      !manifest ||
+      !selectedProduct
+    ) {
+      console.log('Market Price', markPrice);
+      if (!markPrice) {
+        console.log('markPrice is falsy');
+      }
+
+      if (!size) {
+        console.log('size is falsy');
+      }
+
+      if (!publicKey) {
+        console.log('publicKey is falsy');
+      }
+
+      if (!manifest) {
+        console.log('manifest is falsy');
+      }
+
+      if (!selectedProduct) {
+        console.log('selectedProduct is falsy');
+        console.log({selectedProduct})
+      }
+      return;
     }
-    setRequested(false);
-  }, []);
+
+    const IndexMap = {
+      0: 1,
+      1: 2,
+      2: 4
+    }
+
+    const selectedMarketPrice = (markPrice.find((p) => p.index === selectedProduct.index)).price
+
+    const priceFraction = dexterity.Fractional.New(
+      !orderType
+      ? (Number((selectedMarketPrice - ((selectedMarketPrice * slippage) / 100)).toFixed(IndexMap[selectedProduct.index])) * 10 ** 10)
+      : (Number((selectedMarketPrice + ((selectedMarketPrice * slippage) / 100)).toFixed(IndexMap[selectedProduct.index])) * 10 ** 10),
+        10
+    );
+    const sizeFraction = dexterity.Fractional.New(
+      Math.abs(size) * 10 ** selectedProduct.exponent,
+      selectedProduct.exponent
+    );
+    const referralTrg =
+      process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET ||
+      'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC';
+
+    console.log(JSON.stringify({close: {
+      index: selectedProduct.index,
+      orderType,
+      priceFraction,
+      sizeFraction,
+      isIOC: false,
+      referPubkey: new PublicKey(referralTrg),
+      bpsfee: Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+      clientOrderId: null,
+      matchLimit: null,
+      callbacks
+    }})
+    )
+
+    try {
+      await trader.newOrder(
+        selectedProduct.index,
+        orderType,
+        priceFraction,
+        sizeFraction,
+        true,
+        new PublicKey(referralTrg),
+        Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+        null,
+        null,
+        callbacks
+      );
+      toast({
+        variant: 'success',
+        title: `Successfully closed ${!orderType? 'LONG' : 'SHORT'} Position!`,
+      });
+    } catch (error: any) {
+      console.log(error);
+      toast({
+        variant: 'destructive',
+        title: 'Placing order failed!',
+        description: error?.message,
+      });
+    } finally {
+    }
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -100,11 +177,15 @@ export function PerceptualTable() {
         {updated &&
           positionsData &&
           positionsData.map((position, ind) => {
+            if (!markPrice) return
             if (Math.abs(parseFloat(position[1].m)) > 0) {
               const qty =
                 parseFloat(position[1].m) /
                 Math.pow(10, parseInt(position[1].exp));
-              const value = qty * markPrice;
+                const product = ProductMap.get(position[0].trim())
+              const selectedMarketPrice = (markPrice.find((p) => p.index === product.index)).price
+
+              const value = qty * selectedMarketPrice;
 
               return (
                 <TableRow key={ind.toString()}>
@@ -119,7 +200,9 @@ export function PerceptualTable() {
                   <TableCell>{qty}</TableCell>
                   <TableCell>${value.toLocaleString()}</TableCell>
                   <TableCell>
-                    <Button variant="ghost">Close Trade</Button>
+                    <Button variant="ghost" onClick={() => {
+                      handleCloseOrder(product, !(position[1].m > 0), qty)
+                    }}>Close Trade</Button>
                   </TableCell>
                 </TableRow>
               );

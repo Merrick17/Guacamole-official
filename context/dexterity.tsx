@@ -150,15 +150,27 @@ export interface Product {
   exponent: number;
 }
 
+export interface Price {
+  index: number,
+  price: number
+}
+
+export interface Leverage {
+  index: number,
+  lev: number
+}
+
 interface ProductContextProps {
   mpgPubkey: string;
   setMpgPubkey: React.Dispatch<React.SetStateAction<string>>;
   selectedProduct: Product;
   setSelectedProductIndex: React.Dispatch<React.SetStateAction<Product>>;
-  indexPrice: number;
-  setIndexPrice: React.Dispatch<React.SetStateAction<number>>;
-  markPrice: number;
-  setMarkPrice: React.Dispatch<React.SetStateAction<number>>;
+  indexPrice: Price[];
+  setIndexPrice: React.Dispatch<React.SetStateAction<Price[]>>;
+  markPrice: Price[];
+  setMarkPrice: React.Dispatch<React.SetStateAction<Price[]>>;
+  productLeverage: Leverage[];
+  setProductLeverage: React.Dispatch<React.SetStateAction<Leverage[]>>;
 }
 
 const ProductContext = createContext<ProductContextProps | undefined>(
@@ -186,8 +198,9 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
 
   const [mpgPubkey, setMpgPubkey] = useState(defaultMpg);
   const [selectedProduct, setSelectedProductIndex] = useState(defaultProduct);
-  const [indexPrice, setIndexPrice] = useState(0);
-  const [markPrice, setMarkPrice] = useState(0);
+  const [indexPrice, setIndexPrice] = useState();
+  const [markPrice, setMarkPrice] = useState();
+  const [productLeverage, setProductLeverage] = useState()
 
   return (
     <ProductContext.Provider
@@ -200,6 +213,8 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
         setIndexPrice,
         markPrice,
         setMarkPrice,
+        productLeverage,
+        setProductLeverage
       }}
     >
       {children}

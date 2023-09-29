@@ -78,7 +78,6 @@ import {
   useWallet,
 } from "@solana/wallet-adapter-react";
 import {
-  BackpackWalletAdapter,
   PhantomWalletAdapter,
   SolflareWalletAdapter
 } from "@solana/wallet-adapter-wallets";
@@ -109,9 +108,6 @@ const ReactUIWalletModalProviderDynamic = dynamic(
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
   const { networkConfiguration } = useNetworkConfiguration();
-
-  const { setManifest } = useManifest();
-  const { publicKey, signTransaction, signAllTransactions } = useWallet();
   //const endpoint ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
   const endpoint =
     "https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
@@ -131,7 +127,6 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
        */
       new PhantomWalletAdapter(),
 
-      new BackpackWalletAdapter(),
       new SolflareWalletAdapter(),
 
       //new SlopeWalletAdapter(),
@@ -144,21 +139,6 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     //notify({ type: 'error', message: error.message ? `${error.name}: ${error.message}` : error.name });
     console.error(error);
   }, []);
-
-  useMemo(async () => {
-    const DexWallet: DexterityWallet = {
-      publicKey: publicKey!,
-      signTransaction,
-      signAllTransactions,
-    };
-    console.log({ DexWallet });
-    const rpc =
-      "https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
-    //clusterApiUrl(network)
-    const manifest = await dexterity.getManifest(rpc, true, DexWallet);
-    console.log("Manifest: ", manifest);
-    setManifest(manifest);
-  }, [publicKey]);
 
   return (
     // TODO: updates needed for updating and referencing endpoint: wallet adapter rework

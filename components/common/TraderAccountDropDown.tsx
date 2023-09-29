@@ -101,7 +101,14 @@ export const SelectTraderAccounts: FC = () => {
 
   const handleCreateTRG = useCallback(async () => {
     try {
-      await manifest.createTrg(new PublicKey(mpgPubkey));
+      const newTrg = await manifest.createTrg(new PublicKey(mpgPubkey));
+      if (newTrg) {
+        toast({
+          variant: 'success',
+          title: 'Successfully created new Trader Account!',
+          description: `Trader Account PublicKey: ${newTrg.toBase58()}`
+        })
+      }
       fetchTraderAccounts();
     } catch (error: any) {
       toast({
@@ -110,7 +117,7 @@ export const SelectTraderAccounts: FC = () => {
         description: error?.message,
       });
     }
-  }, [fetchTraderAccounts, manifest]);
+  }, [fetchTraderAccounts, manifest, mpgPubkey]);
 
   const handleSelection = useCallback(
     async (selectedValue: string) => {

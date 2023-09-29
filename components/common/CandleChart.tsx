@@ -87,7 +87,7 @@ const CandleChart = ({}) => {
 
     candlestickSeries.setData(seriesData as any);
     return () => {
-      chartRef.current.innerHTML = ""; // Clear the chart container
+      if (chartRef.current) chartRef.current.innerHTML = ""; // Clear the chart container
     };
   }, [candles]);
 
