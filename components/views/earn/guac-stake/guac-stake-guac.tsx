@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,10 +14,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi';
-import Image from 'next/image';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { BiDownArrowAlt, BiUpArrowAlt } from "react-icons/bi";
+import Image from "next/image";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useEffect, useState } from "react";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import useWalletTokens from "@/lib/tokens/useWalletTokens";
 
 const formSchema = z.object({
   stake: z.boolean(),
@@ -25,6 +29,31 @@ const formSchema = z.object({
 });
 
 const GuacStakeForm = () => {
+  const [solBalance, setSolBalance] = useState(0);
+  const { publicKey, connected } = useWallet();
+  const { connection } = useConnection();
+  const walletTokens = useWalletTokens();
+  const [guacInfo, setGuacInfo] = useState(null);
+  //AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR
+  const fetchSolBalance = async () => {
+    try {
+      const balance = await connection.getBalance(publicKey);
+      setSolBalance(balance / LAMPORTS_PER_SOL);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    if (connected && publicKey) {
+      console.log("Wallet", walletTokens);
+      const msSol = walletTokens.find(
+        (elm) =>
+          elm.account.mint.toBase58() ==
+          "AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"
+      );
+      //console.log("MsOL",msSol)
+      setGuacInfo(msSol);
+      fetchSolBalance();
+    }
+  }, [publicKey,walletTokens]);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,9 +86,9 @@ const GuacStakeForm = () => {
                     className="w-full"
                     size="sm"
                     type="button"
-                    onClick={() => form.setValue('stake', true)}
+                    onClick={() => form.setValue("stake", true)}
                     variant={
-                      form.watch('stake') === true ? 'default' : 'secondary'
+                      form.watch("stake") === true ? "default" : "secondary"
                     }
                   >
                     Stake GUAC
@@ -78,9 +107,9 @@ const GuacStakeForm = () => {
                     className="w-full"
                     size="sm"
                     type="button"
-                    onClick={() => form.setValue('stake', false)}
+                    onClick={() => form.setValue("stake", false)}
                     variant={
-                      form.watch('stake') === false ? 'default' : 'secondary'
+                      form.watch("stake") === false ? "default" : "secondary"
                     }
                   >
                     Unstake GUAC
@@ -95,16 +124,30 @@ const GuacStakeForm = () => {
 
         <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
           <Image
-            src="/icons/earn/sol.svg"
+            src={
+              form.watch("stake") == true
+                ? "/icons/earn/sol.svg"
+                : "/images/logo.png"
+            }
             width={32}
             height={32}
             alt="solana"
           />
           <div className="w-full">
-            <h1 className="font-semibold">SOL</h1>
+            <h1 className="font-semibold">
+              {form.getValues("stake") == true ? "SOL" : "GUAC"}
+            </h1>
             <p className=" text-xs ">
               <span className="text-white/50">Balance </span>
-              <span className="text-white/[0.35]">22.936590397</span>
+              <span className="text-white/[0.35]">
+                {connected
+                  ? form.getValues("stake") == true
+                    ? solBalance
+                    : guacInfo &&
+                      Number(guacInfo.account.amount)/
+                        Math.pow(10, guacInfo.decimals)
+                  : 0}
+              </span>
             </p>
           </div>
           <FormField
