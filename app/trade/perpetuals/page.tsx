@@ -60,25 +60,25 @@ const Perceptual = () => {
     if (!manifest || !publicKey) return
     const filters: GetProgramAccountsFilter[] = [
       {
-        dataSize: 165,    //size of account (bytes)
+        dataSize: 165, 
       },
       {
         memcmp: {
-          offset: 32,     //location of our query in the account (bytes)
-          bytes: publicKey.toBase58(),  //our search criteria, a base58 encoded string
+          offset: 32,     
+          bytes: publicKey.toBase58(),  
         },
       },
-      //Add this search parameter
+      
       {
         memcmp: {
-          offset: 0, //number of bytes
-          bytes: USDC_MINT.toBase58(), //base58 encoded string
+          offset: 0,
+          bytes: USDC_MINT.toBase58(), 
         },
       }];
 
     const connection = manifest.fields.connection
     const accounts = await connection.getParsedProgramAccounts(
-      TOKEN_PROGRAM_ID, //new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+      TOKEN_PROGRAM_ID, 
       { filters: filters }
     );
 

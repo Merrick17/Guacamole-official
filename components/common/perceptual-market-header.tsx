@@ -10,7 +10,7 @@ import {
 } from "../ui/dropdown-menu";
 import { SelectedCoin } from "./SelectCoin";
 import Container from "./container";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type SelectedCoinProps = {
   high: string;
@@ -22,11 +22,17 @@ const PerceptualMarketHeader = () => {
   const {
     indexPrice,
     selectedProduct,
+    markPrice
   } = useProduct();
   const { selectedMarket, selectMarket, candles } = useWebSocket();
   const { trader } = useTrader();
   const { setSelectedProductIndex } = useProduct();
-  useEffect(() => {}, [candles]);
+  useEffect(() => {}, [candles, markPrice]);
+
+  const selectedIndexPrice: number = useMemo(() => {
+    if (!indexPrice || !selectedProduct) return;
+    return indexPrice.find((p) => p.index === selectedProduct.index).price
+  }, [indexPrice, selectedProduct])
 
   return (
     <Container className="w-full flex justify-between items-center bg-background py-6 px-9">
@@ -130,7 +136,7 @@ const PerceptualMarketHeader = () => {
           )}
         </p>
         <p className="text-muted-foreground text-[10px] text-right">
-          INDEX PRICE: $ {markPrice ? markPrice : "N/A"}
+          INDEX PRICE: $ {selectedIndexPrice ?? 0}
         </p>
       </div>
     </Container>
