@@ -145,9 +145,13 @@ const Perceptual = () => {
       for (const [productName, obj] of dexterity.Manifest.GetProductsOfMPG(
         trader.mpg
       )) {
-        if (!ProductMap.get(productName.trim())) {
-          continue;
+
+        if (!productName.includes('OPOS0D')){
+          if (!ProductMap.get(productName.trim())) {
+            continue;
+          }
         }
+        
         const { index: productIndex, product } = obj;
 
         await manifest.updateCovarianceMetadatas();
