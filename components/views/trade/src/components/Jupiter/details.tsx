@@ -53,7 +53,7 @@ const Details = ({
     <div
       className={cn('mt-4 space-y-4 border border-background rounded-xl p-3')}
     >
-      <div className="flex items-center justify-between text-xs">
+      <div className="flex items-center justify-between text-xs ">
         <div className="text-muted-foreground">{<span>Rate</span>}</div>
         {JSBI.greaterThan(rateParams.inAmount, ZERO) &&
         JSBI.greaterThan(rateParams.outAmount, ZERO) ? (
@@ -76,15 +76,17 @@ const Details = ({
         <div>{priceImpactText}</div>
       </div>
 
-      <div className="flex items-center justify-between text-xs">
-        <div className="text-muted-foreground">
+      <div className="flex items-center justify-between text-xs  text-muted-foreground ">
+        <div className="">
           {selectRoute?.swapMode === SwapMode.ExactIn ? (
             <span>Minimum Received</span>
           ) : (
             <span>Maximum Consumed</span>
           )}
         </div>
-        <div className="text-muted-foreground">{otherAmountThresholdText}</div>
+        <div className="text-muted-foreground max-w-[88px] overflow-hidden text-ellipsis whitespace-nowrap">
+          {otherAmountThresholdText}
+        </div>
       </div>
     </div>
   );

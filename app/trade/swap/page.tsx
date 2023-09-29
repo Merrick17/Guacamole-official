@@ -22,7 +22,7 @@ const Swap = () => {
             className={cn('col-span-1', showCharts && 'lg:col-span-2 ')}
           />
 
-          <div className="relative w-max">
+          <div className="relative w-full">
             <Trade />
             <Button
               size="icon"

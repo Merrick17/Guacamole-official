@@ -95,7 +95,12 @@ const ExchangeRate = ({
       )}
       onClick={onReverse}
     >
-      <span className={cn(textClassName, 'max-w-full flex whitespace-nowrap')}>
+      <span
+        className={cn(
+          textClassName,
+          'max-w-[88px] flex whitespace-nowrap  overflow-hidden text-ellipsis'
+        )}
+      >
         {reverse ? (
           <>
             1 {fromTokenInfo.symbol} ≈

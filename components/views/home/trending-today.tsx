@@ -39,7 +39,7 @@ const TrendingToday: FC<TrendingTodayProps> = ({ className }) => {
               alt="trending"
             />
           </div>
-          <h1 className="text-xl capitalize">Trending Today</h1>
+          <h1 className="text-lg lg:text-xl capitalize">Trending Today</h1>
         </div>
         <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
           {loading ? (

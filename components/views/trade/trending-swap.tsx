@@ -20,11 +20,13 @@ const TrendingSwap: FC<TrendingSwapProps> = ({ className }) => {
   return (
     <Container
       className={cn(
-        'py-[10px] flex flex-row items-center overflow-hidden  max-w-full  gap-6 rounded-lg',
+        'px-5 py-[10px] flex flex-row items-center overflow-hidden  max-w-full  gap-6 rounded-lg',
         className
       )}
     >
-      <Button className="whitespace-nowrap">Trending Today</Button>
+      <Button className="whitespace-nowrap h-8 px-3 lg:h-10 lg:px-4 lg:py-2">
+        Trending Today
+      </Button>
       <CustomTicker>
         {trending.map((x, idx) => (
           <TrendingSwapItem key={x.symbol} {...x} idx={idx + 1} />
@@ -56,11 +58,15 @@ const TrendingSwapItem: FC<TrendingSwapItemProps> = ({
   return (
     <Link
       href={routes.trade.swap + `?outputMint=${mint}`}
-      className=" w-full   py-[6px] px-3 font-bold text-sm flex flex-row items-center gap-1 rounded-lg"
+      className=" text-xs lg:text-sm w-full   py-[6px] px-3 font-bold  flex flex-row items-center gap-1 rounded-lg"
     >
       <p className="uppercase">#{idx}</p>
-      <div className="w-6 h-6 rounded-full">
-        <img src={token.logoURI} className="w-6 h-6 rounded-full" alt="logo" />
+      <div className="w-4 h-4 lg:w-6 lg:h-6 rounded-full shrink-0">
+        <img
+          src={token.logoURI}
+          className="w-4 h-4 lg:w-6 lg:h-6  rounded-full"
+          alt="logo"
+        />
       </div>
       <p className="uppercase">{token.symbol}</p>
     </Link>
