@@ -275,16 +275,7 @@ const PerpetualsForm = () => {
     }
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(values);
-    // const size = Number(values.size);
-    // const slippage = Number(values.slippage);
-    // const qty = Number(values.tradeQuantity);
-    // const position = values.upOrDown ? "LONG" : "SHORT";
-    // await handlePlaceOrder(slippage, position, size);
-  }
+
   const placeOrder = async () => {
     const position = upOrDown ? "LONG" : "SHORT";
     await handlePlaceOrder(position, Number(slippage), Number(tradeQuantity));
