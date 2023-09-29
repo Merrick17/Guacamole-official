@@ -112,7 +112,7 @@ const PerceptualMarketHeader = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <SelectedCoin
-                    coin={["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D", "4"]}
+                    coin={["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D", "6"]}
                     onClick={() => {
                       selectMarket({
                         high: "25,901.41",
@@ -122,7 +122,7 @@ const PerceptualMarketHeader = () => {
                         name: "OPOS0D",
                       });
                       setSelectedProductIndex({
-                        index: 4,
+                        index: 6,
                         name: "OPOS0D",
                         minSize: 1,
                         exponent: 0,

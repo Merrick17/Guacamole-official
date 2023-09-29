@@ -24,7 +24,7 @@ export const ProductMap = new Map<string | number, Product>([
         baseLogo: '/images/tokens/SOL.png', quoteLogo: '/icons/earn/usd-coin-usdc-logo.svg'
     }],
     ['OPOS0D', {
-        index: 4, exponent: 0, minSize: 1, priceTrim: 2, name: 'OPOS0D-ZDF', base: 'OPOS', quote: 'USDC',
+        index: 6, exponent: 0, minSize: 1, priceTrim: 2, name: 'OPOS0D-ZDF', base: 'OPOS', quote: 'USDC',
         baseLogo: '/static/coins/opos-logo.png', quoteLogo: '/icons/earn/usd-coin-usdc-logo.svg'
     }],
     [0, {
@@ -39,8 +39,8 @@ export const ProductMap = new Map<string | number, Product>([
         index: 2, exponent: 1, minSize: 0.1, priceTrim: 4, name: 'SOLUSD-PERP', base: 'SOL', quote: 'USDC',
         baseLogo: '/images/tokens/SOL.png', quoteLogo: '/icons/earn/usd-coin-usdc-logo.svg'
     }],
-    [4, {
-        index: 4, exponent: 0, minSize: 1, priceTrim: 2, name: 'OPOS0D-ZDF', base: 'OPOS', quote: 'USDC',
+    [6, {
+        index: 6, exponent: 0, minSize: 1, priceTrim: 2, name: 'OPOS0D-ZDF', base: 'OPOS', quote: 'USDC',
         baseLogo: '/static/coins/opos-logo.png', quoteLogo: '/icons/earn/usd-coin-usdc-logo.svg'
     }],
 ]);
