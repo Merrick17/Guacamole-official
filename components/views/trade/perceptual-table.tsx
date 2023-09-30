@@ -56,7 +56,7 @@ export function PerceptualTable() {
     orderType: boolean,
     size: number,
   ) => {
-    let slippage = selectedProduct.index === 4 ? 5 : 0.5
+    let slippage = selectedProduct.index === 6 ? 5 : 0.5
     console.log(
       markPrice,
       0.5,
