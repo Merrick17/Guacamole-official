@@ -112,12 +112,21 @@ const PerceptualMarketHeader = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <SelectedCoin
-                    coin={["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D", "4"]}
+                    coin={[
+                      "OPOS",
+                      "Only-possible-on-Solana",
+                      "HXRO:OPOS0D",
+                      "4",
+                    ]}
                     onClick={() => {
                       selectMarket({
                         high: "25,901.41",
                         low: "25,534.37",
-                        coin: ["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D"],
+                        coin: [
+                          "OPOS",
+                          "Only-possible-on-Solana",
+                          "HXRO:OPOS0D",
+                        ],
                         coinLogo: "/static/coins/opos-logo.png",
                         name: "OPOS0D",
                       });
@@ -219,6 +228,26 @@ const PerceptualMarketHeader = () => {
                       name: "SOLUSD-PERP",
                       minSize: 0.1,
                       exponent: 1,
+                    });
+                  }}
+                />
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <SelectedCoin
+                  coin={["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D", "4"]}
+                  onClick={() => {
+                    selectMarket({
+                      high: "25,901.41",
+                      low: "25,534.37",
+                      coin: ["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D"],
+                      coinLogo: "/static/coins/opos-logo.png",
+                      name: "OPOS0D",
+                    });
+                    setSelectedProductIndex({
+                      index: 4,
+                      name: "OPOS0D",
+                      minSize: 1,
+                      exponent: 0,
                     });
                   }}
                 />
