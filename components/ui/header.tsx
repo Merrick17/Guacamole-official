@@ -104,7 +104,7 @@ function HeaderRightArea({
           target="_blank"
           className="shrink-0"
         >
-          <Image src="/icons/account.svg" alt="search" width={48} height={48} />
+          <Image src="/images/Link.png" alt="search" width={48} height={48} />
         </Link>
         <Hamburger
           isOpen={isOpen}

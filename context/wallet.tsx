@@ -79,7 +79,7 @@ import {
 } from "@solana/wallet-adapter-react";
 import {
   PhantomWalletAdapter,
-  SolflareWalletAdapter
+  SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import dynamic from "next/dynamic";
 import { FC, ReactNode, useCallback, useMemo } from "react";
@@ -97,6 +97,7 @@ import {
 } from "./network-configuration";
 
 import { MarinadeProvider } from "./Marinade";
+import { OKXWalletAdapter } from "@/components/wallets/okxwallet";
 export const dexterity = dexterityTs;
 
 const ReactUIWalletModalProviderDynamic = dynamic(
@@ -109,7 +110,8 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
   const { networkConfiguration } = useNetworkConfiguration();
   //const endpoint ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
-   const endpoint ="https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943";
+  const endpoint =
+    "https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943";
   const wallets = useMemo(
     () => [
       /**
@@ -127,6 +129,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
       new PhantomWalletAdapter(),
 
       new SolflareWalletAdapter(),
+      new OKXWalletAdapter(),
 
       //new SlopeWalletAdapter(),
     ],
@@ -148,9 +151,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
         autoConnect={autoConnect}
       >
         <ReactUIWalletModalProviderDynamic>
-        
-            <MarinadeProvider>{children}</MarinadeProvider>
-          
+          <MarinadeProvider>{children}</MarinadeProvider>
         </ReactUIWalletModalProviderDynamic>
       </WalletProvider>
     </ConnectionProvider>

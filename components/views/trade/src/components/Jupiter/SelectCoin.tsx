@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useJupiterApiContext } from '../../contexts';
-import { TokenInfo } from '@solana/spl-token-registry';
-import { BiChevronDown, BiLinkExternal } from 'react-icons/bi';
-import ReactPaginate from 'react-paginate';
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useJupiterApiContext } from "../../contexts";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { BiChevronDown, BiLinkExternal } from "react-icons/bi";
+import ReactPaginate from "react-paginate";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import {
   Dialog,
   DialogContent,
@@ -12,13 +12,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import routes from '@/config/routes';
-import { token } from '@metaplex-foundation/js';
+} from "@/components/ui/dialog";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import routes from "@/config/routes";
+import { token } from "@metaplex-foundation/js";
+import useWalletTokens from "@/lib/tokens/useWalletTokens";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const Row = ({
   info,
@@ -29,15 +31,28 @@ const Row = ({
   handleSelect: (e: TokenInfo) => void;
   isInput: boolean;
 }) => {
+  const [userBalance, setUserBalance] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams()!;
+  const userTokens = useWalletTokens();
+  const { connected } = useWallet();
 
+  useMemo(() => {
+    // console.log("User TOekn", userTokens);
+    let token = userTokens.find((elm) => elm.account.mint == info.address);
+    //console.log("Tk", token);
+    if (token) {
+      setUserBalance(
+        Number(token.account.amount) / Math.pow(10, token.decimals)
+      );
+    }
+  }, [userTokens]);
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams(searchParams as any);
       params.set(name, value);
 
       return params.toString();
@@ -51,10 +66,10 @@ const Row = ({
         handleSelect(info);
         isInput
           ? router.push(
-              pathname + '?' + createQueryString('inputMint', info.address)
+              pathname + "?" + createQueryString("inputMint", info.address)
             )
           : router.push(
-              pathname + '?' + createQueryString('outputMint', info.address)
+              pathname + "?" + createQueryString("outputMint", info.address)
             );
       }}
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background  "
@@ -80,6 +95,11 @@ const Row = ({
           </Link>
         </div>
         <span className="text-sm text-muted-foreground">{info.name}</span>
+        {connected && (
+          <span className="text-xs text-muted-foreground">
+            Balance: {userBalance} {info.symbol}{" "}
+          </span>
+        )}
       </div>
     </button>
   );
@@ -92,7 +112,7 @@ const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
         src={tokenInfo?.logoURI as string}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null; // prevents looping
-          currentTarget.src = '/images/default-coin.png';
+          currentTarget.src = "/images/default-coin.png";
         }}
         width={20}
         height={20}
@@ -117,7 +137,7 @@ export const SelectCoin = ({
   isInput?: boolean;
 }) => {
   const { tokenMap } = useJupiterApiContext();
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const originalList = useMemo(
     () =>
@@ -154,7 +174,7 @@ export const SelectCoin = ({
           </DialogTitle>
           <DialogDescription>
             <input
-              value={search || ''}
+              value={search || ""}
               onChange={(e) => {
                 setSearch(e.target.value.trim());
               }}
@@ -251,7 +271,7 @@ function PaginatedItems({ itemsPerPage, items, handleSelect, isInput }) {
           renderOnZeroPageCount={null}
           className="flex justify-end items-center max-w-[512px] w-full mx-auto mt-4 "
           pageClassName={
-            'flex justify-center items-center h-8 p-2 rounded-xl  cursor-pointer hover:bg-slate-100 hover:text-slate-900 '
+            "flex justify-center items-center h-8 p-2 rounded-xl  cursor-pointer hover:bg-slate-100 hover:text-slate-900 "
           }
           activeClassName="bg-slate-100 text-slate-900"
         />

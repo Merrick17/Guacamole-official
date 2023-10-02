@@ -38,7 +38,7 @@ interface IData {
 }
 const formSchema = z.object({
   depositOrWithdraw: z.boolean(),
-  amount: z.number().positive(),
+  amount: z.any(),
 });
 interface StatisticsFormsProps {
   vaultImpl: any;
@@ -110,8 +110,8 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
               : 0}
           </p>
         </div>
-        <Button className="text-muted-foreground bg-foreground font-medium px-4 py-2 rounded-lg">
-          {vaultInfo ? vaultInfo.long_apy.toFixed(3) : "N/A"}
+        <Button className="text-[#8BD796] bg-foreground font-medium px-4 py-2 rounded-lg">
+           {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
         </Button>
       </Container>
       <Form {...form}>
