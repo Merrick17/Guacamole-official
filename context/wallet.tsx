@@ -71,15 +71,17 @@ require("@solana/wallet-adapter-react-ui/styles.css");
 //   );
 // };
 import dexterityTs, { DexterityWallet } from "@hxronetwork/dexterity-ts";
-import { WalletError } from "@solana/wallet-adapter-base";
+import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
   WalletProvider,
   useWallet,
 } from "@solana/wallet-adapter-react";
 import {
+  CoinbaseWalletAdapter,
   PhantomWalletAdapter,
-  SolflareWalletAdapter
+  SolflareWalletAdapter,
+  WalletConnectWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import dynamic from "next/dynamic";
 import { FC, ReactNode, useCallback, useMemo } from "react";
@@ -97,6 +99,7 @@ import {
 } from "./network-configuration";
 
 import { MarinadeProvider } from "./Marinade";
+import { OKXWalletAdapter } from "@/components/wallets/okxwallet";
 export const dexterity = dexterityTs;
 
 const ReactUIWalletModalProviderDynamic = dynamic(
@@ -109,7 +112,8 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
   const { networkConfiguration } = useNetworkConfiguration();
   //const endpoint ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
-   const endpoint ="https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943";
+  const endpoint =
+    "https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943";
   const wallets = useMemo(
     () => [
       /**
@@ -127,6 +131,21 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
       new PhantomWalletAdapter(),
 
       new SolflareWalletAdapter(),
+      new OKXWalletAdapter(),
+      new CoinbaseWalletAdapter(),
+      new WalletConnectWalletAdapter({
+        network: WalletAdapterNetwork.Mainnet,
+        options: {
+          relayUrl: "wss://relay.walletconnect.com",
+          // example WC app project ID
+          projectId: "6004d00df26c760c8cc264cf71a44621",
+          metadata: {
+            name: "GUACAMOLE",
+            description: "GUCAMOLE",
+            icons: ["https://avatars.githubusercontent.com/u/35608259?s=200"],
+          },
+        },
+      }),
 
       //new SlopeWalletAdapter(),
     ],
@@ -148,9 +167,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
         autoConnect={autoConnect}
       >
         <ReactUIWalletModalProviderDynamic>
-        
-            <MarinadeProvider>{children}</MarinadeProvider>
-          
+          <MarinadeProvider>{children}</MarinadeProvider>
         </ReactUIWalletModalProviderDynamic>
       </WalletProvider>
     </ConnectionProvider>

@@ -83,7 +83,7 @@ const Footer: FC<FooterProps> = () => {
           />
         </Link>
         <Link
-          href={'https://t/me/guacgg'}
+          href={'https://t.me/guacgg'}
           rel="noopener noreferrer"
           target="_blank"
           className="p-3 flex items-center justify-center rounded-lg bg-background"

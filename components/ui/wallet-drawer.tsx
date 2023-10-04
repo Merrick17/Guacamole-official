@@ -1,16 +1,16 @@
-'use client';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
-import { BiLinkExternal, BiSolidLeftArrow } from 'react-icons/bi';
-import { useToast } from '@/hooks/use-toast';
-import { useWallet } from '@solana/wallet-adapter-react';
-import routes from '@/config/routes';
-import useWalletTokens from '@/lib/tokens/useWalletTokens';
-import axios from 'axios';
-import { Skeleton } from './skeleton';
-import { useRouter } from 'next/navigation';
+"use client";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { BiLinkExternal, BiSolidLeftArrow } from "react-icons/bi";
+import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@solana/wallet-adapter-react";
+import routes from "@/config/routes";
+import useWalletTokens from "@/lib/tokens/useWalletTokens";
+import axios from "axios";
+import { Skeleton } from "./skeleton";
+import { useRouter } from "next/navigation";
 
 const WalletDrawer = () => {
   const [open, setOpen] = useState(false);
@@ -23,11 +23,11 @@ const WalletDrawer = () => {
   useEffect(() => {
     const fetchTokenData = async () => {
       const tokenDataWithPrices = await Promise.all(
-        walletTokens
-          .filter((token) => !!token.token)
-          .map(async (token) => {
+        walletTokens.map(async (token) => {
+          const elm = token;
+          if (token.token && token.account) {
             const { data } = await axios.get(
-              'https://price.jup.ag/v4/price?ids=' + token.token.symbol
+              "https://price.jup.ag/v4/price?ids=" + token.token.symbol
             );
             for (var prop in data.data) {
               const price = data.data[prop].price;
@@ -40,7 +40,22 @@ const WalletDrawer = () => {
                 amount,
               };
             }
-          })
+          } else {
+            const amount = token.account.amount
+              ? Number(token.account.amount) / Math.pow(10, token.decimals)
+              : 0;
+            return {
+              ...elm,
+              token: {
+                logoURI: "/images/Guacamole_Image_Unknown.png",
+                name: "Unknown Token",
+                symbol: "Unknown Token",
+              },
+              price: 0,
+              amount,
+            };
+          }
+        })
       );
 
       setTokenData(tokenDataWithPrices);
@@ -56,9 +71,9 @@ const WalletDrawer = () => {
           connected
             ? setOpen(true)
             : toast({
-                variant: 'destructive',
-                title: 'Wallet not connected',
-                description: 'Please connect your wallet to continue',
+                variant: "destructive",
+                title: "Wallet not connected",
+                description: "Please connect your wallet to continue",
               })
         }
       >
@@ -78,7 +93,7 @@ const WalletDrawer = () => {
         </div>
       </button>
       {open && (
-        <div className={cn('fixed w-full h-full top-0 z-50 ')}>
+        <div className={cn("fixed w-full h-full top-0 z-50 ")}>
           <div
             className=" fixed bg-black/50 w-screen h-screen cursor-pointer "
             onClick={() => setOpen(false)}
@@ -116,7 +131,7 @@ const WalletDrawer = () => {
             </header>
             <div
               className="overflow-y-auto"
-              style={{ height: 'calc(100% - 96px)' }}
+              style={{ height: "calc(100% - 96px)" }}
             >
               <ul className="flex flex-col gap-4">
                 {tokenData
@@ -151,10 +166,10 @@ export default WalletDrawer;
 
 const Row = ({ token }: { token: any }) => {
   const amount = useMemo(() => {
-    return token.account.amount
+    return token && token.account && token.account.amount
       ? Number(token.account.amount) / Math.pow(10, token.decimals)
       : 0;
-  }, [token.account.amount, token.decimals]);
+  }, [token.account, token.decimals]);
 
   const router = useRouter();
 

@@ -71,7 +71,7 @@ export const Links: {
         href: routes.earn.stakingFarms,
       },
       {
-        name: 'Liquidity staking',
+        name: 'Liquid Staking',
         href: routes.earn.liquidityStaking,
       },
       {

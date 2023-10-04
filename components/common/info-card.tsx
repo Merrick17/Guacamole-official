@@ -45,11 +45,11 @@ const InfoCard: FC<InfoCardProps> = ({
       </a>
       <p className="mb-3 font-normal text-muted-foreground">{description}</p>
       <Link
-        href={href}
+        href={disabled ? href : ""}
         target={target ? target : undefined}
         className={cn(
           "inline-flex items-center text-primary hover:underline mt-auto",
-          disabled && "cursor-not-allowed opacity-50"
+          disabled && "cursor-not-allowed pointer-events-none opacity-50"
         )}
       >
         {disabled ? "Coming Soon" : buttonTxt}

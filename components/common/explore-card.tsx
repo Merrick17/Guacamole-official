@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import { Button } from '../ui/button';
-import { FC } from 'react';
-import Image from 'next/image';
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { FC } from "react";
+import Image from "next/image";
 type ExploreCardProps = {
   title: string;
   description: string;
@@ -15,7 +15,7 @@ const ExploreCard: FC<ExploreCardProps> = ({
   href,
   image,
   title,
-  buttonTxt = 'Explore',
+  buttonTxt = "Explore",
   disabled,
 }) => {
   return (
@@ -28,7 +28,7 @@ const ExploreCard: FC<ExploreCardProps> = ({
           <h5 className=" text-2xl font-medium tracking-tight ">{title}</h5>
         </a>
         <p className=" text-lg text-muted-foreground">{description}</p>
-        <Link href={href}>
+        <Link href={href} >
           <Button disabled={disabled}>
             {buttonTxt}
             <svg
