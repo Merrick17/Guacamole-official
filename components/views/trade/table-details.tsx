@@ -29,7 +29,7 @@ const TableDetails = () => {
   } = useTrader();
   
   return (
-    <Container className="p-3 flex flex-col gap-4 bg-background text-muted-foreground rounded-xl">
+    <Container className="bg-foreground p-3 flex flex-col gap-4 bg-background text-muted-foreground rounded-xl">
       {updated && (
         <>
           {' '}

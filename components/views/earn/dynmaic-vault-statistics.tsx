@@ -30,7 +30,7 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
     <JupiterApiProvider>
       <Container
         className={cn(
-          "flex flex-col  gap-5 overflow-y-auto h-[560px]",
+          "flex flex-col bg-foreground gap-5 overflow-y-auto h-[560px]",
           className
         )}
       >
@@ -99,7 +99,7 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background ">
+    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background  hover:border-[var(--accent)]  hover:border ">
       <div className="flex flex-row items-center gap-2 lg:gap-5">
         <img
           src={token?.logoURI}

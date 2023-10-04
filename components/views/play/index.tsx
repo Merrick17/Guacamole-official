@@ -19,7 +19,7 @@ const Play = () => {
           GAMES.map((game) => (
             <Container
               key={game.short_name}
-              className="border border-transparent w-full  min-w-[322px] duration-500 ease-in-out hover:border-[var(--accent)]  hover:border rounded-lg"
+              className="border border-transparent w-full bg-foreground min-w-[322px] duration-500 ease-in-out hover:border-[var(--accent)]  hover:border rounded-lg"
             >
               <Link
                 href={`/play/${game.short_name}`}

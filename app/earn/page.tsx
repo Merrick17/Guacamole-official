@@ -6,6 +6,7 @@ import DynamicVaultStatistics from "@/components/views/earn/dynmaic-vault-statis
 import Trade from "@/components/views/trade/src/Trade";
 import routes from "@/config/routes";
 import { Metadata } from "next";
+import Link from "next/link";
 import { FC } from "react";
 
 export const metadata: Metadata = {
@@ -40,8 +41,9 @@ const Earn: FC = () => {
                 Most features also feature a permissionless setup for any
                 community or project to use.
               </p>
+              <Link className="text-xl text-primary" href={"/earn/explore"}>Explore Ways To Earn ➜</Link>
             </HeroHeadline>
-            <DynamicVaultStatistics className="col-span-1 lg:col-span-3" />
+            <DynamicVaultStatistics className="col-span-1 lg:col-span-3 bg-foreground" />
           </div>
 
           <HeroList listItems={EarnListItems} />

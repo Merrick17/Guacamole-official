@@ -247,7 +247,7 @@ const BurnSplToken = () => {
     );
   };
   return (
-    <Container className=" mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg px-6 py-5  shadow-md">
+    <Container className="bg-foreground mx-auto flex w-full max-w-4xl flex-col gap-6 rounded-lg px-6 py-5  shadow-md">
       <ToolHeader
         title="Burn SPL Tokens To Redeem $SOL"
         burnAll

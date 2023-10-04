@@ -11,7 +11,7 @@ interface PopularSubscriptionsProps {
 const PopularSubscriptions: FC<PopularSubscriptionsProps> = ({ className }) => {
   return (
     <Container
-      className={cn('flex flex-col  gap-5 overflow-y-auto', className)}
+      className={cn('flex flex-col bg-foreground gap-5 overflow-y-auto', className)}
     >
       <div className="flex flex-row gap-2 items-center">
         <div className="shrink-0 w-5 aspect-square">

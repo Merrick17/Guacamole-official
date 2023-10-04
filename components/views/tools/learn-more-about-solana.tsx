@@ -1,3 +1,4 @@
+"use client";
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -44,7 +45,18 @@ const LearnMoreAboutSolanaItem = ({
     <div className="flex flex-col bg-background p-5 rounded-lg h-full">
       <h2 className="text-base ">{title}</h2>
       <p className="text-sm text-muted-foreground">{description}</p>
-      <Button disabled={disabled} className="w-max mt-auto">
+      <Button
+        disabled={disabled}
+        className="w-max mt-auto"
+        onClick={() => {
+          if (typeof window != "undefined") {
+            window.open(
+              "https://docs.guacamole.gg/products-and-features/tools/close-empty-accounts#understanding-rent-for-solana-accounts",
+              "_blank"
+            );
+          }
+        }}
+      >
         {disabled ? "Coming Soon" : "View Guide"}
       </Button>
     </div>

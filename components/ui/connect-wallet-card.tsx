@@ -22,7 +22,7 @@ const ConnectWalletCard: FC<ConnectWalletCardProps> = ({
   description,
 }) => {
   return (
-    <Container className="rounded-lg max-w-xs text-center  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out flex items-center flex-col gap-7">
+    <Container className="rounded-lg max-w-xs text-center bg-foreground border border-transparent  hover:border-primary transition-all duration-500 ease-in-out flex items-center flex-col gap-7">
       <div className="relative aspect-square w-9">
         <Image src={'/icons/tools/connect-wallet.svg'} alt={name} fill />
       </div>

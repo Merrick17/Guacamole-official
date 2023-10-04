@@ -33,7 +33,7 @@ const PerceptualMarketHeader = () => {
   }, [indexPrice, selectedProduct]);
 
   return (
-    <Container className="w-full flex justify-between items-center bg-background py-6 px-9">
+    <Container className="w-full flex bg-foreground justify-between items-center bg-background py-6 px-9">
       {width > 1000 ? (
         <>
           <div className="flex  flex-row items-center gap-3">

@@ -8,6 +8,7 @@ import HeroList from "@/components/common/hero-list";
 import TrendingToday from "@/components/views/home/trending-today";
 import BackgroundSplash from "@/components/common/background-splash";
 import { Raleway } from "next/font/google";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -43,8 +44,9 @@ export default function Home() {
                 user-friendly experience. Get started and unlock a world of
                 possibilities!
               </p>
+              <Link className="text-xl text-primary" href={"/trade/swap"}>Scoop The Dip ➜</Link>
             </HeroHeadline>
-            <TrendingToday className="col-span-1 lg:col-span-3  lg:h-full" />
+            <TrendingToday className="col-span-1 lg:col-span-3  lg:h-full bg-foreground" />
           </div>
 
           <HeroList listItems={HomeListItems} />

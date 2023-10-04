@@ -23,7 +23,7 @@ const HeroHeadline: FC<HeroHeadlineProps> = ({
   return (
     <Container
       className={cn(
-        "flex text-white w-full flex-col gap-10 rounded-lg bg-foreground p-6 lg:px-14 lg:py-10  font-medium",
+        "flex text-white w-full flex-col gap-10 rounded-lg lg:bg-foreground p-6 lg:px-14 lg:py-10  font-medium",
 
         className
       )}

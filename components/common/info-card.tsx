@@ -34,7 +34,7 @@ const InfoCard: FC<InfoCardProps> = ({
   target,
 }) => {
   return (
-    <Container className=" p-6 rounded-lg max-w-xs  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
+    <Container className=" p-6 rounded-lg max-w-xs bg-foreground  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
       <div className="relative aspect-square w-7 h-7 mb-3">
         <Image src={image} alt={name} fill />
       </div>

@@ -53,7 +53,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
   }, [token]);
 
   return (
-    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background">
+    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background  hover:border-[var(--accent)]  hover:border">
       <div className="flex flex-row items-center  gap-2 lg:gap-5">
         <img
           src={token?.logoURI}

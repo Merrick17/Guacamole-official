@@ -27,7 +27,10 @@ const Tools: FC<ToolsProps> = () => {
             <HeroHeadline
               className="col-span-1  lg:col-span-5"
               title={
-                "A growing list of tools focused on cleaning up your crypto portfolio."
+                <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
+                  A growing <span className="text-primary">list of tools</span> focused on cleaning up
+                  your crypto portfolio
+                </h1>
               }
             >
               <>
@@ -37,6 +40,9 @@ const Tools: FC<ToolsProps> = () => {
                   with the Solana blockchain or starting your own project!
                 </p>
               </>
+              <Link className="text-xl text-primary" href={"/tools/explore"}>
+                Explore All Tools ➜
+              </Link>
             </HeroHeadline>
 
             <LearnMoreAboutSolana className="col-span-1 lg:col-span-3" />

@@ -151,7 +151,7 @@ const StatisticsForm = () => {
           Dynamic SOL Lending Vault
         </p>
       </div>
-      <Container className="w-full rounded-lg bg-background p-6  flex flex-row items-center justify-between">
+      <Container className="w-full  rounded-lg bg-background p-6  flex flex-row items-center justify-between">
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm">
             Your SOL Vault Deposits

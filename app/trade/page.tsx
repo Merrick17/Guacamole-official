@@ -5,6 +5,7 @@ import HeroList from "@/components/common/hero-list";
 import Trade from "@/components/views/trade/src/Trade";
 import routes from "@/config/routes";
 import { Metadata } from "next";
+import Link from "next/link";
 import { FC } from "react";
 
 export const metadata: Metadata = {
@@ -31,13 +32,13 @@ const Page: FC = () => {
               }
             >
               <p className=" text-xl font-medium leading-8 text-muted-foreground">
-                Our amazing tools help you trade any token on Solana. Just
-                connect your wallet, select a token, and click! Advanced trading
-                options are also available like the ability to DCA, place limit
-                orders, or bridge from other chains.
+              Our amazing tools help you trade any token on Solana. Just connect your wallet, select a token, and click! Advanced trading options are also available like the ability to DCA, place limit orders, or bridge.
               </p>
+              <Link className="text-xl text-primary" href={"/trade/explore"}>
+              Explore Trading Features ➜
+              </Link>
             </HeroHeadline>
-            <Trade showDetails={false} className="col-span-1 lg:col-span-3" />
+            <Trade showDetails={false} className="col-span-1 lg:col-span-3 bg-foreground" />
           </div>
 
           <HeroList listItems={TradeListItems} />

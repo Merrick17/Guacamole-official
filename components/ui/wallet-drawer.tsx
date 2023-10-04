@@ -41,9 +41,10 @@ const WalletDrawer = () => {
               };
             }
           } else {
-            const amount = token.account.amount
-              ? Number(token.account.amount) / Math.pow(10, token.decimals)
-              : 0;
+            const amount =
+              token && token.account && token.account.amount
+                ? Number(token.account.amount) / Math.pow(10, token.decimals)
+                : 0;
             return {
               ...elm,
               token: {
@@ -169,7 +170,7 @@ const Row = ({ token }: { token: any }) => {
     return token && token.account && token.account.amount
       ? Number(token.account.amount) / Math.pow(10, token.decimals)
       : 0;
-  }, [token.account, token.decimals]);
+  }, [token]);
 
   const router = useRouter();
 
@@ -179,7 +180,10 @@ const Row = ({ token }: { token: any }) => {
       className="flex items-center justify-start gap-5 w-full rounded-xl p-3 bg-background"
       onClick={() =>
         router.push(
-          routes.trade.swap + `?outputMint=${token.account.mint.toBase58()}`
+          routes.trade.swap +
+            `?outputMint=${
+              token && token.account ? token.account.mint.toBase58() : ""
+            }`
         )
       }
     >

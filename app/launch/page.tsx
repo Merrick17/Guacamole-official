@@ -5,6 +5,7 @@ import HeroList from "@/components/common/hero-list";
 import CreationWalkthroughs from "@/components/views/launch/creation-walkthroughs";
 import routes from "@/config/routes";
 import { Metadata } from "next";
+import Link from "next/link";
 import { FC } from "react";
 
 export const metadata: Metadata = {
@@ -35,8 +36,9 @@ const Page: FC = () => {
                 interfaces make it easier to get off the ground and start
                 distribution and add utilities.
               </p>
+              <Link className="text-xl text-primary" href={"/launch/explore"}>Explore Launch Tools ➜</Link>
             </HeroHeadline>
-            <CreationWalkthroughs className="col-span-1 lg:col-span-3" />
+            <CreationWalkthroughs className="col-span-1 lg:col-span-3 bg-foreground" />
           </div>
 
           <HeroList listItems={LaunchListItems} />

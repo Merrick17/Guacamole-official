@@ -20,7 +20,7 @@ const TrendingSwap: FC<TrendingSwapProps> = ({ className }) => {
   return (
     <Container
       className={cn(
-        "px-5 py-[10px] flex flex-row items-center overflow-hidden w-full  gap-6 rounded-lg",
+        "px-5 py-[10px] bg-foreground flex flex-row items-center overflow-hidden w-full  gap-6 rounded-lg",
         className
       )}
     >

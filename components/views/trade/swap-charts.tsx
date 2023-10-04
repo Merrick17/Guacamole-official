@@ -15,7 +15,7 @@ const SwapCharts = () => {
   const CustomOutputMintAddress =
     searchParams.get('outputMint') ?? OUTPUT_MINT_ADDRESS;
   return (
-    <Container className="px-5 py-7 flex flex-col gap-10 col-span-1">
+    <Container className="bg-foreground px-5 py-7 flex flex-col gap-10 col-span-1">
       <CoinChart coinMint={CustomInputMintAddress} />
       <CoinChart coinMint={CustomOutputMintAddress} />
     </Container>

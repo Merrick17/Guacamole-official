@@ -483,7 +483,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
           <div className="flex items-center gap-1 !h-7">
             {pathname === '/trade' ? (
               <Link
-                href={'/trade/explore'}
+                href={'/trade/swap'}
                 className="text-sm bg-primary text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
               >
                 Open Full Page

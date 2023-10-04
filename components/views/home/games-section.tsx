@@ -16,7 +16,7 @@ const GamesSection = () => {
   return (
     <section className="flex flex-col gap-[60px]">
       <div className="flex flex-col lg:flex-row gap-14 justify-between w-full">
-        <Container>
+        <Container className='bg-foreground'>
           <div className="flex flex-col justify-center gap-10 h-full">
             <div className="flex flex-col gap-10">
               <h1

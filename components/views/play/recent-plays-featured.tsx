@@ -22,7 +22,7 @@ const RecentPlaysFeatured: FC<RecentPlaysFeaturedProps> = ({ className }) => {
     <JupiterApiProvider>
       <Container
         className={cn(
-          'flex flex-col max-h-[560px]   gap-5 overflow-y-auto  ',
+          'flex flex-col max-h-[560px] bg-foreground  gap-5 overflow-y-auto  ',
           className
         )}
       >

@@ -24,7 +24,7 @@ const page: FC<ToolsProps> = () => {
         {tools.map((tool, index) => (
           <InfoCard key={index} {...tool} />
         ))}
-        <Container className=" col-span-1 sm:col-span-2 lg:col-span-3 p-6 rounded-lg  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
+        <Container className=" col-span-1 sm:col-span-2 lg:col-span-3 bg-foreground p-6 rounded-lg  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
           <h5 className="mb-2 text-2xl font-semibold tracking-tight capitalize">
             Secure Your Assets With D3fenders
           </h5>

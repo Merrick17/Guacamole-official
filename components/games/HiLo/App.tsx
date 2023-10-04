@@ -130,7 +130,7 @@ export default function HiLo() {
 
   return (
     <GameUi.Fullscreen>
-      <Container $disabled={claiming || loading}>
+      <Container $disabled={claiming || loading} className='bg-foreground'>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
           <CardsContainer>
             {cards.map((card, i) => {

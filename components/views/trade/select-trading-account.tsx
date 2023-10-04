@@ -220,7 +220,7 @@ const SelectTradingAccount = () => {
   }, [publicKey]);
 
   return (
-    <Container className="p-3 bg-background flex flex-col gap-4">
+    <Container className="bg-foreground p-3 bg-background flex flex-col gap-4">
       <div className="flex flex-col gap-3">
         <p className="text-xs font-medium text-muted-foreground">
           Select A Trading Account
