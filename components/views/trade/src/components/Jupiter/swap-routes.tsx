@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 import {
   Dialog,
@@ -6,11 +6,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { RiRouteFill } from 'react-icons/ri';
-import { SwapRoute } from '../SwapRoute';
-import { InlineResponse200MarketInfos } from '@jup-ag/api';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
+} from "@/components/ui/dialog";
+import { RiRouteFill } from "react-icons/ri";
+import { SwapRoute } from "../SwapRoute";
+import { InlineResponse200MarketInfos } from "@jup-ag/api";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 export const SwapRoutes = ({
   routes,
@@ -37,7 +37,7 @@ export const SwapRoutes = ({
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className="flex flex-row items-center w-max cursor-pointer text-primary text-xs gap-1"
+        className="flex flex-row items-center w-full overflow-hidden cursor-pointer text-primary text-xs gap-1 w"
         onClick={() => hasRoute && setVisible(true)}
       >
         <div className="flex items-center gap-1 bg-background rounded-xl px-2 py-1">
@@ -46,8 +46,11 @@ export const SwapRoutes = ({
         </div>
         {hasRoute ? (
           <>
-            {' '}
-            using <span>{selectedRoute?.marketInfos?.[0]?.label}</span>
+            {" "}
+            using{" "}
+            <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              {selectedRoute?.marketInfos?.[0]?.label}
+            </span>
           </>
         ) : (
           <>No route found</>
@@ -80,7 +83,7 @@ export const SwapRoutes = ({
                   <span className="mr-2 text-lg font-bold">No route found</span>
                   <img
                     className="h-[30px] w-[30px]"
-                    src={'/images/no-route.png'}
+                    src={"/images/no-route.png"}
                   />
                 </div>
               )}

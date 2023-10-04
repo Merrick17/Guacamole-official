@@ -1,6 +1,13 @@
-const BackgroundSplash = () => {
+import { cn } from "@/lib/utils";
+
+const BackgroundSplash = ({ className }: { className?: string }) => {
   return (
-    <div className="fixed top-1/2 left-1/2  rounded-full blur-[100px]  w-[50vw] h-[50vh] -translate-x-1/2 -translate-y-1/2 bg-primary  antialiased z-[-1]" />
+    <div
+      className={cn(
+        "fixed inset-0 bg-no-repeat bg-center bg-cover   antialiased z-[-1]",
+        className
+      )}
+    />
   );
 };
 

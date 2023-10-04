@@ -1,8 +1,8 @@
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import { FC } from 'react';
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { FC } from "react";
 
 interface CreationWalkthroughsProps {
   className?: string;
@@ -10,7 +10,7 @@ interface CreationWalkthroughsProps {
 
 const CreationWalkthroughs: FC<CreationWalkthroughsProps> = ({ className }) => {
   return (
-    <Container className={cn('flex flex-col gap-5', className)}>
+    <Container className={cn("flex flex-col gap-5", className)}>
       <div className="flex flex-row gap-2 items-center">
         <div className="shrink-0 w-5 aspect-square">
           <Image
@@ -33,23 +33,23 @@ export default CreationWalkthroughs;
 
 const CreationWalkthroughsItem = ({ title, description }) => {
   return (
-    <div className="flex flex-col bg-background p-5 rounded-lg">
+    <div className="flex flex-col bg-background p-5 rounded-lg h-full">
       <h2 className="text-base ">{title}</h2>
       <p className="text-sm text-muted-foreground">{description}</p>
-      <Button className="mt-3 w-max">View Tutorial</Button>
+      <Button className="mt-auto w-max">View Tutorial</Button>
     </div>
   );
 };
 
 const items = [
   {
-    title: 'Create Your Own Token Project',
+    title: "Create Your Own Token Project",
     description:
-      'Follow this walkthrough guide for everything you need to launch your new token project, We have you covered from creation to distribution and liquidity.',
+      "Follow this walkthrough guide for everything you need to launch your new token project, We have you covered from creation to distribution and liquidity.",
   },
   {
-    title: 'Create Your Own cNFT Collection',
+    title: "Create Your Own cNFT Collection",
     description:
-      'Follow this walkthrough guide for everything you need to launch your new compressed NFT project. You can even use our other tools for distribution!',
+      "Follow this walkthrough guide for everything you need to launch your new compressed NFT project. You can even use our other tools for distribution!",
   },
 ];

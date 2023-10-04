@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const Page: FC = () => {
   return (
     <>
-      <BackgroundSplash />
+      <BackgroundSplash className="bg-launch-bg" />
       <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
         <section className="flex flex-col gap-[60px]">
           <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px]  h-full lg:h-[560px] overflow-hidden  ">
@@ -59,8 +59,7 @@ const LaunchListItems: ListItemProps[] = [
     title: "Mint Your cNFTs",
     description:
       "Easily create a compressed NFT collection using our no-code interfaces.",
-    //image: '/icons/launch/mint-cnfts.svg',
-    image: "/icons/launch/CNFT_MInter_Guac.png",
+    image: "/icons/launch/mint-cnfts.svg",
     href: routes.launch.root,
   },
   {

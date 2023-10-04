@@ -1,13 +1,13 @@
-'use client';
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
-import { useGetTrendingToday } from '@/hooks/use-get-trending-today';
-import { FC } from 'react';
-import { useJupiterApiContext } from './src/contexts';
-import routes from '@/config/routes';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import CustomTicker from '@/components/common/custom-ticker';
+"use client";
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
+import { useGetTrendingToday } from "@/hooks/use-get-trending-today";
+import { FC } from "react";
+import { useJupiterApiContext } from "./src/contexts";
+import routes from "@/config/routes";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import CustomTicker from "@/components/common/custom-ticker";
 
 interface TrendingSwapProps {
   className?: string;
@@ -20,7 +20,7 @@ const TrendingSwap: FC<TrendingSwapProps> = ({ className }) => {
   return (
     <Container
       className={cn(
-        'px-5 py-[10px] flex flex-row items-center overflow-hidden  max-w-full  gap-6 rounded-lg',
+        "px-5 py-[10px] flex flex-row items-center overflow-hidden w-full  gap-6 rounded-lg",
         className
       )}
     >

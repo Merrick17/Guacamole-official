@@ -1,28 +1,28 @@
-import BackgroundSplash from '@/components/common/background-splash';
-import ColorBlocks from '@/components/common/color-block';
-import HeroHeadline from '@/components/common/hero-headline';
-import RecentPlays from '@/components/common/recent-plays';
-import PlayCard from '@/components/ui/play-card';
-import RecentPlaysFeatured from '@/components/views/play/recent-plays-featured';
-import routes from '@/config/routes';
-import { cn } from '@/lib/utils';
-import { Metadata } from 'next';
+import BackgroundSplash from "@/components/common/background-splash";
+import ColorBlocks from "@/components/common/color-block";
+import HeroHeadline from "@/components/common/hero-headline";
+import RecentPlays from "@/components/common/recent-plays";
+import PlayCard from "@/components/ui/play-card";
+import RecentPlaysFeatured from "@/components/views/play/recent-plays-featured";
+import routes from "@/config/routes";
+import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 
-import { FC } from 'react';
+import { FC } from "react";
 
 export const metadata: Metadata = {
   title: "Let's Play Some Games | Guacamole",
   description:
-    'Take a chance in fun games where you can win some Solana and some of your favorite coins and tokens. Flips, mines, and more await for you to play on Guacamole!',
+    "Take a chance in fun games where you can win some Solana and some of your favorite coins and tokens. Flips, mines, and more await for you to play on Guacamole!",
 };
 
 const Page: FC = () => {
   return (
     <>
-      <BackgroundSplash />
+      <BackgroundSplash className="bg-play-bg" />
       <main
         className={cn(
-          'container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] '
+          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
         )}
       >
         <section className="flex flex-col gap-[60px] ">
@@ -31,7 +31,7 @@ const Page: FC = () => {
               className="col-span-1 lg:col-span-5"
               title={
                 <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
-                  Play plenty of funky fresh on-chain games and{' '}
+                  Play plenty of funky fresh on-chain games and{" "}
                   <span className="text-primary">win prizes</span>!
                 </h1>
               }
@@ -64,24 +64,24 @@ const PlayListItems: {
   disabled?: boolean;
 }[] = [
   {
-    title: 'Roulette',
-    image: '/images/play/roulette.png',
+    title: "Roulette",
+    image: "/images/play/roulette.png",
     href: routes.play.roulette,
   },
   {
-    title: 'Slots',
-    image: '/images/play/slots.png',
+    title: "Slots",
+    image: "/images/play/slots.png",
     href: routes.play.slots,
   },
   {
-    title: 'Dice',
-    image: '/images/play/dice.png',
+    title: "Dice",
+    image: "/images/play/dice.png",
     href: routes.play.dice,
   },
 
   {
-    title: 'Mines',
-    image: '/images/play/mines.png',
+    title: "Mines",
+    image: "/images/play/mines.png",
     href: routes.play.mines,
   },
 ];

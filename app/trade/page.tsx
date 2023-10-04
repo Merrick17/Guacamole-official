@@ -1,22 +1,22 @@
-import BackgroundSplash from '@/components/common/background-splash';
-import ColorBlocks from '@/components/common/color-block';
-import HeroHeadline from '@/components/common/hero-headline';
-import HeroList from '@/components/common/hero-list';
-import Trade from '@/components/views/trade/src/Trade';
-import routes from '@/config/routes';
-import { Metadata } from 'next';
-import { FC } from 'react';
+import BackgroundSplash from "@/components/common/background-splash";
+import ColorBlocks from "@/components/common/color-block";
+import HeroHeadline from "@/components/common/hero-headline";
+import HeroList from "@/components/common/hero-list";
+import Trade from "@/components/views/trade/src/Trade";
+import routes from "@/config/routes";
+import { Metadata } from "next";
+import { FC } from "react";
 
 export const metadata: Metadata = {
-  title: 'Easily Swap Solana Based Tokens | Guacamole',
+  title: "Easily Swap Solana Based Tokens | Guacamole",
   description:
-    'Guacamole Swap allows you to trade any tokens on Solana in just a few clicks with no hassle and the best fees.',
+    "Guacamole Swap allows you to trade any tokens on Solana in just a few clicks with no hassle and the best fees.",
 };
 
 const Page: FC = () => {
   return (
     <>
-      <BackgroundSplash />
+      <BackgroundSplash className="bg-trade-bg" />
       <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
         <section className="flex flex-col gap-[60px]">
           <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px] h-full lg:h-[560px] overflow-hidden ">
@@ -25,7 +25,7 @@ const Page: FC = () => {
               title={
                 <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
                   Trade <span className="text-primary">anything</span> with the
-                  click of a button. It&apos;s really that{' '}
+                  click of a button. It&apos;s really that{" "}
                   <span className="text-primary">easy</span>!
                 </h1>
               }
@@ -50,31 +50,31 @@ const Page: FC = () => {
 
 const TradeListItems: ListItemProps[] = [
   {
-    title: 'Swap Aggregator',
+    title: "Swap Aggregator",
     description:
-      'Easily find the best trading routes to ensure you get the best bang for your buck!',
-    image: '/icons/trade/swap-aggregator.svg',
+      "Easily find the best trading routes to ensure you get the best bang for your buck!",
+    image: "/icons/trade/swap-aggregator.svg",
     href: routes.trade.swap,
   },
   {
-    title: 'Bridge Swaps',
+    title: "Bridge Swaps",
     description:
-      'Bridge your ETH, BNB, AVAX, and ARB to Solana and pick up tokens like GUAC.',
-    image: '/icons/trade/bridge-swap.svg',
+      "Bridge your ETH, BNB, AVAX, and ARB to Solana and pick up tokens like GUAC.",
+    image: "/icons/trade/bridge-swap.svg",
     href: routes.trade.bridge,
   },
   {
-    title: 'Crypto Futures',
+    title: "Crypto Futures",
     description:
-      'Trade gamified perpetual futures markets for BTC, ETH, SOL, and more. ',
-    image: '/icons/trade/perpetuals.svg',
+      "Trade gamified perpetual futures markets for BTC, ETH, SOL, and more. ",
+    image: "/icons/trade/perpetuals.svg",
     href: routes.trade.perpetuals,
   },
   {
-    title: 'DCA & Limit Orders',
+    title: "DCA & Limit Orders",
     description:
-      'Set limit or dollar cost averaging orders to swap when you’re not around.',
-    image: '/icons/trade/dca.svg',
+      "Set limit or dollar cost averaging orders to swap when you’re not around.",
+    image: "/icons/trade/dca.svg",
     href: routes.tools.root,
     disabled: true,
   },
