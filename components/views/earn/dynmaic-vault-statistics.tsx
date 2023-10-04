@@ -1,18 +1,18 @@
-'use client';
-import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useGetVaultStatistics } from '@/hooks/use-get-vault-statistics';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import { FC, useState } from 'react';
+"use client";
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGetVaultStatistics } from "@/hooks/use-get-vault-statistics";
+import { cn, fromLamports } from "@/lib/utils";
+import Image from "next/image";
+import { FC, useEffect, useState } from "react";
 import {
   JupiterApiProvider,
   useJupiterApiContext,
-} from '../trade/src/contexts';
-import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-
+} from "../trade/src/contexts";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import numeral from "numeral";
 interface DynamicVaultStatisticsProps {
   className?: string;
 }
@@ -23,11 +23,14 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
   const { loading, vaultData } = useGetVaultStatistics({
     maxNumberOfTokens: 10,
   });
+  useEffect(() => {
+    console.log("Vault Data", vaultData);
+  }, [loading]);
   return (
     <JupiterApiProvider>
       <Container
         className={cn(
-          'flex flex-col  gap-5 overflow-y-auto h-[560px]',
+          "flex flex-col  gap-5 overflow-y-auto h-[560px]",
           className
         )}
       >
@@ -60,6 +63,7 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
                     symbol={item.symbol}
                     tvl={item.lp_supply}
                     token_address={item.token_address}
+                    vaultInfo={item}
                   />
                 ))}
             </>
@@ -78,6 +82,7 @@ type DynamicVaultStatisticsItemProps = {
   apy: number;
   symbol: string;
   token_address: string;
+  vaultInfo?: any;
 };
 
 const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
@@ -86,6 +91,7 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
   apy,
   symbol,
   token_address,
+  vaultInfo,
 }) => {
   const router = useRouter();
   const { tokenMap } = useJupiterApiContext();
@@ -101,7 +107,7 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
           alt="logo"
           onLoad={(e) => {
             setLoading(false);
-            e.currentTarget.classList.remove('hidden');
+            e.currentTarget.classList.remove("hidden");
           }}
         />
         {loading && (
@@ -111,13 +117,20 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
         <div className="flex flex-col gap-1">
           <p className="uppercase text-xs lg:text-sm">{symbol}</p>
           <p className="text-xs  text-ellipsis overflow-hidden text-muted-foreground">
-            TVL:{' '}
-            {new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              compactDisplay: 'short',
-              notation: 'compact',
-            }).format(tvl)}
+            TVL:{" "}
+            {token && vaultInfo
+              ? numeral(
+                  vaultInfo.usd_rate *
+                    fromLamports(Number(vaultInfo.token_amount), token.decimals)
+                ).format("0,0.00")
+              : 0}{" "}
+            {token && token.symbol}
+            {/* {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              compactDisplay: "short",
+              notation: "compact",
+            }).format(tvl)} */}
           </p>
         </div>
       </div>

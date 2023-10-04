@@ -17,7 +17,8 @@ const useWalletTokens = () => {
   const getTokens = useMemo(() => {
     return async () => {
       try {
-        const { data } = await axios.get("https://cache.jup.ag/tokens");
+        //const { data } = await axios.get("https://cache.jup.ag/tokens");
+        const { data } = await axios.get(" https://token.jup.ag/all");
         return data as TokenInfo[];
       } catch (error) {
         console.error("Error fetching tokens:", error);
@@ -29,11 +30,14 @@ const useWalletTokens = () => {
   const initUserTokens = async () => {
     try {
       const tokens: TokenInfo[] = await getTokens();
-     
 
+      //console.log("Tokens", tokens);
       // Map tokenAccounts and find each token that has the same mint
       const updatedAccounts = tokenAccounts.accounts.map((account) => {
-        const foundToken = tokens.find((token) => token.address === account.account.mint.toBase58());
+        const foundToken = tokens.find(
+          (token) => token.address === account.account.mint.toBase58()
+        );
+       // console.log("Found",foundToken); 
         if (foundToken) {
           return {
             ...account,
@@ -59,7 +63,6 @@ const useWalletTokens = () => {
     if (tokenAccounts) {
       initUserTokens();
     }
-
   }, [publicKey, loading, tokenAccounts]);
 
   return walletTokens;

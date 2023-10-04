@@ -62,7 +62,7 @@ const infos: {
     name: 'Join Telegram',
     description:
       'Join the Guacamole Telegram channel to chat with like-minded community members or obtain support.',
-    href: 'https://t/me/guacgg',
+    href: 'https://t.me/guacgg',
   },
   {
     image: '/images/info/follow.png',

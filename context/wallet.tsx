@@ -71,15 +71,17 @@ require("@solana/wallet-adapter-react-ui/styles.css");
 //   );
 // };
 import dexterityTs, { DexterityWallet } from "@hxronetwork/dexterity-ts";
-import { WalletError } from "@solana/wallet-adapter-base";
+import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
   WalletProvider,
   useWallet,
 } from "@solana/wallet-adapter-react";
 import {
+  CoinbaseWalletAdapter,
   PhantomWalletAdapter,
   SolflareWalletAdapter,
+  WalletConnectWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import dynamic from "next/dynamic";
 import { FC, ReactNode, useCallback, useMemo } from "react";
@@ -130,6 +132,20 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
       new SolflareWalletAdapter(),
       new OKXWalletAdapter(),
+      new CoinbaseWalletAdapter(),
+      new WalletConnectWalletAdapter({
+        network: WalletAdapterNetwork.Mainnet,
+        options: {
+          relayUrl: "wss://relay.walletconnect.com",
+          // example WC app project ID
+          projectId: "6004d00df26c760c8cc264cf71a44621",
+          metadata: {
+            name: "GUACAMOLE",
+            description: "GUCAMOLE",
+            icons: ["https://avatars.githubusercontent.com/u/35608259?s=200"],
+          },
+        },
+      }),
 
       //new SlopeWalletAdapter(),
     ],
