@@ -21,21 +21,13 @@ const Preloader = () => {
         {
           opacity: 1,
           duration: 0.5,
-<<<<<<< Updated upstream
           stagger: 0.25,
-=======
-          stagger: 0.5,
->>>>>>> Stashed changes
         }
       );
       tl.to(".img", {
         opacity: 0,
         duration: 0.5,
-<<<<<<< Updated upstream
         stagger: 0.25,
-=======
-        stagger: 0.5,
->>>>>>> Stashed changes
         onComplete: () => {
           runPreloader();
         },
