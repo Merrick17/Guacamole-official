@@ -6,6 +6,8 @@ import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { NATIVE_MINT } from '@solana/spl-token';
 import { BiWallet } from 'react-icons/bi';
 import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 export const Balance = ({
   token,
   tokenAccounts,
@@ -42,7 +44,7 @@ export const Balance = ({
       : 0;
 
   return (
-    <div className=" flex flex-row items-center text-black/50 text-xs gap-1">
+    <div className=" flex flex-row items-center gap-1 text-muted-foreground  text-xs">
       <span>
         <BiWallet />
       </span>
@@ -52,18 +54,16 @@ export const Balance = ({
       {setInput && !!balance && (
         <>
           <Button
-            className="h-5 bg-[#E5E7EB]"
-            variant="secondary"
+            className="!h-5 text-[10px] "
             onClick={() => setInput((balance / 2).toString())}
           >
-            Half
+            50%
           </Button>
           <Button
-            variant="secondary"
-            className="h-5 bg-[#E5E7EB]"
+            className="!h-5 text-[10px] "
             onClick={() => setInput(balance.toString())}
           >
-            Max
+            100%
           </Button>
         </>
       )}

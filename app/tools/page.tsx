@@ -1,71 +1,89 @@
-'use client';
-import Tool from '@/components/views/tools/tool';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { FC } from 'react';
+import BackgroundSplash from "@/components/common/background-splash";
+import ColorBlocks from "@/components/common/color-block";
+import HeroHeadline from "@/components/common/hero-headline";
+import HeroList from "@/components/common/hero-list";
+import { Button } from "@/components/ui/button";
+import DynamicVaultStatistics from "@/components/views/earn/dynmaic-vault-statistics";
+import LearnMoreAboutSolana from "@/components/views/tools/learn-more-about-solana";
+
+import routes from "@/config/routes";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { FC } from "react";
 
 interface ToolsProps {}
 
 const Tools: FC<ToolsProps> = () => {
-  const { connected } = useWallet();
   return (
-    <main className="container mx-auto flex flex-col gap-14 px-16 py-12  max-w-[1440px]">
-      {connected ? (
-        <div className={' mx-auto grid max-w-6xl grid-cols-3 gap-x-6 gap-y-6'}>
-          {tools.map((tool, index) => (
-            <Tool key={index} {...tool} />
-          ))}
-        </div>
-      ) : (
-        <div className="flex items-center justify-center">
-          <Tool
-            name="Please connect your wallet"
-            description="You will need to connect a supported Solana wallet to continue! Press the button below to explore the options."
-            image="/images/connect-wallet-tool.png"
-            connectWallet
-          />
-        </div>
-      )}
-    </main>
+    <>
+      <BackgroundSplash className="bg-tools-bg" />
+      <main
+        className={cn(
+          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+        )}
+      >
+        <section className="flex flex-col gap-[60px] ">
+          <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px] lg:h-[560px] overflow-hidden  ">
+            <HeroHeadline
+              className="col-span-1  lg:col-span-5"
+              title={
+                <h1 className="text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] ">
+                  A growing <span className="text-primary">list of tools</span> focused on cleaning up
+                  your crypto portfolio
+                </h1>
+              }
+            >
+              <>
+                <p className=" text-xl font-medium leading-8 text-muted-foreground">
+                  Find a variety of easy to use tools in our suite that can
+                  instantly help improve your quality of life while interacting
+                  with the Solana blockchain or starting your own project!
+                </p>
+              </>
+              <Link className="text-xl text-primary" href={"/tools/explore"}>
+                Explore All Tools ➜
+              </Link>
+            </HeroHeadline>
+
+            <LearnMoreAboutSolana className="col-span-1 lg:col-span-3" />
+          </div>
+
+          <HeroList listItems={tools} />
+          <ColorBlocks className="mx-auto" />
+        </section>
+      </main>
+    </>
   );
 };
-
 export default Tools;
 
-const tools: { image: string; name: string; description: string }[] = [
+const tools: ListItemProps[] = [
   {
-    image: '/images/spl-token.png',
-    name: 'Create SPL Token',
+    image: "/icons/tools/airdrop.svg",
+    title: "Airdrop Tokens",
     description:
-      'Easily create your own token on the Solana network with this simple interface',
+      "Send tokens to  Solana addresses and domains. The best way to airdrop tokens!",
+    href: routes.tools.tokenMultiSender,
   },
   {
-    image: '/images/multi-token.png',
-    name: 'Token Multi Sender',
+    image: "/icons/tools/emergency-send.svg",
+    title: "Emergency Send",
     description:
-      'Multiple options to send tokens to  Solana addresses and domains. The best way to airdrop tokens!',
+      "Easily send everything from one wallet to a new wallet of your choice.",
+    href: routes.tools.emergencySend,
   },
   {
-    image: '/images/burn-token-spl.png',
-    name: 'BURN SPL Tokens',
+    image: "/icons/tools/burn-nft.svg",
+    title: "Burn NFTs",
     description:
-      'Burn those worthless tokens and scam airdrops in your wallet to reclaim some $SOL back from rent accounts.',
+      "Burn those worthless and “rugged” NFTs to reclaim $SOL from rent accounts.",
+    href: routes.tools.burnNftToken,
   },
   {
-    image: '/images/burn-token.png',
-    name: 'BURN SOLANA NFT',
+    image: "/icons/tools/close-accounts.svg",
+    title: "Close Accounts",
     description:
-      'Burn those worthless airdrop and “rugged” NFTs to reclaim some $SOL back from rent accounts.',
-  },
-  {
-    image: '/images/send-token.png',
-    name: 'Send an nft message',
-    description:
-      'One of the best ways to get in touch with people on-chain! Send an NFT with a customized message included.',
-  },
-  {
-    image: '/images/close-account.png',
-    name: 'Close empty accounts',
-    description:
-      'Your wallet may have some unused accounts! You can close these accounts to reclaim some $SOL back!',
+      "Close unused token & NFT accounts to easily reclaim $SOL from rent accounts.",
+    href: routes.tools.closeTokenAccounts,
   },
 ];

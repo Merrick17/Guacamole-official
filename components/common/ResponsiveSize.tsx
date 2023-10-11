@@ -33,7 +33,7 @@ export function ResponsiveSize({
   }, []);
   return (
     <div
-      className=" max-w-[512px] w-full flex flex-col h-max gap-4 items-center bg-white rounded-lg"
+      className=" max-w-[512px] w-full flex flex-col h-max gap-4 items-center bg-foreground rounded-lg "
       {...props}
       ref={wrapper}
     >

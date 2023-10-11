@@ -1,12 +1,13 @@
 import React from 'react';
+import App from './App';
 
 const game = {
   name: 'HiLo',
   short_name: 'hilo',
-  description: '',
-  creator: 'DwRFGbjKbsEhUMe5at3qWvH7i8dAJyhhwdnFoZMnLVRV',
-  image: '/images/hilo.png',
-  app: React.lazy(() => import('./App')),
+  description:
+    'Guess if the next card is going to be higher or lower than the current one. Continue until you want to cash out!',
+  image: '/images/play/hilo.png',
+  app: () => <App />,
 };
 
 export default game;

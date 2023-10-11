@@ -1,35 +1,174 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
+@layer base {
+  :root {
+    --background: #0f0f0f;
+    --foreground: #141414;
+    --card: #09090b;
+    --card-foreground: #fafafa;
+    --popover: #09090b;
+    --popover-foreground: #fafafa;
+    --primary: #8bd796;
+    --primary-foreground: #000;
+    --secondary: #0f0f0f;
+    --secondary-foreground: #a8a8a8;
+    --muted: #27272a;
+    --muted-foreground: #a8a8a8;
 
-    --border-radius: 10px;
-    --text-color: ${theme.palette.textColor};
-    --primary-color: ${theme.palette.primary};
-    --header-bg-color: ${theme.palette.background}EE;
-    --gamba-modal-bg: ${theme.palette.backgroundLight};
-    --gamba-modal-text: ${theme.palette.textColor};
-    --bg-color: ${theme.palette.background};
-    --bg-light-color: white;
+    --accent: #8bd796;
+    --accent-foreground: #fafafa;
+    --destructive: #ff8f8f;
+    --destructive-foreground: #000;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #d4d4d8;
+    --radius: 0.5rem;
+  }
+  [data-theme='orange'] {
+    --background: #0f0f0f;
+    --foreground: #141414;
+    --card: #0c0a09;
+    --card-foreground: #fafaf9;
+    --popover: #0c0a09;
+    --popover-foreground: #fafaf9;
+    --primary: #ff8f8f;
+    --primary-foreground: #000;
+    --secondary: #0f0f0f;
+    --secondary-foreground: #a8a8a8;
+    --muted: #292524;
+    --muted-foreground: #a8a8a8;
 
+    --accent: #ff8f8f;
+    --accent-foreground: #fafaf9;
+    --destructive: #ff8f8f;
+    --destructive-foreground: #000;
+    --border: #292524;
+    --input: #292524;
+    --ring: #e9590c;
+    --radius: 0.5rem;
+  }
+  [data-theme='red'] {
+    --background: #0f0f0f;
+    --foreground: #141414;
+    --card: #1c1917;
+    --card-foreground: #f2f2f2;
+    --popover: #171717;
+    --popover-foreground: #f2f2f2;
+    --primary: #d6776a;
+    --primary-foreground: #000;
+    --secondary: #0f0f0f;
+    --secondary-foreground: #a8a8a8;
+    --muted: #262626;
+    --muted-foreground: #a8a8a8;
+
+    --accent: #d6776a;
+    --accent-foreground: #fafafa;
+    --destructive: #ff8f8f;
+    --destructive-foreground: #000;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #e21d48;
+    --radius: 0.5rem;
+  }
+  [data-theme='yellow'] {
+    --background: #0f0f0f;
+    --foreground: #141414;
+    --card: #1c1917;
+    --card-foreground: #f2f2f2;
+    --popover: #171717;
+    --popover-foreground: #f2f2f2;
+    --primary: #fff281;
+    --primary-foreground: #000;
+    --secondary: #0f0f0f;
+    --secondary-foreground: #a8a8a8;
+    --muted: #262626;
+    --muted-foreground: #a8a8a8;
+
+    --accent: #fff281;
+    --accent-foreground: #fafafa;
+    --destructive: #ff8f8f;
+    --destructive-foreground: #000;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #e2b71d;
+    --radius: 0.5rem;
+  }
+  [data-theme='violet'] {
+    --background: #0f0f0f;
+    --foreground: #141414;
+    --card: #1c1917;
+    --card-foreground: #f2f2f2;
+    --popover: #171717;
+    --popover-foreground: #f2f2f2;
+    --primary: #bbb0db;
+    --primary-foreground: #000;
+    --secondary: #0f0f0f;
+    --secondary-foreground: #a8a8a8;
+    --muted: #262626;
+    --muted-foreground: #a8a8a8;
+
+    --accent: #bbb0db;
+    --accent-foreground: #fafafa;
+    --destructive: #ff8f8f;
+    --destructive-foreground: #000;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #341de2;
+    --radius: 0.5rem;
+  }
+  [data-theme='white'] {
+    --background: #0f0f0f;
+    --foreground: #141414;
+    --card: #1c1917;
+    --card-foreground: #f2f2f2;
+    --popover: #171717;
+    --popover-foreground: #f2f2f2;
+    --primary: #ffefdc;
+    --primary-foreground: #000;
+    --secondary: #0f0f0f;
+    --secondary-foreground: #a8a8a8;
+    --muted: #262626;
+    --muted-foreground: #a8a8a8;
+
+    --accent: #ffefdc;
+    --accent-foreground: #fafafa;
+    --destructive: #ff8f8f;
+    --destructive-foreground: #000;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #e21d48;
+    --radius: 0.5rem;
+  }
 }
-body {
-  @apply font-body bg-body bg-body-image bg-cover min-h-screen	 bg-no-repeat antialiased overflow-x-hidden ;
-}
 
-.wallet-adapter-button {
-  background-color: black !important;
-  @apply rounded-full;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-[#fcfcfc] min-h-screen	overflow-x-hidden;
+  }
+}
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
 }
 
 .text-shadow {
   text-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }
-
-
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -38,6 +177,127 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
+}
+
+.gamba-ui-controls-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.gamba-ui-select-container {
+  position: relative;
+}
+
+.gamba-ui-select-option {
+  width: 100%;
+  background: #272735;
+  color: white;
+  border: none;
+  margin: 0;
+  padding: 10px 5px;
+  cursor: pointer;
+}
+
+.gamba-ui-select-option.selected {
+  background: #2e2e40;
+}
+
+.gamba-ui-select-popup {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 10px;
+  display: grid;
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 100%;
+  border-radius: 5px;
+}
+
+.gamba-game-button {
+  margin: 0;
+  pointer-events: auto;
+  border: none;
+  background: #272735;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.gamba-game-button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.gamba-game-button:not(:disabled):hover {
+  background: #2e2e40;
+}
+
+.gamba-game-button.primary {
+  min-width: 100px;
+  background: var(--primary);
+  color: var(--background);
+}
+
+.gamba-game-button.primary:hover {
+  background: var(--primary);
+}
+
+.gamba-game-ui-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.gamba-game-button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.gamba-ui-select-container {
+  min-width: 100px;
+}
+
+.gamba-ui-select-container button {
+  width: 100%;
+}
+
+.gamba-game-button.selected {
+  background: #515182 !important;
+}
+
+.gamba-game-button:active {
+  transition: opacity 0.2s, transform 0.1s ease;
+  opacity: 1;
+}
+
+.gamba-game-ui-wager-input {
+  display: flex;
+  gap: 2px;
+}
+
+.gamba-game-ui-wager-input input {
+  background: #272735;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0;
+}
+
+.gamba-game-ui-wager-input input {
+  width: 120px;
+}
+
+.gamba-wager-input-field {
+  display: flex;
 }

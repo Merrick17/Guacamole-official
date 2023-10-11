@@ -1,244 +1,223 @@
-import { useWallet } from '@solana/wallet-adapter-react';
-import { solToLamports } from 'gamba';
-import { useGamba } from 'gamba/react';
-import { formatLamports } from 'gamba/react-ui';
-import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useState } from 'react';
-import { FaEquals, FaHandPointDown, FaHandPointUp } from 'react-icons/fa';
-import * as Tone from 'tone';
-import { Dropdown } from '../../common/Dropdown';
-import cardSrc from './card.mp3';
-import { RANKS } from './constants';
-import { Card, Container, Option, Overlay, OverlayText } from './styles';
-import winSrc from './win.wav';
-import { ActionBar } from '@/components/common/ActionBar';
-import { Button } from '@/components/ui/button';
-import { RiAccountCircleLine } from 'react-icons/ri';
-import { ResponsiveSize } from '@/components/common/ResponsiveSize';
-import { useGambaUi } from '@/context/gamba-ui';
+import { useGamba } from 'gamba/react'
+import { GameUi, formatLamports } from 'gamba/react-ui'
+import React from 'react'
+import { RANKS, RANK_SYMBOLS, SOUND_CARD, SOUND_FINISH, SOUND_LOSE, SOUND_PLAY, SOUND_WIN, WAGER_AMOUNTS } from './constants'
+import { Card, CardContainer, CardPreview, Container, CardsContainer, Option, Options, Profit } from './styles'
 
-const createSound = (url: string) => new Tone.Player({ url }).toDestination();
+const randomRank = () => 1 + Math.floor(Math.random() * (RANKS - 1))
+const MAX_CARD_SHOWN = 5
+const card = (rank = randomRank()): Card => ({
+  key: Math.random(),
+  rank,
+})
 
-const cardSound = createSound(cardSrc);
-const winSound = createSound(winSrc);
-
-const randomRank = () => 1 + Math.floor(Math.random() * (RANKS - 1));
-const WAGER_AMOUNTS = [0.05, 0.1, 0.25, 0.5, 1, 2].map(solToLamports);
+interface Card {
+  key: number
+  rank: number
+}
 
 export default function HiLo() {
-  const gamba = useGamba();
-  const { setModal } = useGambaUi();
-  const { connected, publicKey } = useWallet();
-  const [cards, setCards] = useState([randomRank()]);
-  const [loading, setLoading] = useState(false);
-  const [claiming, setClaiming] = useState(false);
-  const [firstPlay, setFirstPlay] = useState(true);
-  const [wager, setWager] = useState(WAGER_AMOUNTS[0]);
-  const [currentRank] = cards;
-  const newSession = gamba.balances.user < wager;
-  const addCard = (rank: number) => setCards((cards) => [rank, ...cards]);
-  const [option, setOption] = useState<'hi' | 'lo' | 'same'>();
+  const gamba = useGamba()
+  const [cards, setCards] = React.useState([card()])
+  const [loading, setLoading] = React.useState(false)
+  const [claiming, setClaiming] = React.useState(false)
+  const [initialWager, setInitialWager] = React.useState(WAGER_AMOUNTS[0])
+  const [profit, setProfit] = React.useState(0)
+  const currentRank = cards[cards.length - 1].rank
+  const addCard = (rank: number) => setCards((cards) => [...cards, card(rank)].slice(-MAX_CARD_SHOWN))
+  const [option, setOption] = React.useState<'hi' | 'lo'>()
+  const [hoveredOption, hoverOption] = React.useState<'hi' | 'lo'>()
 
-  const betHi = useMemo(
+  const sounds = GameUi.useSounds({
+    card: SOUND_CARD,
+    win: SOUND_WIN,
+    lose: SOUND_LOSE,
+    play: SOUND_PLAY,
+    finish: SOUND_FINISH,
+  })
+
+  const betHi = React.useMemo(
     () =>
-      Array.from({ length: RANKS }).map((_, i) =>
-        i > 0 && i >= currentRank
-          ? currentRank === 0
-            ? RANKS / (RANKS - 1)
-            : RANKS / (RANKS - currentRank)
-          : 0
-      ),
-    [currentRank]
-  );
+      Array.from({ length: RANKS }).map((_, i) => {
+        if (currentRank === 0) {
+          return i > currentRank ? RANKS / ((RANKS - 1) - currentRank) : 0
+        }
+        return i >= currentRank ? RANKS / (RANKS - currentRank) : 0
+      }),
+    [currentRank],
+  )
 
-  const betLo = useMemo(
+  const betLo = React.useMemo(
     () =>
-      Array.from({ length: RANKS }).map((_, i) =>
-        i < RANKS - 1 && i <= currentRank
-          ? currentRank === RANKS - 1
-            ? RANKS / currentRank
-            : RANKS / (currentRank + 1)
-          : 0
-      ),
-    [currentRank]
-  );
+      Array.from({ length: RANKS }).map((_, i) => {
+        if (currentRank === RANKS - 1) {
+          return i < currentRank ? RANKS / (currentRank) : 0
+        }
+        return i <= currentRank ? RANKS / (currentRank + 1) : 0
+      }),
+    [currentRank],
+  )
 
-  const betSame = useMemo(
-    () => [RANKS, ...Array(RANKS - 1).fill(0)],
-    [currentRank]
-  );
-
-  useEffect(() => {
-    console.log('COnnected', connected);
-  }, [typeof window == 'undefined', connected]);
-  const hasClaimableBalance = gamba.balances.user > 0;
+  const bet = React.useMemo(() => {
+    const _option = hoveredOption ?? option
+    if (_option === 'hi') return betHi
+    if (_option === 'lo') return betLo
+    return [0]
+  }, [betHi, betLo, hoveredOption, option])
 
   const resetGame = async () => {
-    if (gamba.balances.user > 0) {
-      setClaiming(true);
-      await gamba.withdraw();
-      setClaiming(false);
+    try {
+      if (claiming) return
+      if (gamba.balances.user > 0) {
+        setClaiming(true)
+        await gamba.methods.withdraw(gamba.balances.user)
+        await gamba.anticipate((state, prev) => state.user.balance < prev.user.balance)
+      }
+      sounds.finish.play({ playbackRate: .8 })
+      setTimeout(() => {
+        setProfit(0)
+        sounds.card.play()
+        addCard(randomRank())
+        setOption(undefined)
+        setClaiming(false)
+      }, 300)
+    } catch {
+      setClaiming(false)
     }
-    setCards([randomRank()]);
-    setLoading(false);
-    setFirstPlay(true);
-  };
+  }
 
   const play = async () => {
     try {
-      let bet;
-      switch (option) {
-        case 'hi':
-          bet = betHi;
-          break;
-        case 'lo':
-          bet = betLo;
-          break;
-        case 'same':
-          bet = betSame;
-          break;
-      }
-      let wagerInput = wager;
-      let res;
+      // sounds.play.play()
+      // const _rank = randomRank()
+      // addCard(_rank)
+      // setTimeout(() => {
+      //   setLoading(false)
+      //   if (bet[_rank] > 0) {
+      //     const payout = (profit || initialWager) * bet[_rank]
+      //     setProfit(payout)
+      //     sounds.win.play()
+      //   } else {
+      //     sounds.lose.play()
+      //     setProfit(0)
+      //   }
+      // }, 500)
+      // return
+      sounds.play.play()
+      const res = await gamba.play({ bet, wager: profit || initialWager })
 
-      if (!firstPlay) {
-        wagerInput = gamba.balances.user;
-        res = await gamba.play(bet, wagerInput, { deductFees: true });
-      } else {
-        res = await gamba.play(bet, wagerInput, { deductFees: false });
-      }
+      setLoading(true)
+      const result = await res.result()
+      addCard(result.resultIndex)
+      sounds.card.play({ playbackRate: .8 })
 
-      setLoading(true);
-      setFirstPlay(false);
-      const result = await res.result();
-      addCard(result.resultIndex);
-      cardSound.start();
+      const win = result.payout > 0
 
-      const win = result.payout > 0;
-
-      if (win) {
-        winSound.start();
-      } else {
-        setFirstPlay(true);
-      }
+      setTimeout(() => {
+        setLoading(false)
+        setProfit(result.payout)
+        if (win) {
+          sounds.win.play()
+        } else {
+          sounds.lose.play()
+        }
+      }, 300)
     } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+      console.error(err)
+      setLoading(false)
     }
-  };
-
-  const needsReset = firstPlay && hasClaimableBalance;
+  }
 
   return (
-    <>
-      <ResponsiveSize>
-        <Container>
-          {currentRank !== 0 ? (
+    <GameUi.Fullscreen>
+      <Container $disabled={claiming || loading} className='bg-foreground'>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          <CardsContainer>
+            {cards.map((card, i) => {
+              const offset = -(cards.length - (i + 1))
+              const xxx = cards.length > 3 ? (i / cards.length) : 1
+              const opacity = Math.min(1, xxx * 3)
+              return (
+                <CardContainer
+                  key={card.key}
+                  style={{
+                    transform: `translate(${offset * 30}px, ${-offset * 0}px) rotateZ(-5deg) rotateY(5deg)`,
+                    opacity,
+                  }}
+                >
+                  <Card>
+                    <div className="rank">{RANK_SYMBOLS[card.rank]}</div>
+                    <div className="suit" style={{ backgroundImage: 'url(/logo.svg)' }} />
+                  </Card>
+                </CardContainer>
+              )
+            })}
+          </CardsContainer>
+          <Options>
             <Option
-              className="flex flex-col items-center justify-center"
-              $selected={option === 'lo'}
-              onClick={() => setOption('lo')}
-            >
-              <div>
-                <FaHandPointDown />
-              </div>
-              <div>(x{Math.max(...betLo).toFixed(2)})</div>
-            </Option>
-          ) : (
-            <Option
-              className="flex flex-col items-center justify-center"
-              $selected={option === 'same'}
-              onClick={() => setOption('same')}
-            >
-              <div>
-                <FaEquals />
-              </div>
-              <div>(x{Math.max(...betSame).toFixed(2)})</div>
-            </Option>
-          )}
-          <Card key={cards.length}>
-            <div className="rank">{currentRank + 1}</div>
-            <div className="suit"></div>
-          </Card>
-          {currentRank !== RANKS - 1 ? (
-            <Option
-              className="flex flex-col items-center justify-center"
-              $selected={option === 'hi'}
+              selected={option === 'hi'}
               onClick={() => setOption('hi')}
+              onMouseEnter={() => hoverOption('hi')}
+              onMouseLeave={() => hoverOption(undefined)}
             >
               <div>
-                <FaHandPointUp />
+                👆
               </div>
-              <div>(x{Math.max(...betHi).toFixed(2)})</div>
+              <div>HI - ({Math.max(...betHi).toFixed(2)}x)</div>
             </Option>
-          ) : (
             <Option
-              className="flex flex-col items-center justify-center"
-              $selected={option === 'same'}
-              onClick={() => setOption('same')}
+              selected={option === 'lo'}
+              onClick={() => setOption('lo')}
+              onMouseEnter={() => hoverOption('lo')}
+              onMouseLeave={() => hoverOption(undefined)}
             >
               <div>
-                <FaEquals />
+                👇
               </div>
-              <div>(x{Math.max(...betSame).toFixed(2)})</div>
+              <div>LO - ({Math.max(...betLo).toFixed(2)}x)</div>
             </Option>
-          )}
-          {needsReset && !loading && (
-            <Overlay>
-              <OverlayText>Reset to start</OverlayText>
-            </Overlay>
-          )}
-        </Container>
-      </ResponsiveSize>
-      <ActionBar>
-        <>
-          {connected && publicKey && (
-            <Button
-              onClick={() => {
-                setModal(true);
-              }}
-            >
-              <RiAccountCircleLine />
-            </Button>
-          )}
-          {firstPlay ? (
-            <>
-              <Dropdown
-                value={wager}
-                format={(value) => formatLamports(value)}
-                onChange={setWager}
-                options={WAGER_AMOUNTS.map((value) => ({
-                  label: formatLamports(value),
-                  value,
-                }))}
-              />
-            </>
-          ) : (
-            <Button
-              loading={claiming}
-              disabled={newSession || claiming || loading || needsReset}
-              onClick={resetGame}
-            >
-              CASHOUT {formatLamports(gamba.balances.user)}
-            </Button>
-          )}
-          <Button
-            loading={loading}
-            disabled={!option || needsReset}
-            onClick={play}
+          </Options>
+        </div>
+        <CardPreview>
+          {Array.from({ length: RANKS }).map((_, rankIndex) => {
+            const opacity = bet[rankIndex] > 0 ? .9 : .5
+            return (
+              <Card key={rankIndex} $small style={{ opacity }}>
+                <div className="rank">{RANK_SYMBOLS[rankIndex]}</div>
+              </Card>
+            )
+          })}
+        </CardPreview>
+        {profit > 0 && (
+          <Profit key={profit} onClick={resetGame}>
+            {formatLamports(profit)} +{Math.round(profit / initialWager * 100 - 100).toLocaleString()}%
+          </Profit>
+        )}
+      </Container>
+      <GameUi.Controls disabled={claiming || loading}>
+        {!profit && (
+          <GameUi.Select.Root
+            value={initialWager}
+            label="Wager"
+            onChange={setInitialWager}
+            format={(wager) => formatLamports(wager)}
           >
-            PLAY {option}
-          </Button>
-          <Button
-            variant="secondary"
-            disabled={!needsReset}
-            onClick={resetGame}
-          >
-            Reset
-          </Button>
-        </>
-      </ActionBar>
-    </>
-  );
+            {WAGER_AMOUNTS.map((wager) => (
+              <GameUi.Select.Option key={wager} value={wager}>
+                {formatLamports(wager)}
+              </GameUi.Select.Option>
+            ))}
+          </GameUi.Select.Root>
+        )}
+        {profit > 0 && (
+          <GameUi.Button onClick={resetGame}>
+            Cashout
+          </GameUi.Button>
+        )}
+        <GameUi.Button variant="primary" disabled={!option} onClick={play}>
+          Deal card
+        </GameUi.Button>
+      </GameUi.Controls>
+    </GameUi.Fullscreen>
+  )
 }

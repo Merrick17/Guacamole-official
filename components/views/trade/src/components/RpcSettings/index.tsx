@@ -176,7 +176,7 @@ export const RpcSettings = ({
 
             <div className="mt-5">
               <Button
-                className="h-[50px] w-full bg-[#E5E7EB] p-2 font-bold uppercase rounded-xl"
+                className="h-[50px] w-full bg-background p-2 font-bold uppercase rounded-xl"
                 onClick={handleSave}
               >
                 Save

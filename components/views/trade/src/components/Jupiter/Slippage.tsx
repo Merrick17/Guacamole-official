@@ -39,7 +39,7 @@ export const Slippage = ({
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className="flex flex-row items-center w-max cursor-pointer text-black bg-[#E5E7EB] rounded-xl px-2 py-1 h-full"
+        className="flex flex-row items-center w-max cursor-pointer text-primary bg-background rounded-xl px-2 py-1 h-full"
         onClick={() => setVisible(true)}
       >
         <HiAdjustments className="mr-2 w-3 rotate-90" />
@@ -47,7 +47,7 @@ export const Slippage = ({
       </div>
       <DialogContent closeBtn={false} className="overflow-auto">
         <DialogHeader>
-          <DialogTitle className="text-black flex flex-row items-center justify-between">
+          <DialogTitle className=" flex flex-row items-center justify-between">
             <h2 className="text-base capitalize font-medium ">
               Slippage Settings
             </h2>
@@ -58,7 +58,7 @@ export const Slippage = ({
           </DialogTitle>
           <DialogDescription>
             <>
-              <div className="bg-white">
+              <div className="">
                 <div className="mt-5 grid w-full grid-cols-3 gap-2">
                   {OPTIONS.map((item, idx) => {
                     const displayText =
@@ -89,10 +89,12 @@ export const Slippage = ({
                   })}
                 </div>
                 <div className="mt-5">
-                  <p className="text-black/50 text-xs">or set manually:</p>
+                  <p className="text-muted-foreground text-xs">
+                    or set manually:
+                  </p>
                   <div
                     className={cn(
-                      ' relative text-black  bg-[#E5E7EB]',
+                      ' relative   bg-background',
                       'h-[50px] rounded-[6px] p-[2px]'
                     )}
                   >
@@ -116,7 +118,7 @@ export const Slippage = ({
                   <div className="mt-5 flex flex-col items-center">
                     <div className="flex flex-row items-center">
                       <HiOutlineInformationCircle className="mr-2 h-[15px] text-orange-300" />
-                      <span className="text-sm text-black/50">
+                      <span className="text-sm text-muted-foreground">
                         Slippage must be between 0 and 50
                       </span>
                     </div>

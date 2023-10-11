@@ -1,21 +1,16 @@
-import { useState } from 'react';
-import { HiAdjustments, HiOutlineInformationCircle } from 'react-icons/hi';
+import { useState } from "react";
 
-import clsx from 'clsx';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { RiRouteFill } from 'react-icons/ri';
-import { SwapRoute } from '../SwapRoute';
-import { InlineResponse200MarketInfos } from '@jup-ag/api';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
-const OPTIONS = [1, 5, 10];
+} from "@/components/ui/dialog";
+import { RiRouteFill } from "react-icons/ri";
+import { SwapRoute } from "../SwapRoute";
+import { InlineResponse200MarketInfos } from "@jup-ag/api";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 export const SwapRoutes = ({
   routes,
@@ -42,19 +37,29 @@ export const SwapRoutes = ({
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className="flex flex-row items-center w-max cursor-pointer text-black/50 text-xs gap-1"
-        onClick={() => setVisible(true)}
+        className="flex flex-row items-center w-full overflow-hidden cursor-pointer text-primary text-xs gap-1 w"
+        onClick={() => hasRoute && setVisible(true)}
       >
-        <div className="flex items-center gap-1 bg-[#E5E7EB] text-black rounded-xl px-2 py-1">
-          <span>{routes.length}</span>
+        <div className="flex items-center gap-1 bg-background rounded-xl px-2 py-1">
+          <span>{hasRoute ? routes.length : 0}</span>
           <RiRouteFill className="-rotate-90" />
         </div>
-        using <span>{selectedRoute?.marketInfos?.[0]?.label}</span>
+        {hasRoute ? (
+          <>
+            {" "}
+            using{" "}
+            <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              {selectedRoute?.marketInfos?.[0]?.label}
+            </span>
+          </>
+        ) : (
+          <>No route found</>
+        )}
       </div>
       <DialogContent closeBtn={false} className="overflow-auto">
         <DialogHeader>
           <DialogTitle className="relative">
-            <h2 className="text-base  text-black text-center ">Select Route</h2>
+            <h2 className="text-base   text-center ">Select Route</h2>
             <AiOutlineArrowLeft
               className=" absolute w-4 h-4 top-1/2 -left-2 -translate-y-1/2 cursor-pointer"
               onClick={() => setVisible(false)}
@@ -62,7 +67,7 @@ export const SwapRoutes = ({
           </DialogTitle>
           <DialogDescription className="!mt-4">
             <div className="flex flex-col gap-4 px-1">
-              <p className="text-xs text-black/50 mb-10">
+              <p className="text-xs text-muted-foreground mb-10">
                 This Jupiter powered system automatically selects a route with
                 the best price, however you can select a route manually.
               </p>
@@ -78,7 +83,7 @@ export const SwapRoutes = ({
                   <span className="mr-2 text-lg font-bold">No route found</span>
                   <img
                     className="h-[30px] w-[30px]"
-                    src={'/images/no-route.png'}
+                    src={"/images/no-route.png"}
                   />
                 </div>
               )}

@@ -1,0 +1,10 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Add box" clip-path="url(#clip0_1319_8198)">
+<path id="Vector" d="M83 3H13C7.45 3 3 7.5 3 13V83C3 88.5 7.45 93 13 93H83C88.5 93 93 88.5 93 83V13C93 7.5 88.5 3 83 3ZM83 83H13V13H83V83ZM43 73H53V53H73V43H53V23H43V43H23V53H43V73Z" fill="#D6776A" />
+</g>
+<defs>
+<clipPath id="clip0_1319_8198">
+<rect width="96" height="96" fill="white"/>
+</clipPath>
+</defs>
+</svg>

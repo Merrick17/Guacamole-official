@@ -91,20 +91,25 @@ const ExchangeRate = ({
     <div
       className={cn(
         className,
-        'flex cursor-pointer text-black/30 text-xs align-center'
+        'flex cursor-pointer text-muted-foreground text-xs align-center'
       )}
       onClick={onReverse}
     >
-      <span className={cn(textClassName, 'max-w-full flex whitespace-nowrap')}>
+      <span
+        className={cn(
+          textClassName,
+          'max-w-[88px] flex whitespace-nowrap  overflow-hidden text-ellipsis'
+        )}
+      >
         {reverse ? (
           <>
             1 {fromTokenInfo.symbol} ≈
             <div className="flex ml-0.5">
               {rate.gt(0.000_01) ? (
-                `${formatNumber.format(rate.toNumber())} ${toTokenInfo.symbol}`
+                `${formatNumber.format(rate.toNumber())} ${toTokenInfo.symbol} `
               ) : (
                 <>
-                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />{' '}
+                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />
                   {toTokenInfo.symbol}
                 </>
               )}
@@ -120,7 +125,7 @@ const ExchangeRate = ({
                 }`
               ) : (
                 <>
-                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />{' '}
+                  <PrecisionTickSize value={rate.toNumber()} maxSuffix={6} />
                   {fromTokenInfo.symbol}
                 </>
               )}

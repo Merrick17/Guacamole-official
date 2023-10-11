@@ -6,22 +6,26 @@ import JupiterForm from './components/Jupiter';
 import { useLocalStorageState } from 'ahooks';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { FC } from 'react';
+import { cn } from '@/lib/utils';
 
-const Trade = () => {
-  const [customRpc, setCustomRpc] = useLocalStorageState<string>('customRpc');
-
+type TradeProps = {
+  showDetails?: boolean;
+  className?: string;
+};
+const Trade: FC<TradeProps> = ({ showDetails = true, className }) => {
   return (
-    <>
-      <JupiterApiProvider>
-        <div className="bg-white w-full">
-          {/* <TopBar setCustomRpc={setCustomRpc} /> */}
-          <div className="flex  flex-col items-center justify-center bg-white">
-            <JupiterForm />
-          </div>
-        </div>
-      </JupiterApiProvider>
+    <div
+      className={cn(
+        'flex w-full z-20 lg:max-w-lg flex-col gap-[10px] rounded-lg bg-foreground px-5 py-7 ',
+        className
+      )}
+    >
+      <div className="flex  flex-col items-center justify-center ">
+        <JupiterForm showDetails={showDetails} />
+      </div>
       <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
-    </>
+    </div>
   );
 };
 

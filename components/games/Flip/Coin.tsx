@@ -1,16 +1,16 @@
 // @ts-nocheck
-'use client';
+'use client'
 
-import { useGLTF, useTexture } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
-import React, { useEffect, useRef } from 'react';
-import { BufferGeometry, Group, MeshStandardMaterial } from 'three';
-import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
-import assetModel from './Coin.glb';
-import headsSrc from './heads.png';
-import tailsSrc from './tails.png';
+import { useGLTF, useTexture } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
+import React, { useEffect, useRef } from 'react'
+import { BufferGeometry, Group, MeshStandardMaterial } from 'three'
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
+import assetModel from './Coin.glb'
+import headsSrc from './heads.png'
+import tailsSrc from './tails.png'
 
-const COIN_COLOR = '#ffd630';
+const COIN_COLOR = '#ffd630'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -19,9 +19,8 @@ type GLTFResult = GLTF & {
 };
 
 function CoinModel() {
-  const coin = useGLTF(assetModel) as GLTFResult;
-  console.log({ coin });
-  const [heads, tails] = useTexture([headsSrc, tailsSrc]);
+  const coin = useGLTF(assetModel) as GLTFResult
+  const [heads, tails] = useTexture([headsSrc, tailsSrc])
   return (
     <>
       <primitive object={coin.nodes.Coin}>
@@ -44,7 +43,7 @@ function CoinModel() {
         </mesh>
       </group>
     </>
-  );
+  )
 }
 
 interface CoinFlipProps {
@@ -53,33 +52,33 @@ interface CoinFlipProps {
 }
 
 export function Coin({ flipping, result }: CoinFlipProps) {
-  const group = useRef<Group>(null!);
-  const target = useRef(0);
-  const transition = useRef(0);
+  const group = useRef<Group>(null!)
+  const target = useRef(0)
+  const transition = useRef(0)
 
   useEffect(() => {
     if (!flipping && result !== null) {
-      const fullTurns = Math.floor(group.current.rotation.y / (Math.PI * 2));
-      target.current = (fullTurns + 1) * Math.PI * 2 + result * Math.PI;
+      const fullTurns = Math.floor(group.current.rotation.y / (Math.PI * 2))
+      target.current = (fullTurns + 1) * Math.PI * 2 + result * Math.PI
     }
-  }, [flipping, result]);
+  }, [flipping, result])
 
   useFrame((_, dt) => {
     if (flipping) {
-      group.current.rotation.y += 25 * dt;
+      group.current.rotation.y += 25 * dt
     } else if (result !== null) {
       group.current.rotation.y +=
-        (target.current - group.current.rotation.y) * 0.1;
+        (target.current - group.current.rotation.y) * 0.1
     }
     group.current.scale.y +=
-      ((flipping ? 1.25 : 1) - group.current.scale.y) * 0.1;
-    group.current.scale.setScalar(group.current.scale.y * transition.current);
-    transition.current += (1 - transition.current) * 0.1;
-  });
+      ((flipping ? 1.25 : 1) - group.current.scale.y) * 0.1
+    group.current.scale.setScalar(group.current.scale.y * transition.current)
+    transition.current += (1 - transition.current) * 0.1
+  })
 
   return (
     <group ref={group}>
       <CoinModel />
     </group>
-  );
+  )
 }

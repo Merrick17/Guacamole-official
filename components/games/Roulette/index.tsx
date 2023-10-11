@@ -1,12 +1,14 @@
 import React from 'react';
+import App from './App';
+
 const game = {
   name: 'Roulette',
   short_name: 'roulette',
-  description: '',
-  creator: 'DwRFGbjKbsEhUMe5at3qWvH7i8dAJyhhwdnFoZMnLVRV',
-  image: '/images/roulette.png',
-  theme_color: '#59ff5f',
-  app: React.lazy(() => import('./App')),
+  description: `
+    A miniature version of Roulette. WYSIWYG!
+  `,
+  image: '/images/play/roulette.png',
+  app: () => <App />,
 };
 
 export default game;

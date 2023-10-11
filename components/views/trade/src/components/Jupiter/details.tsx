@@ -22,11 +22,9 @@ const Details = ({
   selectRoute: any;
   toTokenInfo: TokenInfo;
 }) => {
-  const rate = useMemo(() => '1 USDC ≈ 190,473,598.5433853 GUAC', []);
-
   const rateParams = {
     inAmount: selectRoute?.inAmount || routes?.[0]?.inAmount || ZERO, // If there's no selectedRoute, we will use first route value to temporarily calculate
-    inputDecimal: fromTokenInfo.decimals,
+    inputDecimal: fromTokenInfo.decimals || 0,
     outAmount: selectRoute?.outAmount || routes?.[0]?.outAmount || ZERO, // If there's no selectedRoute, we will use first route value to temporarily calculate
     outputDecimal: toTokenInfo?.decimals || 0,
   };
@@ -52,9 +50,11 @@ const Details = ({
   }, [selectRoute]);
 
   return (
-    <div className={cn('mt-4 space-y-4 border border-black/5 rounded-xl p-3')}>
-      <div className="flex items-center justify-between text-xs">
-        <div className="text-black/30">{<span>Rate</span>}</div>
+    <div
+      className={cn('mt-4 space-y-4 border border-background rounded-xl p-3')}
+    >
+      <div className="flex items-center justify-between text-xs ">
+        <div className="text-muted-foreground">{<span>Rate</span>}</div>
         {JSBI.greaterThan(rateParams.inAmount, ZERO) &&
         JSBI.greaterThan(rateParams.outAmount, ZERO) ? (
           <ExchangeRate
@@ -65,26 +65,28 @@ const Details = ({
             reversible={true}
           />
         ) : (
-          <span className="text-black/30">{'-'}</span>
+          <span className="text-muted-foreground">{'-'}</span>
         )}
       </div>
 
-      <div className="flex items-center justify-between text-xs text-black/30">
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
         <div>
           <span>Price Impact</span>
         </div>
         <div>{priceImpactText}</div>
       </div>
 
-      <div className="flex items-center justify-between text-xs">
-        <div className="text-black/30">
+      <div className="flex items-center justify-between text-xs  text-muted-foreground ">
+        <div className="">
           {selectRoute?.swapMode === SwapMode.ExactIn ? (
             <span>Minimum Received</span>
           ) : (
             <span>Maximum Consumed</span>
           )}
         </div>
-        <div className="text-black/30">{otherAmountThresholdText}</div>
+        <div className="text-muted-foreground max-w-[88px] overflow-hidden text-ellipsis whitespace-nowrap">
+          {otherAmountThresholdText}
+        </div>
       </div>
     </div>
   );
