@@ -1,23 +1,26 @@
-'use client';
-import { Links } from '@/config/links';
-import { Logo } from '../views/trade/src/components/navigation-frame/TopBar/Logo';
-import { Button } from './button';
-import { GrClose } from 'react-icons/gr';
-import MenuItem from './menu-item';
-import dynamic from 'next/dynamic';
-import { cn } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
+"use client";
+import { Links } from "@/config/links";
+import { Logo } from "../views/trade/src/components/navigation-frame/TopBar/Logo";
+import { Button } from "./button";
+import { GrClose } from "react-icons/gr";
+import MenuItem from "./menu-item";
+import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useEffect } from "react";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
 );
 export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
   const pathname = usePathname();
+  const { connected } = useWallet();
 
   return (
-    <div className={cn('fixed w-full h-full top-0 z-[9999] ')}>
+    <div className={cn("fixed w-full h-full top-0 z-[9999] ")}>
       <div
         className=" fixed bg-black/50 w-screen h-screen cursor-pointer "
         onClick={closeDrawer}
@@ -40,7 +43,7 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
         </div>
         <div
           className="overflow-y-auto"
-          style={{ height: 'calc(100% - 96px)' }}
+          style={{ height: "calc(100% - 96px)" }}
         >
           <div className="px-6 py-2">
             {Links.map((item, index) => (
@@ -60,7 +63,8 @@ export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
           <WalletMultiButtonDynamic
             className="w-full flex items-center text-black bg-primary justify-center !rounded-lg"
             startIcon={undefined}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
+            onClick={() => !connected && closeDrawer()}
           />
         </div>
       </div>

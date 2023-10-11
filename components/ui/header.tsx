@@ -69,7 +69,7 @@ function HeaderRightArea({
     <div className="order-last flex shrink-0 items-center">
       <div className="hidden gap-6 lg:flex 2xl:gap-8">
         <Link
-          href="https://guac.gg/"
+          href="https://guac.gg/shop"
           rel="noopener noreferrer"
           target="_blank"
           className="shrink-0"
