@@ -16,8 +16,8 @@ const WalletMultiButtonDynamic = dynamic(
   { ssr: false }
 );
 export function DrawerMenu({ closeDrawer }: { closeDrawer: () => void }) {
+  const { connected, connecting } = useWallet();
   const pathname = usePathname();
-  const { connected } = useWallet();
 
   return (
     <div className={cn("fixed w-full h-full top-0 z-[9999] ")}>

@@ -95,7 +95,15 @@ function HeaderRightArea({
       </div>
 
       <div className="flex items-center gap-2 lg:hidden ">
-        <Link href={routes.shop.root} className="shrink-0">
+        {/* <Link href={routes.shop.root} className="shrink-0">
+          <Image src="/icons/shop.svg" alt="search" width={48} height={48} />
+        </Link> */}
+        <Link
+          href={"https://guac.gg/shop"}
+          rel="noopener noreferrer"
+          target="_blank"
+          className="shrink-0"
+        >
           <Image src="/icons/shop.svg" alt="search" width={48} height={48} />
         </Link>
         <Link

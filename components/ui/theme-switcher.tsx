@@ -19,7 +19,7 @@ const ThemeSwitcher = () => {
     return null;
   }
   return (
-    <div className="fixed z-50 bg-foreground p-1 md:p-0 md:bg-transparent bottom-0 md:top-1/4 w-screen  left-0 md:w-max h-max flex flex-row md:flex-col gap-5  justify-between ">
+    <div className="fixed z-50 bg-foreground p-1 md:p-0 sm:mb-5 md:bg-transparent bottom-3 md:top-1/4 w-screen  left-0 md:w-max h-max flex flex-row md:flex-col gap-5  justify-between ">
       <Link
         href={routes.home}
         className={cn(
