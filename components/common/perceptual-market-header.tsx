@@ -110,8 +110,8 @@ const PerceptualMarketHeader = () => {
                     }}
                   />
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <SelectedCoin
+                <DropdownMenuItem disabled>
+                  <SelectedCoin 
                     coin={["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D", "6"]}
                     onClick={() => {
                       selectMarket({

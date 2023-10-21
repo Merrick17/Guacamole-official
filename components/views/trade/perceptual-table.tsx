@@ -200,9 +200,9 @@ export function PerceptualTable() {
                   <TableCell>{qty}</TableCell>
                   <TableCell>${value.toLocaleString()}</TableCell>
                   <TableCell>
-                    <Button variant="ghost" onClick={() => {
+                    <Button variant="default" className='bg-[#bbb0db]' onClick={() => {
                       handleCloseOrder(product, !(position[1].m > 0), qty)
-                    }}>Close Trade</Button>
+                    }}>Close </Button>
                   </TableCell>
                 </TableRow>
               );

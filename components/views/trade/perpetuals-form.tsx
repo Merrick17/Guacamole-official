@@ -275,7 +275,6 @@ const PerpetualsForm = () => {
     }
   };
 
-
   const placeOrder = async () => {
     const position = upOrDown ? "LONG" : "SHORT";
     await handlePlaceOrder(position, Number(slippage), Number(tradeQuantity));
@@ -330,10 +329,10 @@ const PerpetualsForm = () => {
                 <div className="flex items-center justify-between gap-4">
                   <Button
                     className={cn(
-                      " rounded-lg text-sm w-full  gap-2",
+                      " rounded-lg text-sm w-full uppercase gap-2",
                       upOrDown
                         ? "bg-[#8bd796] hover:!bg-[#8bd796]"
-                        : "bg-background hover:!bg-background text-white"
+                        : "bg-[#141414]  text-white hover:!bg-[#141414] "
                     )}
                     size="lg"
                     onClick={() => {
@@ -348,10 +347,10 @@ const PerpetualsForm = () => {
 
                   <Button
                     className={cn(
-                      " rounded-lg text-sm w-full ",
+                      " rounded-lg text-sm w-full uppercase ",
                       !upOrDown
                         ? "bg-destructive hover:!bg-destructive"
-                        : "bg-background hover:!bg-background text-white"
+                        : "bg-[#141414] text-white  hover:!bg-[#141414] "
                     )}
                     size="lg"
                     onClick={() => {
@@ -387,7 +386,7 @@ const PerpetualsForm = () => {
                           </div>
                           <Input
                             min={product.minSize}
-                            type="number"
+                            type="text"
                             placeholder="0"
                             value={tradeQuantity}
                             onChange={(e) => {
@@ -562,7 +561,15 @@ const PerpetualsForm = () => {
         <div className="text-muted-foreground text-sm flex items-center justify-between gap-4">
           <p>
             GUAC/Avotar Discount:{" "}
-            <span className="text-[#8bd796] ">Save up to 40%</span>
+            <Link
+              className="text-[#8bd796] "
+              href={
+                "https://docs.guacamole.gg/products-and-features/trade/gamified-crypto-futures#fee-structure-and-discounts"
+              }
+              target="_blank"
+            >
+              Save up to 40%
+            </Link>
           </p>
 
           <BsFillInfoCircleFill />

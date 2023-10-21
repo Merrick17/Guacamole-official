@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Container from "./container";
 
 const WalletMultiButtonDynamic = dynamic(
@@ -33,6 +33,7 @@ const InfoCard: FC<InfoCardProps> = ({
   disabled = false,
   target,
 }) => {
+
   return (
     <Container className=" p-6 rounded-lg max-w-xs bg-foreground  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
       <div className="relative aspect-square w-7 h-7 mb-3">
@@ -45,8 +46,8 @@ const InfoCard: FC<InfoCardProps> = ({
       </a>
       <p className="mb-3 font-normal text-muted-foreground">{description}</p>
       <Link
-        href={disabled ? href : ""}
-        target={target ? target : undefined}
+        href={href}
+        target={target}
         className={cn(
           "inline-flex items-center text-primary hover:underline mt-auto",
           disabled && "cursor-not-allowed pointer-events-none opacity-50"

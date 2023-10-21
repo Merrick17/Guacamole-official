@@ -107,7 +107,7 @@ const SelectTradingAccount = () => {
       };
     }
   }, [updateAccountInfo, trader]);
-  
+
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey]);
@@ -214,7 +214,7 @@ const SelectTradingAccount = () => {
       setIsLoading(false);
     }
   }, [amount, publicKey, manifest, trader, selectedProduct]);
-  
+
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey]);
@@ -229,12 +229,14 @@ const SelectTradingAccount = () => {
       <TraderAccountDropdown accounts={trgsArr} onSelect={handleSelection} />
       <div className="flex flex-col gap-3">
         <p className="text-xs font-medium text-muted-foreground">
-          Withdraw or Deposit {'(USDC)'}
+          Withdraw or Deposit {"(USDC)"}
         </p>
         <div className="bg-foreground px-5 rounded-lg">
           <Input
             value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            type="number"
+            step="0.1"
+            onChange={(e) => setAmount(parseFloat(e.target.value))}
             placeholder="Enter Amount"
             className="placeholder:text-[#FCFCFC] placeholder:text-sm placeholder:font-medium "
           />
@@ -258,6 +260,31 @@ const SelectTradingAccount = () => {
       >
         Withdraw
       </Button>
+      <div className="flex w-full gap-4 ">
+        <Button
+          size="lg"
+          variant="success"
+          className="font-extrabold uppercase bg-[#bbb0db] text-xs w-full"
+          onClick={() => {
+            navigator.clipboard.writeText(selectedTrg);
+            toast({
+              variant: "success",
+              title: "Copied to clipboard",
+            });
+          }}
+        >
+         Copy Address
+        </Button>
+        <Button
+          size="lg"
+          variant="destructive"
+          className="font-extrabold uppercase text-xs w-full "
+          onClick={handleDeposit}
+          disabled
+        >
+          Close Account
+        </Button>
+      </div>
     </Container>
   );
 };

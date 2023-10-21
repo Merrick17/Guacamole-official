@@ -8,8 +8,12 @@ import routes from "@/config/routes";
 import { AccentColors } from "@/config/themes";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import TerminalGraph from "@/components/views/terminal/TerminalGraph";
+import Trade from "@/components/views/trade/src/Trade";
+import AnalyticsChart from "@/components/views/terminal/AnalyticsChart";
+import MarketPulseChart from "@/components/views/terminal/MarketPulseChart";
 
-export default function Home() {
+export default function Terminal() {
   return (
     <>
       <BackgroundSplash className="bg-home-bg " />
@@ -21,31 +25,10 @@ export default function Home() {
         <section className="flex flex-col gap-[60px]">
           {/* {lg:h-[560px]} */}
           <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full  overflow-hidden">
-            {/* <HomeContent className="w-full" /> */}
-            <HeroHeadline
-              className="col-span-1  lg:col-span-5"
-              title={
-                <h1
-                  className={
-                    "text-3xl sm:text-6xl lg:text-[60px] lg:leading-[72px] font-bold "
-                  }
-                >
-                  The <span className="text-primary">best ingredients</span> to
-                  keep your crypto portfolio{" "}
-                  <span className="text-primary">super fresh</span>.
-                </h1>
-              }
-            >
-              <p className=" text-xl font-medium leading-8 text-muted-foreground">
-                Experience a fresh take on Solana DeFi with{" "}
-                <span className="text-primary">Guacamole</span>. Trade, earn,
-                and play effortlessly, while enjoying a seamless and
-                user-friendly experience. Get started and unlock a world of
-                possibilities!
-              </p>
-              <Link className="text-xl text-primary" href={"/trade/swap"}>Scoop The Dip ➜</Link>
-            </HeroHeadline>
-            <TrendingToday className="col-span-1 lg:col-span-3  lg:h-full bg-foreground" />
+            <Trade className="col-span-1 lg:col-span-3  lg:h-full bg-foreground" />
+            <TerminalGraph className="col-span-1  lg:col-span-5">
+              <MarketPulseChart />
+            </TerminalGraph>
           </div>
 
           <HeroList listItems={HomeListItems} />

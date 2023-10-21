@@ -13,7 +13,7 @@ const CandleChart = () => {
 
     const chart = createChart(chartRef.current, {
       width: chartRef.current.clientWidth, // Set initial width based on container size
-      height: 530,
+      height: chartRef.current.clientHeight,
       layout: {
         textColor: "#FFFF",
         background: {
@@ -47,7 +47,7 @@ const CandleChart = () => {
     }));
 
     candlestickSeries.setData(seriesData as any);
-    
+
     // Handle chart resizing when the container size changes
     const handleResize = () => {
       chart.resize(chartRef.current.clientWidth, 650); // Set the height as needed
@@ -63,7 +63,10 @@ const CandleChart = () => {
 
   return (
     <div>
-      <div ref={chartRef} style={{ maxWidth: "800px", height: "100%" }}></div>
+      <div
+        ref={chartRef}
+        style={{ maxWidth: "850px", height: "100%", minHeight: 620 }}
+      ></div>
     </div>
   );
 };

@@ -65,7 +65,7 @@ const TableDetails = () => {
             <p>All Time PnL</p>
             <p
               className={cn(
-                allTimePnl > 0 ? 'text-destructive' : 'text-[#8BD796]'
+                allTimePnl < 0 ? 'text-destructive' : 'text-[#8BD796]'
               )}
             >
               ${allTimePnl.toLocaleString()}
