@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { getTrendingTokensCharts } from "@/lib/token-api";
+import { cn } from "@/lib/utils";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -253,7 +254,7 @@ const MarketPulseChart: React.FC = () => {
         </div>
       </div> */}
 
-      <div id="chart-timeline" className="bg-[#0F0F0F] rounded-xl">
+      <div id="chart-timeline" className="bg-[#0F0F0F] rounded-xl ">
         <ReactApexChart
           options={options}
           series={marketInfo.map((elm) => {
@@ -270,13 +271,16 @@ const MarketPulseChart: React.FC = () => {
           height={480}
         />
       </div>
-      <div className="w-1/2 bg-[#0F0F0F] flex p-2">
+      <div className="bg-[#0F0F0F] w-max flex p-2 mx-auto  items-center gap-4 rounded-lg">
         {marketInfo.map((elm) => (
           <div className="flex w-full justify-center items-center">
-            <span
-              className={`bg-red-500 h-[12px] w-[12px] rounded-full `}
-            ></span>{" "}
-            <span>{elm.name}</span>
+            <div
+              style={{
+                backgroundColor: elm.color,
+              }}
+              className={cn(` h-[12px] w-[12px] rounded-full mr-1 `)}
+            />
+            <span className="text-muted-foreground">{elm.name}</span>
           </div>
         ))}{" "}
       </div>
