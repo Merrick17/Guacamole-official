@@ -8,7 +8,12 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['arweave.net','raw.githubusercontent.com'],
+    domains: [
+      "arweave.net",
+      "raw.githubusercontent.com",
+      "storage.googleapis.com",
+      "icons.llama.fi"
+    ],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -19,10 +24,10 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.(glb|gltf)$/,
       use: {
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          publicPath: '/_next/static/',
-          outputPath: 'static/',
+          publicPath: "/_next/static/",
+          outputPath: "static/",
         },
       },
     });
@@ -30,20 +35,20 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.wav$/,
       use: {
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          publicPath: '/_next/static/',
-          outputPath: 'static/',
+          publicPath: "/_next/static/",
+          outputPath: "static/",
         },
       },
     });
     config.module.rules.push({
       test: /\.mp3$/,
       use: {
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          publicPath: '/_next/static/',
-          outputPath: 'static/',
+          publicPath: "/_next/static/",
+          outputPath: "static/",
         },
       },
     });

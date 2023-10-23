@@ -1,18 +1,18 @@
-'use client';
+"use client";
 import {
   FIDA_MINT,
   retry,
   useSolBalance,
   useTokenAccounts,
-} from '@bonfida/hooks';
-import { GrRefresh } from 'react-icons/gr';
-import { HiOutlineSwitchVertical } from 'react-icons/hi';
-import round from 'lodash/round';
-import { InlineResponse200MarketInfos } from '@jup-ag/api';
-import { NATIVE_MINT } from '@solana/spl-token';
-import { TokenInfo } from '@solana/spl-token-registry';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import Paths from '@/config/routes';
+} from "@bonfida/hooks";
+import { GrRefresh } from "react-icons/gr";
+import { HiOutlineSwitchVertical } from "react-icons/hi";
+import round from "lodash/round";
+import { InlineResponse200MarketInfos } from "@jup-ag/api";
+import { NATIVE_MINT } from "@solana/spl-token";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import Paths from "@/config/routes";
 
 import {
   Select,
@@ -22,59 +22,59 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   WalletDisconnectButton,
   WalletModalProvider,
-} from '@solana/wallet-adapter-react-ui';
+} from "@solana/wallet-adapter-react-ui";
 import {
   PublicKey,
   Transaction,
   VersionedTransaction,
   sendAndConfirmTransaction,
-} from '@solana/web3.js';
-import { useInterval, useLocalStorageState } from 'ahooks';
-import { nanoid } from 'nanoid';
+} from "@solana/web3.js";
+import { useInterval, useLocalStorageState } from "ahooks";
+import { nanoid } from "nanoid";
 import React, {
   FunctionComponent,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from 'react';
-import emoji from '../../assets/no-route.png';
-import { getFeeAddress } from '../../utils/fees';
-import Loading from '../Loading';
-import { Balance } from './Balance';
-import { SelectCoin } from './SelectCoin';
-import { Slippage } from './Slippage';
-import { Buffer } from 'buffer';
+} from "react";
+import emoji from "../../assets/no-route.png";
+import { getFeeAddress } from "../../utils/fees";
+import Loading from "../Loading";
+import { Balance } from "./Balance";
+import { SelectCoin } from "./SelectCoin";
+import { Slippage } from "./Slippage";
+import { Buffer } from "buffer";
 // Token Mints
 export const INPUT_MINT_ADDRESS =
-  'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'; // USDC
+  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"; // USDC
 export const OUTPUT_MINT_ADDRESS =
-  'AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR'; // Guac
-import { useJupiterApiContext } from '../../contexts';
-import { Button } from '@/components/ui/button';
-import { toast } from 'react-toastify';
-import { RenderUpdate } from '@/components/ui/RenderUpdate';
-import dynamic from 'next/dynamic';
-import Details from './details';
-import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import axios from 'axios';
-import { useToast } from '@/hooks/use-toast';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import { SwapRoutes } from './swap-routes';
-import { RefreshCw, RefreshCwIcon } from 'lucide-react';
-import { Links } from '@/config/links';
-import NavigationList from '@/components/ui/navigation-list';
+  "AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"; // Guac
+import { useJupiterApiContext } from "../../contexts";
+import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
+import { RenderUpdate } from "@/components/ui/RenderUpdate";
+import dynamic from "next/dynamic";
+import Details from "./details";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { SwapRoutes } from "./swap-routes";
+import { RefreshCw, RefreshCwIcon } from "lucide-react";
+import { Links } from "@/config/links";
+import NavigationList from "@/components/ui/navigation-list";
 const WalletMultiButtonDynamic = dynamic(
   async () =>
-    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }
 );
 
@@ -88,18 +88,18 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const searchParams = useSearchParams();
 
   const CustomInputMintAddress =
-    searchParams.get('inputMint') ?? INPUT_MINT_ADDRESS;
+    searchParams.get("inputMint") ?? INPUT_MINT_ADDRESS;
   const CustomOutputMintAddress =
-    searchParams.get('outputMint') ?? OUTPUT_MINT_ADDRESS;
+    searchParams.get("outputMint") ?? OUTPUT_MINT_ADDRESS;
 
   const { connected, publicKey, signAllTransactions, sendTransaction } =
     useWallet();
   const { connection } = useConnection();
   const { tokenMap, routeMap, loaded, api } = useJupiterApiContext();
   const { toast } = useToast();
-  const [routes, setRoutes] = useState<Awaited<ReturnType<any>>['data']>([]);
+  const [routes, setRoutes] = useState<Awaited<ReturnType<any>>["data"]>([]);
 
-  const [slippage, setSlippage] = useLocalStorageState('slippage', {
+  const [slippage, setSlippage] = useLocalStorageState("slippage", {
     defaultValue: 1,
   });
   const [selectedRoute, setSelectedRoute] = useState<any | null>(null);
@@ -116,7 +116,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
     connection,
     publicKey
   );
-  const [inputAmout, setInputAmount] = useState('10');
+  const [inputAmout, setInputAmount] = useState("10");
   const { data: solBalance, refresh: refreshSol } = useSolBalance(
     connection,
     publicKey
@@ -126,7 +126,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
     setOutputTokenInfo(tokenMap.get(CustomOutputMintAddress) as TokenInfo);
   }, [tokenMap, CustomInputMintAddress, CustomOutputMintAddress]);
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.Buffer = Buffer;
     }
   }, [typeof window]);
@@ -184,7 +184,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
 
       if (
         possibleOutputs &&
-        !possibleOutputs?.includes(outputTokenInfo?.address || '')
+        !possibleOutputs?.includes(outputTokenInfo?.address || "")
       ) {
         setHasRoute(false);
       }
@@ -205,8 +205,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
       !inputTokenInfo?.address
     ) {
       toast({
-        variant: 'destructive',
-        title: 'Error',
+        variant: "destructive",
+        title: "Error",
         description: (
           <div className="flex flex-col gap-1">
             <p className="text-xs font-bold">Invalid amount</p>
@@ -229,8 +229,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
 
     if (!userBalances) {
       return toast({
-        variant: 'destructive',
-        title: 'Error',
+        variant: "destructive",
+        title: "Error",
         description: (
           <div className="flex flex-col gap-1">
             <p className="text-xs font-bold">Could not find user balances</p>
@@ -241,8 +241,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
 
     if (userBalances < parsedAmount) {
       return toast({
-        variant: 'destructive',
-        title: 'Error',
+        variant: "destructive",
+        title: "Error",
         description: (
           <p className="text-xs font-bold">
             Not enough balances (only have {round(userBalances, 2)}
@@ -273,7 +273,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             skipPreflight: true,
             maxRetries: 5,
           });
-          console.log('FEE', txId);
+          console.log("FEE", txId);
           // sendAndConfirmTransaction(connection,feeTx)
           // const sig = await sendTransaction(feeTx, connection);
           // const latestBlockHash = await connection.getLatestBlockhash();
@@ -295,7 +295,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         });
 
         if (swapTransaction) {
-          const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+          const swapTransactionBuf = Buffer.from(swapTransaction, "base64");
           var transaction =
             VersionedTransaction.deserialize(swapTransactionBuf);
           //await signAllTransactions([transaction]);
@@ -314,8 +314,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
           //await connection.confirmTransaction(txid);
           //console.log(`https://solscan.io/tx/${txid}`);
           toast({
-            variant: 'success',
-            title: 'Success',
+            variant: "success",
+            title: "Success",
             description: (
               <div className="flex flex-col gap-1">
                 <p>Transaction sent successfully.</p>
@@ -328,12 +328,12 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         }
       }
     } catch (e) {
-      console.error('Error', e);
+      console.error("Error", e);
       const isError = e instanceof Error;
-      if (isError && e.message.includes('Transaction simulation')) {
+      if (isError && e.message.includes("Transaction simulation")) {
         toast({
-          variant: 'destructive',
-          title: 'Error',
+          variant: "destructive",
+          title: "Error",
           description: (
             <div className="flex flex-col gap-1">
               <p className="text-xs font-bold">
@@ -353,7 +353,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         //     />
         //   ),
         // });
-      } else if (isError && e.message.includes('blockhash')) {
+      } else if (isError && e.message.includes("blockhash")) {
         // toast.update(toastId.current, {
         //   type: toast.TYPE.INFO,
         //   autoClose: 5_000,
@@ -363,8 +363,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         //   toastId: toastId.current,
         // });
         toast({
-          variant: 'destructive',
-          title: 'Error',
+          variant: "destructive",
+          title: "Error",
           description: (
             <div className="flex flex-col gap-1">
               <p className="text-xs font-bold">Blockhash not found</p>
@@ -373,12 +373,12 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         });
       } else if (
         isError &&
-        e.message.includes('Transaction was not confirmed') &&
+        e.message.includes("Transaction was not confirmed") &&
         txids.length > 0
       ) {
         toast({
-          variant: 'destructive',
-          title: 'Error',
+          variant: "destructive",
+          title: "Error",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction failed to confirm. Inspect it on the explorer.</p>
@@ -390,11 +390,11 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         });
       } else if (
         isError &&
-        e.message.includes('Transaction was not confirmed')
+        e.message.includes("Transaction was not confirmed")
       ) {
         toast({
-          variant: 'destructive',
-          title: 'Error',
+          variant: "destructive",
+          title: "Error",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction failed to confirm. </p>
@@ -406,8 +406,8 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         });
       } else {
         toast({
-          variant: 'destructive',
-          title: 'Error',
+          variant: "destructive",
+          title: "Error",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction failed to confirm. </p>
@@ -450,7 +450,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const getValueInUsd = async (token: TokenInfo, amount: number, setPrice) => {
     if (!token) return;
     const { data } = await axios.get(
-      'https://price.jup.ag/v4/price?ids=' + token.symbol
+      "https://price.jup.ag/v4/price?ids=" + token.symbol
     );
     for (var prop in data.data) {
       const value = data.data[prop].price;
@@ -481,12 +481,19 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
       <div className="w-full rounded-[15px] bg-foreground  sm:max-w-[450px] ">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1 !h-7">
-            {pathname === '/trade' ? (
+            {pathname === "/trade" ? (
               <Link
-                href={'/trade/swap'}
+                href={"/trade/swap"}
                 className="text-sm bg-primary text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
               >
                 Open Full Page
+              </Link>
+            ) : pathname == "/terminal" ? (
+              <Link
+                href={"/trade/swap"}
+                className="text-sm bg-primary text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
+              >
+                Go to Swap Page
               </Link>
             ) : (
               <NavigationList filter="Trade" />
@@ -537,7 +544,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                     type="number"
                     onChange={(e) => setInputAmount(e.target.value.trim())}
                     className={cn(
-                      'w-full h-full rounded-none  text-right text-xl font-medium transition-all duration-200 ease-in-out '
+                      "w-full h-full rounded-none  text-right text-xl font-medium transition-all duration-200 ease-in-out "
                     )}
                   />
                   <p className=" text-xs text-muted-foreground">
@@ -583,7 +590,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                         outputAmount.toLocaleString(undefined, {
                           maximumFractionDigits: 6,
                         })) ||
-                        '0'}
+                        "0"}
                     </div>
 
                     <p className="text-muted-foreground text-xs">
@@ -629,7 +636,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                     <Loading />
                   </div>
                 ) : (
-                  'Swap'
+                  "Swap"
                 )}
               </Button>
             </div>
@@ -638,7 +645,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               <WalletMultiButtonDynamic
                 startIcon={undefined}
                 className=" flex bg-primary hover:!bg-primary text-primary-foreground items-center justify-center w-full py-5 h-14"
-                style={{ borderRadius: '12px' }}
+                style={{ borderRadius: "12px" }}
               >
                 Connect Wallet
               </WalletMultiButtonDynamic>

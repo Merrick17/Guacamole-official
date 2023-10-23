@@ -14,6 +14,7 @@ import AnalyticsChart from "@/components/views/terminal/AnalyticsChart";
 import MarketPulseChart from "@/components/views/terminal/MarketPulseChart";
 import SolanaTvlRanking from "@/components/views/terminal/solana-tvl-ranking";
 import TopNftCollections from "@/components/views/terminal/top-nft-collections";
+import TrendingSwaps from "@/components/views/terminal/TredingSwaps";
 
 export default function Terminal() {
   return (
@@ -28,7 +29,7 @@ export default function Terminal() {
           <TerminalGraph className="  lg:col-span-4 w-full">
             <MarketPulseChart />
           </TerminalGraph>
-          <TrendingToday className=" lg:col-span-2 lg:h-full bg-foreground" />
+          <TrendingSwaps className=" lg:col-span-2 lg:h-full bg-foreground" />
           <TopNftCollections className="lg:col-span-2 w-full" />
           <SolanaTvlRanking className="lg:col-span-2 w-full" />
         </section>

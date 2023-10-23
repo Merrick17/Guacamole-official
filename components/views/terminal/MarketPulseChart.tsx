@@ -112,7 +112,7 @@ const MarketPulseChart: React.FC = () => {
       data: [],
     },
     {
-      name: "CMFI",
+      name: "GUAC",
       data: [],
     },
   ]);
@@ -182,9 +182,9 @@ const MarketPulseChart: React.FC = () => {
           color: "#fec400",
         },
         {
-          name: "CMFI",
+          name: "GUAC",
           data: mapPrecentageChange(data.cmfiChart.prices),
-          color: "#a949e2",
+          color: "#8bd796",
         },
       ]);
     } catch (error) {}

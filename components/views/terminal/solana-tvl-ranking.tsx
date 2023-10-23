@@ -1,24 +1,39 @@
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { FunctionComponent } from "react";
-import { Badge } from "@/components/ui/badge";
-interface SolanaTvlRankingProps extends React.HTMLAttributes<HTMLDivElement> {}
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+"use client";
 import Container from "@/components/common/container";
+import { Badge } from "@/components/ui/badge";
 import { AccentColors } from "@/config/themes";
+import { cn } from "@/lib/utils";
+import numeral from "numeral";
+import axios from "axios";
+import Image from "next/image";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
+interface SolanaTvlRankingProps extends React.HTMLAttributes<HTMLDivElement> {}
+const relDiff = (final, init) => {
+  return ((final - init) / init) * 100;
+};
 const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
   className,
   ...rest
 }) => {
+  const [protocolList, setProtocolList] = useState([]);
+  const pullData = useCallback(async () => {
+    try {
+      let { data } = await axios.get("https://api.llama.fi/lite/protocols2");
+      setProtocolList(
+        data.protocols.filter((elm) => elm.chains.includes("Solana"))
+      );
+    } catch (error) {}
+  }, []);
+
+  useEffect(() => {
+    pullData();
+  }, [pullData]);
   return (
     <Container
-      className={cn("p-5 flex flex-col bg-foreground gap-5", className)}
+      className={cn(
+        "p-5 flex flex-col bg-foreground gap-5 max-h-[560px]",
+        className
+      )}
     >
       <div className="w-full flex items-center justify-between text-black">
         <Badge variant="default" className="rounded-lg">
@@ -33,9 +48,17 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
           Start Liquid Staking
         </Badge>
       </div>
-      <div className="flex flex-col gap-[10px] w-full">
-        {topNfts.map((itm, idx) => (
-          <TopNftCollectionItem key={idx} {...itm} />
+      <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
+        {protocolList.map((itm, idx) => (
+          <TopNftCollectionItem
+            key={idx}
+            {...itm}
+            title={itm.name}
+            floor={itm.category}
+            image={itm.logo}
+            price={itm.chainTvls.Solana.tvl}
+            tvl={itm.chainTvls}
+          />
         ))}
       </div>
     </Container>
@@ -68,6 +91,7 @@ type TopNftCollectionItemProps = {
   image: string;
   title: string;
   floor: string;
+  tvl?: any;
 };
 
 const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
@@ -75,22 +99,27 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
   image,
   title,
   floor,
+  tvl,
 }) => {
   return (
     <Container className="px-3 py-[10px] bg-background flex items-center justify-between gap-4 w-full">
       <div className="text-xs  flex items-center gap-[10px]">
         <div className="w-9 h-9 rounded-[5px] relative">
-          <Image src={image} fill alt={title} />
+          <Image src={image} fill alt={title} className="rounded-[5px]" />
         </div>
         <div className="text-xs  flex flex-col gap-2">
           <h1 className="font-medium">{title}</h1>
-          <p className="text-muted-foreground ">Floor: {floor}</p>
+          <p className="text-muted-foreground "> {floor}</p>
         </div>
       </div>
       <div className="text-xs  flex flex-col items-center gap-2 h-full">
-        <p className="font-medium ">${price}</p>
+        <p className="font-medium ">${numeral(price).format("0,0")}</p>
         <div className="text-primary bg-foreground px-2 py-[2px] rounded-full text-center mt-auto">
-          +17.231% 1W
+          {isNaN(relDiff(tvl.Solana.tvl, tvl.Solana.tvlPrevWeek))
+            ? "N/A"
+            : (relDiff(tvl.Solana.tvl, tvl.Solana.tvlPrevWeek) > 0 ? "+" : "") +
+              relDiff(tvl.Solana.tvl, tvl.Solana.tvlPrevWeek).toFixed(3) +
+              "% 1W"}
         </div>
       </div>
     </Container>
