@@ -14,8 +14,7 @@ interface MarketData {
   color: string;
 }
 
-const MarketPulseChart: React.FC = () => {
-  const [selection, setSelection] = useState("1D");
+const MarketPulseChart = ({ selection }: { selection: string }) => {
   const [options, setOptions] = useState<any>({
     chart: {
       height: 130,
@@ -193,7 +192,7 @@ const MarketPulseChart: React.FC = () => {
     initChartData();
   }, [initChartData]);
   const setChartType = (dataType) => {
-    setSelection(dataType);
+    //setSelection(dataType);
   };
 
   return (
@@ -271,7 +270,7 @@ const MarketPulseChart: React.FC = () => {
           height={480}
         />
       </div>
-      <div className="bg-[#0F0F0F] w-max flex p-2 mx-auto  items-center gap-4 rounded-lg">
+      <div className="bg-[#0F0F0F] w-max flex p-2 mx-auto sm:w-full max-sm:w-[100%] max-sm:flex-wrap items-center gap-4 rounded-lg">
         {marketInfo.map((elm) => (
           <div className="flex w-full justify-center items-center">
             <div

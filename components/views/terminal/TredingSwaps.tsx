@@ -3,11 +3,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGetTrendingToday } from "@/hooks/use-get-trending-today";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import Container from "../../common/container";
 import { JupiterApiProvider } from "../trade/src/contexts";
 import TrendingItem from "./trending-item";
 import { useJupStat } from "@/context/jup.stats";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import TopItem from "./top-item";
 
 interface TrendingSwapsProps {
   className?: string;
@@ -15,11 +23,11 @@ interface TrendingSwapsProps {
 // USDC, USDT, USDCet, mSOL, bSOL, JitoSOL, stSOL, UXD, ETH, USDTet
 
 const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
-  const { trending, loading } = useGetTrendingToday({
-    maxNumberOfTokens: 9,
-  });
+  const [selectedValue, setSelectedValue] = useState("trending");
   const { volumeByPairs, topBuys, topSells } = useJupStat();
-  useEffect(() => {}, [TrendingSwaps]);
+  useEffect(() => {
+    console.log("TOP BUYS", topBuys);
+  }, [TrendingSwaps]);
   return (
     <JupiterApiProvider>
       <Container
@@ -28,35 +36,84 @@ const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
           className
         )}
       >
-        <div className="flex flex-row gap-2 items-center">
-          <div className="shrink-0 w-5 aspect-square">
-            <Image
-              src="/images/home/trending.png"
-              width={20}
-              height={20}
-              alt="trending"
-            />
+        <div className=" text-black">
+          <Select
+            defaultValue="trending"
+            value={selectedValue}
+            onValueChange={(value) => {
+              setSelectedValue(value);
+            }}
+          >
+            <SelectTrigger className="w-[150px] rounded-lg">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="trending">Trending Swaps </SelectItem>
+              <SelectItem value="top-b">Top Buys</SelectItem>
+              <SelectItem value="top-s">Top Sells</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {selectedValue == "trending" ? (
+          <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+            {volumeByPairs.length == 0 ? (
+              Array.from({ length: 10 }).map((_, i) => (
+                <Skeleton key={i} className="w-full min-h-[92px]" />
+              ))
+            ) : (
+              <>
+                {volumeByPairs.map((elm, ind) => (
+                  <TrendingItem
+                    sellTokenSymbol={elm.name.split("/")[0]}
+                    buyTokenSymbol={elm.name.split("/")[1]}
+                    key={ind.toString()}
+                    volume={elm.value}
+                  />
+                ))}
+              </>
+            )}
           </div>
-          <h1 className="text-lg lg:text-xl capitalize">Trending Swaps</h1>
-        </div>
-        <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
-          {volumeByPairs.length == 0 ? (
-            Array.from({ length: 10 }).map((_, i) => (
-              <Skeleton key={i} className="w-full min-h-[92px]" />
-            ))
-          ) : (
-            <>
-              {volumeByPairs.map((elm, ind) => (
-                <TrendingItem
-                  sellTokenSymbol={elm.name.split("/")[0]}
-                  buyTokenSymbol={elm.name.split("/")[1]}
-                  key={ind.toString()}
-                  volume={elm.value}
-                />
-              ))}
-            </>
-          )}
-        </div>
+        ) : selectedValue == "top-b" ? (
+          <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+            {topBuys.length == 0 ? (
+              Array.from({ length: 10 }).map((_, i) => (
+                <Skeleton key={i} className="w-full min-h-[92px]" />
+              ))
+            ) : (
+              <>
+                {topBuys.map((elm, ind) => (
+                  <TopItem
+                    symbol={elm.symbol}
+                    key={ind.toString()}
+                    amount={elm.amount}
+                    mint={elm.mint}
+                    side="buy"
+                  />
+                ))}
+              </>
+            )}
+          </div>
+        ) : (
+          <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+            {topSells.length == 0 ? (
+              Array.from({ length: 10 }).map((_, i) => (
+                <Skeleton key={i} className="w-full min-h-[92px]" />
+              ))
+            ) : (
+              <>
+                {topSells.map((elm, ind) => (
+                  <TopItem
+                    symbol={elm.symbol}
+                    key={ind.toString()}
+                    amount={elm.amount}
+                    mint={elm.mint}
+                    side="sell"
+                  />
+                ))}
+              </>
+            )}
+          </div>
+        )}
       </Container>
     </JupiterApiProvider>
   );

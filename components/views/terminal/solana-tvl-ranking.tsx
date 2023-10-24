@@ -49,17 +49,19 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
         </Badge>
       </div>
       <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
-        {protocolList.map((itm, idx) => (
-          <TopNftCollectionItem
-            key={idx}
-            {...itm}
-            title={itm.name}
-            floor={itm.category}
-            image={itm.logo}
-            price={itm.chainTvls.Solana.tvl}
-            tvl={itm.chainTvls}
-          />
-        ))}
+        {protocolList
+          .sort((a, b) => b.chainTvls.Solana.tvl - a.chainTvls.Solana.tvl)
+          .map((itm, idx) => (
+            <TopNftCollectionItem
+              key={idx}
+              {...itm}
+              title={itm.name}
+              floor={itm.category}
+              image={itm.logo}
+              price={itm.chainTvls.Solana.tvl}
+              tvl={itm.chainTvls}
+            />
+          ))}
       </div>
     </Container>
   );

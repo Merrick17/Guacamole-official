@@ -3,33 +3,35 @@ import { Button } from "@/components/ui/button";
 import routes from "@/config/routes";
 import { convert } from "@/lib/numbers";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
-
-type TrendingItemProps = {
+import numeral from "numeral";
+type TopItemProps = {
   className?: string;
   symbol?: string;
   amount?: number;
   mint?: string;
-  sellTokenSymbol: string;
-  buyTokenSymbol: string;
-  volume?: number;
+  side?: string;
 };
-const TrendingItem: FC<TrendingItemProps> = ({
+const TopItem: FC<TopItemProps> = ({
   className,
   amount,
   symbol,
   mint,
-  sellTokenSymbol,
-  buyTokenSymbol,
-  volume,
+  side,
 }) => {
   const { tokenMap } = useJupiterApiContext();
-  const sellToken = tokenMap.get(sellTokenSymbol);
-  const buyToken = tokenMap.get(buyTokenSymbol);
+  const token = tokenMap.get(mint);
+
   const [marketPrice, setMarketPrice] = useState(0);
   const [loading, setLoading] = useState(true);
-
+  const inputMint =
+    side == "buy" ? "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" : mint;
+  const outputMint =
+    side == "sell" ? "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" : mint;
+  useEffect(() => {
+    console.log("Side", side == "buy", side == "sell");
+  }, [side]);
   // useEffect(() => {
   //   const getMarketCapV2 = async () => {
   //     if (token) {
@@ -59,7 +61,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
     <div className="p-6 rounded-lg backdrop:blur-sm lg:shadow-lg lg:drop-shadow-[0_2px_12px_12px_rgba(0,0,0,0.75)] px-3 py-[10px] bg-background flex items-center justify-between gap-4 w-full">
       <div className="flex flex-row items-center  gap-2 lg:gap-5">
         <img
-          src={sellToken?.logoURI}
+          src={token?.logoURI}
           className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] rounded-full "
           alt="logo"
           onLoad={(e) => {
@@ -67,15 +69,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
             e.currentTarget.classList.remove("hidden");
           }}
         />
-        <img
-          src={buyToken?.logoURI}
-          className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] rounded-full "
-          alt="logo"
-          onLoad={(e) => {
-            setLoading(false);
-            e.currentTarget.classList.remove("hidden");
-          }}
-        />
+
         {/* {loading && (
           <Loader2 className="w-5 h-5 lg:w-10 lg:h-10 rounded-full animate-spin" />
         )} */}
@@ -83,7 +77,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
         <div className="flex flex-col gap-1 ">
           <div className="flex items-center gap-1 lg:gap-2">
             <p className="uppercase text-xs text-[12px] font-medium">
-              {sellToken?.symbol}/ {buyToken?.symbol}
+              {symbol}
             </p>
             {/* <div className="text-xs flex items-center bg-foreground text-primary  rounded-sm px-2 py-1 ">
               <Link
@@ -100,15 +94,12 @@ const TrendingItem: FC<TrendingItemProps> = ({
             </div> */}
           </div>
           <p className=" text-xs lg:text-base max-w-[80px] text-[12px] font-normal lg:max-w-full text-muted-foreground text-ellipsis overflow-hidden">
-            {"$" + convert(Number(Number(volume).toFixed(3)))}
+            ${numeral(amount).format("0,0.000")}
           </p>
         </div>
       </div>
       <Link
-        href={
-          routes.trade.swap +
-          `?outputMint=${buyTokenSymbol}&inputMint=${sellTokenSymbol}`
-        }
+        href={"/terminal" + `?outputMint=${outputMint}&inputMint=${inputMint}`}
       >
         <Button className="h-8 px-3 lg:h-10 lg:px-4 lg:py-2">Trade</Button>
       </Link>
@@ -116,4 +107,4 @@ const TrendingItem: FC<TrendingItemProps> = ({
   );
 };
 
-export default TrendingItem;
+export default TopItem;

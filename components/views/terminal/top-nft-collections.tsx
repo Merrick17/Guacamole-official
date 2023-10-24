@@ -13,12 +13,21 @@ import {
   useMemo,
   useState,
 } from "react";
+import axios from "axios";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 interface TopNftCollectionsProps extends React.HTMLAttributes<HTMLDivElement> {}
 const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
   className,
   ...rest
 }) => {
   const [topCollections, setTopCollections] = useState([]);
+  const getTopNftCollections = useCallback(async () => {
+    const { data } = await axios.get(
+      `https://api-mainnet.magiceden.dev/v2/marketplace/popular_collections`
+    );
+    setTopCollections(data);
+  }, []);
+
   const hsClient = useMemo(
     () =>
       new HyperspaceClient(
@@ -26,23 +35,23 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
       ),
     []
   );
-  const getTopNftCollections = useCallback(async () => {
-    try {
-      const { getProjectStats } = await hsClient.getProjects({
-        orderBy: {
-          field_name: "market_cap",
-          //@ts-ignore
-          sort_order: "DESC",
-        },
-      });
+  // const getTopNftCollections = useCallback(async () => {
+  //   try {
+  //     const { getProjectStats } = await hsClient.getProjects({
+  //       orderBy: {
+  //         field_name: "market_cap",
+  //         //@ts-ignore
+  //         sort_order: "DESC",
+  //       },
+  //     });
 
-      if (getProjectStats && getProjectStats.project_stats) {
-        setTopCollections(getProjectStats.project_stats);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [hsClient]);
+  //     if (getProjectStats && getProjectStats.project_stats) {
+  //       setTopCollections(getProjectStats.project_stats);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [hsClient]);
 
   useEffect(() => {
     getTopNftCollections();
@@ -56,7 +65,7 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
     >
       <div className="w-full flex items-center justify-between text-black">
         <Badge variant="default" className="rounded-lg">
-          Top NFT Collections
+          Trending NFT Collections
         </Badge>
         <Badge
           className="rounded-lg"
@@ -71,10 +80,10 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
         {topCollections.map((itm, idx) => (
           <TopNftCollectionItem
             key={idx}
-            image={itm.project.img_url}
-            title={itm.project.display_name}
-            floor={itm.floor_price}
-            price={itm.market_cap}
+            image={itm.image}
+            title={itm.name}
+            floor={(itm.floorPrice/LAMPORTS_PER_SOL).toFixed(3)}
+            price={itm.volumeAll}
           />
         ))}
       </div>
@@ -134,9 +143,9 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
         </div>
       </div>
       <div className="text-xs  flex flex-col items-center gap-2 h-full">
-        <p className="font-medium ">${numeral(price).format("0,0")}</p>
+        <p className="font-medium ">{numeral(price).format("0,0")} SOL</p>
         <div className="text-primary bg-foreground px-2 py-[2px] rounded-full text-center mt-auto">
-          Marketcap
+          Total Volume
         </div>
       </div>
     </Container>
