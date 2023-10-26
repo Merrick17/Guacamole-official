@@ -44,7 +44,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
               setSelectedValue(value);
             }}
           >
-            <SelectTrigger className="w-[150px] rounded-lg">
+            <SelectTrigger className="w-[150px] h-[27px] rounded-lg inline-flex items-center border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 ">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -55,7 +55,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
           </Select>
         </div>
         {selectedValue == "trending" ? (
-          <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+          <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
             {volumeByPairs.length == 0 ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <Skeleton key={i} className="w-full min-h-[92px]" />
@@ -74,7 +74,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
             )}
           </div>
         ) : selectedValue == "top-b" ? (
-          <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+          <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
             {topBuys.length == 0 ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <Skeleton key={i} className="w-full min-h-[92px]" />
@@ -94,7 +94,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
             )}
           </div>
         ) : (
-          <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+          <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
             {topSells.length == 0 ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <Skeleton key={i} className="w-full min-h-[92px]" />
