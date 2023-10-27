@@ -17,7 +17,7 @@ interface MarketData {
 const MarketPulseChart = ({ selection }: { selection: string }) => {
   const [options, setOptions] = useState<any>({
     chart: {
-      height: 130,
+      height: 100,
       type: "line",
       zoom: {
         enabled: false,
@@ -91,11 +91,11 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
       data: [],
     },
     {
-      name: "mSOL ",
+      name: "BTC ",
       data: [],
     },
     {
-      name: "stSOL",
+      name: "ETH",
       data: [],
     },
     {
@@ -156,12 +156,12 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
           color: "#21e9ac",
         },
         {
-          name: "mSOL ",
+          name: "BTC",
           data: mapPrecentageChange(data.msSolChart.prices),
-          color: "#c8ece1",
+          color: "#f7931a",
         },
         {
-          name: "stSOL",
+          name: "ETH",
           data: mapPrecentageChange(data.stSolChart.prices),
           color: "#1fc1ff",
         },
@@ -267,7 +267,7 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
             };
           })}
           type="line"
-          height={480}
+          height={450}
         />
       </div>
       <div className="bg-[#0F0F0F] w-max flex p-2 mx-auto sm:w-full max-sm:w-[100%] max-sm:flex-wrap items-center gap-4 rounded-lg">

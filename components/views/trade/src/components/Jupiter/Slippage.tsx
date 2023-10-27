@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
-import { HiAdjustments, HiOutlineInformationCircle } from 'react-icons/hi';
+import { useMemo, useState } from "react";
+import { HiAdjustments, HiOutlineInformationCircle } from "react-icons/hi";
 
-import clsx from 'clsx';
+import clsx from "clsx";
 import {
   Dialog,
   DialogContent,
@@ -9,14 +9,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { GrFormClose } from 'react-icons/gr';
-import SwapSettingButton from '../SwapRoute/SwapSettingButton';
-import { formatNumber } from '../../misc/utils';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { GrFormClose } from "react-icons/gr";
+import SwapSettingButton from "../SwapRoute/SwapSettingButton";
+import { formatNumber } from "../../misc/utils";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 const OPTIONS = [1, 5, 10];
 
 export const Slippage = ({
@@ -28,7 +29,7 @@ export const Slippage = ({
 }) => {
   const [input, setInput] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
-
+  const pathname = usePathname();
   const custom = !OPTIONS.includes(input || -1);
 
   const canSubmit = !custom || (custom && input && input > 0 && input < 500);
@@ -39,7 +40,9 @@ export const Slippage = ({
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className="flex flex-row items-center w-max cursor-pointer text-primary bg-background rounded-xl px-2 py-1 h-full"
+        className={`flex flex-row items-center w-max cursor-pointer ${
+          pathname.includes("trade") ? "text-primary" : "text-[#BBB0DB]"
+        } bg-background rounded-xl px-2 py-1 h-full`}
         onClick={() => setVisible(true)}
       >
         <HiAdjustments className="mr-2 w-3 rotate-90" />
@@ -62,7 +65,7 @@ export const Slippage = ({
                 <div className="mt-5 grid w-full grid-cols-3 gap-2">
                   {OPTIONS.map((item, idx) => {
                     const displayText =
-                      formatNumber.format(Number(item / 10)) + '%';
+                      formatNumber.format(Number(item / 10)) + "%";
 
                     return (
                       <SwapSettingButton
@@ -72,9 +75,9 @@ export const Slippage = ({
                         className="h-full"
                         roundBorder={
                           idx === 0
-                            ? 'left'
+                            ? "left"
                             : idx === OPTIONS.length - 1
-                            ? 'right'
+                            ? "right"
                             : undefined
                         }
                         highlighted={item === slippage}
@@ -94,8 +97,8 @@ export const Slippage = ({
                   </p>
                   <div
                     className={cn(
-                      ' relative   bg-background',
-                      'h-[50px] rounded-[6px] p-[2px]'
+                      " relative   bg-background",
+                      "h-[50px] rounded-[6px] p-[2px]"
                     )}
                   >
                     <Input

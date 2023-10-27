@@ -60,7 +60,7 @@ export const getTrendingTokensCharts = async (chartType: any) => {
         }
       ),
       axios.get(
-        `https://pro-api.coingecko.com/api/v3/coins/msol/market_chart?vs_currency=usd&days=${chartType}`,
+        `https://pro-api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${chartType}`,
         {
           headers: {
             "X-Cg-Pro-Api-Key": process.env.NEXT_PUBLIC_COINGECKO_PRO_KEY,
@@ -68,7 +68,7 @@ export const getTrendingTokensCharts = async (chartType: any) => {
         }
       ),
       axios.get(
-        `https://pro-api.coingecko.com/api/v3/coins/lido-staked-sol/market_chart?vs_currency=usd&days=${chartType}`,
+        `https://pro-api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=${chartType}`,
         {
           headers: {
             "X-Cg-Pro-Api-Key": process.env.NEXT_PUBLIC_COINGECKO_PRO_KEY,

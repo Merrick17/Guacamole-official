@@ -11,6 +11,7 @@ import { RiRouteFill } from "react-icons/ri";
 import { SwapRoute } from "../SwapRoute";
 import { InlineResponse200MarketInfos } from "@jup-ag/api";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 
 export const SwapRoutes = ({
   routes,
@@ -34,10 +35,13 @@ export const SwapRoutes = ({
   hasRoute: any;
 }) => {
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className="flex flex-row items-center w-full overflow-hidden cursor-pointer text-primary text-xs gap-1 w"
+        className={`flex flex-row items-center w-full overflow-hidden cursor-pointer ${
+          pathname.includes("trade") ? "text-primary" : "text-[#BBB0DB]"
+        } text-xs gap-1 w`}
         onClick={() => hasRoute && setVisible(true)}
       >
         <div className="flex items-center gap-1 bg-background rounded-xl px-2 py-1">

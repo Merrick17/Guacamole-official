@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
 interface SolanaTvlRankingProps extends React.HTMLAttributes<HTMLDivElement> {}
 const relDiff = (final, init) => {
   return ((final - init) / init) * 100;
@@ -119,12 +120,12 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
               setSelectedValue(value);
             }}
           >
-            <SelectTrigger className="w-[170px] h-[27px] rounded-lg inline-flex items-center border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 ">
+            <SelectTrigger className="w-[180px] h-[27px] rounded-lg inline-flex items-center border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 ">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="tvl">Solana TVL Rankings </SelectItem>
-              <SelectItem value="yields">Solana Lending Yields</SelectItem>
+              <SelectItem value="yields" disabled>Estimated APY Rankings</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -134,7 +135,7 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
             backgroundColor: AccentColors.red,
           }}
         >
-          Start Liquid Staking
+          <Link href={"/earn/explore"}>Start Earning</Link>
         </Badge>
       </div>
       <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
@@ -322,7 +323,7 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   useEffect(() => {
-    console.log("Item", item);
+    console.log("Yield Item", JSON.stringify(item));
   }, [item]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -338,12 +339,15 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
                 <Image src={image} fill alt={title} className="rounded-[5px]" />
               </div>
               <div className="text-xs  flex flex-col gap-2">
-                <h1 className="font-medium">{title}</h1>
-                <p className="text-muted-foreground "> {floor}</p>
+                <h1 className="font-medium">{item.symbol}</h1>
+                <p className="text-muted-foreground uppercase ">
+                  {" "}
+                  {item.project}
+                </p>
               </div>
             </div>
             <div className="text-xs  flex flex-col items-center gap-2 h-full">
-              <p className="font-medium ">${numeral(price).format("0,0")}</p>
+              <p className="font-medium ">{item.apy}%</p>
               <div className="text-primary bg-foreground px-2 py-[2px] rounded-full text-center mt-auto"></div>
             </div>
           </Container>

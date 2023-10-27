@@ -6,7 +6,8 @@ import Link from "next/link";
 import { FC, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
 import NftDialog from "./dialogs/NftDialog";
-
+import { Loader2 } from "lucide-react";
+import numeral from "numeral";
 type TrendingItemProps = {
   className?: string;
   symbol?: string;
@@ -29,8 +30,8 @@ const TrendingItem: FC<TrendingItemProps> = ({
   const sellToken = tokenMap.get(sellTokenSymbol);
   const buyToken = tokenMap.get(buyTokenSymbol);
   const [marketPrice, setMarketPrice] = useState(0);
-  const [loading, setLoading] = useState(true);
-
+  const [loading1, setLoading1] = useState(true);
+  const [loading2, setLoading2] = useState(true);
   // useEffect(() => {
   //   const getMarketCapV2 = async () => {
   //     if (token) {
@@ -62,27 +63,30 @@ const TrendingItem: FC<TrendingItemProps> = ({
         <div className="flex flex-row items-center  gap-1 lg:gap-3">
           <img
             src={sellToken?.logoURI}
-            className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] rounded-full "
+            className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] rounded-full hidden"
             alt="logo"
             onLoad={(e) => {
-              setLoading(false);
+              setLoading1(false);
               e.currentTarget.classList.remove("hidden");
             }}
           />
+          {loading1 && (
+            <Loader2 className="w-5 h-5 lg:w-10 lg:h-10 rounded-full animate-spin" />
+          )}
           <img
             src={buyToken?.logoURI}
-            className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] rounded-full "
+            className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] rounded-full hidden"
             alt="logo"
             onLoad={(e) => {
-              setLoading(false);
+              setLoading2(false);
               e.currentTarget.classList.remove("hidden");
             }}
           />
-          {/* {loading && (
-          <Loader2 className="w-5 h-5 lg:w-10 lg:h-10 rounded-full animate-spin" />
-        )} */}
+          {loading2 && (
+            <Loader2 className="w-5 h-5 lg:w-10 lg:h-10 rounded-full animate-spin" />
+          )}
 
-          <div className="flex flex-col gap-1 ">
+          <div className="flex flex-col gap-1 text-xs">
             <div className="flex items-center text-xs gap-1 lg:gap-2">
               <h1 className="font-medium">
                 {sellToken?.symbol}/ {buyToken?.symbol}
@@ -102,15 +106,12 @@ const TrendingItem: FC<TrendingItemProps> = ({
             </div> */}
             </div>
             <p className="text-muted-foreground text-ellipsis overflow-hidden">
-              {"$" + convert(Number(Number(volume).toFixed(3)))}
+              {"$" + numeral(volume).format("0,0.000")}
             </p>
           </div>
         </div>
         <Link
-          href={
-            routes.trade.swap +
-            `?outputMint=${buyTokenSymbol}&inputMint=${sellTokenSymbol}`
-          }
+          href={`/terminal?outputMint=${buyTokenSymbol}&inputMint=${sellTokenSymbol}`}
         >
           <Button className="h-6 px-3 lg:h-6 lg:px-4 lg:py-2">Trade</Button>
         </Link>

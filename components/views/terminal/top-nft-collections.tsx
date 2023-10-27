@@ -82,14 +82,68 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
         <Badge variant="default" className="rounded-lg">
           Trending NFT Collections
         </Badge>
-        <Badge
-          className="rounded-lg"
-          style={{
-            backgroundColor: AccentColors.violet,
-          }}
-        >
-          Start Trading NFTs
-        </Badge>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Badge
+              className="rounded-lg cursor-pointer"
+              style={{
+                backgroundColor: AccentColors.violet,
+              }}
+            >
+              Trade Avotars
+            </Badge>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px] ">
+            <h1>Trade Avotar Collection</h1>
+            <DialogFooter className="border-t-2 py-3 justify-center items-center flex flex-col w-full border-[#FFFFF]">
+              <div className="flex flex-col w-full gap-3">
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.open(
+                        "https://magiceden.io/marketplace/avotar",
+                        "blank"
+                      );
+                    }
+                  }}
+                >
+                  View Avotars On Magic Eden
+                </Button>
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.open(
+                        "https://www.tensor.trade/trade/avotar",
+                        "blank"
+                      );
+                    }
+                  }}
+                >
+                  View Avotars On Tensor
+                </Button>
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.open(
+                        "https://beta.hadeswap.com/collection/5kLFeUTakztvJpWqAAvPPncd4RkcNR4rU2W4mzZH3jAF",
+                        "blank"
+                      );
+                    }
+                  }}
+                >
+                  View Avotars On Hadeswap
+                </Button>
+                <Button className="w-full" disabled>
+                  View Avotars On Guacamole
+                </Button>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
         {topCollections.map((itm, idx) => (
@@ -143,10 +197,21 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
   floor,
   item,
 }) => {
-  useEffect(() => {
-    console.log("ITEM", item);
-  }, []);
+  const [nftDetails, setNftDetails] = useState(null);
   const [open, setOpen] = useState<boolean>(false);
+  const getNftData = useCallback(async () => {
+    const url =
+      "https://corsproxy.io/?" +
+      encodeURIComponent(
+        `https://api-mainnet.magiceden.dev/v2/collections/${item.symbol}/stats`
+      );
+    const { data } = await axios.get(url);
+    setNftDetails(data);
+    console.log("MY ITEM DATA", data);
+  }, []);
+  useMemo(() => {
+    getNftData();
+  }, [open]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -173,6 +238,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
             </div>
             <div className="text-xs  flex flex-col items-center gap-2 h-full">
               <p className="font-medium ">{numeral(price).format("0,0")} SOL</p>
+
               <div className="text-primary bg-foreground px-2 py-[2px] rounded-full text-center mt-auto">
                 Total Volume
               </div>
@@ -209,11 +275,19 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
             <p className="text-muted-foreground text-xs ">
               Average Sale (24hr):{" "}
             </p>
-            <p className="text-muted-foreground text-xs "> --</p>
+            <p className="text-muted-foreground text-xs ">
+              {" "}
+              {nftDetails &&
+                numeral(nftDetails.avgPrice24hr).format("0,0.000")}{" "}
+              SOL
+            </p>
           </div>
           <div className="flex justify-between items-center w-full my-2">
             <p className="text-muted-foreground text-xs ">Listed Count: </p>
-            <p className="text-muted-foreground text-xs "> --</p>
+            <p className="text-muted-foreground text-xs ">
+              {" "}
+              {nftDetails && nftDetails.listedCount}
+            </p>
           </div>
           <div className="flex justify-between items-center w-full my-2">
             <p className="text-muted-foreground text-xs ">

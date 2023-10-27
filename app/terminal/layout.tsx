@@ -1,16 +1,12 @@
-"use client";
+import { Metadata } from "next";
+import React from "react";
+export const metadata: Metadata = {
+  title: "The Solana Terminal | Guacamole",
+  description:
+    "Explore Solana DeFi, Trade Tokens, & Track NFT Statistics on one convenient page so you can make better decisions, faster!",
+};
+const layout = ({ children }: { children: any }) => {
+  return <>{children}</>;
+};
 
-import { JupiterApiProvider } from "@/components/views/trade/src/contexts";
-import { JupStatsProvider } from "@/context/jup.stats";
-
-export default function SwapLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <JupStatsProvider>
-      <JupiterApiProvider>{children}</JupiterApiProvider>{" "}
-    </JupStatsProvider>
-  );
-}
+export default layout;

@@ -141,7 +141,11 @@ const WatchList = () => {
                   Trade
                 </Link>
                 <span>|</span>
-                <Link href={"#"} className=" text-[#8bd796]">
+                <Link
+                  href={`https://solscan.io/token/${token.mint}`}
+                  target="_blank"
+                  className=" text-[#8bd796]"
+                >
                   View
                 </Link>
               </div>

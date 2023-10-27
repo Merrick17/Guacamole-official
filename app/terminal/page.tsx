@@ -19,6 +19,8 @@ import TrendingSwaps from "@/components/views/terminal/TredingSwaps";
 import { useState } from "react";
 import TokenRanking from "@/components/views/terminal/TokenRanking";
 import WatchList from "@/components/views/terminal/WatchList";
+import { Metadata } from "next";
+import TerminalLayout from "./terminal";
 
 export default function Terminal() {
   const [selection, setSelection] = useState("1D");
@@ -35,7 +37,7 @@ export default function Terminal() {
     setActivePage(page);
   };
   return (
-    <>
+    <TerminalLayout>
       <main
         className={cn(
           "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
@@ -54,9 +56,13 @@ export default function Terminal() {
             {display == "tpp" ? (
               <MarketPulseChart selection={selection} />
             ) : display == "vatr" ? (
-              <TokenRanking page={activePage} />
+              <div className="max-sm:w-[20rem] lg:w-full">
+                <TokenRanking page={activePage} />
+              </div>
             ) : (
-              <WatchList />
+              <div className="max-sm:w-[20rem] lg:w-full">
+                <WatchList />
+              </div>
             )}
           </TerminalGraph>
           <TrendingSwaps className="sm:col-span-1 lg:col-span-2 lg:h-full bg-foreground" />
@@ -64,6 +70,6 @@ export default function Terminal() {
           <SolanaTvlRanking className="sm:col-span-1 lg:col-span-2 w-full" />
         </section>
       </main>
-    </>
+    </TerminalLayout>
   );
 }

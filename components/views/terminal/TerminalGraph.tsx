@@ -55,12 +55,12 @@ const TerminalGraph: FC<TerminalGraphProps> = ({
             handleDisplayChange(value);
           }}
         >
-          <SelectTrigger className="w-[280px]">
+          <SelectTrigger className="lg:w-[280px] h-[30px] max-sm:w-full max-sm:mx-1">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="tpp">token Performance Tracker </SelectItem>
-            <SelectItem value="vatr">View All Token Rankings</SelectItem>
+            <SelectItem value="tpp">Token Performance Tracker </SelectItem>
+            <SelectItem value="vatr">Token Activity Tracking</SelectItem>
             <SelectItem value="vw">View Watchlist</SelectItem>
           </SelectContent>
         </Select>
