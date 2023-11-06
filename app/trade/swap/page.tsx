@@ -14,7 +14,7 @@ const Swap = () => {
       <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12 w-full  max-w-[1200px]">
         <div
           className={cn(
-            "grid grid-cols-1 gap-14 max-w-[462px] w-full place-content-center",
+            "grid grid-cols-1 gap-[40px] max-w-[462px] w-full place-content-center",
             showCharts && "lg:grid-cols-2 max-w-none"
           )}
         >

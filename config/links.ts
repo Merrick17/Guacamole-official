@@ -1,14 +1,14 @@
-import { IconType } from 'react-icons';
-import routes from './routes';
+import { IconType } from "react-icons";
+import routes from "./routes";
 import {
   GoHome,
   GoArrowSwitch,
   GoTools,
   GoInfo,
   GoRocket,
-} from 'react-icons/go';
-import { BiGame } from 'react-icons/bi';
-import { TbPigMoney } from 'react-icons/tb';
+} from "react-icons/go";
+import { BiGame } from "react-icons/bi";
+import { TbPigMoney } from "react-icons/tb";
 export const Links: {
   name: string;
   href: string;
@@ -22,107 +22,107 @@ export const Links: {
   }[];
 }[] = [
   {
-    name: 'Home',
+    name: "Home",
     href: routes.home,
     Icon: GoHome,
     hide: true,
   },
   {
-    name: 'Trade',
+    name: "Trade",
     href: routes.trade.root,
     Icon: GoArrowSwitch,
     dropdownItems: [
       {
-        name: 'Swap',
+        name: "Swap",
         href: routes.trade.swap,
       },
       {
-        name: 'Bridge Swap',
+        name: "Bridge Swap",
         href: routes.trade.bridge,
       },
       {
-        name: 'Future',
+        name: "Future",
         href: routes.trade.perpetuals,
       },
       {
-        name: 'Limit',
-        href: '',
+        name: "Limit",
+        href: "",
         disabled: true,
       },
       {
-        name: 'Liquidity',
-        href: '',
+        name: "Liquidity",
+        href: "",
         disabled: true,
       },
     ],
   },
   {
-    name: 'Earn',
+    name: "Earn",
     href: routes.earn.root,
     Icon: TbPigMoney,
     dropdownItems: [
       {
-        name: 'Dynamic Vault',
+        name: "Dynamic Vault",
         href: routes.earn.dynamicVault,
       },
 
       {
-        name: 'Tokenized NFT Farms',
+        name: "Tokenized NFT Farms",
         href: routes.earn.stakingFarms,
       },
       {
-        name: 'Liquid Staking',
+        name: "Liquid Staking",
         href: routes.earn.liquidityStaking,
       },
       {
-        name: 'GUAC Staking',
+        name: "GUAC Staking",
         href: routes.earn.guacStaking,
       },
     ],
   },
 
   {
-    name: 'Play',
+    name: "Play",
     href: routes.play.root,
     Icon: BiGame,
     dropdownItems: [
       {
-        name: 'Explore All Games',
+        name: "Explore All Games",
         href: routes.play.explore,
       },
       {
-        name: 'Roulette',
+        name: "Roulette",
         href: routes.play.roulette,
       },
       {
-        name: 'Slots',
+        name: "Slots",
         href: routes.play.slots,
       },
       {
-        name: 'HiLo',
+        name: "HiLo",
         href: routes.play.hilo,
       },
       {
-        name: 'Mines',
+        name: "Mines",
         href: routes.play.mines,
       },
       {
-        name: 'Dice',
+        name: "Dice",
         href: routes.play.dice,
       },
     ],
   },
   {
-    name: 'Launch',
+    name: "Launch",
     href: routes.launch.root,
     Icon: GoRocket,
     dropdownItems: [
       {
-        name: 'Explore All Tools',
+        name: "Explore All Tools",
         href: routes.launch.explore,
       },
       {
-        name: 'Create Your Own Token',
+        name: "Create Your Own Token",
 
         href: routes.launch.createSplToken,
       },
@@ -130,43 +130,53 @@ export const Links: {
   },
 
   {
-    name: 'Tools',
+    name: "Tools",
     href: routes.tools.root,
     Icon: GoTools,
 
     dropdownItems: [
       {
-        name: 'Explore All Tools',
+        name: "Explore All Tools",
         href: routes.tools.explore,
       },
 
       {
-        name: 'Multi-Sender & Airdrops',
+        name: "Multi-Sender & Airdrops",
 
         href: routes.tools.tokenMultiSender,
       },
       {
-        name: 'Burn Unwanted NFTs',
+        name: "Burn Unwanted NFTs",
 
         href: routes.tools.burnNftToken,
       },
       {
-        name: 'Burn Unwanted Tokens',
+        name: "Burn Unwanted Tokens",
 
         href: routes.tools.burnSplToken,
       },
       {
-        name: 'Close Token Accounts',
+        name: "Close Token Accounts",
         href: routes.tools.closeTokenAccounts,
       },
       {
-        name: 'Emergency Send All',
+        name: "Emergency Send All",
         href: routes.tools.emergencySend,
       },
     ],
   },
   {
-    name: 'Info',
+    name: "Launch",
+    href: "/",
+    Icon: GoInfo,
+  },
+  {
+    name: "Ecosystem",
+    href: "/",
+    Icon: GoInfo,
+  },
+  {
+    name: "Info",
     href: routes.info.root,
     Icon: GoInfo,
     hide: true,

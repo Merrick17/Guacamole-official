@@ -8,7 +8,7 @@ import {
 import { GrRefresh } from "react-icons/gr";
 import { HiOutlineSwitchVertical } from "react-icons/hi";
 import round from "lodash/round";
-import { InlineResponse200MarketInfos } from "@jup-ag/api";
+//import { InlineResponse200MarketInfos } from "@jup-ag/api";
 import { NATIVE_MINT } from "@solana/spl-token";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -72,6 +72,7 @@ import { SwapRoutes } from "./swap-routes";
 import { RefreshCw, RefreshCwIcon } from "lucide-react";
 import { Links } from "@/config/links";
 import NavigationList from "@/components/ui/navigation-list";
+import { QuoteResponse } from "@jup-ag/api";
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -95,6 +96,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const { connected, publicKey, signAllTransactions, sendTransaction } =
     useWallet();
   const { connection } = useConnection();
+  const [swapQuote, setSwapQuote] = useState<QuoteResponse>(null);
   const { tokenMap, routeMap, loaded, api } = useJupiterApiContext();
   const { toast } = useToast();
   const [routes, setRoutes] = useState<Awaited<ReturnType<any>>["data"]>([]);
@@ -135,24 +137,48 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const fetchRoute = React.useCallback(() => {
     if (!inputTokenInfo || !outputTokenInfo) return;
     setLoadingRoute(true);
+    // api
+    //   .v4QuoteGet({
+    //     amount: (
+    //       parseFloat(inputAmout) * Math.pow(10, inputTokenInfo?.decimals)
+    //     ).toString(),
+    //     inputMint: inputTokenInfo?.address,
+    //     outputMint: outputTokenInfo?.address,
+
+    //     feeBps: 50,
+    //   })
+    //   .then(({ data }) => {
+    //     if (data) {
+    //       setHasRoute(
+    //         data.length > 0 &&
+    //           !!data[0].outAmount &&
+    //           Number(data[0].outAmount) > 0
+    //       );
+    //       setRoutes(data);
+    //     }
+    //   })
+    //   .finally(() => {
+    //     setLoadingRoute(false);
+    //   });
     api
-      .v4QuoteGet({
-        amount: (
-          parseFloat(inputAmout) * Math.pow(10, inputTokenInfo?.decimals)
-        ).toString(),
+      .quoteGet({
+        amount: parseFloat(inputAmout) * Math.pow(10, inputTokenInfo?.decimals),
         inputMint: inputTokenInfo?.address,
         outputMint: outputTokenInfo?.address,
-
-        feeBps: 50,
+        platformFeeBps: 50,
       })
-      .then(({ data }) => {
-        if (data) {
-          setHasRoute(
-            data.length > 0 &&
-              !!data[0].outAmount &&
-              Number(data[0].outAmount) > 0
-          );
-          setRoutes(data);
+      .then((quote) => {
+        if (quote) {
+          setSwapQuote(quote);
+
+          setHasRoute(true);
+
+          // setHasRoute(
+          //   routePlan.length > 0 &&
+          //     !!routePlan[0].swapInfo.outAmount &&
+          //     Number(routePlan[0].swapInfo.outAmount) > 0
+          // );
+          //setRoutes(data);
         }
       })
       .finally(() => {
@@ -226,7 +252,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         ? Number(tokenAccount?.account.amount) /
           Math.pow(10, tokenAccount?.decimals)
         : null;
-
+    //console.log("USER BALANCE", userBalances);
     if (!userBalances) {
       return toast({
         variant: "destructive",
@@ -254,7 +280,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
 
     const txids: string[] = [];
     try {
-      if (!loadingRoute && selectedRoute && publicKey && signAllTransactions) {
+      if (!loadingRoute && swapQuote && publicKey && signAllTransactions) {
         setSwapping(true);
 
         const { pubkey: feeAccount, ix } = await getFeeAddress(
@@ -285,12 +311,18 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
           //await connection.confirmTransaction(sig, 'confirmed');
         }
 
-        const { swapTransaction } = await api.v4SwapPost({
-          body: {
-            route: selectedRoute,
+        // const { swapTransaction } = await api.swapInstructionsPost({
+        //   body: {
+        //     route: selectedRoute,
+        //     userPublicKey: publicKey.toBase58(),
+        //     feeAccount: feeAccount.toBase58(),
+        //     computeUnitPriceMicroLamports: 1000,
+        //   },
+        // });
+        const { swapTransaction } = await api.swapPost({
+          swapRequest: {
+            quoteResponse: swapQuote,
             userPublicKey: publicKey.toBase58(),
-            feeAccount: feeAccount.toBase58(),
-            computeUnitPriceMicroLamports: 1000,
           },
         });
 
@@ -300,19 +332,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             VersionedTransaction.deserialize(swapTransactionBuf);
           //await signAllTransactions([transaction]);
           const txid = await sendTransaction(transaction, connection);
-          // const rawTransaction = transaction.serialize()
-          // const txid = await connection.sendRawTransaction(rawTransaction, {
-          //   skipPreflight: true,
-          //   maxRetries: 5
-          // });
-          // const latestBlockHash = await connection.getLatestBlockhash();
-          // await connection.confirmTransaction({
-          //   blockhash: latestBlockHash.blockhash,
-          //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-          //   signature: txid,
-          // })
-          //await connection.confirmTransaction(txid);
-          //console.log(`https://solscan.io/tx/${txid}`);
+
           toast({
             variant: "success",
             title: "Success",
@@ -431,8 +451,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   };
 
   const outputAmount =
-    bestRoute &&
-    (bestRoute.outAmount || 0) / Math.pow(10, outputTokenInfo?.decimals || 1);
+    swapQuote &&
+    (Number(swapQuote.outAmount) || 0) /
+      Math.pow(10, outputTokenInfo?.decimals || 1);
 
   const refresh = async () => {
     if (swapping) return;
@@ -495,6 +516,13 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               >
                 Go to Swap Page
               </Link>
+            ) : pathname.includes("/terminal/coin") ? (
+              <Link
+                href={"/terminal"}
+                className="text-sm bg-[#BBB0DB]  text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
+              >
+              Back To Terminal
+              </Link>
             ) : (
               <NavigationList filter="Trade" />
             )}
@@ -516,7 +544,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
 
             <WalletMultiButtonDynamic
               startIcon={undefined}
-              className={`!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm hidden lg:flex ${
+              className={`!rounded-lg  h-7 px-3 py-[6px] whitespace-nowrap text-black font-medium text-sm hidden lg:flex ${
                 pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB]"
               } text-primary-foreground hover:!bg-primary`}
             />
@@ -619,7 +647,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               } `}
             />
           )}
-          {outputTokenInfo &&
+          {/* {outputTokenInfo &&
           bestRoute &&
           routes &&
           !loadingRoute &&
@@ -635,6 +663,32 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               selectedRoute={selectedRoute}
               setSelectedRoute={setSelectedRoute}
               tokenMap={tokenMap}
+              
+            />
+          ) : (
+            <Skeleton
+              className={`h-6 w-full ${
+                pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB]"
+              }`}
+            />
+          )} */}
+          {outputTokenInfo &&
+          swapQuote &&
+          // routes &&
+          !loadingRoute &&
+          outputTokenInfo &&
+          tokenMap ? (
+            <SwapRoutes
+              bestRoute={bestRoute}
+              hasRoute={hasRoute}
+              loadingRoute={loadingRoute}
+              outputAmount={outputAmount}
+              outputTokenInfo={outputTokenInfo}
+              routes={routes}
+              selectedRoute={selectedRoute}
+              setSelectedRoute={setSelectedRoute}
+              tokenMap={tokenMap}
+              quote={swapQuote}
             />
           ) : (
             <Skeleton
@@ -688,6 +742,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                   fromTokenInfo={inputTokenInfo}
                   loading={loadingRoute}
                   routes={routes}
+                  quoteResponse={swapQuote}
                 />
               ) : (
                 <Skeleton

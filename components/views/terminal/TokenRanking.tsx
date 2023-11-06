@@ -154,7 +154,7 @@ const TokenRanking = ({ page }: { page: number }) => {
                     </Link>
                     <span>|</span>
                     <Link
-                      href={`https://solscan.io/token/${token.mint}`}
+                      href={`/terminal/coin/${token.mint}?outputMint=${token.mint}`}
                       target="_blank"
                       className=" text-[#8bd796]"
                     >

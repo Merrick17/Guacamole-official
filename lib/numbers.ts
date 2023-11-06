@@ -1,6 +1,4 @@
-export function isScientificNotation(num: number) {
-  return num.toString().includes("e");
-}
+
 
 function extractTrailingZerosAndDigits(numberString) {
   let integerPart = "";
@@ -217,6 +215,24 @@ export function convert(n) {
     )}${nonZeroDigits}`;
   }
 }
+export function convert2(n) {
+  let str = "";
+  var sign = +n < 0 ? "-" : "",
+    toStr = n.toString();
+  if (!/e/i.test(toStr)) {
+    str = n;
+  }
+  var [lead, decimal, pow] = n.toString()
+    .replace(/^-/, "")
+    .replace(/^([0-9]+)(e.*)/, "$1.$2")
+    .split(/e|\./);
+  str = +pow < 0 ?
+    sign + "0." + "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) + lead + decimal :
+    sign + lead + (+pow >= decimal.length ? (decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))) : (decimal.slice(0, +pow) + "." + decimal.slice(+pow)))
+  const [integerPart, trailingZeros, nonZeroDigits] = extractTrailingZerosAndDigits(str);
+  return `${integerPart}.0${getSubscriptForNumber(trailingZeros.length)}${nonZeroDigits}`;
+}
+
 export function formatNumber(number) {
   // Convert the number to a string and add commas for thousands separator.
   return number.toLocaleString("en-US");
@@ -243,3 +259,6 @@ export function formatNumber(number) {
 //   // Return the formatted number.
 //   return stringNumber;
 // }
+export function isScientificNotation(num: number) {
+  return num.toString().includes('e');
+}

@@ -40,7 +40,7 @@ export const Slippage = ({
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className={`flex flex-row items-center w-max cursor-pointer ${
+        className={`flex flex-row items-center whitespace-nowrap w-max cursor-pointer ${
           pathname.includes("trade") ? "text-primary" : "text-[#BBB0DB]"
         } bg-background rounded-xl px-2 py-1 h-full`}
         onClick={() => setVisible(true)}

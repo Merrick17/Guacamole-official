@@ -1,18 +1,20 @@
-import { TokenInfo } from '@solana/spl-token-registry';
+import { TokenInfo } from "@solana/spl-token-registry";
 
-import Decimal from 'decimal.js';
-import JSBI from 'jsbi';
-import * as React from 'react';
+import Decimal from "decimal.js";
+import JSBI from "jsbi";
+import * as React from "react";
 
-import PrecisionTickSize from './precision-tickSize';
-import { formatNumber, fromLamports } from '../../misc/utils';
-import { cn } from '@/lib/utils';
+import PrecisionTickSize from "./precision-tickSize";
+import { formatNumber, fromLamports } from "../../misc/utils";
+import { cn } from "@/lib/utils";
 
 export interface IRateParams {
-  inAmount: JSBI;
+  //inAmount: JSBI;
   inputDecimal: number;
-  outAmount: JSBI;
+  //outAmount: JSBI;
   outputDecimal: number;
+  inAmount: number;
+  outAmount: number;
 }
 
 export const calculateRate = (
@@ -91,14 +93,14 @@ const ExchangeRate = ({
     <div
       className={cn(
         className,
-        'flex cursor-pointer text-muted-foreground text-xs align-center'
+        "flex cursor-pointer text-muted-foreground text-xs align-center"
       )}
       onClick={onReverse}
     >
       <span
         className={cn(
           textClassName,
-          'max-w-[88px] flex whitespace-nowrap  overflow-hidden text-ellipsis'
+          "max-w-full flex whitespace-nowrap  overflow-hidden text-ellipsis"
         )}
       >
         {reverse ? (
@@ -134,7 +136,7 @@ const ExchangeRate = ({
         )}
       </span>
       {reversible ? (
-        <div className={'ml-2'}>
+        <div className={"ml-2"}>
           <ApproxSVG />
         </div>
       ) : null}

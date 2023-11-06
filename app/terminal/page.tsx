@@ -1,25 +1,15 @@
 "use client";
-import ColorBlocks from "@/components/common/color-block";
-import HeroHeadline from "@/components/common/hero-headline";
 
-import BackgroundSplash from "@/components/common/background-splash";
-import HeroList from "@/components/common/hero-list";
-import TrendingToday from "@/components/views/home/trending-today";
-import routes from "@/config/routes";
-import { AccentColors } from "@/config/themes";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import TerminalGraph from "@/components/views/terminal/TerminalGraph";
-import Trade from "@/components/views/trade/src/Trade";
-import AnalyticsChart from "@/components/views/terminal/AnalyticsChart";
 import MarketPulseChart from "@/components/views/terminal/MarketPulseChart";
+import TerminalGraph from "@/components/views/terminal/TerminalGraph";
+import TokenRanking from "@/components/views/terminal/TokenRanking";
+import TrendingSwaps from "@/components/views/terminal/TredingSwaps";
+import WatchList from "@/components/views/terminal/WatchList";
 import SolanaTvlRanking from "@/components/views/terminal/solana-tvl-ranking";
 import TopNftCollections from "@/components/views/terminal/top-nft-collections";
-import TrendingSwaps from "@/components/views/terminal/TredingSwaps";
+import Trade from "@/components/views/trade/src/Trade";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
-import TokenRanking from "@/components/views/terminal/TokenRanking";
-import WatchList from "@/components/views/terminal/WatchList";
-import { Metadata } from "next";
 import TerminalLayout from "./terminal";
 
 export default function Terminal() {

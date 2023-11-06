@@ -201,13 +201,12 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
   const [open, setOpen] = useState<boolean>(false);
   const getNftData = useCallback(async () => {
     const url =
-      "https://corsproxy.io/?" +
-      encodeURIComponent(
+      "https://corsproxy.io/?" +encodeURIComponent(
         `https://api-mainnet.magiceden.dev/v2/collections/${item.symbol}/stats`
       );
     const { data } = await axios.get(url);
     setNftDetails(data);
-    console.log("MY ITEM DATA", data);
+    //console.log("MY ITEM DATA", data);
   }, []);
   useMemo(() => {
     getNftData();

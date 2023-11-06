@@ -24,8 +24,8 @@ dependencies:
     specifier: ^1.6.6
     version: 1.6.6(encoding@0.1.13)
   '@jup-ag/api':
-    specifier: ^4.0.1-alpha.0
-    version: 4.0.1-alpha.0
+    specifier: ^6.0.6
+    version: 6.0.6
   '@jup-ag/math':
     specifier: 4.0.0-beta.21
     version: 4.0.0-beta.21
@@ -2898,6 +2898,10 @@ packages:
 
   /@jup-ag/api@4.0.1-alpha.0:
     resolution: {integrity: sha512-H9hyf9K7sXMPd0++/hQ5Fs2eVgi2w9wtJP0YmGFLJMjF8zHYDYqQ0ZCdgmLLSp/vrEjmOHbbiLJT2psuV5W+bw==}
+    dev: false
+
+  /@jup-ag/api@6.0.6:
+    resolution: {integrity: sha512-wGp3FjT+WNdd5TzsWaKr2a2rQ2FgIyaV6sq8L76R8KVYxH7TfCY/BZwhcij6YhxHGjxrF8j7qI6ZPpmUTICpnA==}
     dev: false
 
   /@jup-ag/common@4.0.0-beta.17(bn.js@5.2.1)(encoding@0.1.13):

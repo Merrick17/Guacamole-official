@@ -64,7 +64,7 @@ export function useGetTrendingTodayFull({ page = 1 }: { page?: number }) {
       setLoading(true);
       const data = await fetch(`https://stats.jup.ag/info/day?page=${page}`);
       const json = await data.json();
-      console.log("JSON", json);
+      //console.log("JSON", json);
 
       const treding: {
         symbol: string;
@@ -98,7 +98,7 @@ export function useGetTrendingTodayFull({ page = 1 }: { page?: number }) {
       });
       
       const dataToStore = await Promise.all(promiseList);
-      console.log("DATA TO STORE",dataToStore)
+      //console.log("DATA TO STORE",dataToStore)
       setTrending([...dataToStore]);
       setLoading(false);
 

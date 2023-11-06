@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { Configuration, DefaultApi } from '@jup-ag/api';
-import { TokenInfo, TokenListProvider } from '@solana/spl-token-registry';
-import { CHAIN_ID } from '../constants';
-import axios from 'axios';
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Configuration, DefaultApi, createJupiterApiClient } from "@jup-ag/api";
+import { TokenInfo, TokenListProvider } from "@solana/spl-token-registry";
+import { CHAIN_ID } from "../constants";
+import axios from "axios";
 
 type RouteMap = Map<string, string[]>;
 
@@ -11,17 +11,18 @@ interface JupiterApiContext {
   loaded: boolean;
   tokenMap: Map<string, TokenInfo>;
   routeMap: RouteMap;
+  tokenList: TokenInfo[];
 }
 
 const JupiterApiContext = React.createContext<JupiterApiContext | null>(null);
 
 const getTokens = async () => {
-  const { data } = await axios.get('https://cache.jup.ag/tokens');
+  const { data } = await axios.get("https://cache.jup.ag/tokens");
   return data as TokenInfo[];
 };
 
 const getTopTokens = async () => {
-  const { data } = await axios.get('https://cache.jup.ag/top-tokens');
+  const { data } = await axios.get("https://cache.jup.ag/top-tokens");
   return data as string[];
 };
 
@@ -29,10 +30,14 @@ export const JupiterApiProvider = ({ children }: { children: any }) => {
   const [tokenMap, setTokenMap] = useState<Map<string, TokenInfo>>(new Map());
   const [routeMap, setRouteMap] = useState<RouteMap>(new Map());
   const [loaded, setLoaded] = useState(false);
+  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
 
   const api = useMemo(() => {
-    const config = new Configuration({ basePath: 'https://quote-api.jup.ag' });
-    return new DefaultApi(config);
+    const config = new Configuration({
+      basePath: "https://quote-api.jup.ag/v6",
+    });
+    //return new DefaultApi(config);
+    return createJupiterApiClient(config);
   }, []);
 
   useEffect(() => {
@@ -40,11 +45,11 @@ export const JupiterApiProvider = ({ children }: { children: any }) => {
       let [tokenList, topTokens, indexedRouteMapResult] = await Promise.all([
         getTokens(),
         getTopTokens(),
-        api.v4IndexedRouteMapGet(),
+        api.indexedRouteMapGet(),
       ]);
 
       tokenList = tokenList; //.filter((e) => !!topTokens.includes(e.address));
-
+      setTokenList(tokenList.filter((elm) => elm.extensions?.coingeckoId));
       const { indexedRouteMap = {}, mintKeys = [] } = indexedRouteMapResult;
 
       const routeMap = Object.keys(indexedRouteMap).reduce((routeMap, key) => {
@@ -67,7 +72,9 @@ export const JupiterApiProvider = ({ children }: { children: any }) => {
   }, []);
 
   return (
-    <JupiterApiContext.Provider value={{ api, routeMap, tokenMap, loaded }}>
+    <JupiterApiContext.Provider
+      value={{ api, routeMap, tokenMap, loaded, tokenList }}
+    >
       {children}
     </JupiterApiContext.Provider>
   );
@@ -78,7 +85,7 @@ export const useJupiterApiContext = () => {
 
   if (!context) {
     throw new Error(
-      'useJupiterApiContext must be used within a JupiterApiProvider'
+      "useJupiterApiContext must be used within a JupiterApiProvider"
     );
   }
 

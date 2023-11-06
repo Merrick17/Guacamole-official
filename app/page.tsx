@@ -45,7 +45,7 @@ export default function Home() {
               </p>
               <Link className="text-xl text-primary" href={"/trade/swap"}>Scoop The Dip ➜</Link>
             </HeroHeadline>
-            <TrendingToday className="col-span-1 lg:col-span-3  lg:h-full bg-foreground" />
+            <TrendingToday className="col-span-1 lg:col-span-3  bg-foreground" />
           </div>
 
           <HeroList listItems={HomeListItems} />

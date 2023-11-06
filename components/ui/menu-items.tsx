@@ -11,7 +11,7 @@ export function MenuItems() {
   const pathname = usePathname();
   const router = useRouter();
   return (
-    <div className="flex items-center gap-[30px] text-muted-foreground p-2 bg-background rounded-lg">
+    <div className="flex items-center gap-[30px] text-muted-foreground p-2  bg-background rounded-lg">
       {Links.filter((item) => !item.hide).map((item, index) => {
         const isActive = pathname !== item.href && pathname.includes(item.href);
         return (

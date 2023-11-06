@@ -8,6 +8,7 @@ import routes from "@/config/routes";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import CustomTicker from "@/components/common/custom-ticker";
+import { usePathname } from "next/navigation";
 
 interface TrendingSwapProps {
   className?: string;
@@ -55,9 +56,14 @@ const TrendingSwapItem: FC<TrendingSwapItemProps> = ({
   const { tokenMap } = useJupiterApiContext();
   const token = tokenMap.get(mint);
   if (!token) return null;
+  const pathname = usePathname();
   return (
     <Link
-      href={routes.trade.swap + `?outputMint=${mint}`}
+      href={
+        pathname.includes("/terminal/coin")
+          ? `/terminal/coin/${token.address}?outputMint=${mint}`
+          : routes.trade.swap + `?outputMint=${mint}`
+      }
       className=" text-xs lg:text-sm w-full   py-[6px] px-3 font-bold  flex flex-row items-center gap-1 rounded-lg"
     >
       <p className="uppercase">#{idx}</p>

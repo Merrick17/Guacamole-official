@@ -26,7 +26,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
   const [selectedValue, setSelectedValue] = useState("trending");
   const { volumeByPairs, topBuys, topSells } = useJupStat();
   useEffect(() => {
-    console.log("TOP BUYS", topBuys);
+   
   }, [TrendingSwaps]);
   return (
     <JupiterApiProvider>

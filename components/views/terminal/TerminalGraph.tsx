@@ -39,7 +39,6 @@ const TerminalGraph: FC<TerminalGraphProps> = ({
   activePage,
   handlePageChange,
 }) => {
-  console.log("Display", display);
   const { totalPages } = useGetTrendingTodayFull({ page: activePage });
   return (
     <Container
@@ -82,7 +81,7 @@ const TerminalGraph: FC<TerminalGraphProps> = ({
           </Select>
         ) : (
           <Select
-           // defaultValue={`${(0 + 1).toString()}`}
+            // defaultValue={`${(0 + 1).toString()}`}
             value={activePage.toString()}
             onValueChange={(value) => {
               handlePageChange(Number(value));

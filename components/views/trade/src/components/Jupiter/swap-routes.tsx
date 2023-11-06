@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { RiRouteFill } from "react-icons/ri";
 import { SwapRoute } from "../SwapRoute";
-import { InlineResponse200MarketInfos } from "@jup-ag/api";
+//InlineResponse200MarketInfos
+import { QuoteResponse } from "@jup-ag/api";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { usePathname } from "next/navigation";
 
@@ -23,6 +24,7 @@ export const SwapRoutes = ({
   hasRoute,
   setSelectedRoute,
   outputTokenInfo,
+  quote,
 }: {
   setSelectedRoute: (arg: any) => void;
   routes: any;
@@ -33,34 +35,36 @@ export const SwapRoutes = ({
   loadingRoute: boolean;
   outputTokenInfo: any;
   hasRoute: any;
+  quote: QuoteResponse;
 }) => {
   const [visible, setVisible] = useState(false);
   const pathname = usePathname();
   return (
     <Dialog open={visible} onOpenChange={() => setVisible(false)}>
       <div
-        className={`flex flex-row items-center w-full overflow-hidden cursor-pointer ${
+        className={`flex flex-row items-center w-full overflow-hidden  ${
           pathname.includes("trade") ? "text-primary" : "text-[#BBB0DB]"
         } text-xs gap-1 w`}
         onClick={() => hasRoute && setVisible(true)}
       >
         <div className="flex items-center gap-1 bg-background rounded-xl px-2 py-1">
-          <span>{hasRoute ? routes.length : 0}</span>
+          {/* <span>{hasRoute ? routes.length : 0}</span> */}
+          <span>{hasRoute ? quote.routePlan.length : 0}</span>
           <RiRouteFill className="-rotate-90" />
         </div>
         {hasRoute ? (
           <>
-            {" "}
-            using{" "}
+            {/* using
             <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
               {selectedRoute?.marketInfos?.[0]?.label}
-            </span>
+            </span> */}
+            via {quote.routePlan.map((elm) => elm.swapInfo.label).join(" , ")}
           </>
         ) : (
           <>No route found</>
         )}
       </div>
-      <DialogContent closeBtn={false} className="overflow-auto">
+      {/* <DialogContent closeBtn={false} className="overflow-auto">
         <DialogHeader>
           <DialogTitle className="relative">
             <h2 className="text-base   text-center ">Select Route</h2>
@@ -119,7 +123,7 @@ export const SwapRoutes = ({
                       >
                         <SwapRoute
                           route={
-                            r.marketInfos as InlineResponse200MarketInfos[]
+                            r.marketInfos as any[]
                           }
                           tokenMap={tokenMap}
                           amount={
@@ -134,7 +138,7 @@ export const SwapRoutes = ({
             </div>
           </DialogDescription>
         </DialogHeader>
-      </DialogContent>
+      </DialogContent> */}
     </Dialog>
   );
 };
