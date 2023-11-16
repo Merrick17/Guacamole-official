@@ -31,7 +31,7 @@ const TokenInformation: FC<TokenInformationProps> = ({ className }) => {
         const { data } = await axios.get(
           `https://price.jup.ag/v4/price?ids=${selectedToken.symbol}`
         );
-        console.log("Token Info Data", data);
+      
         setCurrentMarketPrice(data["data"][selectedToken.symbol]["price"]);
       }
     } catch (error) {}

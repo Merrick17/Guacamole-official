@@ -43,7 +43,7 @@ export default function Home() {
                 user-friendly experience. Get started and unlock a world of
                 possibilities!
               </p>
-              <Link className="text-xl text-primary" href={"/trade/swap"}>Scoop The Dip ➜</Link>
+              <Link className="text-xl text-primary" href={"/terminal"}>Scoop The Dip ➜</Link>
             </HeroHeadline>
             <TrendingToday className="col-span-1 lg:col-span-3  bg-foreground" />
           </div>

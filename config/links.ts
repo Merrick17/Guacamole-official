@@ -14,6 +14,7 @@ export const Links: {
   href: string;
   Icon: IconType;
   hide?: boolean;
+  color?: string;
 
   dropdownItems?: {
     name: string;
@@ -22,15 +23,17 @@ export const Links: {
   }[];
 }[] = [
   {
-    name: "Home",
-    href: routes.home,
+    name: "Explore",
+    href: routes.explore.root,
     Icon: GoHome,
-    hide: true,
+    hide: false,
+    color: "#8BD796",
   },
   {
     name: "Trade",
     href: routes.trade.root,
     Icon: GoArrowSwitch,
+    color: "#BBB0DB",
     dropdownItems: [
       {
         name: "Swap",
@@ -60,6 +63,7 @@ export const Links: {
     name: "Earn",
     href: routes.earn.root,
     Icon: TbPigMoney,
+    color: "#FF8F8F",
     dropdownItems: [
       {
         name: "Dynamic Vault",
@@ -85,6 +89,7 @@ export const Links: {
     name: "Play",
     href: routes.play.root,
     Icon: BiGame,
+    color: "#FFF281",
     dropdownItems: [
       {
         name: "Explore All Games",
@@ -112,27 +117,28 @@ export const Links: {
       },
     ],
   },
-  {
-    name: "Launch",
-    href: routes.launch.root,
-    Icon: GoRocket,
-    dropdownItems: [
-      {
-        name: "Explore All Tools",
-        href: routes.launch.explore,
-      },
-      {
-        name: "Create Your Own Token",
+  // {
+  //   name: "Launch",
+  //   href: routes.launch.root,
+  //   Icon: GoRocket,
+  //   dropdownItems: [
+  //     {
+  //       name: "Explore All Tools",
+  //       href: routes.launch.explore,
+  //     },
+  //     {
+  //       name: "Create Your Own Token",
 
-        href: routes.launch.createSplToken,
-      },
-    ],
-  },
+  //       href: routes.launch.createSplToken,
+  //     },
+  //   ],
+  // },
 
   {
     name: "Tools",
     href: routes.tools.root,
     Icon: GoTools,
+    color: "#FFEFDC",
 
     dropdownItems: [
       {
@@ -167,13 +173,15 @@ export const Links: {
   },
   {
     name: "Launch",
-    href: "/",
+    href: "/launch/explore",
     Icon: GoInfo,
+    color: "#D6776A",
   },
   {
     name: "Ecosystem",
-    href: "/",
+    href: "/info",
     Icon: GoInfo,
+    color: "#FCFCFC",
   },
   {
     name: "Info",

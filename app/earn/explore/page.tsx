@@ -66,9 +66,9 @@ const tools: {
 }[] = [
   {
     image: '/icons/earn/Account balance.svg',
-    name: 'GUAC Staking',
+    name: 'GUAC Staking Options',
     description:
-      'Stake GUAC to participate in governance and earn retainer fees.',
+      'Stake GUAC to participate in our “Staking Call Options” program.',
     href: routes.earn.guacStaking,
     buttonTxt: 'Learn More',
   },

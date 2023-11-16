@@ -39,7 +39,7 @@ export default function RootLayout({
               <Header />
               {/* <WalletDrawer /> */}
               <LeftSideUtility />
-              <div className="mt-20 min-h-screen relative">
+              <div className=" min-h-screen relative">
                 <div className="z-10">{children}</div>
               </div>
               <Footer />

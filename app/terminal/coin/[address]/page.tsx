@@ -54,7 +54,7 @@ export default function CoinDetails() {
                 />
               )}
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex flex-col px-2 py-2 rounded-lg bg-[#141414] lg:flex-row items-center justify-between gap-4 w-full">
+                <DropdownMenuTrigger className="flex  px-2 py-2 rounded-lg bg-[#141414] lg:flex-row items-center justify-between gap-4 w-full">
                   <CoinSelect
                     onClick={() => {}}
                     token={selectedToken}
@@ -153,7 +153,7 @@ export default function CoinDetails() {
           />
           <Trade className="sm:col-span-1 lg:col-span-2  lg:h-full bg-foreground" />
           <CoinDetailsChart
-            className="sm:col-span-1 lg:col-span-4 bg-[#131722] "
+            className="sm:col-span-1 lg:col-span-4 bg-[#131722] min-h-[570px] "
             selectedMint="7qbRF6YsyGuLUVs6Y1q64bdVrfe4ZcUUz1JRdoVNUJnm"
           >
             {selectedToken && poolDetails && poolDetails.length !== 0 && (

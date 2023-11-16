@@ -33,11 +33,26 @@ const InfoCard: FC<InfoCardProps> = ({
   disabled = false,
   target,
 }) => {
-
+  console.log("Button TEXT",buttonTxt)
   return (
     <Container className=" p-6 rounded-lg max-w-xs bg-foreground  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
       <div className="relative aspect-square w-7 h-7 mb-3">
-        <Image src={image} alt={name} fill />
+        {image !== "" ? (
+          <Image src={image} alt={name} fill />
+        ) : (
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24.8889 24.8889H3.11111V3.11111H14V0H3.11111C1.38444 0 0 1.4 0 3.11111V24.8889C0 26.6 1.38444 28 3.11111 28H24.8889C26.6 28 28 26.6 28 24.8889V14H24.8889V24.8889ZM17.1111 0V3.11111H22.6956L7.40444 18.4022L9.59778 20.5956L24.8889 5.30444V10.8889H28V0H17.1111Z"
+              fill="#FCFCFC"
+            />
+          </svg>
+        )}
       </div>
       <a href="#">
         <h5 className="mb-2 text-2xl font-semibold tracking-tight capitalize">

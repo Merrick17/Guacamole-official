@@ -45,7 +45,7 @@ const Tools: FC<ToolsProps> = () => {
               </Link>
             </HeroHeadline>
 
-            <LearnMoreAboutSolana className="col-span-1 lg:col-span-3" />
+            <LearnMoreAboutSolana className="col-span-1 lg:col-span-3 bg-foreground" />
           </div>
 
           <HeroList listItems={tools} />

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import routes from '@/config/routes';
-import { ThemeProvider, useTheme } from 'next-themes';
-import { usePathname } from 'next/navigation';
-import { ReactNode, useLayoutEffect } from 'react';
+import routes from "@/config/routes";
+import { ThemeProvider, useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
+import { ReactNode, useLayoutEffect } from "react";
 
 export function Themes({ children }) {
   return (
@@ -19,17 +19,19 @@ const ThemeAutoSwitcher = ({ children }) => {
 
   useLayoutEffect(() => {
     if (pathname.includes(routes.trade.root)) {
-      setTheme('violet');
+      setTheme("violet");
     } else if (pathname.includes(routes.earn.root)) {
-      setTheme('orange');
+      setTheme("orange");
     } else if (pathname.includes(routes.play.root)) {
-      setTheme('yellow');
+      setTheme("yellow");
     } else if (pathname.includes(routes.tools.root)) {
-      setTheme('white');
+      setTheme("white");
     } else if (pathname.includes(routes.launch.root)) {
-      setTheme('red');
+      setTheme("red");
+    } else if (pathname.includes("/info")) {
+      setTheme("white-tools");
     } else {
-      setTheme('system');
+      setTheme("system");
     }
   }, [pathname, setTheme]);
 
