@@ -13,7 +13,6 @@ export function MenuItems() {
   return (
     <div className="flex items-center gap-[30px] text-muted-foreground p-2  rounded-lg">
       {Links.filter((item) => !item.hide).map((item, index) => {
-        console.log("Item", item);
         const isActive = pathname !== item.href && pathname.includes(item.href);
 
         return (

@@ -2,10 +2,61 @@ import DateInput from "@/components/common/DateInput";
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
-
+import { usePool } from "@/hooks/use-pool-list";
+import { useTokenAccounts } from "@bonfida/hooks";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { useEffect, useState } from "react";
+import { useJupiterApiContext } from "../trade/src/contexts";
+import numeral from "numeral";
+import useLockerTools from "@/hooks/use-locker";
 const LockerInputDetails = () => {
   const [lockDate, setLockDate] = useState<Date>(new Date(Date.now()));
+  const { connected, publicKey } = useWallet();
+  const { connection } = useConnection();
+  const { selectedPool } = usePool();
+  const { tokenMap, tokenList } = useJupiterApiContext();
+  const [lockAmount, setLockAmount] = useState<number>(0);
+  const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
+  const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
+  const [balance, setBalance] = useState<number>(0);
+  const { handleCreateNewLock } = useLockerTools();
+  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
+    connection,
+    publicKey
+  );
+  const tokenAccount = tokenAccounts
+    ? tokenAccounts?.getByMint(new PublicKey(selectedPool?.lpMint))
+    : null;
+  const guacTokenAccount = tokenAccounts
+    ? tokenAccounts?.getByMint(
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR")
+      )
+    : null;
+  const tokenBalance =
+    tokenAccount && tokenAccount.decimals
+      ? Number(tokenAccount.account.amount) /
+        Math.pow(10, tokenAccount.decimals)
+      : 0;
+  const guacBalance =
+    tokenAccount && guacTokenAccount.decimals
+      ? Number(guacTokenAccount.account.amount) /
+        Math.pow(10, guacTokenAccount.decimals)
+      : 0;
+  useEffect(() => {
+    console.log("Selected Pool", selectedPool);
+    if (selectedPool) {
+      let base = tokenList.find((elm) => elm.address == selectedPool.baseMint);
+      let quote = tokenList.find(
+        (elm) => elm.address == selectedPool.quoteMint
+      );
+      setBaseToken(base);
+      setQuoteToken(quote);
+
+      setBalance(tokenBalance);
+    }
+  }, [selectedPool]);
   return (
     <div className="flex flex-col items-start w-full gap-4">
       <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
@@ -14,14 +65,17 @@ const LockerInputDetails = () => {
         </span>
         <div className="flex items-center gap-2">
           <img
-            src="/images/launch/guac.png"
+            src={baseToken ? baseToken.logoURI : "N/A"}
             className="h-[30px] w-[30px] rounded-full"
           />
           <img
-            src="/images/launch/sol.png"
+            src={quoteToken ? quoteToken.logoURI : "N/A"}
             className="h-[30px] w-[30px] rounded-full"
           />
-          <span className="text-[#FFF] text-sm">GUAC / SOL </span>
+          <span className="text-[#FFF] text-sm">
+            {baseToken ? baseToken.symbol : "N/A"} /{" "}
+            {quoteToken ? quoteToken.symbol : "N/A"}
+          </span>
         </div>
       </Container>
       <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
@@ -45,7 +99,7 @@ const LockerInputDetails = () => {
                 />
               </svg>
               <span className="text-xs text-muted-foreground">
-                1,042,042.0421
+                {tokenBalance}
               </span>
             </div>
             <Button className="bg-[#141414] text-primary w-10 h-7 p-2 rounded-lg">
@@ -56,7 +110,14 @@ const LockerInputDetails = () => {
             </Button>
           </div>
         </div>
-        <Input className="w-full h-[20px] " placeholder="00000" />
+        <Input
+          className="w-full h-[20px] "
+          placeholder="00000"
+          value={lockAmount}
+          onChange={(e) => {
+            setLockAmount(Number(e.target.value));
+          }}
+        />
       </Container>
       <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
         <span className="text-[#FFFF] uppercase text-sm">
@@ -85,7 +146,7 @@ const LockerInputDetails = () => {
                 />
               </svg>
               <span className="text-xs text-muted-foreground">
-                1,042,042.0421
+                {numeral(guacBalance).format("0,0")}
               </span>
             </div>
 
@@ -105,7 +166,20 @@ const LockerInputDetails = () => {
           before initializing the new locker.
         </span>
       </Container>
-      <Button className="bg-primary rounded-lg w-full h-[50px] ">Create Liquidity Locker</Button>
+      <Button
+        className="bg-primary rounded-lg w-full h-[50px] "
+        onClick={() => {
+          handleCreateNewLock(
+            lockAmount * Math.pow(10, selectedPool.lpDecimals),
+            500_000_000 * Math.pow(10, 5),
+            lockDate.getTime(),
+            selectedPool.lpMint,
+            publicKey
+          );
+        }}
+      >
+        Create Liquidity Locker
+      </Button>
     </div>
   );
 };
