@@ -137,29 +137,6 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   const fetchRoute = React.useCallback(() => {
     if (!inputTokenInfo || !outputTokenInfo) return;
     setLoadingRoute(true);
-    // api
-    //   .v4QuoteGet({
-    //     amount: (
-    //       parseFloat(inputAmout) * Math.pow(10, inputTokenInfo?.decimals)
-    //     ).toString(),
-    //     inputMint: inputTokenInfo?.address,
-    //     outputMint: outputTokenInfo?.address,
-
-    //     feeBps: 50,
-    //   })
-    //   .then(({ data }) => {
-    //     if (data) {
-    //       setHasRoute(
-    //         data.length > 0 &&
-    //           !!data[0].outAmount &&
-    //           Number(data[0].outAmount) > 0
-    //       );
-    //       setRoutes(data);
-    //     }
-    //   })
-    //   .finally(() => {
-    //     setLoadingRoute(false);
-    //   });
     api
       .quoteGet({
         amount: parseFloat(inputAmout) * Math.pow(10, inputTokenInfo?.decimals),
@@ -172,13 +149,6 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
           setSwapQuote(quote);
 
           setHasRoute(true);
-
-          // setHasRoute(
-          //   routePlan.length > 0 &&
-          //     !!routePlan[0].swapInfo.outAmount &&
-          //     Number(routePlan[0].swapInfo.outAmount) > 0
-          // );
-          //setRoutes(data);
         }
       })
       .finally(() => {
@@ -521,7 +491,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                 href={"/terminal"}
                 className="text-sm bg-[#BBB0DB]  text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
               >
-              Back To Terminal
+                Back To Terminal
               </Link>
             ) : (
               <NavigationList filter="Trade" />

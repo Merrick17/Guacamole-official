@@ -1,34 +1,14 @@
 "use client";
 
 import TerminalLayout from "@/app/terminal/terminal";
+import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
 import LockerList from "@/components/views/launch/locker-list";
-import MarketPulseChart from "@/components/views/terminal/MarketPulseChart";
-import TerminalGraph from "@/components/views/terminal/TerminalGraph";
-import TokenRanking from "@/components/views/terminal/TokenRanking";
-import TrendingSwaps from "@/components/views/terminal/TredingSwaps";
-import WatchList from "@/components/views/terminal/WatchList";
-import SolanaTvlRanking from "@/components/views/terminal/solana-tvl-ranking";
-import TopNftCollections from "@/components/views/terminal/top-nft-collections";
-import Trade from "@/components/views/trade/src/Trade";
-import { JupiterApiProvider } from "@/components/views/trade/src/contexts";
-import { PoolProvider, usePool } from "@/hooks/use-pool-list";
+import { PoolProvider } from "@/hooks/use-pool-list";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import Link from "next/link";
 
 export default function Lock() {
-  const [selection, setSelection] = useState("1D");
-  const [display, setDisplay] = useState<string>("tpp");
-  const [activePage, setActivePage] = useState(1);
-
-  const setChartType = (dataType: string) => {
-    setSelection(dataType);
-  };
-  const handleDisplayChange = (value: string) => {
-    setDisplay(value);
-  };
-  const handlePageChange = (page: number) => {
-    setActivePage(page);
-  };
   return (
     <TerminalLayout>
       <PoolProvider>
@@ -37,7 +17,41 @@ export default function Lock() {
             "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
           )}
         >
-          <section className="flex flex-1 justify-center items-center">
+          <section className="flex flex-1 justify-center items-center flex-col my-3 gap-5">
+            <Container className="lg:max-w-5xl  max-sm:max-w-xs bg-cover  bg-[url('/images/launch/Liquidity_Locker_Banner_Guacamole_Simple_1.png')] border border-transparent min-h-[238px] ">
+              <div className="flex w-full h-full flex-col items-start justify-start gap-4">
+                <h5 className=" text-2xl font-medium tracking-tight ">
+                  Introducing Liquidity Lockers
+                </h5>
+                <p className="text-muted-foreground ">
+                  Explore other locks or verifiably lock your liquidity tokens
+                  in time-vested contracts or forever!
+                </p>
+                <Button variant="link">
+                  <Link
+                    href={"/terminal"}
+                    className="flex justify-center items-center"
+                  >
+                    Click Here To Learn More
+                    <svg
+                      className="w-3.5 h-3.5 ml-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M1 5h12m0 0L9 1m4 4L9 9"
+                      />
+                    </svg>
+                  </Link>{" "}
+                </Button>
+              </div>
+            </Container>
             <LockerList />
           </section>
         </main>

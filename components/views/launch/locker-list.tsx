@@ -18,16 +18,73 @@ import {
 } from "@/components/ui/table";
 import useLockerTools from "@/hooks/use-locker";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
 import { usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
 import numeral from "numeral";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Loader2 } from "lucide-react";
 dayjs.extend(relativeTime);
 const checkRemainder = (nb: number) => {
   return nb % 2;
+};
+const Pagination = ({
+  activePage,
+  changePage,
+  totalItems,
+}: {
+  activePage: number;
+  totalItems: number;
+  changePage: (nbr: number) => void;
+}) => {
+  const totalPages = totalItems / 10;
+  //const totalPages = 10;
+  return totalPages > 1 ? (
+    <ul className="inline-flex -space-x-px text-sm bg-foreground">
+      <li>
+        <button
+          className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-primary bg-foreground border border-e-0 rounded-s-lg hover:bg-primary hover:text-black "
+          onClick={() => {
+            changePage(activePage - 1);
+          }}
+        >
+          Previous
+        </button>
+      </li>
+      {totalPages > 1 &&
+        Array.from({ length: totalPages }).map((elm, ind) => (
+          <li>
+            <button
+              onClick={() => {
+                changePage(ind + 1);
+              }}
+              className={`flex items-center justify-center px-3 h-8 text-black border  ${
+                activePage == ind + 1 ? "bg-primary" : "bg-foreground "
+              } hover:bg-primary hover:text-black ${
+                activePage == ind + 1 ? "text-black" : "text-primary"
+              } `}
+            >
+              {ind + 1}
+            </button>
+          </li>
+        ))}
+
+      <li>
+        <button
+          onClick={() => {
+            changePage(activePage + 1);
+          }}
+          className="flex items-center justify-center px-3 h-8 leading-tight  bg-foreground border rounded-e-lg text-primary hover:bg-primary hover:text-black"
+        >
+          Next
+        </button>
+      </li>
+    </ul>
+  ) : (
+    <></>
+  );
 };
 
 const RenderItem = ({
@@ -47,9 +104,12 @@ const RenderItem = ({
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
   const [firstLockTime, setFirstLockTime] = useState<number | null>(null);
 
-  useEffect(() => {
+  const fetchPoolData = useCallback(async () => {
     if (poolList.length !== 0 && lock) {
-      const pool = poolList.find((elm) => elm.lpMint == lock.account.mint);
+      const pool = poolList.find(
+        (elm) => elm.lpMint == lock.account.mint.toBase58()
+      );
+
       const base = tokenList.find((elm) => elm.address == pool.baseMint);
       const quote = tokenList.find((elm) => elm.address == pool.quoteMint);
 
@@ -57,12 +117,17 @@ const RenderItem = ({
       setQuoteToken(quote);
       setSelectedPool(pool);
 
-      getFirstLockByLp(pool.lpMint).then((value) => {
+      const value = await getFirstLockByLp(pool.lpMint);
+      //console.log("Value", value.account.unlockTime.toNumber());
+      if (value !== null) {
         setFirstLockTime(value.account.unlockTime.toNumber());
-      });
+      }
     }
-  }, [poolList, selectedPool]);
+  }, [lock, poolList]);
 
+  useEffect(() => {
+    fetchPoolData();
+  }, [fetchPoolData]);
   const displayName = () => {
     return baseToken && quoteToken
       ? `${baseToken.symbol}/${quoteToken.symbol}`
@@ -71,6 +136,21 @@ const RenderItem = ({
 
   const calculateLiquidity = () => {
     if (lock && selectedPool) {
+      const lockedAmount =
+        lock.account.lockedAmount.toNumber() /
+        Math.pow(10, selectedPool.lpDecimals);
+
+      const tokenAmount = selectedPool.tokenAmount;
+
+      const liquidity = (lockedAmount / tokenAmount) * selectedPool.liquidity;
+      return liquidity.toFixed(2);
+    } else {
+      return 0;
+    }
+  };
+  const calculateLiquidityRatio = () => {
+    if (lock && selectedPool) {
+      console.log("Selected Pool", selectedPool);
       const lockedAmount =
         lock.account.lockedAmount.toNumber() /
         Math.pow(10, selectedPool.lpDecimals);
@@ -90,19 +170,36 @@ const RenderItem = ({
     >
       <TableCell className="font-medium">
         <div className="flex flex-row items-center  gap-2 lg:gap-5">
-          <img
-            src={"/images/launch/raydium.png"}
-            className="w-[20px] h-[20px]  cursor-pointer mr-10"
-          />
+          {selectedPool ? (
+            <img
+              src={
+                selectedPool.provider == "RAYDIUM"
+                  ? "/images/launch/raydium.png"
+                  : "/images/launch/logo-meteora-symbol.svg"
+              }
+              className="w-[20px] h-[20px]  cursor-pointer mr-10"
+            />
+          ) : (
+            <Loader2 className="animate-spin h-10 w-10 text-primary   " />
+          )}
           <div className="flex flex-2 justify-center items-center relative">
-            <img
-              src={`${baseToken ? baseToken.logoURI : ""}`}
-              className="w-[25px] h-[25px]   rounded-full absolute left-[-15px]  "
-            />
-            <img
-              src={`${quoteToken ? quoteToken.logoURI : ""}`}
-              className="w-[30px] h-[30px]   rounded-full "
-            />
+            {!baseToken ? (
+              <Loader2 className="animate-spin h-10 w-10 text-primary   " />
+            ) : (
+              <img
+                src={`${baseToken ? baseToken.logoURI : ""}`}
+                className="w-[25px] h-[25px]   rounded-full absolute left-[-15px]  "
+              />
+            )}
+
+            {quoteToken ? (
+              <img
+                src={`${quoteToken ? quoteToken.logoURI : ""}`}
+                className="w-[30px] h-[30px]   rounded-full "
+              />
+            ) : (
+              <Loader2 className="animate-spin h-10 w-10 text-primary   " />
+            )}
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-[#FFF]">{displayName()}</span>
@@ -131,10 +228,13 @@ const RenderItem = ({
                 fill="#D6776A"
               />
             </svg>
-            {calculateLiquidity()}%
+            ${calculateLiquidity()}
           </span>
           <span className="text-muted-foreground">
-            Next {firstLockTime ? dayjs().to(dayjs(firstLockTime)) : "Infinity"}
+            Next{" "}
+            {firstLockTime
+              ? dayjs(Date.now()).to(new Date(firstLockTime).toISOString())
+              : "in Infinity"}
           </span>
         </div>
       </TableCell>
@@ -154,13 +254,16 @@ const RenderItem = ({
                 fill="#D6776A"
               />
             </svg>
-            89.3%
+            {calculateLiquidityRatio()}%
           </span>
         </div>
       </TableCell>
       <TableCell className="text-right">
-        <Link href={"/launch/lock/view"} className="text-primary">
-          Manage (1)
+        <Link
+          href={`/launch/lock/view/${selectedPool ? selectedPool.poolId : ""}`}
+          className="text-primary"
+        >
+          View Vault
         </Link>
       </TableCell>
     </TableRow>
@@ -169,19 +272,23 @@ const RenderItem = ({
 const LockerList = () => {
   const [lockerList, setLockerList] = useState<any[]>([]);
   const { getAllVaults } = useLockerTools();
-
-  const initVaultList = async () => {
+  const [activePage, setActivePage] = useState<number>(1);
+  const handleChangePage = (nbr: number) => {
+    setActivePage(nbr);
+  };
+  const initVaultList = useCallback(async () => {
     const vaults = await getAllVaults();
     setLockerList(vaults);
-  };
+  }, []);
+
   useEffect(() => {
     initVaultList();
-  }, []);
+  }, [initVaultList]);
   return (
     <Container className="bg-foreground rounded-md lg:max-w-5xl">
       <div className="w-full flex justify-between items-center text-black  gap-2 py-3">
         <Select defaultValue="tpp">
-          <SelectTrigger className="lg:w-[170px] h-[30px] max-sm:w-full max-sm:mx-1 font-semibold ">
+          <SelectTrigger className="lg:w-[170px] h-[30px] max-sm:w-full max-sm:mx-1 font-medium ">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -195,7 +302,7 @@ const LockerList = () => {
         </div>
 
         <Link
-          className="h-[30px] bg-primary px-3 rounded-lg text-md font-semibold text-center"
+          className="h-[30px] bg-primary px-3 rounded-lg text-sm pt-1  text-center font-medium"
           href={"/launch/lock/create"}
         >
           Manage Lockers
@@ -212,75 +319,27 @@ const LockerList = () => {
         </TableHeader>
 
         <TableBody>
-          {lockerList.map((lock, ind) => (
-            <RenderItem
-              lock={lock}
-              index={ind}
-              checkRemainder={checkRemainder}
-            />
-          ))}
+          {lockerList
+            .sort(
+              (a, b) =>
+                b.account.lockedAmount.toNumber() -
+                a.account.lockedAmount.toNumber()
+            )
+            .map((lock, ind) => (
+              <RenderItem
+                lock={lock}
+                index={ind}
+                checkRemainder={checkRemainder}
+              />
+            ))}
         </TableBody>
       </Table>
       <div className="flex flex-1 justify-end w-full mt-3">
-        <ul className="inline-flex -space-x-px text-sm bg-foreground">
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-primary bg-foreground border border-e-0 rounded-s-lg hover:bg-primary hover:text-black "
-            >
-              Previous
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center px-3 h-8 leading-tight text-muted-foreground bg-foreground border hover:bg-primary hover:text-black"
-            >
-              1
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center px-3 h-8 leading-tight text-muted-foreground bg-foreground border hover:bg-primary hover:text-black"
-            >
-              2
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              aria-current="page"
-              className="flex items-center justify-center px-3 h-8 text-black border  bg-primary hover:bg-primary hover:text-black"
-            >
-              3
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center px-3 h-8 leading-tight text-muted-foreground bg-foreground border hover:bg-primary hover:text-black"
-            >
-              4
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center px-3 h-8 leading-tight text-muted-foreground bg-foreground border hover:bg-primary hover:text-black"
-            >
-              5
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center px-3 h-8 leading-tight  bg-foreground border rounded-e-lg text-primary hover:bg-primary hover:text-black"
-            >
-              Next
-            </a>
-          </li>
-        </ul>
+        <Pagination
+          totalItems={lockerList.length}
+          activePage={activePage}
+          changePage={handleChangePage}
+        />
       </div>
     </Container>
   );

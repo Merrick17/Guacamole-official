@@ -4,17 +4,98 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import LockerInput from "@/components/views/launch/locker-input";
 import LockerInputDetails from "@/components/views/launch/locker-input-details";
-import { JupiterApiProvider } from "@/components/views/trade/src/contexts";
-import { PoolProvider } from "@/hooks/use-pool-list";
+import {
+  JupiterApiProvider,
+  useJupiterApiContext,
+} from "@/components/views/trade/src/contexts";
+import useLockerTools from "@/hooks/use-locker";
+import { PoolProvider, usePool } from "@/hooks/use-pool-list";
+import { useTokenAccounts } from "@bonfida/hooks";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-
+import { useCallback, useEffect, useState } from "react";
+import numeral from "numeral";
+const LockItem = ({ lock }) => {
+  const { poolList } = usePool();
+  const { tokenList } = useJupiterApiContext();
+  const [poolInfo, setPoolInfo] = useState(null);
+  const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
+  const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
+  const { publicKey } = useWallet();
+  const { connection } = useConnection();
+  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
+    connection,
+    publicKey
+  );
+  const initInfo = () => {
+    if (lock && poolList.length !== 0) {
+      const pool = poolList.find(
+        (elm) => elm.lpMint == lock.account.mint.toBase58()
+      );
+      //console.log("Pool Details", pool);
+      const base = tokenList.find((elm) => elm.address == pool.baseMint);
+      const quote = tokenList.find((elm) => elm.address == pool.quoteMint);
+      setPoolInfo(pool);
+      setQuoteToken(quote);
+      setBaseToken(base);
+      // const tokenAccount = tokenAccounts
+      //   ? tokenAccounts?.getByMint(new PublicKey(pool?.lpMint))
+      //   : null;
+      // const balance =
+      //   tokenAccount && tokenAccount.decimals
+      //     ? Number(tokenAccount.account.amount) /
+      //       Math.pow(10, tokenAccount.decimals)
+      //     : 0;
+    }
+  };
+  useEffect(() => {
+    initInfo();
+  }, [poolList, lock]);
+  return (
+    <Container className="bg-[#0F0F0F] px-[15px] py-[16px] flex gap-3 justify-between h-[60px] my-[5px]">
+      <div className="flex justify-start items-center">
+        {baseToken && (
+          <img
+            src={baseToken.logoURI}
+            className="h-[30px] w-[30px] rounded-full object-contain"
+          />
+        )}
+        {quoteToken && (
+          <img
+            src={quoteToken.logoURI}
+            className="h-[30px] w-[30px] rounded-full object-contain"
+          />
+        )}
+        {baseToken && quoteToken && (
+          <span className="text-[#FFFF] ml-2">
+            {baseToken.symbol}/{quoteToken.symbol}
+          </span>
+        )}
+      </div>
+      <span className="text-[16px] font-medium text-[#FAFAFA]">→</span>
+    </Container>
+  );
+};
 const Page = () => {
+  const { getLocksByOwner } = useLockerTools();
   const [step, setStep] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<number>(1);
+  const [userLocks, setUserLocks] = useState<any[]>([]);
+  const { connected, publicKey } = useWallet();
   const changeStep = (newStep: number) => {
     setStep(newStep);
   };
+  const initUserLocks = useCallback(async () => {
+    const lockers = await getLocksByOwner(
+      "EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"
+    );
+    console.log("Lockers", lockers);
+    setUserLocks(lockers);
+  }, [publicKey, connected]);
+  useEffect(() => {
+    initUserLocks();
+  }, [initUserLocks]);
   const router = useRouter();
   return (
     <PoolProvider>
@@ -53,7 +134,7 @@ const Page = () => {
                   activeTab == 1
                     ? "bg-primary"
                     : "bg-[#0F0F0F] text-muted-foreground"
-                } w-full rounded-lg `}
+                } w-full rounded-lg h-[34px]`}
                 onClick={() => {
                   setActiveTab(1);
                 }}
@@ -65,7 +146,7 @@ const Page = () => {
                   activeTab == 2
                     ? "bg-primary"
                     : "bg-[#0F0F0F] text-muted-foreground"
-                } w-full rounded-lg`}
+                } w-full rounded-lg h-[34px]`}
                 onClick={() => {
                   setActiveTab(2);
                 }}
@@ -75,13 +156,9 @@ const Page = () => {
             </div>
             {activeTab == 1 ? (
               <div className="w-full h-full flex flex-col gap-3">
-                <Container className="bg-[#0F0F0F] p-2 flex gap-3">
-                  <img
-                    src="/images/launch/raydium.png"
-                    className="h-[40px] w-[40px]"
-                  />
-                  <span className="text-[#FAFAFA] text-[24px]">
-                    Create Raydium Liquidity Locker
+                <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center">
+                  <span className="text-[#FCFCFC] text-[16px] font-medium">
+                    Create A New Liquidity Locker
                   </span>
                 </Container>
                 {step == 1 ? (
@@ -92,46 +169,24 @@ const Page = () => {
               </div>
             ) : (
               <div className=" w-full h-full flex flex-col gap-3">
-                <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
-                  <span className="text-muted-foreground text-xs uppercase">
-                    Enter the Raydium pair address you would like to ACCESS:
+                <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center h-[60px]">
+                  <span className="text-[#FCFCFC] text-[16px] font-medium">
+                    Manage Your Liquidity Lockers
                   </span>
-                  <Input
-                    placeholder="Raydium pair address"
-                    className="w-full"
-                  />
+                </Container>
+                <Container className="bg-[#0F0F0F] p-3 flex gap-3 flex-col min-h-[70px] my-5">
+                  <span className="text-muted-foreground text-xs uppercase">
+                    Enter the pair address you would like to ACCESS:
+                  </span>
+                  <Input placeholder="Pair Address" className="w-full" />
                 </Container>
                 <p className="text-muted-foreground text-xs">
                   The following lockers are associated with this account:
                 </p>
-                <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-between">
-                  <div className="flex justify-start items-center">
-                    <img
-                      src="/images/launch/guac.png"
-                      className="h-[30px] w-[30px] rounded-full object-contain"
-                    />
-                    <img
-                      src="/images/launch/sol.png"
-                      className="h-[30px] w-[30px] rounded-full object-contain"
-                    />
-                    <span className="text-[#FFFF] ml-2">GUAC/SOL</span>
-                  </div>
-                  <span>0</span>
-                </Container>
-                <Container className="bg-[#0F0F0F] p-3 flex gap-3 justify-between">
-                  <div className="flex justify-start items-center">
-                    <img
-                      src="/images/launch/guac.png"
-                      className="h-[30px] w-[30px] rounded-full object-contain"
-                    />
-                    <img
-                      src="/images/launch/sol.png"
-                      className="h-[30px] w-[30px] rounded-full object-contain"
-                    />
-                    <span className="text-[#FFFF] ml-2">GUAC/SOL</span>
-                  </div>
-                  <span>0</span>
-                </Container>
+
+                {userLocks.map((lock) => (
+                  <LockItem lock={lock} />
+                ))}
               </div>
             )}
           </div>

@@ -24,7 +24,18 @@ const useLockerTools = () => {
   const getFirstLockByLp = async (mint: string) => {
     const lock = await program.account.deposit.all();
     const mintLocks = lock.filter((elm) => elm.account.mint.toBase58() == mint);
-    return mintLocks[0];
+
+    return mintLocks.length != 0 ? mintLocks[0] : null;
+  };
+  const getLocksByOwner = async (owner: string) => {
+    try {
+      const locks = (await program.account.deposit.all()).filter((elm) =>
+        elm.account.owner.toBase58()
+      );
+      return locks;
+    } catch (error) {
+      return null;
+    }
   };
 
   const initNewVault = async (tokenMint: PublicKey, decimals: number) => {
@@ -83,15 +94,27 @@ const useLockerTools = () => {
             </div>
           ),
         });
+        return sig;
       } catch (error) {
         console.log("Error", error.message);
+        toast({
+          variant: "destructive",
+          title: "Error !",
+          description: <span>{error.message}</span>,
+        });
+        return null;
       }
     } else {
+      toast({
+        variant: "destructive",
+        title: "Wallet not connected !",
+        description: <span>Connect your wallet to create a new vault</span>,
+      });
+      return null;
     }
   };
   const handleCreateNewLock = async (
     amount: number,
-    guacAmount: number,
     unlockTime: number,
     mint: string,
     payer: PublicKey
@@ -155,8 +178,8 @@ const useLockerTools = () => {
       const ix = await program.methods
         .depositAmount(
           new BN(amount),
-          new BN(500_000_000 * Math.pow(10, 5)),
-          new BN(unlockTime)
+          new BN(unlockTime),
+          new BN(500_000_000 * Math.pow(10, 5))
         )
         .accounts({
           lockInfo: lockAccountInfo,
@@ -192,7 +215,18 @@ const useLockerTools = () => {
       console.log("Error", error);
     }
   };
-  const handleCloseVault = async (mint: string) => {
+  const getVaultByLpMint = async (mintAdr: string) => {
+    try {
+      const vaultList = await getAllVaults();
+      const vault = vaultList.find(
+        (elm) => elm.account.mint.toBase58() == mintAdr
+      );
+      return vault;
+    } catch (error) {
+      return null;
+    }
+  };
+  const handleCloseVault = async (mint: string): Promise<string | null> => {
     try {
       const [lockAccount, _] = anchor.web3.PublicKey.findProgramAddressSync(
         [
@@ -236,6 +270,7 @@ const useLockerTools = () => {
       const tx = new Transaction().add(ix);
       const sig = await sendTransaction(tx, connection);
       console.log("Sig", sig);
+
       toast({
         variant: "success",
         title: "Deposited successfully into trader account!",
@@ -248,7 +283,26 @@ const useLockerTools = () => {
           </div>
         ),
       });
-    } catch (error) {}
+      return sig;
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+
+      return null;
+    }
+  };
+  const getLocksByMint = async (tokenMint: string) => {
+    try {
+      const locks = (await program.account.deposit.all()).filter(
+        (elm) => elm.account.mint.toBase58() == tokenMint
+      );
+      return locks;
+    } catch (error) {
+      return null;
+    }
   };
   return {
     initNewVault,
@@ -256,6 +310,9 @@ const useLockerTools = () => {
     handleCreateNewLock,
     handleCloseVault,
     getFirstLockByLp,
+    getVaultByLpMint,
+    getLocksByMint,
+    getLocksByOwner,
   };
 };
 export default useLockerTools;

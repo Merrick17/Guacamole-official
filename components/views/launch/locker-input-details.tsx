@@ -171,7 +171,6 @@ const LockerInputDetails = () => {
         onClick={() => {
           handleCreateNewLock(
             lockAmount * Math.pow(10, selectedPool.lpDecimals),
-            500_000_000 * Math.pow(10, 5),
             lockDate.getTime(),
             selectedPool.lpMint,
             publicKey

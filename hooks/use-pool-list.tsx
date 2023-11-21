@@ -43,7 +43,7 @@ interface Pool {
   lpMint: string;
   lpDecimals: number;
   provider: string;
-  liquidity:number; 
+  liquidity: number;
 }
 interface PoolContextType {
   poolList: Pool[];
@@ -64,9 +64,10 @@ const PoolProvider: React.FC<{ children: any }> = ({ children }) => {
 
   const fetchPoolList = useCallback(async () => {
     try {
-      const response = await fetch(
-        "https://lock-pools-607adf8dc4ea.herokuapp.com/pools"
-      );
+      // const response = await fetch(
+      //   "https://lock-pools-607adf8dc4ea.herokuapp.com/pools"
+      // );
+      const response = await fetch("/api/pools");
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -84,7 +85,7 @@ const PoolProvider: React.FC<{ children: any }> = ({ children }) => {
   }, []);
   useEffect(() => {
     fetchPoolList();
-  }, [poolList]); // Empty dependency array ensures the effect runs only once on mount
+  }, [fetchPoolList]); // Empty dependency array ensures the effect runs only once on mount
 
   return (
     <PoolContext.Provider
