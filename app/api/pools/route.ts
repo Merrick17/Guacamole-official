@@ -1,6 +1,16 @@
 import axios from "axios";
+const cache = {
+  data: null,
+  timestamp: 0,
+  duration: 60 * 60 * 1000, // 1 hour
+};
+
 const initPoolList = async () => {
   try {
+    if (Date.now() - cache.timestamp < cache.duration) {
+      return cache.data;
+    }
+
     const pairResp = await axios.get("https://api.raydium.io/v2/main/pairs");
 
     const {
@@ -43,6 +53,8 @@ const initPoolList = async () => {
     });
 
     const result = [...mappedOfficial, ...mappedUnOfficial, ...mappedPools];
+    cache.data = result;
+    cache.timestamp = Date.now();
     return result;
   } catch (error) {
     console.log("Error", error);

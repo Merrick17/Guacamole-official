@@ -121,10 +121,6 @@ export type GuacLock = {
         {
           name: "unlockTime";
           type: "i64";
-        },
-        {
-          name: "guacAmount";
-          type: "u64";
         }
       ];
     },
@@ -300,6 +296,52 @@ export type GuacLock = {
         }
       ];
       args: [];
+    },
+    {
+      name: "extendUnlockTime";
+      accounts: [
+        {
+          name: "lockInfo";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "signerGuacAta";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "feeGuacAta";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "mint";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "signer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        }
+      ];
+      args: [
+        {
+          name: "unlockTime";
+          type: "i64";
+        }
+      ];
     }
   ];
   accounts: [
@@ -505,10 +547,6 @@ export const IDL: GuacLock = {
           name: "unlockTime",
           type: "i64",
         },
-        {
-          name: "guacAmount",
-          type: "u64",
-        },
       ],
     },
     {
@@ -683,6 +721,52 @@ export const IDL: GuacLock = {
         },
       ],
       args: [],
+    },
+    {
+      name: "extendUnlockTime",
+      accounts: [
+        {
+          name: "lockInfo",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "signerGuacAta",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "feeGuacAta",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "mint",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "signer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "unlockTime",
+          type: "i64",
+        },
+      ],
     },
   ],
   accounts: [

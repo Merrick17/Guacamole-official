@@ -10,12 +10,11 @@ import {
 } from "@/components/views/trade/src/contexts";
 import useLockerTools from "@/hooks/use-locker";
 import { PoolProvider, usePool } from "@/hooks/use-pool-list";
-import { useTokenAccounts } from "@bonfida/hooks";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import numeral from "numeral";
 const LockItem = ({ lock }) => {
   const { poolList } = usePool();
   const { tokenList } = useJupiterApiContext();
@@ -24,10 +23,7 @@ const LockItem = ({ lock }) => {
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
   const { publicKey } = useWallet();
   const { connection } = useConnection();
-  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
-    connection,
-    publicKey
-  );
+
   const initInfo = () => {
     if (lock && poolList.length !== 0) {
       const pool = poolList.find(
@@ -39,14 +35,6 @@ const LockItem = ({ lock }) => {
       setPoolInfo(pool);
       setQuoteToken(quote);
       setBaseToken(base);
-      // const tokenAccount = tokenAccounts
-      //   ? tokenAccounts?.getByMint(new PublicKey(pool?.lpMint))
-      //   : null;
-      // const balance =
-      //   tokenAccount && tokenAccount.decimals
-      //     ? Number(tokenAccount.account.amount) /
-      //       Math.pow(10, tokenAccount.decimals)
-      //     : 0;
     }
   };
   useEffect(() => {
@@ -73,7 +61,12 @@ const LockItem = ({ lock }) => {
           </span>
         )}
       </div>
-      <span className="text-[16px] font-medium text-[#FAFAFA]">→</span>
+      {lock && (
+        <Link href={`/launch/lock/manage/${lock.publicKey.toBase58()}`}>
+          {" "}
+          <span className="text-[16px] font-medium text-[#FAFAFA]">→</span>
+        </Link>
+      )}
     </Container>
   );
 };

@@ -105,7 +105,7 @@ const RenderItem = ({
   const [firstLockTime, setFirstLockTime] = useState<number | null>(null);
 
   const fetchPoolData = useCallback(async () => {
-    if (poolList.length !== 0 && lock) {
+    if (poolList && poolList.length !== 0 && lock) {
       const pool = poolList.find(
         (elm) => elm.lpMint == lock.account.mint.toBase58()
       );
@@ -163,6 +163,7 @@ const RenderItem = ({
       return 0;
     }
   };
+
   return (
     <TableRow
       key={index.toString()}
@@ -271,8 +272,11 @@ const RenderItem = ({
 };
 const LockerList = () => {
   const [lockerList, setLockerList] = useState<any[]>([]);
+  const { poolList } = usePool();
   const { getAllVaults } = useLockerTools();
+  const { tokenList } = useJupiterApiContext();
   const [activePage, setActivePage] = useState<number>(1);
+  const [searchToken, setSearchToken] = useState("");
   const handleChangePage = (nbr: number) => {
     setActivePage(nbr);
   };
@@ -280,6 +284,28 @@ const LockerList = () => {
     const vaults = await getAllVaults();
     setLockerList(vaults);
   }, []);
+  const handleSearch = async (search: string) => {
+    const vaults = await getAllVaults();
+    if (search !== "") {
+      const token = tokenList.find(
+        (elm) => elm.name.includes(search) || elm.symbol.includes(search)
+      );
+      console.log("Token", token);
+      const filterPools = poolList.filter(
+        (elm) => elm.baseMint == token.address || elm.quoteMint == token.address
+      );
+      console.log("POOLS", poolList);
+      const filteredVaults = vaults.filter((vault) =>
+        filterPools.some(
+          (pool) => pool.lpMint === vault.account.mint.toBase58() // Adjust this line based on your vault structure
+        )
+      );
+      console.log("Filterd vaults", filteredVaults);
+      setLockerList(filteredVaults);
+    } else {
+      setLockerList(vaults);
+    }
+  };
 
   useEffect(() => {
     initVaultList();
@@ -298,7 +324,15 @@ const LockerList = () => {
           </SelectContent>
         </Select>
         <div className="w-[400px]">
-          <SearchInput placeholder="Search For Locked Liquidity By Token" />
+          <SearchInput
+            className="text-muted-foreground"
+            placeholder="Search For Locked Liquidity By Token"
+            value={searchToken}
+            onChange={(e) => {
+              setSearchToken(e.target.value);
+              handleSearch(e.target.value);
+            }}
+          />
         </div>
 
         <Link

@@ -27,6 +27,9 @@ const useLockerTools = () => {
 
     return mintLocks.length != 0 ? mintLocks[0] : null;
   };
+  const getLockerByAdr = async (adr: string) => {
+    return await program.account.deposit.fetch(adr);
+  };
   const getLocksByOwner = async (owner: string) => {
     try {
       const locks = (await program.account.deposit.all()).filter((elm) =>
@@ -176,11 +179,7 @@ const useLockerTools = () => {
         console.log("SIG2", sig2);
       }
       const ix = await program.methods
-        .depositAmount(
-          new BN(amount),
-          new BN(unlockTime),
-          new BN(500_000_000 * Math.pow(10, 5))
-        )
+        .depositAmount(new BN(amount), new BN(unlockTime))
         .accounts({
           lockInfo: lockAccountInfo,
           lockAccount: selectedLock.publicKey,
@@ -304,6 +303,185 @@ const useLockerTools = () => {
       return null;
     }
   };
+  const handleExtendLock = async (
+    amount: number,
+    extendTime: number,
+    mint: string,
+    payer: PublicKey
+  ) => {
+    try {
+      const vaults = await getAllVaults();
+      const selectedLock = vaults.find(
+        (elm) => elm.account.mint.toBase58() == mint
+      );
+      const [lockAccountInfo] = anchor.web3.PublicKey.findProgramAddressSync(
+        [
+          Buffer.from(anchor.utils.bytes.utf8.encode("guac_lock_info")),
+          payer.toBuffer(),
+          new PublicKey(mint).toBuffer(),
+        ],
+        program.programId
+      );
+      const { pubkey: LockAccountAta, ix: lockAccountAtaIx } =
+        await getTokenAccount(
+          connection,
+          new PublicKey(mint),
+          publicKey,
+          selectedLock.publicKey,
+          true
+        );
+      const { pubkey: feeAta, ix: feeAtaIx } = await getTokenAccount(
+        connection,
+        new PublicKey(mint),
+        publicKey,
+        new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
+        true
+      );
+      const { pubkey: userAta, ix: userAtaIx } = await getTokenAccount(
+        connection,
+        new PublicKey(mint),
+        payer,
+        payer,
+        false
+      );
+      const { pubkey: feeGuacAta } = await getTokenAccount(
+        connection,
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"),
+        publicKey,
+        new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
+        true
+      );
+      const { pubkey: userGuacAta } = await getTokenAccount(
+        connection,
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"),
+        payer,
+        payer,
+        false
+      );
+      const ix = await program.methods
+        .extendAmount(
+          new BN(amount),
+          new BN(extendTime),
+          new BN(500_000_000 * Math.pow(10, 5))
+        )
+        .accounts({
+          lockInfo: lockAccountInfo,
+          lockAccount: selectedLock.publicKey,
+          lockAta: LockAccountAta,
+          feeAta: feeAta,
+          signerAta: userAta,
+          signer: payer,
+          mint: new PublicKey(mint),
+          tokenProgram: TOKEN_PROGRAM_ID,
+          feeGuacAta: feeGuacAta,
+          signerGuacAta: userGuacAta,
+          creator: selectedLock.account.creator,
+        })
+        .instruction();
+      const tx = new Transaction();
+      tx.add(ix);
+      const sig = await sendTransaction(tx, connection, {
+        skipPreflight: true,
+      });
+      toast({
+        variant: "success",
+        title: "Deposited successfully into trader account!",
+        description: (
+          <div className="flex flex-col gap-1">
+            <p>Transaction sent successfully.</p>
+            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+              View on solscan
+            </Link>
+          </div>
+        ),
+      });
+    } catch (err) {}
+  };
+  const handleExtendLockTime = async (
+    extendTime: number,
+    mint: string,
+    payer: PublicKey
+  ) => {
+    try {
+      const vaults = await getAllVaults();
+      const selectedLock = vaults.find(
+        (elm) => elm.account.mint.toBase58() == mint
+      );
+      const [lockAccountInfo] = anchor.web3.PublicKey.findProgramAddressSync(
+        [
+          Buffer.from(anchor.utils.bytes.utf8.encode("guac_lock_info")),
+          payer.toBuffer(),
+          new PublicKey(mint).toBuffer(),
+        ],
+        program.programId
+      );
+      const { pubkey: LockAccountAta, ix: lockAccountAtaIx } =
+        await getTokenAccount(
+          connection,
+          new PublicKey(mint),
+          publicKey,
+          selectedLock.publicKey,
+          true
+        );
+      const { pubkey: feeAta, ix: feeAtaIx } = await getTokenAccount(
+        connection,
+        new PublicKey(mint),
+        publicKey,
+        new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
+        true
+      );
+      const { pubkey: userAta, ix: userAtaIx } = await getTokenAccount(
+        connection,
+        new PublicKey(mint),
+        payer,
+        payer,
+        false
+      );
+      const { pubkey: feeGuacAta } = await getTokenAccount(
+        connection,
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"),
+        publicKey,
+        new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
+        true
+      );
+      const { pubkey: userGuacAta } = await getTokenAccount(
+        connection,
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"),
+        payer,
+        payer,
+        false
+      );
+      const ix = await program.methods
+        .extendUnlockTime(new BN(extendTime))
+        .accounts({
+          lockInfo: lockAccountInfo,
+
+          signer: payer,
+          mint: new PublicKey(mint),
+          tokenProgram: TOKEN_PROGRAM_ID,
+          feeGuacAta: feeGuacAta,
+          signerGuacAta: userGuacAta,
+        })
+        .instruction();
+      const tx = new Transaction();
+      tx.add(ix);
+      const sig = await sendTransaction(tx, connection, {
+        skipPreflight: true,
+      });
+      toast({
+        variant: "success",
+        title: "Deposited successfully into trader account!",
+        description: (
+          <div className="flex flex-col gap-1">
+            <p>Transaction sent successfully.</p>
+            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+              View on solscan
+            </Link>
+          </div>
+        ),
+      });
+    } catch (err) {}
+  };
   return {
     initNewVault,
     getAllVaults,
@@ -313,6 +491,9 @@ const useLockerTools = () => {
     getVaultByLpMint,
     getLocksByMint,
     getLocksByOwner,
+    getLockerByAdr,
+    handleExtendLock,
+    handleExtendLockTime,
   };
 };
 export default useLockerTools;

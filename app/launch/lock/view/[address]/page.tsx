@@ -420,8 +420,8 @@ const Page = () => {
               {lock && selectedPool
                 ? lock.account.lockedAmount.toNumber() /
                   Math.pow(10, selectedPool.lpDecimals)
-                : 0}
-              LP Tokens
+                : 0} LP tokens
+            
             </p>
           </div>
           <div className="flex justify-end items-center gap-2">
@@ -435,7 +435,7 @@ const Page = () => {
               <p className="text-muted-foreground text-[14px]">
                 {lockList.length !== 0 &&
                   dayjs(Date.now()).format("MM/DD/YYYY hh:mm")}{" "}
-                LP Tokens
+               
               </p>
             </div>
             <svg
