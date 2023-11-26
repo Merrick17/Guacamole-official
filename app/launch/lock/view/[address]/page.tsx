@@ -124,7 +124,7 @@ const Page = () => {
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <Button
             className="rounded-lg h-[30px] flex flex-2 gap-2"
             onClick={() => {
@@ -149,7 +149,7 @@ const Page = () => {
           </Button>
           <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
         </div>
-        <hr className="border-dashed border-background" />
+        <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F]">
           <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[14px]">
             {selectedPool
@@ -420,8 +420,8 @@ const Page = () => {
               {lock && selectedPool
                 ? lock.account.lockedAmount.toNumber() /
                   Math.pow(10, selectedPool.lpDecimals)
-                : 0} LP tokens
-            
+                : 0}{" "}
+              LP tokens
             </p>
           </div>
           <div className="flex justify-end items-center gap-2">
@@ -435,7 +435,6 @@ const Page = () => {
               <p className="text-muted-foreground text-[14px]">
                 {lockList.length !== 0 &&
                   dayjs(Date.now()).format("MM/DD/YYYY hh:mm")}{" "}
-               
               </p>
             </div>
             <svg

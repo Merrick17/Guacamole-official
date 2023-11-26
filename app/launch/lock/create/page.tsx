@@ -2,6 +2,7 @@
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import LockerInput from "@/components/views/launch/locker-input";
 import LockerInputDetails from "@/components/views/launch/locker-input-details";
 import {
@@ -95,7 +96,7 @@ const Page = () => {
       <JupiterApiProvider>
         <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
           <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
               <Button
                 className="rounded-lg h-[30px] flex flex-2 gap-2"
                 onClick={() => {
@@ -120,8 +121,9 @@ const Page = () => {
               </Button>
               <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
             </div>
-            <hr className="border-dashed border-background" />
-            <div className="flex justify-between items-center gap-3">
+            <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+
+            <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
               <Button
                 className={`${
                   activeTab == 1

@@ -25,6 +25,7 @@ import { useCallback, useEffect, useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 const Page = () => {
@@ -113,7 +114,7 @@ const Page = () => {
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-xl ">
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <Button
             className="rounded-lg h-[30px] flex flex-2 gap-2"
             onClick={() => {
@@ -138,8 +139,8 @@ const Page = () => {
           </Button>
           <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
         </div>
-        <hr className="border-dashed border-background" />
-        <div className=" w-full h-full flex flex-col gap-3">
+        <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center h-[60px]">
             <span className="text-[#FCFCFC] text-[16px] font-medium">
               Manage Your Liquidity Locker
@@ -189,12 +190,12 @@ const Page = () => {
                 )}
             </span>
           </Container>
-          <Container className="bg-[#0F0F0F] p-3 flex gap-3 justify-center items-center h-[60px]">
-            <span className="text-primary text-xs text-center">
+          <Container className="bg-[#0F0F0F] p-3 flex gap-3 justify-center items-center h-max">
+            <p className="text-primary text-xs text-center">
               Liquidity pool tokens cannot be withdrawn under any circumstances
               until the timer has expired. Select the “Relock Liquidity” option
               if you wish to extend the lock period.
-            </span>
+            </p>
           </Container>
           <Button
             className="my-1 min-h-[50px]"

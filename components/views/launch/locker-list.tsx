@@ -26,6 +26,9 @@ import numeral from "numeral";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 dayjs.extend(relativeTime);
 const checkRemainder = (nb: number) => {
   return nb % 2;
@@ -167,10 +170,13 @@ const RenderItem = ({
   return (
     <TableRow
       key={index.toString()}
-      className={`${checkRemainder(index) == 1 ? "bg-[#0F0F0F]" : ""}`}
+      className={cn(
+        "text-xs md:text-sm lg:text-base ",
+        checkRemainder(index) == 1 && "bg-[#0F0F0F]"
+      )}
     >
-      <TableCell className="font-medium">
-        <div className="flex flex-row items-center  gap-2 lg:gap-5">
+      <TableCell className="font-medium w-full md:w-max overflow-x-auto">
+        <div className="w-full flex flex-row items-center  gap-2 lg:gap-5">
           {selectedPool ? (
             <img
               src={
@@ -178,25 +184,25 @@ const RenderItem = ({
                   ? "/images/launch/raydium.png"
                   : "/images/launch/logo-meteora-symbol.svg"
               }
-              className="w-[20px] h-[20px]  cursor-pointer mr-10"
+              className="w-[20px] h-[20px]  cursor-pointer mr-10 shrink-0"
             />
           ) : (
             <Loader2 className="animate-spin h-10 w-10 text-primary   " />
           )}
-          <div className="flex flex-2 justify-center items-center relative">
+          <div className="flex flex-2 justify-center items-center relative shrink-0">
             {!baseToken ? (
               <Loader2 className="animate-spin h-10 w-10 text-primary   " />
             ) : (
               <img
                 src={`${baseToken ? baseToken.logoURI : ""}`}
-                className="w-[25px] h-[25px]   rounded-full absolute left-[-15px]  "
+                className="w-[25px] h-[25px]   rounded-full absolute left-[-15px]  shrink-0 "
               />
             )}
 
             {quoteToken ? (
               <img
                 src={`${quoteToken ? quoteToken.logoURI : ""}`}
-                className="w-[30px] h-[30px]   rounded-full "
+                className="w-[30px] h-[30px]   rounded-full shrink-0 "
               />
             ) : (
               <Loader2 className="animate-spin h-10 w-10 text-primary   " />
@@ -271,6 +277,7 @@ const RenderItem = ({
   );
 };
 const LockerList = () => {
+  const { push } = useRouter();
   const [lockerList, setLockerList] = useState<any[]>([]);
   const { poolList } = usePool();
   const { getAllVaults } = useLockerTools();
@@ -312,9 +319,9 @@ const LockerList = () => {
   }, [initVaultList]);
   return (
     <Container className="bg-foreground rounded-md lg:max-w-5xl">
-      <div className="w-full flex justify-between items-center text-black  gap-2 py-3">
+      <div className="w-full flex flex-col  md:flex-row   md:justify-between items-center text-black  gap-2 py-3">
         <Select defaultValue="tpp">
-          <SelectTrigger className="lg:w-[170px] h-[30px] max-sm:w-full max-sm:mx-1 font-medium ">
+          <SelectTrigger className="w-full lg:w-[250px] h-[30px] max-sm:w-full  font-medium ">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -323,24 +330,23 @@ const LockerList = () => {
             <SelectItem value="vw">View Watchlist</SelectItem> */}
           </SelectContent>
         </Select>
-        <div className="w-[400px]">
-          <SearchInput
-            className="text-muted-foreground"
-            placeholder="Search For Locked Liquidity By Token"
-            value={searchToken}
-            onChange={(e) => {
-              setSearchToken(e.target.value);
-              handleSearch(e.target.value);
-            }}
-          />
-        </div>
+        <div className="flex flex-col-reverse w-full md:flex-row md:justify-end md:items-center gap-2 ">
+          <div className="">
+            <SearchInput
+              className="text-muted-foreground"
+              placeholder="Search For Locked Liquidity By Token"
+              value={searchToken}
+              onChange={(e) => {
+                setSearchToken(e.target.value);
+                handleSearch(e.target.value);
+              }}
+            />
+          </div>
 
-        <Link
-          className="h-[30px] bg-primary px-3 rounded-lg text-sm pt-1  text-center font-medium"
-          href={"/launch/lock/create"}
-        >
-          Manage Lockers
-        </Link>
+          <Button onClick={() => push("/launch/lock/create")} size="sm">
+            Manage Lockers
+          </Button>
+        </div>
       </div>
       <Table className="max-sm:w-96 max-sm:overflow-x-auto">
         <TableHeader>
