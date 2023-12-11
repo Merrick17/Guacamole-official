@@ -19,9 +19,9 @@ export default function Home() {
         )}
       >
         <section className="flex flex-col gap-[60px]">
-          {/* {lg:h-[560px]} */}
+       
           <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full  overflow-hidden">
-            {/* <HomeContent className="w-full" /> */}
+          
             <HeroHeadline
               className="col-span-1  lg:col-span-5"
               title={
@@ -51,39 +51,7 @@ export default function Home() {
           <HeroList listItems={HomeListItems} />
           <ColorBlocks className="mx-auto" />
         </section>
-        {/* <section className="flex flex-col gap-[60px]">
-        <HomeHeadline
-          title="Trade anything with the click of a button. It’s that easy!"
-          description="Our amazing tools help you trade any token on Solana in just
-            seconds. Just connect your wallet, select your token, and click
-            swap! More advanced trading options are also available like the
-            ability to DCA, place limit orders, or bridge from other chains."
-        />
-        <HomeList listItems={TradeListItems} />
-        <Sponsors />
-        <ColorBlocks className="mx-auto" />
-      </section>
-      <section className="flex flex-col gap-[60px]">
-        <HomeHeadline
-          title="Several ways to earn passive income with your crypto!"
-          description="Guacamole offers several exciting features to help earn tokens,
-          NFTs, and more. Our platform makes it easy to make your crypto work
-          for you! Most features also feature a permissionless setup for any
-          community or project to use."
-        />
-        <HomeList listItems={EarnListItems} />
-        <ColorBlocks className="mx-auto" />
-      </section>
-      <GamesSection />
-      <section className="flex flex-col gap-[60px]">
-        <HomeHeadline
-          title="There’s nothing like a fresh side of GUAC."
-          description="The GUAC token is at the very pit of the Guacamole ecosystem. You can easily buy, farm, spend, stake, win and even vote with it! Our token was initially stealth launched with a whopping 94% of supply locked in a Raydium liquidity pool on launch."
-        />
-        <EarnList />
-        <ColorBlocks className="mx-auto" />
-      </section>
-      <ShopSection /> */}
+      
       </main>
     </>
   );
