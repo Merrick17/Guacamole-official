@@ -5,9 +5,9 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import useLockerTools from "@/hooks/use-locker";
@@ -15,12 +15,10 @@ import { usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { PublicKey } from "@solana/web3.js";
 
-import { FC, useEffect, useMemo, useState } from "react";
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useJupiterApiContext } from "../trade/src/contexts";
 import { useTokenAccounts } from "@bonfida/hooks";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Account } from "@solana/spl-token";
+import { FC, useEffect, useMemo, useState } from "react";
+import { useJupiterApiContext } from "../trade/src/contexts";
 interface LockerInputProps {
   handleStepChange: (nbr: number) => void;
 }
@@ -28,9 +26,10 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const [lockerList, setLockerList] = useState([]);
   const { tokenList } = useJupiterApiContext();
   const [mintAdr, setMintAdr] = useState("");
-  const [poolInfo, setPoolInfo] = useState(null);
-  const { initNewVault, getAllVaults, handleCloseVault } = useLockerTools();
-  const { poolList, setSelectedPool, selectedPool } = usePool();
+
+  const { initNewVault, getAllVaults } = useLockerTools();
+  const { poolList, setSelectedPool, selectedPool, getPoolByLpMint } =
+    usePool();
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
@@ -53,9 +52,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   }, [lockerList, poolList]);
   const handleCreateVault = async () => {
     // console.log("POol list", poolList);
-    const poolFound = poolList.find(
-      (elm) => elm.lpMint == mintAdr.replace(/\s/g, "")
-    );
+    const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
     if (poolFound) {
       setSelectedPool(poolFound);
       const resp = await initNewVault(
@@ -69,13 +66,10 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
     }
   };
   const getUserInfo = async () => {
-    console.log("Here", selectedPool);
-    const poolFound = poolList.find(
-      (elm) => elm.lpMint == mintAdr.replace(/\s/g, "")
-    );
+    const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
     if (poolFound) {
-      const base = tokenList.find((elm) => elm.address == poolFound.baseMint);
-      const quote = tokenList.find((elm) => elm.address == poolFound.quoteMint);
+      const base = poolFound.baseMint;
+      const quote = poolFound.quoteMint;
       setBaseToken(base);
       setQuoteToken(quote);
       const tokenAccount = tokenAccounts
@@ -86,7 +80,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
           ? Number(tokenAccount.account.amount) /
             Math.pow(10, tokenAccount.decimals)
           : 0;
-      console.log("Balance", balance);
+
       setTokenBalance(balance);
     }
   };
@@ -144,11 +138,15 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
             <span>{tokenBalance}</span>
           </div>
         )}
-
+        {tokenBalance == 0 && (
+          <span className="text-muted-foreground ">
+            You do not hold any of this LP Mint Token
+          </span>
+        )}
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <Button
             className="bg-primary rounded-lg h-[50px] w-full mt-3"
-            disabled={mintAdr == ""}
+            disabled={mintAdr == "" || tokenBalance == 0}
             onClick={() => {
               const vault = lockerList.find(
                 (elm) =>
@@ -161,7 +159,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
                 const selectedPool = poolList.find(
                   (elm) => elm.lpMint == mintAdr.replace(/\s/g, "")
                 );
-                console.log("Pool", selectedPool);
+
                 setSelectedPool(selectedPool);
                 handleStepChange(2);
               }
@@ -170,34 +168,42 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
             Lock This Liquidity{" "}
           </Button>
 
-          <DialogContent closeBtn={false}>
+          <DialogContent>
             <DialogHeader>
               <DialogTitle>
                 <div className="relative">
-                  <h2 className="text-base   text-center ">
-                    No Vault Available
-                  </h2>
-                  <DialogTrigger asChild>
+                  <span className="text-base   text-center ">
+                    Vault Creation
+                  </span>
+                  {/* <DialogTrigger asChild>
                     <AiOutlineArrowLeft className=" absolute w-4 h-4 top-1/2 -left-2 -translate-y-1/2 cursor-pointer" />
-                  </DialogTrigger>
+                  </DialogTrigger> */}
                 </div>
+                <hr className="w-full my-2" />
               </DialogTitle>
               <DialogDescription></DialogDescription>
             </DialogHeader>
             <div className="flex w-full h-auto flex-col justify-center items-center">
-              <div className="flex flex-col">
-                <p className="text-muted-foreground">
-                  there is no vault initialized for this token mint would you
-                  like to create one ?
+              <div className="flex flex-col gap-6">
+                <p className=" text-xs text-muted-foreground">
+                  There is currently no open vault for this selected LP token.
+                  To proceed with locking liquidity you will first need to
+                  initialize a vault, which requires 0.0001 LP tokens.
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  note it will take a minimum of 0.0001 to create it{" "}
+                  Please be aware that this Solana program is currently
+                  open-source and has not yet undergone a professional audit. We
+                  encourage community participation and scrutiny; however, until
+                  a comprehensive audit is completed, please understand that
+                  using this program is at your own discretion and risk. We do
+                  not guarantee the security or functionality of the program and
+                  advise users to proceed with caution, especially in
+                  transactions involving significant assets or funds.
                 </p>
               </div>
-              <div className="flex justify-between items-center mt-1">
+              <div className="flex justify-start gap-3 items-start  w-full mt-3 border-t-[1px] pt-3">
                 <Button
-                  variant="ghost"
-                  className="text-primary"
+                  className="bg-[#8BD796]"
                   onClick={() => {
                     handleCreateVault();
                   }}
@@ -205,16 +211,16 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
                   Confirm
                 </Button>
                 <Button
-                  variant="ghost"
                   onClick={() => {
                     setIsCreateOpen(false);
                   }}
                 >
-                  Cancel
+                  Decline
                 </Button>
               </div>
             </div>
           </DialogContent>
+          <DialogFooter></DialogFooter>
         </Dialog>
       </Container>
     </>

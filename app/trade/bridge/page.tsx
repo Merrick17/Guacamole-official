@@ -1,22 +1,11 @@
 'use client';
 import Container from '@/components/common/container';
-import { Button } from '@/components/ui/button';
+import NavigationList from '@/components/ui/navigation-list';
 import { Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { usePathname, useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Links } from '@/config/links';
-import NavigationList from '@/components/ui/navigation-list';
 const config = {
   appIdentity: {
     name: 'Start Bridge Swap',

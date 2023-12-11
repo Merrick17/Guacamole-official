@@ -5,9 +5,12 @@ import NftStakeForm from "@/components/views/earn/nft-staking/nft-staking-form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dynamic Vault | Guacamole",
+  title: "Tokenized NFT Farms | Guacamole",
   description:
-    "Put your crypto to work for you in various ways and enjoy the fruit of its labor.",
+    "Stake your tokens on our revolutionary platform and accumulate points to unlock exclusive access to vaulted NFTs. Transform your staked assets into valuable digital collectibles as you redeem points for rare NFTs.",
+  openGraph: {
+    images: "/images/seo/earn.png",
+  },
 };
 
 const Page = () => {
@@ -25,7 +28,6 @@ const Page = () => {
           {/* <h1 className="text-3xl">Coming Soon...</h1> */}
         </Container>
         <NftStakeForm />
-       
       </div>
     </main>
   );

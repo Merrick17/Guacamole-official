@@ -33,9 +33,13 @@ const InfoCard: FC<InfoCardProps> = ({
   disabled = false,
   target,
 }) => {
-  console.log("Button TEXT",buttonTxt)
+  console.log("Border",name)
   return (
-    <Container className=" p-6 rounded-lg max-w-xs bg-foreground  border border-transparent  hover:border-primary transition-all duration-500 ease-in-out">
+    <Container
+      className={`p-6 rounded-lg max-w-xs bg-foreground  border border-transparent  ${
+        name.includes("Lock") ? "border-primary" : ""
+      } hover:border-primary transition-all duration-500 ease-in-out`}
+    >
       <div className="relative aspect-square w-7 h-7 mb-3">
         {image !== "" ? (
           <Image src={image} alt={name} fill />

@@ -1,9 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useJupiterApiContext } from "../../contexts";
-import { TokenInfo } from "@solana/spl-token-registry";
-import { BiChevronDown, BiLinkExternal } from "react-icons/bi";
-import ReactPaginate from "react-paginate";
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -13,14 +8,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import routes from "@/config/routes";
-import { token } from "@metaplex-foundation/js";
 import useWalletTokens from "@/lib/tokens/useWalletTokens";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useTokenAccounts } from "@bonfida/hooks";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { BiChevronDown, BiLinkExternal } from "react-icons/bi";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import ReactPaginate from "react-paginate";
+import { useJupiterApiContext } from "../../contexts";
+import { PublicKey } from "@solana/web3.js";
 
 const Row = ({
   info,
@@ -35,19 +35,32 @@ const Row = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams()!;
-  const userTokens = useWalletTokens();
-  const { connected } = useWallet();
-
+  const { connection } = useConnection();
+  //const userTokens = useWalletTokens();
+  const { connected, publicKey } = useWallet();
+  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
+    connection,
+    publicKey
+  );
   useMemo(() => {
     // console.log("User TOekn", userTokens);
-    let token = userTokens.find((elm) => elm.account.mint == info.address);
-    //console.log("Tk", token);
-    if (token) {
-      setUserBalance(
-        Number(token.account.amount) / Math.pow(10, token.decimals)
-      );
+    //let token = userTokens.find((elm) => elm.account.mint == info.address);
+    if (tokenAccounts && connected) {
+      const tokenAccount = tokenAccounts.getByMint(new PublicKey(info.address));
+      const balance =
+        tokenAccount && tokenAccount.decimals
+          ? Number(tokenAccount.account.amount) /
+            Math.pow(10, tokenAccount.decimals)
+          : 0;
+      setUserBalance(balance);
     }
-  }, [userTokens]);
+    //console.log("Tk", token);
+    // if (tokenAccount) {
+    //   setUserBalance(
+    //     Number(token.account.amount) / Math.pow(10, token.decimals)
+    //   );
+    // }
+  }, [tokenAccounts, connected, publicKey]);
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
   const createQueryString = useCallback(
@@ -138,17 +151,63 @@ export const SelectCoin = ({
 }) => {
   const { tokenMap } = useJupiterApiContext();
   const [search, setSearch] = useState("");
-
-  const originalList = useMemo(
-    () =>
-      Array.from(tokenMap.values()).filter(
-        (e) =>
-          e.address.includes(search) ||
-          e.name.toLowerCase().includes(search.toLowerCase()) ||
-          e.symbol.toLowerCase().includes(search.toLowerCase())
-      ),
-    [search, tokenInfo]
+  const { connection } = useConnection();
+  const { publicKey } = useWallet();
+  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
+    connection,
+    publicKey
   );
+  // const originalList = useMemo(
+  //   () =>
+  //     Array.from(tokenMap.values()).filter(
+  //       (e) =>
+  //         e.address.includes(search) ||
+  //         e.name.toLowerCase().includes(search.toLowerCase()) ||
+  //         e.symbol.toLowerCase().includes(search.toLowerCase())
+  //     ),
+  //   [search, tokenInfo]
+  // );
+  const originalList = useMemo(() => {
+    // Filter tokens based on search criteria
+    const filteredTokens = Array.from(tokenMap.values()).filter(
+      (e) =>
+        e.address.includes(search) ||
+        e.name.toLowerCase().includes(search.toLowerCase()) ||
+        e.symbol.toLowerCase().includes(search.toLowerCase())
+    );
+
+    // Sort tokens where userBalance is > 0 to come first
+    const sortedTokens = filteredTokens.sort((a, b) => {
+      let balanceA = 0;
+      let balanceB = 0;
+
+      if (tokenAccounts && publicKey) {
+        const tokenAccountA = tokenAccounts.getByMint(new PublicKey(a.address));
+        const tokenAccountB = tokenAccounts.getByMint(new PublicKey(b.address));
+
+        balanceA =
+          tokenAccountA && tokenAccountA.decimals
+            ? Number(tokenAccountA.account.amount) /
+              Math.pow(10, tokenAccountA.decimals)
+            : 0;
+        balanceB =
+          tokenAccountB && tokenAccountB.decimals
+            ? Number(tokenAccountB.account.amount) /
+              Math.pow(10, tokenAccountB.decimals)
+            : 0;
+      }
+
+      if (balanceA > 0 && balanceB === 0) {
+        return -1; // a comes first
+      } else if (balanceA === 0 && balanceB > 0) {
+        return 1; // b comes first
+      }
+
+      return 0; // keep original order
+    });
+
+    return sortedTokens;
+  }, [search, tokenMap, tokenAccounts, publicKey]);
 
   const handleSelect = (e: TokenInfo) => {
     setCoin(e);

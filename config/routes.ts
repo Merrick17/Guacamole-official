@@ -46,6 +46,7 @@ const routes = {
     root: "/launch",
     explore: "/launch/explore",
     createSplToken: "/launch/create-spl-token",
+    lock: "/launch/lock/",
   },
   ecosystem: {
     root: "/ecosystem",

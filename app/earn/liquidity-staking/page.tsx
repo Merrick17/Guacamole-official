@@ -1,16 +1,19 @@
-import Container from '@/components/common/container';
-import EarnHeader from '@/components/common/earn-header';
-import GuacStakeForm from '@/components/views/earn/guac-stake/guac-stake-guac';
-import LiquidityStackingForm from '@/components/views/earn/liquidity-staking/liquidity-staking-form';
-import useMarinadeData from '@/hooks/use-marinade-data';
-import fetchMarinadeData from '@/lib/marinade-data';
-import { Metadata } from 'next';
-import Image from 'next/image';
+import Container from "@/components/common/container";
+import EarnHeader from "@/components/common/earn-header";
+import GuacStakeForm from "@/components/views/earn/guac-stake/guac-stake-guac";
+import LiquidityStackingForm from "@/components/views/earn/liquidity-staking/liquidity-staking-form";
+import useMarinadeData from "@/hooks/use-marinade-data";
+import fetchMarinadeData from "@/lib/marinade-data";
+import { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: 'Dynamic Vault | Guacamole',
+  title: "Liquid Solana Staking | Guacamole",
   description:
-    'Put your crypto to work for you in various ways and enjoy the fruit of its labor.',
+    "Elevate your DeFi experience with our liquid staking solution for Solana. Stake your SOL and continue to earn rewards while retaining the freedom to swap and partake in DeFi activities. Get the best of both worlds—growth and liquidity with Solana liquid staking.    ",
+  openGraph: {
+    images: "/images/seo/earn.png",
+  },
 };
 
 const Page = async () => {
@@ -27,10 +30,10 @@ const Page = async () => {
         <Container className="p-5 font-medium bg-background">
           <p className="text-muted-foreground text-sm">Projected mSOL Yield</p>
           <h1 className="text-3xl">
-            {marinadeData && (marinadeData['apy'].value * 100).toFixed(2)}% APY
+            {marinadeData && (marinadeData["apy"].value * 100).toFixed(2)}% APY
           </h1>
           <p className="text-white/50 text-xl mt-2 font-normal">
-            1 MSOL = {marinadeData && marinadeData['currentPrice'].toFixed(3)}{' '}
+            1 MSOL = {marinadeData && marinadeData["currentPrice"].toFixed(3)}{" "}
             SOL
           </p>
         </Container>

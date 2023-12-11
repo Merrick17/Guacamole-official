@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
 import numeral from "numeral";
 import useLockerTools from "@/hooks/use-locker";
+import Link from "next/link";
 const LockerInputDetails = () => {
   const [lockDate, setLockDate] = useState<Date>(new Date(Date.now()));
   const { connected, publicKey } = useWallet();
@@ -45,7 +46,7 @@ const LockerInputDetails = () => {
         Math.pow(10, guacTokenAccount.decimals)
       : 0;
   useEffect(() => {
-    console.log("Selected Pool", selectedPool);
+
     if (selectedPool) {
       let base = tokenList.find((elm) => elm.address == selectedPool.baseMint);
       let quote = tokenList.find(
@@ -102,10 +103,20 @@ const LockerInputDetails = () => {
                 {tokenBalance}
               </span>
             </div>
-            <Button className="bg-[#141414] text-primary w-10 h-7 p-2 rounded-lg">
+            <Button
+              className="bg-[#141414] text-primary w-10 h-7 p-2 rounded-lg"
+              onClick={() => {
+                setLockAmount(tokenBalance / 2);
+              }}
+            >
               50%
             </Button>
-            <Button className="bg-[#141414] text-primary w-10 h-7 p-2 rounded-lg">
+            <Button
+              className="bg-[#141414] text-primary w-10 h-7 p-2 rounded-lg"
+              onClick={() => {
+                setLockAmount(tokenBalance);
+              }}
+            >
               100%
             </Button>
           </div>
@@ -151,12 +162,19 @@ const LockerInputDetails = () => {
             </div>
 
             <Button className="bg-[#141414] text-[#8BD796] w-full h-7 p-2 rounded-lg text-xs">
-              BUY GUAC
+              <Link
+                href={`/trade/swap?outputMint=AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR&inputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+                className="text-[#BBB0DB]"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                BUY GUAC
+              </Link>
             </Button>
           </div>
         </div>
         <span className="text-muted-foreground font-semibold text-sm mt-[-10px]">
-          500,000,000 GUAC + 0.5% of locked GUAC/SOL LP
+          100,000,000 GUAC + 0.1% of locked GUAC/SOL LP
         </span>
       </Container>
       <Container className="bg-[#0F0F0F] justify-center items-center text-center">

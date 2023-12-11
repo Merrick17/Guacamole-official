@@ -1,12 +1,15 @@
-import Container from '@/components/common/container';
-import ToolHeader from '@/components/common/tool-header';
-import TokenToManyWalletsForm from '@/components/views/tools/token-to-many-wallet/token-to-many-wallets-form';
-import { Metadata } from 'next';
+import Container from "@/components/common/container";
+import ToolHeader from "@/components/common/tool-header";
+import TokenToManyWalletsForm from "@/components/views/tools/token-to-many-wallet/token-to-many-wallets-form";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Token Multi Sender | Guacamole',
+  title: "Airdrop Tokens | Multi-Sender | Guacamole ",
   description:
-    'Multiple airdrop and multi-send options to send tokens to Solana addresses and domains. Connect your wallet, enter the addresses, and airdrop your tokens!',
+    "Easily send tokens to a list of Solana addresses with our airdrop and multi-sender tools on Guacamole!    ",
+  openGraph: {
+    images: ["images/seo/tools.png"],
+  },
 };
 const TokenToManyWallets = () => {
   return (

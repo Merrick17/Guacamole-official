@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Dynamic Vault | Guacamole",
   description:
     "Put your crypto to work for you in various ways and enjoy the fruit of its labor.",
+  openGraph: {
+    images: "/images/seo/earn.png",
+  },
 };
 
 const Page = () => {
@@ -33,14 +36,16 @@ const Page = () => {
           participants who lock up their liquid tokens, the right, but not the
           obligation to trade tokens at a future price.
         </p>
-        <Link  rel="noopener noreferrer"
+        <Link
+          rel="noopener noreferrer"
           href={"https://beta.dual.finance/"}
           target="_blank"
           className="h-[54px] bg-[#8BD796] text-center flex justify-center items-center rounded-lg text-black"
         >
           Proceed To Dual Finance
         </Link>
-        <Link rel="noopener noreferrer"
+        <Link
+          rel="noopener noreferrer"
           href={
             "https://docs.guacamole.gg/products-and-features/earn/staking-options"
           }

@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Useful Tools For All Solana Users | Guacamole",
   description:
     "Find a variety of easy to use tools in our suite that can instantly help improve your quality of life while interacting with the Solana blockchain or starting your own project!",
+  openGraph: {
+    images: "/images/seo/earn.png",
+  },
 };
 const Earn: FC = () => {
   return (
@@ -41,7 +44,9 @@ const Earn: FC = () => {
                 Most features also feature a permissionless setup for any
                 community or project to use.
               </p>
-              <Link className="text-xl text-primary" href={"/earn/explore"}>Explore Ways To Earn ➜</Link>
+              <Link className="text-xl text-primary" href={"/earn/explore"}>
+                Explore Ways To Earn ➜
+              </Link>
             </HeroHeadline>
             <DynamicVaultStatistics className="col-span-1 lg:col-span-3 bg-foreground" />
           </div>

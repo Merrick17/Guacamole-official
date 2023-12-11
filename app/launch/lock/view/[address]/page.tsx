@@ -6,19 +6,17 @@ import { abbreviate } from "@/components/views/trade/src/utils/abbreviate";
 import useLockerTools from "@/hooks/use-locker";
 import { usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import numeral from "numeral";
-import axios from "axios";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { calculateRate } from "@/components/views/trade/src/components/Jupiter/ExchangeRate";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import numeral from "numeral";
+import { useCallback, useEffect, useState } from "react";
 dayjs.extend(relativeTime);
 const Page = () => {
   const router = useRouter();
   const params = useParams();
-  const { poolList } = usePool();
+  const { poolList,getPoolByLpMint,getPoolByPoolId } = usePool();
   const [selectedPool, setSelectedPool] = useState<any>(null);
   const { tokenList, api } = useJupiterApiContext();
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
@@ -27,16 +25,17 @@ const Page = () => {
   const { getVaultByLpMint, getLocksByMint } = useLockerTools();
   const [poolAdr, setPoolAdr] = useState("");
   const [lockList, setLockList] = useState([]);
-  const [ExchangeRate, setExchangeRate] = useState(null);
+
   const fetchPoolData = useCallback(async () => {
     const adr = params["address"] as string;
     //console.log("ADR", adr);
-    if (poolList.length !== 0 && adr !== "") {
+    if (adr !== "") {
       setPoolAdr(adr);
-      const pool = poolList.find((elm) => elm.poolId == adr);
+      const pool = await getPoolByPoolId(adr)
+      
       //console.log("Pool Details", pool);
-      const base = tokenList.find((elm) => elm.address == pool.baseMint);
-      const quote = tokenList.find((elm) => elm.address == pool.quoteMint);
+      const base = pool.baseMint;
+      const quote =pool.quoteMint; 
 
       setBaseToken(base);
       setQuoteToken(quote);
@@ -52,46 +51,12 @@ const Page = () => {
         setLock(value);
       }
     }
-  }, [poolList]);
-  // const fetchRate = useCallback(async () => {
-  //   if (baseToken && quoteToken) {
-  //     try {
-  //       api
-  //         .quoteGet({
-  //           amount: 1 * Math.pow(10, baseToken?.decimals),
-  //           inputMint: baseToken?.address,
-  //           outputMint: quoteToken?.address,
-  //           platformFeeBps: 50,
-  //         })
-  //         .then((quote) => {
-  //           if (quote) {
-  //             console.log("Quote", quote);
-  //             const rate = calculateRate(
-  //               {
-  //                 inAmount: 10 * Math.pow(10, baseToken?.decimals),
-  //                 inputDecimal: baseToken.decimals,
-  //                 outputDecimal: quoteToken.decimals,
-  //                 outAmount: parseFloat(quote.outAmount),
-  //               },
-  //               false
-  //             );
-  //             console.log("Rate", rate.toNumber());
-  //           }
-  //         })
-  //         .finally(() => {
-  //           //setLoadingRoute(false);
-  //         });
-  //     } catch (error) {
-  //       console.log("Rate Error", error);
-  //     }
-  //   }
-  // }, [baseToken, quoteToken]);
+  }, []);
+
   useEffect(() => {
     fetchPoolData();
   }, [poolList]);
-  // useMemo(() => {
-  //   fetchRate();
-  // }, [fetchRate]);
+
   const calculateLiquidityRatio = () => {
     if (lock && selectedPool) {
       //console.log("Selected Pool", selectedPool);
@@ -147,7 +112,14 @@ const Page = () => {
             </svg>
             <span> Back To Lockers</span>
           </Button>
-          <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
+          <Button
+            className="rounded-lg h-[30px]"
+            onClick={() => {
+              router.push("/launch/lock/create");
+            }}
+          >
+            Lock liquidity
+          </Button>
         </div>
         <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F]">
@@ -163,7 +135,7 @@ const Page = () => {
               className="text-[#8BD796] "
             >
               <div className="flex items-center justify-center gap-1 flex-nowrap">
-                <span>{abbreviate(poolAdr)}</span>
+                <span>{abbreviate(poolAdr, 4)}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="10"
@@ -190,13 +162,13 @@ const Page = () => {
         </Container>
         <div className=" flex flex-1 justify-evenly gap-2">
           {baseToken && (
-            <div className=" w-[267.609px] h-[256px] p-5  overflow-hidden rounded-lg relative">
+            <div className=" w-[267.609px] h-[256px] p-5  overflow-hidden rounded-lg relative border-2 border-[#a8a8a8] border-opacity-10">
               <img
                 src={baseToken.logoURI}
                 className="w-full h-full object-cover transform scale-[2] opacity-25 absolute top-0 bottom-0 left-0 right-0 z-0"
                 alt="Guac Image"
               />
-              <div className="w-[232px] h-[216px] rounded-lg bg-[#0F0F0F] z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+              <div className="w-[232px] h-[216px] rounded-lg bg-[#0F0F0F] border-2 border-[#a8a8a8] border-opacity-10 z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
                 <img
                   src={baseToken.logoURI}
                   className="h-[46px] w-[46px] rounded-full"
@@ -210,7 +182,7 @@ const Page = () => {
                     className="text-[#8BD796] "
                   >
                     <div className="flex items-center justify-center gap-1 flex-nowrap">
-                      <span>{abbreviate(baseToken.address)}</span>
+                      <span>{abbreviate(baseToken.address, 4)}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="10"
@@ -230,13 +202,13 @@ const Page = () => {
             </div>
           )}
           {quoteToken && (
-            <div className=" w-[267.609px] h-[256px] p-5  overflow-hidden rounded-lg relative">
+            <div className=" w-[267.609px] h-[256px] p-5  overflow-hidden rounded-lg relative border-2 border-[#a8a8a8] border-opacity-10">
               <img
                 src={quoteToken.logoURI}
                 className="w-full h-full object-cover transform scale-[2] opacity-25 absolute top-0 bottom-0 left-0 right-0 z-0"
                 alt="Guac Image"
               />
-              <div className="w-[232px] h-[216px] rounded-lg bg-[#0F0F0F] z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+              <div className="w-[232px] h-[216px] rounded-lg bg-[#0F0F0F] border-2 border-[#a8a8a8] border-opacity-10 z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
                 <img
                   src={quoteToken.logoURI}
                   className="h-[46px] w-[46px] rounded-full"
@@ -250,7 +222,7 @@ const Page = () => {
                     className="text-[#8BD796] "
                   >
                     <div className="flex items-center justify-center gap-1 flex-nowrap">
-                      <span>{abbreviate(quoteToken.address)}</span>
+                      <span>{abbreviate(quoteToken.address, 4)}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="10"
@@ -271,7 +243,7 @@ const Page = () => {
           )}
         </div>
         <div className="w-full h-[40px] flex rounded-lg  justify-evenly items-center  bg-[#0F0F0F] ">
-          <Button className="bg-transparent">
+          <Button className="bg-transparent" onClick={fetchPoolData}>
             <svg
               width="24"
               height="24"
@@ -302,6 +274,7 @@ const Page = () => {
                   : `https://app.meteora.ag/pools/${poolAdr}`
                 : ""
             }`}
+            target="_blank"
             className="text-muted-foreground flex items-center justify-center gap-3"
           >
             {selectedPool
@@ -366,14 +339,6 @@ const Page = () => {
           </Link>
         </div>
         <Container className="border-2 flex-col items-start flex mt-2 space-y-4 ">
-          {/* <div className="flex items-center justify-between text-xs w-full ">
-            <div className="text-muted-foreground">
-              <span>Conversion Rate</span>
-            </div>
-            <div className="text-muted-foreground">
-              <span>1 USDC ≈ 47,502,598.5433853 GUAC </span>
-            </div>
-          </div> */}
           <div className="flex items-center justify-between text-xs w-full ">
             <div className="text-muted-foreground">
               <span>Total LP Tokens</span>
@@ -407,7 +372,7 @@ const Page = () => {
             Liquidity Locks
           </h5>
           <p className="text-muted-foreground text-center text-[12px]">
-            Please note that only the Raydium Liquidity Provider (LP) tokens are
+            Please note that only the Liquidity Provider (LP) tokens are
             locked, not the corresponding dollar value of these positions, which
             fluctuates with market changes. Additionally, as more participants
             contribute liquidity to the pool, new LP tokens are minted.

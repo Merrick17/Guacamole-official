@@ -8,7 +8,7 @@ import {
   useWallet,
 } from "@solana/wallet-adapter-react";
 import { PublicKey, Transaction } from "@solana/web3.js";
-import { BN, min } from "bn.js";
+import { BN } from "bn.js";
 import Link from "next/link";
 import { useToast } from "./use-toast";
 const useLockerTools = () => {
@@ -17,9 +17,27 @@ const useLockerTools = () => {
   const { toast } = useToast();
   const anchorWallet = useAnchorWallet();
   const program = getProgram(connection, anchorWallet);
-  const getAllVaults = async () => {
-    const vaults = await program.account.lockerAccount.all();
-    return vaults;
+  // const getAllVaults = async () => {
+  //   const vaults = await program.account.lockerAccount.all();
+  //   return vaults;
+  // };
+  const getAllVaults = async (pageSize = 10, pageNumber = 1) => {
+    const start = (pageNumber - 1) * pageSize;
+    const end = start + pageSize;
+
+    const allVaults = await program.account.lockerAccount.all();
+
+    const filtredVaults = allVaults; 
+
+    // Apply pagination
+    const paginatedVaults = filtredVaults.slice(start, end);
+
+    return paginatedVaults;
+  };
+  const getTotalVaults = async () => {
+    const allVaults = await program.account.lockerAccount.all();
+    const filtredVaults = allVaults; 
+    return filtredVaults.length;
   };
   const getFirstLockByLp = async (mint: string) => {
     const lock = await program.account.deposit.all();
@@ -32,11 +50,16 @@ const useLockerTools = () => {
   };
   const getLocksByOwner = async (owner: string) => {
     try {
-      const locks = (await program.account.deposit.all()).filter((elm) =>
-        elm.account.owner.toBase58()
+      const locks = (await program.account.deposit.all()).filter(
+        (elm) => elm.account.owner.toBase58() == owner
       );
       return locks;
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
       return null;
     }
   };
@@ -86,10 +109,10 @@ const useLockerTools = () => {
         const sig = await sendTransaction(tx, connection, {
           skipPreflight: true,
         });
-        console.log("Sig", sig);
+
         toast({
           variant: "success",
-          title: "Deposited successfully into trader account!",
+          title: "Vault Created Successfully!",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction sent successfully.</p>
@@ -176,7 +199,6 @@ const useLockerTools = () => {
         // tx.add(feeAtaIx);
         const tx2 = new Transaction().add(feeAtaIx);
         const sig2 = await sendTransaction(tx2, connection);
-        console.log("SIG2", sig2);
       }
       const ix = await program.methods
         .depositAmount(new BN(amount), new BN(unlockTime))
@@ -200,7 +222,7 @@ const useLockerTools = () => {
       });
       toast({
         variant: "success",
-        title: "Deposited successfully into trader account!",
+        title: "Lock Created Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
@@ -211,6 +233,11 @@ const useLockerTools = () => {
         ),
       });
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
       console.log("Error", error);
     }
   };
@@ -272,7 +299,7 @@ const useLockerTools = () => {
 
       toast({
         variant: "success",
-        title: "Deposited successfully into trader account!",
+        title: "Amount Withdrawn Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
@@ -300,6 +327,11 @@ const useLockerTools = () => {
       );
       return locks;
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
       return null;
     }
   };
@@ -385,7 +417,7 @@ const useLockerTools = () => {
       });
       toast({
         variant: "success",
-        title: "Deposited successfully into trader account!",
+        title: "Lock Amount Extended Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
@@ -395,7 +427,13 @@ const useLockerTools = () => {
           </div>
         ),
       });
-    } catch (err) {}
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: err.message,
+      });
+    }
   };
   const handleExtendLockTime = async (
     extendTime: number,
@@ -403,10 +441,6 @@ const useLockerTools = () => {
     payer: PublicKey
   ) => {
     try {
-      const vaults = await getAllVaults();
-      const selectedLock = vaults.find(
-        (elm) => elm.account.mint.toBase58() == mint
-      );
       const [lockAccountInfo] = anchor.web3.PublicKey.findProgramAddressSync(
         [
           Buffer.from(anchor.utils.bytes.utf8.encode("guac_lock_info")),
@@ -415,28 +449,7 @@ const useLockerTools = () => {
         ],
         program.programId
       );
-      const { pubkey: LockAccountAta, ix: lockAccountAtaIx } =
-        await getTokenAccount(
-          connection,
-          new PublicKey(mint),
-          publicKey,
-          selectedLock.publicKey,
-          true
-        );
-      const { pubkey: feeAta, ix: feeAtaIx } = await getTokenAccount(
-        connection,
-        new PublicKey(mint),
-        publicKey,
-        new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
-        true
-      );
-      const { pubkey: userAta, ix: userAtaIx } = await getTokenAccount(
-        connection,
-        new PublicKey(mint),
-        payer,
-        payer,
-        false
-      );
+
       const { pubkey: feeGuacAta } = await getTokenAccount(
         connection,
         new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"),
@@ -470,7 +483,7 @@ const useLockerTools = () => {
       });
       toast({
         variant: "success",
-        title: "Deposited successfully into trader account!",
+        title: "Lock Time Extended Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
@@ -480,7 +493,83 @@ const useLockerTools = () => {
           </div>
         ),
       });
-    } catch (err) {}
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: err.message,
+      });
+    }
+  };
+  const handleUnlock = async (mint: string, payer: PublicKey) => {
+    try {
+      const vaults = await getAllVaults();
+      const selectedLock = vaults.find(
+        (elm) => elm.account.mint.toBase58() == mint
+      );
+
+      const [lockAccountInfo] = anchor.web3.PublicKey.findProgramAddressSync(
+        [
+          Buffer.from(anchor.utils.bytes.utf8.encode("guac_lock_info")),
+          payer.toBuffer(),
+          new PublicKey(mint).toBuffer(),
+        ],
+        program.programId
+      );
+      const { pubkey: LockAccountAta } = await getTokenAccount(
+        connection,
+        new PublicKey(mint),
+        publicKey,
+        selectedLock.publicKey,
+        true
+      );
+      const { pubkey: userAta } = await getTokenAccount(
+        connection,
+        new PublicKey(mint),
+        payer,
+        payer,
+        false
+      );
+      // Add your test here.
+      const ix = await program.methods
+        .closeAndWithdraw()
+        .accounts({
+          lockAccount: selectedLock.publicKey,
+          lockAta: LockAccountAta,
+          lockInfo: lockAccountInfo,
+          creator: selectedLock.account.creator,
+          signerAta: userAta,
+          signer: payer,
+          mint: mint,
+          tokenProgram: TOKEN_PROGRAM_ID,
+        })
+        .instruction();
+      const tx = new Transaction();
+      tx.add(ix);
+      const sig = await sendTransaction(tx, connection, {
+        skipPreflight: true,
+      });
+      toast({
+        variant: "success",
+        title: "Lock Unlocked Successfully!",
+        description: (
+          <div className="flex flex-col gap-1">
+            <p>Transaction sent successfully.</p>
+            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+              View on solscan
+            </Link>
+          </div>
+        ),
+      });
+      console.log("Your transaction signature", tx);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+      console.log("Error", error);
+    }
   };
   return {
     initNewVault,
@@ -494,6 +583,8 @@ const useLockerTools = () => {
     getLockerByAdr,
     handleExtendLock,
     handleExtendLockTime,
+    handleUnlock,
+    getTotalVaults,
   };
 };
 export default useLockerTools;

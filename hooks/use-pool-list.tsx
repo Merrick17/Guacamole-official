@@ -1,41 +1,15 @@
-import { useWallet } from "@solana/wallet-adapter-react";
+"use client";
+import { TokenInfo } from "@solana/spl-token-registry";
+import axios from "axios";
 import {
-  useState,
-  useEffect,
-  useContext,
+  SetStateAction,
   createContext,
   useCallback,
-  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 
-// interface Pool {
-//   id: string;
-//   baseMint: string;
-//   quoteMint: string;
-//   lpMint: string;
-//   baseDecimals: number;
-//   quoteDecimals: number;
-//   lpDecimals: number;
-//   version: number;
-//   programId: string;
-//   authority: string;
-//   openOrders: string;
-//   targetOrders: string;
-//   baseVault: string;
-//   quoteVault: string;
-//   withdrawQueue: string;
-//   lpVault: string;
-//   marketVersion: number;
-//   marketProgramId: string;
-//   marketId: string;
-//   marketAuthority: string;
-//   marketBaseVault: string;
-//   marketQuoteVault: string;
-//   marketBids: string;
-//   marketAsks: string;
-//   marketEventQueue: string;
-//   lookupTableAccount: string;
-// }
 interface Pool {
   poolId: string;
   baseMint: string;
@@ -45,51 +19,111 @@ interface Pool {
   provider: string;
   liquidity: number;
 }
+interface PoolExtended {
+  poolId: string;
+  baseMint: TokenInfo;
+  quoteMint: TokenInfo;
+  lpMint: string;
+  lpDecimals: number;
+  provider: string;
+  liquidity: number;
+  baseAdr: string;
+  quoteAdr: string;
+}
 interface PoolContextType {
   poolList: Pool[];
   loading: boolean;
   error: string | null;
   selectedPool: Pool | null;
   setSelectedPool: (value: SetStateAction<Pool>) => void;
+  getPoolByLpMint: (lpMint: string) => Promise<PoolExtended | null>;
+  getPoolByPoolId: (lpMint: string) => Promise<PoolExtended | null>;
 }
 
 const PoolContext = createContext<PoolContextType | undefined>(undefined);
 
 const PoolProvider: React.FC<{ children: any }> = ({ children }) => {
-  const { connected } = useWallet();
   const [poolList, setPoolList] = useState<Pool[]>([]);
   const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  // const getPoolByLpMint = useCallback(
+  //   (lpMint: string): Pool | null => {
+  //     return poolList.find((pool) => pool.lpMint === lpMint) || null;
+  //   },
+  //   [poolList]
+  // );
+  const getPoolByLpMint = useCallback(
+    async (lpMint: string): Promise<PoolExtended | null> => {
+      try {
+        const response = await axios.get(
+          `https://159.223.197.10.nip.io/pool/${lpMint}`
+        );
 
+        // Assuming the response data has the same structure as your Pool object
+        const poolData: PoolExtended = response.data;
+
+        return poolData || null;
+      } catch (error) {
+        console.error("Error fetching pool data:", error);
+        return null;
+      }
+    },
+    []
+  ); // Ensure to add dependencies if needed
+  const getPoolByPoolId = useCallback(
+    async (lpMint: string): Promise<PoolExtended | null> => {
+      try {
+        const response = await axios.get(
+          `https://159.223.197.10.nip.io/pool/id/${lpMint}`
+        );
+
+        // Assuming the response data has the same structure as your Pool object
+        const poolData: PoolExtended = response.data;
+
+        return poolData || null;
+      } catch (error) {
+        console.error("Error fetching pool data:", error);
+        return null;
+      }
+    },
+    []
+  ); // Ensure to add dependencies if needed
   const fetchPoolList = useCallback(async () => {
     try {
-      // const response = await fetch(
-      //   "https://lock-pools-607adf8dc4ea.herokuapp.com/pools"
-      // );
-      const response = await fetch("/api/pools");
+      const response = await fetch("https://159.223.197.10.nip.io/pools");
+
       if (!response.ok) {
-        throw new Error("Failed to fetch data");
+        throw new Error(`Failed to fetch data. Status: ${response.status}`);
       }
 
       const data = await response.json();
-      // Assuming the structure of the API response is an array under the 'poolList' key
-      const fetchedPoolList: Pool[] = data["pools"];
+      // Assuming the structure of the API response is an array under the 'pools' key
+      const fetchedPoolList: Pool[] = data;
 
       setPoolList(fetchedPoolList);
     } catch (error) {
-      setError("Error fetching data");
+      setError(`Error fetching data: ${error.message}`);
     } finally {
       setLoading(false);
     }
   }, []);
+
   useEffect(() => {
     fetchPoolList();
-  }, [fetchPoolList]); // Empty dependency array ensures the effect runs only once on mount
+  }, [fetchPoolList]);
 
   return (
     <PoolContext.Provider
-      value={{ poolList, loading, error, selectedPool, setSelectedPool }}
+      value={{
+        poolList,
+        loading,
+        error,
+        selectedPool,
+        setSelectedPool,
+        getPoolByLpMint,
+        getPoolByPoolId,
+      }}
     >
       {children}
     </PoolContext.Provider>

@@ -1,17 +1,15 @@
-import Container from '@/components/common/container';
-import EarnFooter from '@/components/common/earn-footer';
-import EarnHeader from '@/components/common/earn-header';
-import DynmaicVaultItem, {
-  DynmaicVaultItemProps,
-} from '@/components/views/earn/dynmaic-vault/dynmaic-vault-item';
-import VaultItemsContainer from '@/components/views/earn/dynmaic-vault/vault-items-container';
-import { cn } from '@/lib/utils';
-import { Metadata } from 'next';
+import EarnFooter from "@/components/common/earn-footer";
+import EarnHeader from "@/components/common/earn-header";
+import VaultItemsContainer from "@/components/views/earn/dynmaic-vault/vault-items-container";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Dynamic Vault | Guacamole',
+  title: "Dynamic Lending Vaults For Solana | Guacamole",
   description:
-    'Put your crypto to work for you in various ways and enjoy the fruit of its labor.',
+    "Unlock the potential of your crypto assets with our dynamic lending vaults. Effortlessly optimize yields by automatically rebalancing between the top lending protocols.",
+  openGraph: {
+    images: "/images/seo/earn.png",
+  },
 };
 
 const Page = () => {

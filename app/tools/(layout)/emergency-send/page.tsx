@@ -1,12 +1,15 @@
-import Container from '@/components/common/container';
-import ToolHeader from '@/components/common/tool-header';
-import EmergencySendForm from '@/components/views/tools/emergency-send/emergency-send-form';
-import { Metadata } from 'next';
+import Container from "@/components/common/container";
+import ToolHeader from "@/components/common/tool-header";
+import EmergencySendForm from "@/components/views/tools/emergency-send/emergency-send-form";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Emergency Send To New Wallet | Guacamole',
+  title: "Emergency Send | Guacamole",
   description:
-    'Easily send everything from one Solana wallet to a new Solana wallet of your choice. This tool is useful if you suspect your wallet has been compromised.',
+    " Fearing that your wallet is compromised? Guacamole’s emergency send tool allows you to send everything from one wallet to a new wallet of your choice with one click.    ",
+  openGraph: {
+    images: ["images/seo/tools.png"],
+  },
 };
 const EmergencySend = () => {
   return (

@@ -29,6 +29,8 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Metaplex, PublicKey } from "@metaplex-foundation/js";
+import { useConnection } from "@solana/wallet-adapter-react";
 dayjs.extend(relativeTime);
 const checkRemainder = (nb: number) => {
   return nb % 2;
@@ -42,8 +44,9 @@ const Pagination = ({
   totalItems: number;
   changePage: (nbr: number) => void;
 }) => {
-  const totalPages = totalItems / 10;
-  //const totalPages = 10;
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   return totalPages > 1 ? (
     <ul className="inline-flex -space-x-px text-sm bg-foreground">
       <li>
@@ -52,34 +55,34 @@ const Pagination = ({
           onClick={() => {
             changePage(activePage - 1);
           }}
+          disabled={activePage === 1}
         >
           Previous
         </button>
       </li>
-      {totalPages > 1 &&
-        Array.from({ length: totalPages }).map((elm, ind) => (
-          <li>
-            <button
-              onClick={() => {
-                changePage(ind + 1);
-              }}
-              className={`flex items-center justify-center px-3 h-8 text-black border  ${
-                activePage == ind + 1 ? "bg-primary" : "bg-foreground "
-              } hover:bg-primary hover:text-black ${
-                activePage == ind + 1 ? "text-black" : "text-primary"
-              } `}
-            >
-              {ind + 1}
-            </button>
-          </li>
-        ))}
-
+      {Array.from({ length: totalPages }).map((_, ind) => (
+        <li key={ind}>
+          <button
+            onClick={() => {
+              changePage(ind + 1);
+            }}
+            className={`flex items-center justify-center px-3 h-8 text-black border  ${
+              activePage === ind + 1 ? "bg-primary" : "bg-foreground "
+            } hover:bg-primary hover:text-black ${
+              activePage === ind + 1 ? "text-black" : "text-primary"
+            } `}
+          >
+            {ind + 1}
+          </button>
+        </li>
+      ))}
       <li>
         <button
           onClick={() => {
             changePage(activePage + 1);
           }}
           className="flex items-center justify-center px-3 h-8 leading-tight  bg-foreground border rounded-e-lg text-primary hover:bg-primary hover:text-black"
+          disabled={activePage === totalPages}
         >
           Next
         </button>
@@ -99,8 +102,10 @@ const RenderItem = ({
   index: number;
   checkRemainder: (nbr: number) => number;
 }) => {
-  const { tokenList } = useJupiterApiContext();
-  const { poolList } = usePool();
+  const { tokenMap } = useJupiterApiContext();
+  const { connection } = useConnection();
+  const metaplex = new Metaplex(connection);
+  const { getPoolByLpMint } = usePool();
   const { getFirstLockByLp } = useLockerTools();
   const [selectedPool, setSelectedPool] = useState(null);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
@@ -108,16 +113,44 @@ const RenderItem = ({
   const [firstLockTime, setFirstLockTime] = useState<number | null>(null);
 
   const fetchPoolData = useCallback(async () => {
-    if (poolList && poolList.length !== 0 && lock) {
-      const pool = poolList.find(
-        (elm) => elm.lpMint == lock.account.mint.toBase58()
-      );
+    const pool = await getPoolByLpMint(lock.account.mint.toBase58());
+    //console.log("Pool",pool);
+    if (pool && lock) {
+      const base = pool.baseMint;
+      const quote = pool.quoteMint;
+      if (!base) {
+        const baseInfo = await metaplex
+          .nfts()
+          .findByMint({ mintAddress: new PublicKey(pool.baseAdr) });
+        const itm: TokenInfo = {
+          symbol: baseInfo.symbol,
+          name: baseInfo.name,
+          address: baseInfo.address.toBase58(),
+          chainId: 101,
+          decimals: baseInfo.mint.decimals,
+          logoURI: baseInfo?.json?.image,
+        };
+        setBaseToken(itm);
+      } else {
+        setBaseToken(base);
+      }
+      if (!quote) {
+        const quoteInfo = await metaplex
+          .nfts()
+          .findByMint({ mintAddress: new PublicKey(pool.quoteAdr) });
+        const itm: TokenInfo = {
+          symbol: quoteInfo.symbol,
+          name: quoteInfo.name,
+          address: quoteInfo.address.toBase58(),
+          chainId: 101,
+          decimals: quoteInfo.mint.decimals,
+          logoURI: quoteInfo?.json?.image,
+        };
+        setQuoteToken(itm);
+      } else {
+        setQuoteToken(quote);
+      }
 
-      const base = tokenList.find((elm) => elm.address == pool.baseMint);
-      const quote = tokenList.find((elm) => elm.address == pool.quoteMint);
-
-      setBaseToken(base);
-      setQuoteToken(quote);
       setSelectedPool(pool);
 
       const value = await getFirstLockByLp(pool.lpMint);
@@ -126,15 +159,20 @@ const RenderItem = ({
         setFirstLockTime(value.account.unlockTime.toNumber());
       }
     }
-  }, [lock, poolList]);
+  }, [lock]);
 
   useEffect(() => {
     fetchPoolData();
   }, [fetchPoolData]);
   const displayName = () => {
-    return baseToken && quoteToken
-      ? `${baseToken.symbol}/${quoteToken.symbol}`
-      : "N/A";
+    const tokenName =
+      baseToken && quoteToken
+        ? `${baseToken.symbol}/${quoteToken.symbol}`
+        : "N/A";
+    if (tokenName == "N/A") {
+      console.log("N/A POOL", selectedPool);
+    }
+    return tokenName;
   };
 
   const calculateLiquidity = () => {
@@ -153,7 +191,6 @@ const RenderItem = ({
   };
   const calculateLiquidityRatio = () => {
     if (lock && selectedPool) {
-      console.log("Selected Pool", selectedPool);
       const lockedAmount =
         lock.account.lockedAmount.toNumber() /
         Math.pow(10, selectedPool.lpDecimals);
@@ -175,7 +212,7 @@ const RenderItem = ({
         checkRemainder(index) == 1 && "bg-[#0F0F0F]"
       )}
     >
-      <TableCell className="font-medium w-full md:w-max overflow-x-auto">
+      <TableCell className="font-medium w-full md:w-max overflow-x-auto ">
         <div className="w-full flex flex-row items-center  gap-2 lg:gap-5">
           {selectedPool ? (
             <img
@@ -279,35 +316,39 @@ const RenderItem = ({
 const LockerList = () => {
   const { push } = useRouter();
   const [lockerList, setLockerList] = useState<any[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
   const { poolList } = usePool();
-  const { getAllVaults } = useLockerTools();
+  const { getAllVaults, getTotalVaults } = useLockerTools();
   const { tokenList } = useJupiterApiContext();
   const [activePage, setActivePage] = useState<number>(1);
   const [searchToken, setSearchToken] = useState("");
+  const router = useRouter();
   const handleChangePage = (nbr: number) => {
     setActivePage(nbr);
   };
   const initVaultList = useCallback(async () => {
-    const vaults = await getAllVaults();
+    const vaults = await getAllVaults(10, activePage);
+    const totalItems = await getTotalVaults();
+    setTotalItems(totalItems);
     setLockerList(vaults);
-  }, []);
+  }, [activePage]);
   const handleSearch = async (search: string) => {
     const vaults = await getAllVaults();
     if (search !== "") {
       const token = tokenList.find(
         (elm) => elm.name.includes(search) || elm.symbol.includes(search)
       );
-      console.log("Token", token);
+
       const filterPools = poolList.filter(
         (elm) => elm.baseMint == token.address || elm.quoteMint == token.address
       );
-      console.log("POOLS", poolList);
+
       const filteredVaults = vaults.filter((vault) =>
         filterPools.some(
           (pool) => pool.lpMint === vault.account.mint.toBase58() // Adjust this line based on your vault structure
         )
       );
-      console.log("Filterd vaults", filteredVaults);
+
       setLockerList(filteredVaults);
     } else {
       setLockerList(vaults);
@@ -316,18 +357,24 @@ const LockerList = () => {
 
   useEffect(() => {
     initVaultList();
-  }, [initVaultList]);
+  }, [initVaultList, poolList]);
   return (
     <Container className="bg-foreground rounded-md lg:max-w-5xl">
-      <div className="w-full flex flex-col  md:flex-row   md:justify-between items-center text-black  gap-2 py-3">
-        <Select defaultValue="tpp">
+      <div className="w-full flex flex-col mb-5  md:flex-row   md:justify-between items-center text-black  gap-2 py-3">
+        <Select
+          defaultValue="tpp"
+          onValueChange={(value) => {
+            if (value == "token") {
+              router.push("/launch/create-spl-token");
+            }
+          }}
+        >
           <SelectTrigger className="w-full lg:w-[250px] h-[30px] max-sm:w-full  font-medium ">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="tpp">Liquidity Lockers </SelectItem>
-            {/* <SelectItem value="vatr">Token Activity Tracking</SelectItem>
-            <SelectItem value="vw">View Watchlist</SelectItem> */}
+            <SelectItem value="token">Create Token</SelectItem>
           </SelectContent>
         </Select>
         <div className="flex flex-col-reverse w-full md:flex-row md:justify-end md:items-center gap-2 ">
@@ -348,7 +395,7 @@ const LockerList = () => {
           </Button>
         </div>
       </div>
-      <Table className="max-sm:w-96 max-sm:overflow-x-auto">
+      <Table className="max-sm:w-96 max-sm:overflow-x-auto min-h-[200px] ">
         <TableHeader>
           <TableRow className="bg-[#0F0F0F] border-none">
             <TableHead className="uppercase">Collection</TableHead>
@@ -359,24 +406,49 @@ const LockerList = () => {
         </TableHeader>
 
         <TableBody>
-          {lockerList
-            .sort(
-              (a, b) =>
-                b.account.lockedAmount.toNumber() -
-                a.account.lockedAmount.toNumber()
-            )
-            .map((lock, ind) => (
-              <RenderItem
-                lock={lock}
-                index={ind}
-                checkRemainder={checkRemainder}
-              />
-            ))}
+          {poolList.length != 0 &&
+            lockerList
+
+              .sort((a, b) => {
+                const calculateLiquidity = (lock, selectedPool: any) => {
+                  if (lock && selectedPool) {
+                    const lockedAmount =
+                      lock.account.lockedAmount.toNumber() /
+                      Math.pow(10, selectedPool.lpDecimals);
+
+                    const tokenAmount = selectedPool.tokenAmount;
+
+                    const liquidity =
+                      (lockedAmount / tokenAmount) * selectedPool.liquidity;
+                    return liquidity;
+                  } else {
+                    return 0;
+                  }
+                };
+                const aPool = poolList.find(
+                  (elm) => elm.lpMint == a.account.mint.toBase58()
+                );
+                const bPool = poolList.find(
+                  (elm) => elm.lpMint == b.account.mint.toBase58()
+                );
+                return (
+                  calculateLiquidity(b, bPool) - calculateLiquidity(a, aPool)
+                );
+                //return bPool.liquidity - aPool.liquidity;
+              })
+              .map((lock, ind) => (
+                <RenderItem
+                  key={ind.toString()}
+                  lock={lock}
+                  index={ind}
+                  checkRemainder={checkRemainder}
+                />
+              ))}
         </TableBody>
       </Table>
       <div className="flex flex-1 justify-end w-full mt-3">
         <Pagination
-          totalItems={lockerList.length}
+          totalItems={totalItems}
           activePage={activePage}
           changePage={handleChangePage}
         />
@@ -386,21 +458,3 @@ const LockerList = () => {
 };
 
 export default LockerList;
-{
-  /* <Table className="max-sm:w-96 max-sm:overflow-x-auto">
-          <TableHeader>
-            <TableRow className="w-full">
-              <TableHead className="uppercase"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>
-                {Array.from({ length: 7 }).map((_, i) => (
-                  <Skeleton key={i} className="w-full min-h-[50px] my-3" />
-                ))}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table> */
-}

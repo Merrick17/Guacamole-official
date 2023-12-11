@@ -7,7 +7,7 @@ import { SwapMode } from '@jup-ag/react-hook';
 import { PublicKey } from '@solana/web3.js';
 import { DEFAULT_EXPLORER, FormProps } from '../types';
 
-export const JUPITER_DEFAULT_RPC ="https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943"
+export const JUPITER_DEFAULT_RPC ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7"
 
 export const WRAPPED_SOL_MINT = new PublicKey(
   'So11111111111111111111111111111111111111112'

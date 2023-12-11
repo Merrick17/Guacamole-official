@@ -1,12 +1,15 @@
-import Container from '@/components/common/container';
-import EarnHeader from '@/components/common/earn-header';
-import GuacStakeForm from '@/components/views/earn/guac-stake/guac-stake-guac';
-import { Metadata } from 'next';
+import Container from "@/components/common/container";
+import EarnHeader from "@/components/common/earn-header";
+import GuacStakeForm from "@/components/views/earn/guac-stake/guac-stake-guac";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Dynamic Vault | Guacamole',
+  title: "Dynamic Vault | Guacamole",
   description:
-    'Put your crypto to work for you in various ways and enjoy the fruit of its labor.',
+    "Put your crypto to work for you in various ways and enjoy the fruit of its labor.",
+  openGraph: {
+    images: "/images/seo/earn.png",
+  },
 };
 
 const Page = () => {

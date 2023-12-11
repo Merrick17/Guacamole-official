@@ -103,9 +103,9 @@ const Revoke = () => {
   }, [walletTokens]);
   const handleRevoke = async () => {
     try {
-      console.log("TO REVOKE", toRevoke);
+    
       if (toRevoke[0] != undefined && publicKey) {
-        console.log("Here");
+    
         const nbPerTx = 5;
         let nbTx: number;
         if (toRevoke.length % nbPerTx == 0) {

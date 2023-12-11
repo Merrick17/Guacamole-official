@@ -9,9 +9,12 @@ import Link from "next/link";
 import { FC } from "react";
 
 export const metadata: Metadata = {
-  title: "Easily Swap Solana Based Tokens | Guacamole",
+  title: "Solana Swap Aggregator | Guacamole",
   description:
-    "Guacamole Swap allows you to trade any tokens on Solana in just a few clicks with no hassle and the best fees.",
+    "Our Solana Swap page is designed to help you discover the most efficient trading routes. Guarantee top value for every transaction with our easy-to-navigate platform that simplifies finding the best swap deals. Start trading smarter on Solana today!",
+  openGraph: {
+    images: "/images/seo/trade.png",
+  },
 };
 
 const Page: FC = () => {
@@ -32,13 +35,19 @@ const Page: FC = () => {
               }
             >
               <p className=" text-xl font-medium leading-8 text-muted-foreground">
-              Our amazing tools help you trade any token on Solana. Just connect your wallet, select a token, and click! Advanced trading options are also available like the ability to DCA, place limit orders, or bridge.
+                Our amazing tools help you trade any token on Solana. Just
+                connect your wallet, select a token, and click! Advanced trading
+                options are also available like the ability to DCA, place limit
+                orders, or bridge.
               </p>
               <Link className="text-xl text-primary" href={"/trade/explore"}>
-              Explore Trading Features ➜
+                Explore Trading Features ➜
               </Link>
             </HeroHeadline>
-            <Trade showDetails={false} className="col-span-1 lg:col-span-3 bg-foreground" />
+            <Trade
+              showDetails={false}
+              className="col-span-1 lg:col-span-3 bg-foreground"
+            />
           </div>
 
           <HeroList listItems={TradeListItems} />

@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   title: "Let's Play Some Games | Guacamole",
   description:
     "Take a chance in fun games where you can win some Solana and some of your favorite coins and tokens. Flips, mines, and more await for you to play on Guacamole!",
+  openGraph: {
+    images: "/images/seo/play.png",
+  },
 };
 
 const Page: FC = () => {
@@ -42,7 +45,9 @@ const Page: FC = () => {
                 your favorite coins and tokens. Flips, mines, dice, and more
                 await for you to play on our game section.
               </p>
-              <Link className="text-xl text-primary" href={"/play/explore"}>Explore All Games ➜</Link>
+              <Link className="text-xl text-primary" href={"/play/explore"}>
+                Explore All Games ➜
+              </Link>
             </HeroHeadline>
             {/* <WalletMultiButtonDynamic /> */}
             <RecentPlaysFeatured className="col-span-1 lg:col-span-3 bg-foreground" />

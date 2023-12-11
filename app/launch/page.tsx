@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "Easily Swap Solana Based Tokens | Guacamole",
   description:
     "Guacamole Swap allows you to launch any tokens on Solana in just a few clicks with no hassle and the best fees.",
+    openGraph: {
+      images: "/images/seo/launch.png",
+    },
 };
 
 const Page: FC = () => {
@@ -36,7 +39,9 @@ const Page: FC = () => {
                 interfaces make it easier to get off the ground and start
                 distribution and add utilities.
               </p>
-              <Link className="text-xl text-primary" href={"/launch/explore"}>Explore Launch Tools ➜</Link>
+              <Link className="text-xl text-primary" href={"/launch/explore"}>
+                Explore Launch Tools ➜
+              </Link>
             </HeroHeadline>
             <CreationWalkthroughs className="col-span-1 lg:col-span-3 bg-foreground" />
           </div>

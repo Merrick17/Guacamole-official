@@ -129,13 +129,13 @@ export const SelectedTokenProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [params]);
   const getMarketCap = useCallback(async () => {
-    console.log("TOKEN", selectedToken);
+ 
     if (selectedToken && selectedToken.extensions) {
       const { data } = await axios.get(
         "https://api.coingecko.com/api/v3/coins/" +
           selectedToken.extensions.coingeckoId
       );
-      console.log("Market Data",data)
+     
     }
   }, [selectedToken]);
   const fetchTokenInfo = useCallback(async () => {
@@ -147,7 +147,7 @@ export const SelectedTokenProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [selectedToken]);
   const getTokenData = useCallback(async () => {
-    console.log("HERE");
+  
     if (selectedToken) {
       const { data: tokenData } = await axios.get(
         `https://api.geckoterminal.com/api/v2/networks/solana/tokens/${selectedToken.address}`

@@ -79,6 +79,7 @@
     "lodash": "^4.17.21",
     "lokijs": "1.x",
     "lucide-react": "^0.260.0",
+    "mongoose": "^8.0.2",
     "nanoid": "^4.0.2",
     "next": "13.4.10",
     "next-themes": "^0.2.1",

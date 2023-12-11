@@ -1,13 +1,16 @@
-import Container from '@/components/common/container';
-import ToolHeader from '@/components/common/tool-header';
-import Banner from '@/components/views/play/banner';
-import routes from '@/config/routes';
-import { Metadata } from 'next';
+import Container from "@/components/common/container";
+import ToolHeader from "@/components/common/tool-header";
+import Banner from "@/components/views/play/banner";
+import routes from "@/config/routes";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Token Multi Sender | Guacamole',
+  title: "Token Multi Sender | Guacamole",
   description:
-    'Multiple airdrop and multi-send options to send tokens to Solana addresses and domains. Connect your wallet, enter the addresses, and airdrop your tokens!',
+    "Multiple airdrop and multi-send options to send tokens to Solana addresses and domains. Connect your wallet, enter the addresses, and airdrop your tokens!",
+  openGraph: {
+    images: ["images/seo/tools.png"],
+  },
 };
 const TokenMultiSender = () => {
   return (

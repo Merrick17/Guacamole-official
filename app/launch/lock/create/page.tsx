@@ -17,22 +17,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 const LockItem = ({ lock }) => {
-  const { poolList } = usePool();
-  const { tokenList } = useJupiterApiContext();
+  const { poolList, getPoolByLpMint } = usePool();
+  const { tokenList, tokenMap } = useJupiterApiContext();
   const [poolInfo, setPoolInfo] = useState(null);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
-  const { publicKey } = useWallet();
-  const { connection } = useConnection();
 
-  const initInfo = () => {
-    if (lock && poolList.length !== 0) {
-      const pool = poolList.find(
-        (elm) => elm.lpMint == lock.account.mint.toBase58()
-      );
-      //console.log("Pool Details", pool);
-      const base = tokenList.find((elm) => elm.address == pool.baseMint);
-      const quote = tokenList.find((elm) => elm.address == pool.quoteMint);
+  const initInfo = async () => {
+    if (lock) {
+      const pool = await getPoolByLpMint(lock.account.mint.toBase58());
+
+      const base = pool.baseMint;
+      const quote = pool.quoteMint;
       setPoolInfo(pool);
       setQuoteToken(quote);
       setBaseToken(base);
@@ -40,7 +36,7 @@ const LockItem = ({ lock }) => {
   };
   useEffect(() => {
     initInfo();
-  }, [poolList, lock]);
+  }, [lock]);
   return (
     <Container className="bg-[#0F0F0F] px-[15px] py-[16px] flex gap-3 justify-between h-[60px] my-[5px]">
       <div className="flex justify-start items-center">
@@ -81,11 +77,11 @@ const Page = () => {
     setStep(newStep);
   };
   const initUserLocks = useCallback(async () => {
-    const lockers = await getLocksByOwner(
-      "EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"
-    );
-    console.log("Lockers", lockers);
-    setUserLocks(lockers);
+    if (connected) {
+      const lockers = await getLocksByOwner(publicKey.toBase58());
+      //console.log("Lockers", lockers);
+      setUserLocks(lockers);
+    }
   }, [publicKey, connected]);
   useEffect(() => {
     initUserLocks();

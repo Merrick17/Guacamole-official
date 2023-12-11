@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   title: "Useful Tools For All Solana Users | Guacamole",
   description:
     "Find a variety of easy to use tools in our suite that can instantly help improve your quality of life while interacting with the Solana blockchain or starting your own project!",
+  openGraph:{
+    images: ["images/seo/launch.png"],
+  }
 };
 const page: FC<ToolsProps> = () => {
   return (
@@ -55,19 +58,29 @@ const featuredLaunch: {
     buttonTxt: "Create",
   },
   {
-    title: "List Token On Shop",
+    image: "/images/launch/Lockers_Banner_Guacamole.png",
+    title: "Liquidity Lockers",
     description:
-      "Allow your community to purchase games, software, and more with your token.",
-    image: "/images/launch/popular-subscription.png",
-    href: "https://docs.guacamole.gg/extended-ecosystem/guac-shop/list-your-token",
-    buttonTxt: "List",
+      "Explore other locks or verifiably lock your liquidity tokens in time-vested contracts or forever!",
+    href: "/launch/lock",
+    buttonTxt: "Explore",
     target: "_blank",
   },
+  // {
+  //   title: "List Token On Shop",
+  //   description:
+  //     "Allow your community to purchase games, software, and more with your token.",
+  //   image: "/images/launch/popular-subscription.png",
+  //   href: "https://docs.guacamole.gg/extended-ecosystem/guac-shop/list-your-token",
+  //   buttonTxt: "List",
+  //   target: "_blank",
+  // },
+
   {
-    title: "Mint Your cNFTs",
+    title: "Token Manager",
     description:
-      "Easily create a compressed NFT collection using our no-code interfaces.",
-    image: "/images/launch/CNFT_MInter_Guac.png",
+      "Manage your token details, authorities, and tokenomics from one integrated panel. ",
+    image: "/images/launch/Managetokens_Guac.png",
     href: "",
     buttonTxt: "Coming Soon",
     disabled: true,
@@ -81,26 +94,18 @@ const LaunchItems: {
   href?: string;
   disabled?: boolean;
 }[] = [
+  // {
+  //   image: "/icons/launch/burn.svg",
+  //   name: "burn tokens",
+  //   description: "Burn portions of token supply or liquidity pool tokens.",
+  //   href: routes.tools.burnSplToken,
+  // },
   {
-    image: "/icons/launch/burn.svg",
-    name: "burn tokens",
-    description: "Burn portions of token supply or liquidity pool tokens.",
-    href: routes.tools.burnSplToken,
-  },
-  {
-    name: "add nft farm",
+    name: "Launch NFT Farm",
     description:
       "Create your own Tokenized NFT Farm to reward stakers with NFTs.",
     image: "/icons/launch/nft-farm.svg",
     href: routes.launch.root,
-    disabled: true,
-  },
-
-  {
-    image: "/icons/launch/launch-pool.svg",
-    name: "Launch Liquidity Pools",
-    description: "Create pools for your token on Guacamole and other DEX’s.",
-    href: routes.tools.root,
     disabled: true,
   },
   {
@@ -112,20 +117,28 @@ const LaunchItems: {
     disabled: true,
   },
   {
-    image: "/icons/launch/lock-liquidity.svg",
-    name: "Lock Your Liquidity",
-    description:
-      "Verifiably lock liquidity tokens in time-vested contracts or forever!",
+    image: "/icons/launch/launch-pool.svg",
+    name: "Launch Liquidity Pools",
+    description: "Create pools for your token on Guacamole and other DEX’s.",
     href: routes.tools.root,
     disabled: true,
   },
-  {
-    image: "/icons/launch/project-manager.svg",
-    name: "Project Manager",
-    description: "Manage your whole ecosystem from one simplified admin panel.",
-    href: routes.tools.root,
-    disabled: true,
-  },
+
+  // {
+  //   image: "/icons/launch/lock-liquidity.svg",
+  //   name: "Lock Your Liquidity",
+  //   description:
+  //     "Verifiably lock liquidity tokens in time-vested contracts or forever!",
+  //   href: routes.launch.lock,
+  //   disabled: false,
+  // },
+  // {
+  //   image: "/icons/launch/project-manager.svg",
+  //   name: "Project Manager",
+  //   description: "Manage your whole ecosystem from one simplified admin panel.",
+  //   href: routes.tools.root,
+  //   disabled: true,
+  // },
 ];
 
 const lanchItems: {

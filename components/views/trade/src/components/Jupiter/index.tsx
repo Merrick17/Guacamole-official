@@ -43,7 +43,7 @@ import React, {
   useState,
 } from "react";
 import emoji from "../../assets/no-route.png";
-import { getFeeAddress } from "../../utils/fees";
+import { getFeeAddress, getFeeAddressV2 } from "../../utils/fees";
 import Loading from "../Loading";
 import { Balance } from "./Balance";
 import { SelectCoin } from "./SelectCoin";
@@ -253,33 +253,36 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
       if (!loadingRoute && swapQuote && publicKey && signAllTransactions) {
         setSwapping(true);
 
-        const { pubkey: feeAccount, ix } = await getFeeAddress(
-          connection,
-          new PublicKey(outputTokenInfo.address),
-          publicKey
-        );
+        // const { pubkey: feeAccount, ix } = await getFeeAddress(
+        //   connection,
+        //   new PublicKey(outputTokenInfo.address),
+        //   publicKey
+        // );
 
-        let feeTx: Transaction | undefined = undefined;
-        if (ix) {
-          feeTx = new Transaction().add(ix);
-          const { blockhash } = await connection.getLatestBlockhash();
-          feeTx.feePayer = publicKey;
-          feeTx.recentBlockhash = blockhash;
-          const txId = await sendTransaction(feeTx, connection, {
-            skipPreflight: true,
-            maxRetries: 5,
-          });
-          console.log("FEE", txId);
-          // sendAndConfirmTransaction(connection,feeTx)
-          // const sig = await sendTransaction(feeTx, connection);
-          // const latestBlockHash = await connection.getLatestBlockhash();
-          // await connection.confirmTransaction({
-          //   blockhash: latestBlockHash.blockhash,
-          //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-          //   signature: sig,
-          // })
-          //await connection.confirmTransaction(sig, 'confirmed');
-        }
+        // let feeTx: Transaction | undefined = undefined;
+        // if (ix) {
+        //   feeTx = new Transaction().add(ix);
+        //   const { blockhash } = await connection.getLatestBlockhash();
+        //   feeTx.feePayer = publicKey;
+        //   feeTx.recentBlockhash = blockhash;
+        //   const txId = await sendTransaction(feeTx, connection, {
+        //     skipPreflight: true,
+        //     maxRetries: 5,
+        //   });
+        //   console.log("FEE", txId);
+        //   // sendAndConfirmTransaction(connection,feeTx)
+        //   // const sig = await sendTransaction(feeTx, connection);
+        //   // const latestBlockHash = await connection.getLatestBlockhash();
+        //   // await connection.confirmTransaction({
+        //   //   blockhash: latestBlockHash.blockhash,
+        //   //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+        //   //   signature: sig,
+        //   // })
+        //   //await connection.confirmTransaction(sig, 'confirmed');
+        // }
+        const feeAccount = getFeeAddressV2(
+          new PublicKey(outputTokenInfo.address)
+        );
 
         // const { swapTransaction } = await api.swapInstructionsPost({
         //   body: {
@@ -289,10 +292,12 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         //     computeUnitPriceMicroLamports: 1000,
         //   },
         // });
+        console.log("feeAccount", feeAccount.toBase58());
         const { swapTransaction } = await api.swapPost({
           swapRequest: {
             quoteResponse: swapQuote,
             userPublicKey: publicKey.toBase58(),
+            feeAccount: feeAccount.toBase58(),
           },
         });
 
@@ -301,7 +306,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
           var transaction =
             VersionedTransaction.deserialize(swapTransactionBuf);
           //await signAllTransactions([transaction]);
-          const txid = await sendTransaction(transaction, connection);
+          const txid = await sendTransaction(transaction, connection, {
+            skipPreflight: true,
+          });
 
           toast({
             variant: "success",
@@ -309,7 +316,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             description: (
               <div className="flex flex-col gap-1">
                 <p>Transaction sent successfully.</p>
-                <Link href={`https://solscan.io/tx/${txid}`}>
+                <Link href={`https://solscan.io/tx/${txid}`} target="_blank">
                   View on solscan
                 </Link>
               </div>

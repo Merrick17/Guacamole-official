@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   title: "Dynamic Vault | Guacamole",
   description:
     "Put your crypto to work for you in various ways and enjoy the fruit of its labor.",
+  openGraph: {
+    images: "/images/seo/earn.png",
+  },
 };
 interface pageProps {
   params: {
@@ -50,7 +53,7 @@ const Page: FC<pageProps> = ({ params }) => {
           </div>
         </div> */}
       {/* <StatisticsForm /> */}
-     
+
       <DetailVaultContainer tokenAdr={params.slug} />
     </main>
   );

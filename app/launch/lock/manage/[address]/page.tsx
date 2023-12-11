@@ -1,5 +1,4 @@
 "use client";
-import DateInput from "@/components/common/DateInput";
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -9,34 +8,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
 import useLockerTools from "@/hooks/use-locker";
 import { usePool } from "@/hooks/use-pool-list";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 import { useTokenAccounts } from "@bonfida/hooks";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
+import { format } from "date-fns";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
+import withAuth from "./guard";
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 const Page = () => {
   const router = useRouter();
   const params = useParams();
-  const { poolList } = usePool();
+  const { poolList, getPoolByLpMint } = usePool();
   const { toast } = useToast();
   const [selectedPool, setSelectedPool] = useState<any>(null);
   const { publicKey } = useWallet();
   const { connection } = useConnection();
-  const { tokenList } = useJupiterApiContext();
+  const { tokenList, tokenMap } = useJupiterApiContext();
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
   const [lock, setLock] = useState(null);
@@ -46,6 +44,7 @@ const Page = () => {
     getLockerByAdr,
     handleExtendLock,
     handleExtendLockTime,
+    handleUnlock,
   } = useLockerTools();
   const [poolAdr, setPoolAdr] = useState("");
   const [lockList, setLockList] = useState([]);
@@ -61,7 +60,7 @@ const Page = () => {
   const [lockDate, setLockDate] = useState(new Date(Date.now()));
   const fetchPoolData = useCallback(async () => {
     const adr = params["address"] as string;
-    //console.log("ADR", adr);
+
     if (poolList.length !== 0 && adr !== "") {
       setPoolAdr(adr);
       const locker = await getLockerByAdr(adr);
@@ -69,12 +68,12 @@ const Page = () => {
       setLockerInfo(locker);
 
       if (locker) {
-        const pool = poolList.find(
-          (elm) => elm.lpMint == locker.mint.toBase58()
-        );
-
-        const base = tokenList.find((elm) => elm.address == pool.baseMint);
-        const quote = tokenList.find((elm) => elm.address == pool.quoteMint);
+        if (locker.owner.toBase58() !== publicKey.toBase58()) {
+          router.push("/launch/lock");
+        }
+        const pool = await getPoolByLpMint(locker.mint.toBase58());
+        const base = pool.baseMint;
+        const quote = pool.quoteMint;
 
         setBaseToken(base);
         setQuoteToken(quote);
@@ -90,6 +89,8 @@ const Page = () => {
           setLock(value);
         }
       }
+    } else {
+      router.push("/launch/lock");
     }
   }, [poolList]);
   const initUserBalance = useCallback(async () => {
@@ -140,7 +141,7 @@ const Page = () => {
           <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
         </div>
         <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
-        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+        <div className="flex flex-col gap-4  md:justify-between md:items-center">
           <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center h-[60px]">
             <span className="text-[#FCFCFC] text-[16px] font-medium">
               Manage Your Liquidity Locker
@@ -198,7 +199,7 @@ const Page = () => {
             </p>
           </Container>
           <Button
-            className="my-1 min-h-[50px]"
+            className="my-1 min-h-[50px] w-full"
             onClick={() => {
               if (selectedPool) {
                 router.push(`/launch/lock/view/${selectedPool.poolId}`);
@@ -235,47 +236,7 @@ const Page = () => {
                   lockerInfo.lockedAmount.toNumber() /
                     Math.pow(10, selectedPool.lpDecimals)}
               </Container>
-              {/* <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
-                <div className="flex justify-between">
-                  <span className="text-[#FFFF] uppercase text-sm">
-                    Choose Lock Amount
-                  </span>
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="flex gap-1 items-center">
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M2.27539 10H9.77539V2.5H8.21289V0H2.27539C1.23963 0 0.400391 0.839235 0.400391 1.875V8.125C0.400391 9.16073 1.23963 10 2.27539 10ZM8.52539 3.75V8.75H2.27539C1.92994 8.75 1.65039 8.47046 1.65039 8.125V3.64078C1.8512 3.7128 2.06237 3.74943 2.27539 3.75004L8.52539 3.75ZM2.27539 1.25H6.96289V2.5H2.27539C1.92994 2.5 1.65039 2.22045 1.65039 1.875C1.65039 1.52955 1.92994 1.25 2.27539 1.25Z"
-                          fill="#A8A8A8"
-                          fill-opacity="0.5"
-                        />
-                      </svg>
-                      <span className="text-xs text-muted-foreground">
-                        {tokenBalance}
-                      </span>
-                    </div>
-                    <Button className="bg-[#141414] text-primary w-10 h-7 p-2 rounded-lg">
-                      50%
-                    </Button>
-                    <Button className="bg-[#141414] text-primary w-10 h-7 p-2 rounded-lg">
-                      100%
-                    </Button>
-                  </div>
-                </div>
-                <Input
-                  className="w-full h-[20px] "
-                  placeholder="00000"
-                  value={lockAmount}
-                  onChange={(e) => {
-                    setLockAmount(Number(e.target.value));
-                  }}
-                />
-              </Container> */}
+
               <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
                 <span className="text-[#FFFF] uppercase text-sm">
                   CHOOSE UNLOCK DATE
@@ -347,7 +308,15 @@ const Page = () => {
             </DialogContent>
           </Dialog>
 
-          <Button className="my-1 min-h-[50px]" disabled>
+          <Button
+            className="my-1 min-h-[50px] w-full"
+            disabled={Date.now() < lockDate.getTime()}
+            onClick={() => {
+              if (selectedPool && publicKey) {
+                handleUnlock(selectedPool.lpMint, publicKey);
+              }
+            }}
+          >
             Withdraw Liquidity
           </Button>
         </div>

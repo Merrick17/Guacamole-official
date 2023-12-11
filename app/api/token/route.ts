@@ -3,7 +3,7 @@ import { TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 const { get } = require("lodash");
 const connection = new Connection(
-  "https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943"
+  "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7"
 );
 const getTokenOwners = async (address, decimals) => {
   const filters = [
@@ -58,7 +58,7 @@ export async function GET(request: Request) {
       .nfts()
       .findByMint({ mintAddress: new PublicKey(mint) });
   } catch (error) {}
-  console.log("metada", metadata);
+
   const holders = (await getTokenOwners(mint, decimals)).filter(
     (elm) => elm.amount !== 0
   );

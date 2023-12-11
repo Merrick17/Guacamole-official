@@ -47,8 +47,10 @@ const Header: FC<HeaderProps> = () => {
   }, []);
 
   const inputRef = useRef(null);
+ 
 
   useEffect(() => {
+  
     fetchTokens();
   }, []);
   return (

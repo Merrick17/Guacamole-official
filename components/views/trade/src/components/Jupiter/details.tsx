@@ -1,14 +1,10 @@
 import { cn } from "@/lib/utils";
+import { QuoteResponse } from "@jup-ag/api";
 import { RouteInfo, SwapMode } from "@jup-ag/react-hook";
+import { TokenInfo } from "@solana/spl-token-registry";
 import { useMemo } from "react";
 import { formatNumber } from "../../misc/utils";
-import { TokenInfo } from "@solana/spl-token-registry";
-import Decimal from "decimal.js";
-import JSBI from "jsbi";
-import { ZERO } from "@jup-ag/math";
 import ExchangeRate from "./ExchangeRate";
-import { Skeleton } from "@/components/ui/skeleton";
-import { QuoteResponse } from "@jup-ag/api";
 
 const Details = ({
   selectRoute,

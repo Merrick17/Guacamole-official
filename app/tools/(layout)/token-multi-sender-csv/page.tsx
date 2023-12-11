@@ -1,12 +1,15 @@
-import Container from '@/components/common/container';
-import ToolHeader from '@/components/common/tool-header';
-import TokenMultiSenderCsvForm from '@/components/views/tools/token-multi-sender-csv/token-multi-sender-csv-form';
-import { Metadata } from 'next';
+import Container from "@/components/common/container";
+import ToolHeader from "@/components/common/tool-header";
+import TokenMultiSenderCsvForm from "@/components/views/tools/token-multi-sender-csv/token-multi-sender-csv-form";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Token Multi Sender | Guacamole',
+  title: "Airdrop Tokens Via CSV | Guacamole",
   description:
-    'Multiple airdrop and multi-send options to send tokens to Solana addresses and domains. Connect your wallet, enter the addresses, and airdrop your tokens!',
+    "Upload your csv file to easily populate a list of Solana addresses to airdrop tokens to.    ",
+  openGraph: {
+    images: ["images/seo/tools.png"],
+  },
 };
 const TokenMultiSenderCSV = () => {
   return (

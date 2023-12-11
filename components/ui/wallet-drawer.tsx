@@ -1,69 +1,154 @@
 "use client";
+import routes from "@/config/routes";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Metaplex } from "@metaplex-foundation/js";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { BiLinkExternal, BiSolidLeftArrow } from "react-icons/bi";
-import { useToast } from "@/hooks/use-toast";
-import { useWallet } from "@solana/wallet-adapter-react";
-import routes from "@/config/routes";
-import useWalletTokens from "@/lib/tokens/useWalletTokens";
-import axios from "axios";
-import { Skeleton } from "./skeleton";
 import { useRouter } from "next/navigation";
-
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { BiLinkExternal, BiSolidLeftArrow } from "react-icons/bi";
+import { Skeleton } from "./skeleton";
+import { TokenInfo } from "@solana/spl-token-registry";
+interface CustomTokenInfo {
+  balance: number;
+  balanceInUSD: number;
+  name: string;
+  symbol: string;
+  decimals: number;
+  address: string;
+  associatedTokenAddress: string;
+  price: number;
+  logoURI: string;
+}
 const WalletDrawer = () => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  const { connected } = useWallet();
-  const walletTokens = useWalletTokens();
-
+  const { connection } = useConnection();
+  const { connected, publicKey } = useWallet();
+  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const metaplex = new Metaplex(connection);
+  const fetchTokenList = useCallback(async () => {
+    try {
+      const { data } = await axios.get("https://token.jup.ag/all");
+     
+      setTokenList(data);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  }, []);
   const [tokenData, setTokenData] = useState([]); // Store token data including USD values
 
   useEffect(() => {
-    const fetchTokenData = async () => {
-      const tokenDataWithPrices = await Promise.all(
-        walletTokens.map(async (token) => {
-          const elm = token;
-          if (token.token && token.account) {
-            const { data } = await axios.get(
-              "https://price.jup.ag/v4/price?ids=" + token.token.symbol
-            );
-            for (var prop in data.data) {
-              const price = data.data[prop].price;
-              const amount = token.account.amount
-                ? Number(token.account.amount) / Math.pow(10, token.decimals)
-                : 0;
-              return {
-                ...token,
-                price,
-                amount,
-              };
-            }
-          } else {
-            const amount =
-              token && token.account && token.account.amount
-                ? Number(token.account.amount) / Math.pow(10, token.decimals)
-                : 0;
-            return {
-              ...elm,
-              token: {
-                logoURI: "/images/Guacamole_Image_Unknown.png",
-                name: "Unknown Token",
-                symbol: "Unknown Token",
-              },
-              price: 0,
-              amount,
-            };
+    fetchTokenList();
+    const getUserTokens = async () => {
+      if (publicKey && connected) {
+        const { data } = await axios.post(
+          "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7",
+          {
+            jsonrpc: "2.0",
+            id: "helius-test",
+            method: "searchAssets",
+            params: {
+              ownerAddress: publicKey.toBase58(),
+              tokenType: "fungible",
+            },
           }
-        })
-      );
-
-      setTokenData(tokenDataWithPrices);
+        );
+        console.log("Resp Tokens", data.result.items);
+        const tokenInfo = data.result.items.map(async (tkn) => {
+          const balance =
+            tkn.content && tkn.token_info ? tkn.token_info.balance : 0;
+          const name =
+            tkn.content && tkn.content.metadata
+              ? tkn.content.metadata.name
+              : "Unknown Name";
+          const symbol =
+            tkn.content && tkn.content.metadata
+              ? tkn.content.metadata.symbol
+              : "Unknown Symbol";
+          const decimals =
+            tkn.content && tkn.token_info ? tkn.token_info.decimals : 0;
+          const address = tkn.id || "Unknown Address";
+          const price =
+            tkn.token_info && tkn.token_info.price_info
+              ? tkn.token_info.price_info.price_per_token
+              : 0;
+          const associatedTokenAddress =
+            tkn.content && tkn.token_info
+              ? tkn.token_info.associated_token_address
+              : "Unknown Associated Address";
+          // const logoURI =
+          //   tkn.content && tkn.content.links && tkn.content.links.image
+          //     ? tkn.content.links.image
+          //     : null;
+          const logoURI = tokenList.find((elm) => elm.address)?.logoURI || "";
+          return {
+            balance: balance / Math.pow(10, decimals),
+            balanceInUSD: (balance / Math.pow(10, decimals)) * price,
+            name,
+            symbol,
+            decimals,
+            address,
+            associatedTokenAddress,
+            price,
+            logoURI: logoURI,
+          };
+        });
+        const mappedResp = await Promise.all(tokenInfo);
+        //console.log("Mapped", mappedResp);
+        setTokenData(mappedResp);
+      }
     };
+    getUserTokens();
+    // const fetchTokenData = async () => {
+    //   console.log("Token Accounts", tokenAccounts.accounts);
 
-    fetchTokenData();
-  }, [walletTokens]);
+    //   const tokenDataWithPrices = await Promise.all(
+    //     walletTokens.map(async (token) => {
+    //       const elm = token;
+    //       if (token.token && token.account) {
+    //         const { data } = await axios.get(
+    //           "https://price.jup.ag/v4/price?ids=" + token.token.symbol
+    //         );
+    //         for (var prop in data.data) {
+    //           const price = data.data[prop].price;
+    //           const amount = token.account.amount
+    //             ? Number(token.account.amount) / Math.pow(10, token.decimals)
+    //             : 0;
+    //           return {
+    //             ...token,
+    //             price,
+    //             amount,
+    //           };
+    //         }
+    //       } else {
+    //         const amount =
+    //           token && token.account && token.account.amount
+    //             ? Number(token.account.amount) / Math.pow(10, token.decimals)
+    //             : 0;
+    //         return {
+    //           ...elm,
+    //           token: {
+    //             logoURI: "/images/Guacamole_Image_Unknown.png",
+    //             name: "Unknown Token",
+    //             symbol: "Unknown Token",
+    //           },
+    //           price: 0,
+    //           amount,
+    //         };
+    //       }
+    //     })
+    //   );
+
+    //   setTokenData(tokenDataWithPrices);
+    // };
+
+    // fetchTokenData();
+  }, [publicKey, connected]);
   return (
     <>
       <button
@@ -139,7 +224,7 @@ const WalletDrawer = () => {
                   ? tokenData.length > 0 &&
                     tokenData
                       .sort((a, b) =>
-                        a.price * a.amount > b.price * b.amount ? -1 : 1
+                        b.balanceInUsd - a.balanceInUsd ? -1 : 1
                       )
                       .map((token, index) => <Row key={index} token={token} />)
                   : Array(5).map((_, index) => (
@@ -165,45 +250,42 @@ const WalletDrawer = () => {
 
 export default WalletDrawer;
 
-const Row = ({ token }: { token: any }) => {
-  const amount = useMemo(() => {
-    return token && token.account && token.account.amount
-      ? Number(token.account.amount) / Math.pow(10, token.decimals)
-      : 0;
-  }, [token]);
+const Row = ({ token }: { token: CustomTokenInfo }) => {
+  // const amount = useMemo(() => {
+  //   return token && token.account && token.account.amount
+  //     ? Number(token.account.amount) / Math.pow(10, token.decimals)
+  //     : 0;
+  // }, [token]);
 
   const router = useRouter();
 
   return (
     <button
-      key={token.pubkey}
+      key={token.address}
       className="flex items-center justify-start gap-5 w-full rounded-xl p-3 bg-background"
       onClick={() =>
         router.push(
-          routes.trade.swap +
-            `?outputMint=${
-              token && token.account ? token.account.mint.toBase58() : ""
-            }`
+          routes.trade.swap + `?outputMint=${token ? token.address : ""}`
         )
       }
     >
       <img
-        src={token.token.logoURI as string}
-        alt={token.token.name}
+        src={token.logoURI as string}
+        alt={token.name}
         className="h-[24px] w-[24px] "
       />
       <div className="w-full">
         <div className=" flex flex-row items-center justify-between gap-4 ">
           <div className="flex items-center gap-2">
-            <h1 className="text-sm">{token.token.symbol}</h1>
+            <h1 className="text-sm">{token.symbol}</h1>
             <Link
-              href={`https://explorer.solana.com/address/${token.pubkey.toBase58()}`}
+              href={`https://explorer.solana.com/address/${token.address}`}
               rel="noopener noreferrer"
               target="_blank"
               className="text-xs flex items-center text-[#8BD796] bg-foreground  rounded-sm px-2 py-1 "
             >
               <span className="  max-w-[44px] text-ellipsis overflow-hidden">
-                {token.pubkey.toBase58()}
+                {token.address}
               </span>
               <BiLinkExternal />
             </Link>
@@ -211,8 +293,8 @@ const Row = ({ token }: { token: any }) => {
           <span>${token.price.toFixed(2)}</span>
         </div>
         <div className=" flex flex-row items-center justify-between gap-4 text-muted-foreground text-sm ">
-          <span>{amount.toFixed(6)}</span>
-          <span>${(token.price * amount).toFixed(2)}</span>
+          <span>{token.balance.toFixed(6)}</span>
+          <span>${token.balanceInUSD}</span>
         </div>
       </div>
     </button>
