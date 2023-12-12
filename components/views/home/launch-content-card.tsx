@@ -23,7 +23,7 @@ const LaunchContentCard: FunctionComponent<LaunchContentCardProps> = ({
         width={582}
         height={582}
         alt="launch background"
-        className="-z-0 absolute sm:translate-x-1/2 sm:translate-y-1/4 opacity-30  "
+        className="-z-0 absolute sm:translate-x-1/2 sm:-translate-y-1/4 opacity-30  "
       />
       <header className="flex flex-col  gap-3 z-10">
         <div className="bg-background h-12 w-12 p-3 rounded-md flex items-center justify-center">
