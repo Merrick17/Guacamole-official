@@ -26,7 +26,7 @@
     --ring: #d4d4d8;
     --radius: 0.5rem;
   }
-  [data-theme='orange'] {
+  [data-theme="orange"] {
     --background: #0f0f0f;
     --foreground: #141414;
     --card: #0c0a09;
@@ -49,7 +49,7 @@
     --ring: #e9590c;
     --radius: 0.5rem;
   }
-  [data-theme='red'] {
+  [data-theme="red"] {
     --background: #0f0f0f;
     --foreground: #141414;
     --card: #1c1917;
@@ -72,7 +72,7 @@
     --ring: #e21d48;
     --radius: 0.5rem;
   }
-  [data-theme='yellow'] {
+  [data-theme="yellow"] {
     --background: #0f0f0f;
     --foreground: #141414;
     --card: #1c1917;
@@ -95,7 +95,7 @@
     --ring: #e2b71d;
     --radius: 0.5rem;
   }
-  [data-theme='violet'] {
+  [data-theme="violet"] {
     --background: #0f0f0f;
     --foreground: #141414;
     --card: #1c1917;
@@ -118,7 +118,7 @@
     --ring: #341de2;
     --radius: 0.5rem;
   }
-  [data-theme='white'] {
+  [data-theme="white"] {
     --background: #0f0f0f;
     --foreground: #141414;
     --card: #1c1917;
@@ -141,22 +141,22 @@
     --ring: #e21d48;
     --radius: 0.5rem;
   }
-  [data-theme='white-tools'] {
+  [data-theme="white-tools"] {
     --background: #0f0f0f;
     --foreground: #141414;
     --card: #1c1917;
     --card-foreground: #f2f2f2;
     --popover: #171717;
     --popover-foreground: #f2f2f2;
-    --primary: #FCFCFC;
+    --primary: #fcfcfc;
     --primary-foreground: #000;
     --secondary: #0f0f0f;
     --secondary-foreground: #a8a8a8;
     --muted: #262626;
     --muted-foreground: #a8a8a8;
 
-    --accent: #FCFCFC;
-    --accent-foreground: #FCFCFC;
+    --accent: #fcfcfc;
+    --accent-foreground: #fcfcfc;
     --destructive: #ff8f8f;
     --destructive-foreground: #000;
     --border: #27272a;
@@ -200,7 +200,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -323,4 +323,11 @@ input[type='number'] {
 
 .gamba-wager-input-field {
   display: flex;
+}
+
+.guac-text-color {
+  background: linear-gradient(180deg, #aed8b1 0%, #59d86b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
