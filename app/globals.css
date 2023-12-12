@@ -331,3 +331,21 @@ input[type="number"] {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.trade-text-color {
+  background: linear-gradient(180deg, #bbb0db 0%, #9070ed 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.earn-text-color {
+  background: linear-gradient(180deg, #FF8F8F 0%, #FF6161 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.trade-bg {
+  border-radius: 8px;
+  background: linear-gradient(180deg, #b7a9dd 0%, #8d6bee 100%);
+  box-shadow: 0px 8px 16px 0px rgba(17, 24, 39, 0.1);
+}

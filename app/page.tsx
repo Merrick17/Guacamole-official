@@ -12,8 +12,9 @@ import GuacContentCard from "@/components/views/home/guac-content-card";
 import TradeContentCard from "@/components/views/home/trade-content-card";
 import EarnContentCard from "@/components/views/home/earn-content-card";
 import PlayContentCard from "@/components/views/home/play-content-card";
-import ManageContentCard from "@/components/views/home/Manage-content-card";
+
 import LaunchContentCard from "@/components/views/home/launch-content-card";
+import ManageContentCard from "@/components/views/home/manage-content-card";
 
 export default function Home() {
   return (

@@ -1,0 +1,12 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="div.flex">
+<rect width="48" height="48" rx="8" fill="#0F0F0F"/>
+<path id="Vector" d="M17.8 18H29.8V21.6L34.6 16.8L29.8 12V15.6H15.4V22.8H17.8V18ZM29.8 30H17.8V26.4L13 31.2L17.8 36V32.4H32.2V25.2H29.8V30Z" fill="url(#paint0_linear_2872_8333)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_2872_8333" x1="23.8" y1="12" x2="23.8" y2="36" gradientUnits="userSpaceOnUse">
+<stop stop-color="#BBB0DB"/>
+<stop offset="1" stop-color="#8D6BEE"/>
+</linearGradient>
+</defs>
+</svg>
