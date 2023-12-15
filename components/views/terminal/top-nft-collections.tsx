@@ -1,11 +1,20 @@
 "use client";
 import Container from "@/components/common/container";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { AccentColors } from "@/config/themes";
 import { cn } from "@/lib/utils";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import axios from "axios";
 import { HyperspaceClient } from "hyperspace-client-js";
-import numeral from "numeral";
 import Image from "next/image";
+import numeral from "numeral";
 import {
   FunctionComponent,
   useCallback,
@@ -13,64 +22,35 @@ import {
   useMemo,
   useState,
 } from "react";
-import axios from "axios";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 interface TopNftCollectionsProps extends React.HTMLAttributes<HTMLDivElement> {}
 const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
   className,
   ...rest
 }) => {
   const [topCollections, setTopCollections] = useState([]);
-  const getTopNftCollections = useCallback(async () => {
-    // const { data } = await axios.get(
-    //   `https://api-mainnet.magiceden.dev/v2/marketplace/popular_collections`
-    // );
-    const { data } = await axios.get(
-      `https://corsproxy.io/?https%3A%2F%2Fapi-mainnet.magiceden.dev%2Fv2%2Fmarketplace%2Fpopular_collections`
-    );
-    setTopCollections(data);
-  }, []);
-
-  const hsClient = useMemo(
-    () =>
-      new HyperspaceClient(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDb21wZW5kaXVtIiwibmFtZSI6Ikh5cGVyc3BhY2UiLCJpYXQiOjE1MTYyMzkwMjJ9.0wGMPCzZqg0qUY9nlH9Es9F-sZBsiLiWqEl1k6EtAlU"
-      ),
-    []
-  );
-  // const getTopNftCollections = useCallback(async () => {
-  //   try {
-  //     const { getProjectStats } = await hsClient.getProjects({
-  //       orderBy: {
-  //         field_name: "market_cap",
-  //         //@ts-ignore
-  //         sort_order: "DESC",
-  //       },
-  //     });
-
-  //     if (getProjectStats && getProjectStats.project_stats) {
-  //       setTopCollections(getProjectStats.project_stats);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [hsClient]);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const getTopNftCollections = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://corsproxy.io/?https%3A%2F%2Fapi-mainnet.magiceden.dev%2Fv2%2Fmarketplace%2Fpopular_collections`
+        );
+        if (isMounted) {
+          setTopCollections(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     getTopNftCollections();
-  }, [getTopNftCollections]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   return (
     <Container
       className={cn(
@@ -161,27 +141,6 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
   );
 };
 
-const topNfts = [
-  {
-    price: "1,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 1",
-    floor: "0.5",
-  },
-  {
-    price: "2,500.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 2",
-    floor: "1.2",
-  },
-  {
-    price: "5,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 3",
-    floor: "2.5",
-  },
-];
-
 type TopNftCollectionItemProps = {
   price: string;
   image: string;
@@ -198,19 +157,27 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
   item,
 }) => {
   const [nftDetails, setNftDetails] = useState(null);
-  const [open, setOpen] = useState<boolean>(false);
-  const getNftData = useCallback(async () => {
-    const url =
-      "https://corsproxy.io/?" +encodeURIComponent(
-        `https://api-mainnet.magiceden.dev/v2/collections/${item.symbol}/stats`
-      );
-    const { data } = await axios.get(url);
-    setNftDetails(data);
-    //console.log("MY ITEM DATA", data);
-  }, []);
-  useMemo(() => {
-    getNftData();
-  }, [open]);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      const getNftData = async () => {
+        try {
+          const url =
+            `https://corsproxy.io/?` +
+            encodeURIComponent(
+              `https://api-mainnet.magiceden.dev/v2/collections/${item.symbol}/stats`
+            );
+          const { data } = await axios.get(url);
+          setNftDetails(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      getNftData();
+    }
+  }, [open, item.symbol]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

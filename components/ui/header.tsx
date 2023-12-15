@@ -47,10 +47,8 @@ const Header: FC<HeaderProps> = () => {
   }, []);
 
   const inputRef = useRef(null);
- 
 
   useEffect(() => {
-  
     fetchTokens();
   }, []);
   return (
@@ -148,8 +146,9 @@ const Header: FC<HeaderProps> = () => {
                         return tkn;
                       }
                     })
-                    .map((tkn) => (
+                    .map((tkn, ind) => (
                       <div
+                        key={ind.toString()}
                         className="flex items-center justify-start rounded-md gap-2 p-2 cursor-pointer hover:border-primary hover:border-2 w-full"
                         onClick={(e) => {
                           setSearch(tkn.name);
@@ -206,8 +205,9 @@ const Header: FC<HeaderProps> = () => {
                       return tkn;
                     }
                   })
-                  .map((tkn) => (
+                  .map((tkn, ind) => (
                     <div
+                      key={ind.toString()}
                       className="flex items-center justify-start rounded-md gap-2 p-2 cursor-pointer hover:border-primary hover:border-2 w-full"
                       onClick={(e) => {
                         setSearch(tkn.name);
@@ -303,8 +303,9 @@ const HeaderLeftArea = () => {
                 return tkn;
               }
             })
-            .map((tkn) => (
+            .map((tkn, ind) => (
               <div
+                key={ind.toString()}
                 className="flex items-center justify-start rounded-md gap-2 p-2 cursor-pointer hover:border-primary hover:border-2 w-full"
                 onClick={(e) => {
                   setSearch(tkn.name);

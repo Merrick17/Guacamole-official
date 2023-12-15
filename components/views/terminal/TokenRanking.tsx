@@ -10,14 +10,12 @@ import { useGetTrendingTodayFull } from "@/hooks/use-get-trending-today";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import numeral from "numeral";
-import { useEffect, useMemo } from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import { useJupiterApiContext } from "../trade/src/contexts";
 
-import useLocalStorageState from "use-local-storage-state";
-import { convert } from "@/lib/numbers";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader, Loader2 } from "lucide-react";
+import { convert } from "@/lib/numbers";
+import useLocalStorageState from "use-local-storage-state";
 const TokenRanking = ({ page }: { page: number }) => {
   const { tokenMap } = useJupiterApiContext();
   const [watchList, setWatchList, { isPersistent }] = useLocalStorageState(
@@ -31,12 +29,7 @@ const TokenRanking = ({ page }: { page: number }) => {
   const { trending, totalPages } = useGetTrendingTodayFull({
     page,
   });
-  useEffect(() => {
-    console.log("Trending", trending);
-  }, [trending, page]);
-  useMemo(() => {
-    console.log("Watch List", watchList);
-  }, [watchList]);
+ 
 
   const checkRemainder = (nb: number) => {
     return nb % 2;

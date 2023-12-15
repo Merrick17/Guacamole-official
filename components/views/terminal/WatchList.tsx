@@ -6,11 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetTrendingTodayFull } from "@/hooks/use-get-trending-today";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import numeral from "numeral";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import { useJupiterApiContext } from "../trade/src/contexts";
 

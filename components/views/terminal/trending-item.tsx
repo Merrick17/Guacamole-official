@@ -1,13 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import routes from "@/config/routes";
-import { convert } from "@/lib/numbers";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import numeral from "numeral";
 import { FC, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
-import NftDialog from "./dialogs/NftDialog";
-import { Loader2 } from "lucide-react";
-import numeral from "numeral";
 type TrendingItemProps = {
   className?: string;
   symbol?: string;
