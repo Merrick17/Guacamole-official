@@ -292,7 +292,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         //     computeUnitPriceMicroLamports: 1000,
         //   },
         // });
-        console.log("feeAccount", feeAccount.toBase58());
+        //console.log("feeAccount", feeAccount.toBase58());
         const { swapTransaction } = await api.swapPost({
           swapRequest: {
             quoteResponse: swapQuote,
@@ -489,14 +489,14 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             ) : pathname == "/terminal" ? (
               <Link
                 href={"/trade/swap"}
-                className="text-sm bg-[#BBB0DB]  text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
+                className="text-sm bg-[#BBB0DB] trade-bg text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
               >
                 Go to Swap Page
               </Link>
             ) : pathname.includes("/terminal/coin") ? (
               <Link
                 href={"/terminal"}
-                className="text-sm bg-[#BBB0DB]  text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
+                className="text-sm bg-[#BBB0DB] trade-bg text-primary-foreground py-2 px-4 h-7 flex items-center justify-center rounded-lg "
               >
                 Back To Terminal
               </Link>
@@ -522,7 +522,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             <WalletMultiButtonDynamic
               startIcon={undefined}
               className={`!rounded-lg  h-7 px-3 py-[6px] whitespace-nowrap text-black font-medium text-sm hidden lg:flex ${
-                pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB]"
+                pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB] trade-bg"
               } text-primary-foreground hover:!bg-primary`}
             />
           </div>
@@ -680,9 +680,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                 onClick={handleSwap}
                 disabled={swapping || !loaded || !hasRoute}
                 className={`flex ${
-                  pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB]"
+                  pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB] trade-bg"
                 } hover:${
-                  pathname.includes("trade") ? "!bg-primary" : "!bg-[#BBB0DB]"
+                  pathname.includes("trade") ? "!bg-primary" : "!bg-[#BBB0DB] trade-bg"
                 } text-primary-foreground items-center justify-center w-full py-5 h-14`}
               >
                 {swapping ? (
@@ -700,9 +700,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               <WalletMultiButtonDynamic
                 startIcon={undefined}
                 className={`flex ${
-                  pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB]"
+                  pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB] trade-bg"
                 } hover:${
-                  pathname.includes("trade") ? "!bg-primary" : "!bg-[#BBB0DB]"
+                  pathname.includes("trade") ? "!bg-primary" : "!bg-[#BBB0DB] trade-bg"
                 }  text-primary-foreground items-center justify-center w-full py-5 h-14`}
                 style={{ borderRadius: "12px" }}
               >

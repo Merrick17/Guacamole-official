@@ -79,14 +79,14 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
       )}
     >
       <div className="w-full flex items-center justify-between text-black">
-        <Badge variant="default" className="rounded-lg">
+        <Badge variant="default" className="rounded-lg guac-btn">
           Trending NFT Collections
         </Badge>
 
         <Dialog>
           <DialogTrigger asChild>
             <Badge
-              className="rounded-lg cursor-pointer"
+              className="rounded-lg cursor-pointer trade-bg"
               style={{
                 backgroundColor: AccentColors.violet,
               }}

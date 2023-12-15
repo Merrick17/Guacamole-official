@@ -9,6 +9,7 @@ import ManageContentCard from "@/components/views/home/manage-content-card";
 import PlayContentCard from "@/components/views/home/play-content-card";
 import TradeContentCard from "@/components/views/home/trade-content-card";
 import BridgeSwapContent from "@/components/views/trade/BridgeSwapContent";
+import BuyCryptoContentCard from "@/components/views/trade/BuyCryptoContentCard";
 import FutureContentCard from "@/components/views/trade/FutureContentCard";
 import LiquidityContentCard from "@/components/views/trade/LiquidityContentCard";
 import MainTradeContentCard from "@/components/views/trade/MainTradeContentCard";
@@ -77,8 +78,9 @@ const Page: FC = () => {
           <RipRottenCard className="hover:border-[#bbb0db]" />
           <FutureContentCard className="hover:border-[#bbb0db]" />
           <BridgeSwapContent className="hover:border-[#bbb0db]" />
+          <BuyCryptoContentCard className="hover:border-[#bbb0db]" />
           <PeerToPeerContentCard className="hover:border-[#bbb0db]" />
-          <LiquidityContentCard className="col-span-1 md:col-span-2 hover:border-[#bbb0db]" />
+          <LiquidityContentCard className=" hover:border-[#bbb0db]" />
 
           {/* {lg:h-[560px]} */}
           {/* <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full  overflow-hidden">

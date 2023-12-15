@@ -44,7 +44,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = ({ className }) => {
               setSelectedValue(value);
             }}
           >
-            <SelectTrigger className="w-[150px] h-[27px] rounded-lg inline-flex items-center border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 ">
+            <SelectTrigger className="w-[150px] h-[27px] guac-btn rounded-lg inline-flex items-center border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 ">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

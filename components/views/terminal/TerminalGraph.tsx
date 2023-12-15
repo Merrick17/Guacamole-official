@@ -47,14 +47,14 @@ const TerminalGraph: FC<TerminalGraphProps> = ({
         className
       )}
     >
-      <div className="w-full flex items-center justify-between text-black">
-        <Select
+      <div className="w-full flex items-center  justify-between text-black">
+        <Select 
           defaultValue="tpp"
           onValueChange={(value) => {
             handleDisplayChange(value);
           }}
         >
-          <SelectTrigger className="lg:w-[280px] h-[30px] max-sm:w-full max-sm:mx-1">
+          <SelectTrigger className="lg:w-[280px] guac-btn guac-bg h-[30px] max-sm:w-full max-sm:mx-1">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -70,7 +70,7 @@ const TerminalGraph: FC<TerminalGraphProps> = ({
               handleSelect(value);
             }}
           >
-            <SelectTrigger className="w-[100px]">
+            <SelectTrigger className="w-[100px] guac-btn">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -87,7 +87,7 @@ const TerminalGraph: FC<TerminalGraphProps> = ({
               handlePageChange(Number(value));
             }}
           >
-            <SelectTrigger className="w-[100px]">
+            <SelectTrigger className="w-[100px] guac-btn">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
