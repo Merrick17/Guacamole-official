@@ -67,7 +67,7 @@ const EarnHeader: FunctionComponent<EarnHeaderProps> = ({
             href={tutorialLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium capitalize py-[6px] rounded-lg text-primary-foreground bg-primary px-3 transition-colors  hidden lg:block"
+            className="text-sm font-medium capitalize py-[6px] earn-bg rounded-lg text-primary-foreground bg-primary px-3 transition-colors  hidden lg:block"
           >
             <span>View tutorial</span>
           </Link>

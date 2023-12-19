@@ -31,12 +31,7 @@ const TokenRanking = ({ page }: { page: number }) => {
   const { trending, totalPages } = useGetTrendingTodayFull({
     page,
   });
-  useEffect(() => {
-    console.log("Trending", trending);
-  }, [trending, page]);
-  useMemo(() => {
-    console.log("Watch List", watchList);
-  }, [watchList]);
+
 
   const checkRemainder = (nb: number) => {
     return nb % 2;

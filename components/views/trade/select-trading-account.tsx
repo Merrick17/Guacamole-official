@@ -245,7 +245,7 @@ const SelectTradingAccount = () => {
       <Button
         size="lg"
         variant="success"
-        className="font-extrabold uppercase text-xs "
+        className="font-extrabold uppercase text-xs guac-bg"
         onClick={handleDeposit}
         disabled={amount === null || isLoading}
       >
@@ -254,7 +254,7 @@ const SelectTradingAccount = () => {
       <Button
         size="lg"
         variant="destructive"
-        className="font-extrabold uppercase text-xs"
+        className="font-extrabold uppercase text-xs earn-bg"
         onClick={handleWithdraw}
         disabled={amount === null || isLoading}
       >
@@ -264,7 +264,7 @@ const SelectTradingAccount = () => {
         <Button
           size="lg"
           variant="success"
-          className="font-extrabold uppercase bg-[#bbb0db] text-xs w-full"
+          className="font-extrabold uppercase trade-bg text-xs w-full"
           onClick={() => {
             navigator.clipboard.writeText(selectedTrg);
             toast({
@@ -278,7 +278,7 @@ const SelectTradingAccount = () => {
         <Button
           size="lg"
           variant="destructive"
-          className="font-extrabold uppercase text-xs w-full "
+          className="font-extrabold uppercase text-xs w-full earn-bg "
           onClick={handleDeposit}
           disabled
         >

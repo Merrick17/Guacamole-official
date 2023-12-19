@@ -43,9 +43,9 @@ const PerceptualMarketHeader = () => {
               className="w-10 h-10"
             />
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex flex-col lg:flex-row items-center justify-between gap-4 w-full">
+              <DropdownMenuTrigger className="flex flex-col lg:flex-row items-center justify-between gap-4 w-full bg-[#141414] p-3 rounded-[10px] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
                 <SelectedCoin {...selectedMarket} />
-                <Button size="icon">
+                <Button size="icon" className="trade-bg">
                   <BsChevronDown />
                 </Button>
               </DropdownMenuTrigger>
@@ -111,8 +111,13 @@ const PerceptualMarketHeader = () => {
                   />
                 </DropdownMenuItem>
                 <DropdownMenuItem disabled>
-                  <SelectedCoin 
-                    coin={["OPOS", "Only-possible-on-Solana", "HXRO:OPOS0D", "6"]}
+                  <SelectedCoin
+                    coin={[
+                      "OPOS",
+                      "Only-possible-on-Solana",
+                      "HXRO:OPOS0D",
+                      "6",
+                    ]}
                     onClick={() => {
                       selectMarket({
                         high: "25,901.41",

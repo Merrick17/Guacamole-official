@@ -20,7 +20,7 @@ const SelectedCoin: FC<SelectedCoinProps> = ({ coin, onClick }) => {
     }
   }, [productLeverage]);
   return (
-    <div className="flex flex-col items-start w-full" onClick={onClick}>
+    <div className="flex flex-col items-start w-full " onClick={onClick}>
       <p className="left-align text-muted-foreground font-medium">
         {coin.map((item, index) => (
           <Fragment key={index.toString()}>

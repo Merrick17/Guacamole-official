@@ -521,8 +521,10 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
 
             <WalletMultiButtonDynamic
               startIcon={undefined}
-              className={`!rounded-lg  h-7 px-3 py-[6px] whitespace-nowrap text-black font-medium text-sm hidden lg:flex ${
-                pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB] trade-bg"
+              className={`!rounded-lg  h-7 px-3 py-[6px] whitespace-nowrap trade-bg text-black font-medium text-sm hidden lg:flex ${
+                pathname.includes("trade")
+                  ? "guac-btn"
+                  : "bg-[#BBB0DB] trade-bg"
               } text-primary-foreground hover:!bg-primary`}
             />
           </div>
@@ -557,7 +559,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                     type="number"
                     onChange={(e) => setInputAmount(e.target.value.trim())}
                     className={cn(
-                      "w-full h-full rounded-none  text-right text-xl font-medium transition-all duration-200 ease-in-out "
+                      "w-full h-[28px] rounded-none  text-right text-xl font-medium transition-all duration-200 ease-in-out "
                     )}
                   />
                   <p className=" text-xs text-muted-foreground">
@@ -624,34 +626,9 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               } `}
             />
           )}
-          {/* {outputTokenInfo &&
-          bestRoute &&
-          routes &&
-          !loadingRoute &&
-          outputTokenInfo &&
-          tokenMap ? (
-            <SwapRoutes
-              bestRoute={bestRoute}
-              hasRoute={hasRoute}
-              loadingRoute={loadingRoute}
-              outputAmount={outputAmount}
-              outputTokenInfo={outputTokenInfo}
-              routes={routes}
-              selectedRoute={selectedRoute}
-              setSelectedRoute={setSelectedRoute}
-              tokenMap={tokenMap}
-              
-            />
-          ) : (
-            <Skeleton
-              className={`h-6 w-full ${
-                pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB]"
-              }`}
-            />
-          )} */}
+
           {outputTokenInfo &&
           swapQuote &&
-          // routes &&
           !loadingRoute &&
           outputTokenInfo &&
           tokenMap ? (
@@ -680,9 +657,13 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                 onClick={handleSwap}
                 disabled={swapping || !loaded || !hasRoute}
                 className={`flex ${
-                  pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB] trade-bg"
+                  pathname.includes("trade")
+                    ? "bg-primary"
+                    : "bg-[#BBB0DB] trade-bg"
                 } hover:${
-                  pathname.includes("trade") ? "!bg-primary" : "!bg-[#BBB0DB] trade-bg"
+                  pathname.includes("trade")
+                    ? "!bg-primary"
+                    : "!bg-[#BBB0DB] trade-bg"
                 } text-primary-foreground items-center justify-center w-full py-5 h-14`}
               >
                 {swapping ? (
@@ -700,9 +681,13 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               <WalletMultiButtonDynamic
                 startIcon={undefined}
                 className={`flex ${
-                  pathname.includes("trade") ? "bg-primary" : "bg-[#BBB0DB] trade-bg"
+                  pathname.includes("trade")
+                    ? "bg-primary trade-bg"
+                    : "bg-[#BBB0DB] trade-bg"
                 } hover:${
-                  pathname.includes("trade") ? "!bg-primary" : "!bg-[#BBB0DB] trade-bg"
+                  pathname.includes("trade")
+                    ? "!bg-primary "
+                    : "!bg-[#BBB0DB] trade-bg"
                 }  text-primary-foreground items-center justify-center w-full py-5 h-14`}
                 style={{ borderRadius: "12px" }}
               >

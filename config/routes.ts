@@ -5,6 +5,7 @@ const routes = {
     root: "/trade",
     bridge: "/trade/bridge",
     perpetuals: "/trade/perpetuals",
+    buysell:"/trade/buyandsell",
     swap: "/trade/swap",
     dca: "/trade/dca",
     limit: "/trade/limit",
@@ -70,7 +71,7 @@ const routes = {
     root: "/shop",
   },
   explore: {
-    root: "/terminal",
+    root: "/explore",
   },
   others: {
     discord: "https://discord.com/invite/guac",

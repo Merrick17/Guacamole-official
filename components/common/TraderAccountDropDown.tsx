@@ -156,7 +156,7 @@ export const SelectTraderAccounts: FC = () => {
           <Button
             onClick={handleCreateTRG}
             disabled={!publicKey}
-            className={`w-full `}
+            className={`w-full trade-bg`}
             size="lg"
           >
             Create New Trader Account
@@ -165,7 +165,7 @@ export const SelectTraderAccounts: FC = () => {
             onClick={fetchTraderAccounts}
             disabled={!publicKey}
             size="lg"
-            className="w-full"
+            className="w-full trade-bg"
           >
             Load Trader Accounts
           </Button>
@@ -175,7 +175,7 @@ export const SelectTraderAccounts: FC = () => {
           <Button
             onClick={fetchTraderAccounts}
             disabled={!publicKey}
-            className="w-full"
+            className="w-full trade-bg"
             size="lg"
           >
             Load Trader Accounts
@@ -183,7 +183,7 @@ export const SelectTraderAccounts: FC = () => {
           <Button
             onClick={handleCreateTRG}
             disabled={!publicKey}
-            className={`w-full `}
+            className={`w-full trade-bg `}
             size="lg"
           >
             Create New Trader Account

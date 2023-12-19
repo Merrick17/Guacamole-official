@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
 import useLockerTools from "@/hooks/use-locker";
 import { usePool } from "@/hooks/use-pool-list";
 import { useToast } from "@/hooks/use-toast";
@@ -23,7 +22,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import withAuth from "./guard";
+
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 const Page = () => {
@@ -34,7 +33,7 @@ const Page = () => {
   const [selectedPool, setSelectedPool] = useState<any>(null);
   const { publicKey } = useWallet();
   const { connection } = useConnection();
-  const { tokenList, tokenMap } = useJupiterApiContext();
+
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
   const [lock, setLock] = useState(null);

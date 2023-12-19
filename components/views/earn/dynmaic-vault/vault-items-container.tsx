@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const VaultItemsContainer = () => {
   const { data, isLoading, error } = useVaultInfo();
 
-  console.log('dynamicVault', data);
+ 
   useEffect(() => {}, [isLoading]);
   return (
     <Container

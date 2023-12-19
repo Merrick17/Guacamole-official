@@ -25,7 +25,7 @@ const TrendingSwap: FC<TrendingSwapProps> = ({ className }) => {
         className
       )}
     >
-      <Button className="whitespace-nowrap h-8 px-3 lg:h-10 lg:px-4 lg:py-2">
+      <Button className="whitespace-nowrap h-8 px-3 trade-bg lg:h-10 lg:px-4 lg:py-2">
         Trending Today
       </Button>
       <CustomTicker>

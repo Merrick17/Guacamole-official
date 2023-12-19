@@ -1,28 +1,13 @@
 "use client";
 import Container from "@/components/common/container";
 import { Badge } from "@/components/ui/badge";
-import { AccentColors } from "@/config/themes";
-import { cn } from "@/lib/utils";
-import numeral from "numeral";
-import axios from "axios";
-import Image from "next/image";
-import {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -30,7 +15,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AccentColors } from "@/config/themes";
+import { cn } from "@/lib/utils";
+import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
+import numeral from "numeral";
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 interface SolanaTvlRankingProps extends React.HTMLAttributes<HTMLDivElement> {}
 const relDiff = (final, init) => {
   return ((final - init) / init) * 100;
@@ -41,66 +38,59 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
 }) => {
   const [protocolList, setProtocolList] = useState([]);
   const [selectedValue, setSelectedValue] = useState("tvl");
-  const [supportedProtocols, setSupportedProtocols] = useState([]);
-  const [poolList, setPoolList] = useState([]);
   const [editPoolList, setEditPoolList] = useState([]);
-  const [yieldList, setYieldList] = useState([]);
 
-  const fetchProtocolData = useCallback(async () => {
-    try {
-      let result = await axios.all([
-        axios.get("https://yields.llama.fi/pools"),
-        axios.get("https://api.llama.fi/lite/protocols2"),
-        axios.get("https://api.llama.fi/config/yields?a=1"),
-      ]);
-      //   console.log("Data", result);
-      setSupportedProtocols(
-        result[1].data.protocols.filter((elm) => elm.chains.includes("Solana"))
-      );
-      setPoolList(
-        result[0].data.data.filter(
-          (elm) => elm.chain.toUpperCase() === "SOLANA"
-        )
-      );
-
-      setYieldList(result[2].data.protocols);
-    } catch (error) {
-      console.log("err", error.message);
-    }
-  }, []);
   useEffect(() => {
-    fetchProtocolData();
-  }, [fetchProtocolData]);
-  useMemo(() => {
-    let mappedData = poolList
-      .sort((a, b) => b.tvlUsd - a.tvlUsd)
-      .slice(0, 9)
-      .map((elm) => {
-        let selectedPool;
-        let selectedYield = yieldList[elm.project];
-        //console.log("selected Yield", selectedYield);
-        if (selectedYield) {
-          selectedPool = supportedProtocols.find(
-            (elm) => elm.name.toUpperCase() === selectedYield.name.toUpperCase()
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        const poolsResponse = await axios.get("https://yields.llama.fi/pools");
+        const protocolsResponse = await axios.get(
+          "https://api.llama.fi/lite/protocols2"
+        );
+        const yieldsResponse = await axios.get(
+          "https://api.llama.fi/config/yields?a=1"
+        );
+
+        if (isMounted) {
+          const solanaProtocols = protocolsResponse.data.protocols.filter(
+            (elm) => elm.chains.includes("Solana")
           );
+          const solanaPools = poolsResponse.data.data.filter(
+            (elm) => elm.chain.toUpperCase() === "SOLANA"
+          );
+          const yieldProtocols = yieldsResponse.data.protocols;
+
+          const mappedData = solanaPools
+            .sort((a, b) => b.tvlUsd - a.tvlUsd)
+            .slice(0, 9)
+            .map((pool) => {
+              const selectedYield = yieldProtocols[pool.project];
+              const selectedPool = selectedYield
+                ? solanaProtocols.find(
+                    (protocol) =>
+                      protocol.name.toUpperCase() ===
+                      selectedYield.name.toUpperCase()
+                  )
+                : null;
+              return { ...pool, poolInfo: selectedPool };
+            });
+
+          setProtocolList(solanaProtocols);
+          setEditPoolList(mappedData);
         }
-        return { ...elm, poolInfo: selectedPool };
-      });
+      } catch (error) {
+        console.error("Fetch error:", error.message);
+      }
+    };
 
-    setEditPoolList(mappedData);
-  }, [poolList, supportedProtocols, yieldList]);
-  const pullData = useCallback(async () => {
-    try {
-      let { data } = await axios.get("https://api.llama.fi/lite/protocols2");
-      setProtocolList(
-        data.protocols.filter((elm) => elm.chains.includes("Solana"))
-      );
-    } catch (error) {}
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
-
-  useEffect(() => {
-    pullData();
-  }, [pullData]);
   return (
     <Container
       className={cn(
@@ -125,12 +115,14 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="tvl">Solana TVL Rankings </SelectItem>
-              <SelectItem value="yields" disabled>Estimated APY Rankings</SelectItem>
+              <SelectItem value="yields" disabled>
+                Estimated APY Rankings
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
         <Badge
-          className="rounded-lg"
+          className="rounded-lg "
           style={{
             backgroundColor: AccentColors.red,
           }}
@@ -176,26 +168,7 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
   );
 };
 
-const topNfts = [
-  {
-    price: "1,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 1",
-    floor: "0.5",
-  },
-  {
-    price: "2,500.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 2",
-    floor: "1.2",
-  },
-  {
-    price: "5,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 3",
-    floor: "2.5",
-  },
-];
+
 
 type TopNftCollectionItemProps = {
   price: string;
@@ -299,7 +272,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
         </div>
         <DialogFooter className="border-t-2 py-3 justify-center items-center flex w-full border-[#FFFFF]">
           <Button
-            className="w-full"
+            className="w-full guac-bg"
             onClick={() => {
               if (typeof window !== "undefined") {
                 window.open(item.url, "blank");
@@ -322,9 +295,7 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
   item,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  useEffect(() => {
-    console.log("Yield Item", JSON.stringify(item));
-  }, [item]);
+ 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -396,7 +367,7 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
         </div>
         <DialogFooter className="border-t-2 py-3 justify-center items-center flex w-full border-[#FFFFF]">
           <Button
-            className="w-full"
+            className="w-full guac-bg"
             onClick={() => {
               if (typeof window !== "undefined") {
                 window.open(item.poolInfo.url, "blank");

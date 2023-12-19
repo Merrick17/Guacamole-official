@@ -50,7 +50,7 @@ const Page = () => {
           <NavigationList filter="Trade" />
           <WalletMultiButtonDynamic
             startIcon={undefined}
-            className="!rounded-lg  h-7 px-3 py-[6px] font-normal text-sm flex bg-primary text-primary-foreground hover:!bg-primary"
+            className="!rounded-lg trade-bg h-7 px-3 py-[6px] font-normal text-sm flex bg-primary text-primary-foreground hover:!bg-primary"
           />
         </div>
 

@@ -145,7 +145,7 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
     });
     return percentagePrices;
   };
-  const initChartData = useCallback(async () => {
+  const initChartData = async () => {
     try {
       let data = await getTrendingTokensCharts(convertParams(selection));
 
@@ -187,72 +187,13 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
         },
       ]);
     } catch (error) {}
-  }, [selection]);
+  };
   useEffect(() => {
     initChartData();
-  }, [initChartData]);
-  const setChartType = (dataType) => {
-    //setSelection(dataType);
-  };
+  }, [selection]);
 
   return (
     <>
-      {/* <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "10px",
-          height: "100%",
-        
-        }}
-      >
-     
-        <div className="duration-option text-right" id="chart-btns">
-          <button
-            id="one_month"
-            className={`swap-chart-btn ${
-              selection === "1D" ? "active-chart" : ""
-            }`}
-            onClick={() => setChartType("1D")}
-          >
-            <span>1D</span>
-          </button>
-          &nbsp;
-          <button
-            id="six_months"
-            className={`swap-chart-btn ${
-              selection === "1W" ? "active-chart" : ""
-            }`}
-            onClick={() => setChartType("1W")}
-          >
-            <span>1W</span>
-          </button>
-          &nbsp;
-          <button
-            id="one_year"
-            className={`swap-chart-btn ${
-              selection === "1M" ? "active-chart" : ""
-            }`}
-            onClick={() => setChartType("1M")}
-          >
-            <span>1M</span>
-          </button>
-          &nbsp;
-          <button
-            id="ytd"
-            className={`swap-chart-btn ${
-              selection === "1Y" ? "active-chart" : ""
-            }`}
-            onClick={() => setChartType("1Y")}
-          >
-            <span>1Y</span>
-          </button>
-          <img src="/assets/img/coingecko.webp" alt="" className="coingecko" />
-        </div>
-      </div> */}
-
       <div id="chart-timeline" className="bg-[#0F0F0F] rounded-xl ">
         <ReactApexChart
           options={options}

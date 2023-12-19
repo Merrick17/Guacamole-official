@@ -1,5 +1,5 @@
-'use client';
-import Image from 'next/image';
+"use client";
+import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -8,10 +8,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { usePathname, useRouter } from 'next/navigation';
-import { Links } from '@/config/links';
-const NavigationList = ({ filter }: { filter?: 'Earn' | 'Trade' }) => {
+} from "@/components/ui/select";
+import { usePathname, useRouter } from "next/navigation";
+import { Links } from "@/config/links";
+const NavigationList = ({ filter }: { filter?: "Earn" | "Trade" }) => {
   const pathname = usePathname();
   const router = useRouter();
   return (
@@ -19,7 +19,11 @@ const NavigationList = ({ filter }: { filter?: 'Earn' | 'Trade' }) => {
       defaultValue={pathname}
       onValueChange={(value) => router.push(value)}
     >
-      <SelectTrigger className="text-black bg-primary w-max h-7 rounded-lg text-sm ">
+      <SelectTrigger
+        className={`text-black bg-primary w-max h-7 ${
+          pathname.includes("trade") ? "trade-bg" : "earn-bg"
+        } rounded-lg text-sm `}
+      >
         <SelectValue placeholder="" />
       </SelectTrigger>
       <SelectContent className="w-full">

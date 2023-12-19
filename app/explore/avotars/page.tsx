@@ -59,13 +59,13 @@ const Page = () => {
           </Button>
         </div>
         <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
-        <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F]">
+        <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <div className="text-[#FFF] w-full flex items-center justify-center gap-1 text-[24px]">
             The Avotar Collection
           </div>
         </div>
 
-        <Container className="bg-[#0F0F0F] relative flex-col gap-[17px] flex p-[25px] overflow-hidden ">
+        <Container className="bg-[#0F0F0F] hover:border-[#70D87D]  relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10) ">
           <Image
             src="/images/explore/bg/avocado.png"
             width={300}
@@ -109,7 +109,7 @@ const Page = () => {
             </Link>
           </div>
         </Container>
-        <Container className="bg-[#0F0F0F] relative flex-col gap-[17px] flex p-[25px] overflow-hidden">
+        <Container className="bg-[#0F0F0F] hover:border-[#70D87D]  relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)">
           <h1>Stake GUAC To Earn An Avotar</h1>
           <p className="text-[#A8A8A8] text-[14px] w-[369px]">
             Did you know that you can stake GUAC for points, which you can then
@@ -144,7 +144,7 @@ const Page = () => {
             </svg>
           </Link>
         </Container>
-        <Container className="bg-[#0F0F0F] relative flex-col gap-[17px] flex p-[25px] overflow-hidden ">
+        <Container className="bg-[#0F0F0F] hover:border-[#70D87D]  relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)">
           <h1>Trade On Tensor</h1>
 
           <Link href={""} className="flex items-start  gap-2">
@@ -174,7 +174,7 @@ const Page = () => {
             </svg>
           </Link>
         </Container>
-        <Container className="bg-[#0F0F0F] relative flex-col gap-[17px] flex p-[25px] overflow-hidden ">
+        <Container className="bg-[#0F0F0F] hover:border-[#70D87D]  relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10) ">
           <h1>Trade On Magic Eden</h1>
 
           <Link href={""} className="flex items-start  gap-2">

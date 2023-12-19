@@ -1,13 +1,13 @@
-import { TokenInfo } from '@solana/spl-token-registry';
-import { TokenAccounts } from '@bonfida/hooks';
-import round from 'lodash/round';
-import { PublicKey } from '@solana/web3.js';
-import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import { NATIVE_MINT } from '@solana/spl-token';
-import { BiWallet } from 'react-icons/bi';
-import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { TokenInfo } from "@solana/spl-token-registry";
+import { TokenAccounts } from "@bonfida/hooks";
+import round from "lodash/round";
+import { PublicKey } from "@solana/web3.js";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { NATIVE_MINT } from "@solana/spl-token";
+import { BiWallet } from "react-icons/bi";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import axios from "axios";
 export const Balance = ({
   token,
   tokenAccounts,
@@ -24,9 +24,6 @@ export const Balance = ({
       }
     | undefined;
 }) => {
-  const { connection } = useConnection();
-  const { publicKey } = useWallet();
-
   const wSol = token?.address === NATIVE_MINT.toBase58();
 
   const tokenAccount = token
@@ -49,7 +46,7 @@ export const Balance = ({
         <BiWallet />
       </span>
       <span>{round(wSol ? solBalance?.uiAmount || 0 : balance, 6)}</span>
-      <span>{wSol ? ' SOL' : ` ${token?.symbol}`}</span>
+      <span>{wSol ? " SOL" : ` ${token?.symbol}`}</span>
 
       {setInput && !!balance && (
         <>

@@ -48,6 +48,10 @@ export const Links: {
         href: routes.trade.perpetuals,
       },
       {
+        name: "Buy And Sell Crypto",
+        href: routes.trade.buysell,
+      },
+      {
         name: "Limit",
         href: "",
         disabled: true,

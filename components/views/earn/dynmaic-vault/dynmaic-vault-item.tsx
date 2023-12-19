@@ -1,18 +1,18 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
-import { AiOutlineQuestionCircle } from 'react-icons/ai';
-import { useWallet } from '@solana/wallet-adapter-react';
-import VaultImpl, { KEEPER_URL } from '@mercurial-finance/vault-sdk';
-import { PublicKey } from '@solana/web3.js';
-import { useConnection } from '@solana/wallet-adapter-react';
-import { useNetworkConfiguration } from '@/context/network-configuration';
-import { VaultStateAPI } from '@/lib/dynamic-vaults';
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { useWallet } from "@solana/wallet-adapter-react";
+import VaultImpl, { KEEPER_URL } from "@mercurial-finance/vault-sdk";
+import { PublicKey } from "@solana/web3.js";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { useNetworkConfiguration } from "@/context/network-configuration";
+import { VaultStateAPI } from "@/lib/dynamic-vaults";
 
-import { fromLamports, getUserbalance } from '@/lib/utils';
-import { useJupiterApiContext } from '../../trade/src/contexts';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { useRouter } from 'next/navigation';
+import { fromLamports, getUserbalance } from "@/lib/utils";
+import { useJupiterApiContext } from "../../trade/src/contexts";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
 
 export type DynmaicVaultItemProps = {
   image?: string;
@@ -86,17 +86,11 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   const [userTokenBalanceInLamports, setUserTokenBalanceInLamports] =
     useState(0);
 
-  // User interaction
-  const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [depositAmount, setDepositAmount] = useState('');
-  const [withdrawAmount, setWithdrawAmount] = useState('');
-
   const initVaultImpl = useCallback(async () => {
     if (token && connection) {
       const vault = await VaultImpl.create(connection, token, {
         affiliateId: new PublicKey(
-          'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC'
+          "EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"
         ), // Replace with your own Partner ID
       });
 
@@ -144,7 +138,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       );
       setUserTokenBalanceInLamports(userTokenBalance);
     } catch (error) {
-      console.log('Error getting user lp or token balance', error);
+      console.log("Error getting user lp or token balance", error);
     }
   }, [token, vaultImpl, publicKey, connection]);
 
@@ -192,7 +186,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
             maxAllocation: item.max_allocation,
           }))
           .concat({
-            name: 'Vault Reserves',
+            name: "Vault Reserves",
             liquidity: vaultStateAPI.token_amount,
             allocation: (
               (vaultStateAPI.token_amount / totalAllocation) *
@@ -255,7 +249,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
         <div className="flex items-center justify-between">
           <h2>TVL</h2>
           <p>
-            {new Intl.NumberFormat('en-US', {}).format(uiState.tvl)}{' '}
+            {new Intl.NumberFormat("en-US", {}).format(uiState.tvl)}{" "}
             {token.symbol}
           </p>
         </div>

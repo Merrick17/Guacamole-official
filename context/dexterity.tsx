@@ -146,13 +146,13 @@ export interface Product {
 }
 
 export interface Price {
-  index: number,
-  price: number
+  index: number;
+  price: number;
 }
 
 export interface Leverage {
-  index: number,
-  lev: number
+  index: number;
+  lev: number;
 }
 
 interface ProductContextProps {
@@ -185,17 +185,17 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
       : null;
 
   let defaultProduct: Product = {
-    index: 0,
-    name: "BTCUSD-PERP",
-    minSize: 0.0001,
-    exponent: 4,
+    index: 2,
+    name: "SOLUSD-PERP",
+    minSize: 0.1,
+    exponent: 1,
   };
 
   const [mpgPubkey, setMpgPubkey] = useState(defaultMpg);
   const [selectedProduct, setSelectedProductIndex] = useState(defaultProduct);
   const [indexPrice, setIndexPrice] = useState();
   const [markPrice, setMarkPrice] = useState();
-  const [productLeverage, setProductLeverage] = useState()
+  const [productLeverage, setProductLeverage] = useState();
 
   return (
     <ProductContext.Provider
@@ -209,7 +209,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
         markPrice,
         setMarkPrice,
         productLeverage,
-        setProductLeverage
+        setProductLeverage,
       }}
     >
       {children}

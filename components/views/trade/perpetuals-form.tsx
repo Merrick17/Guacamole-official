@@ -105,10 +105,10 @@ const PerpetualsForm = () => {
           elm.account.mint.toBase58() ==
           "AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"
       );
-      console.log("MsOL", guacInfo);
+     
       if (guacInfo) {
         const balance = Number(guacInfo.account.amount) / guacInfo.decimals;
-        console.log("Balance", balance);
+      
         setGuacBalance(balance);
         setGuac(guacInfo);
       }
@@ -303,7 +303,7 @@ const PerpetualsForm = () => {
 
           <Button
             size="sm"
-            className="h-7"
+            className="h-7 trade-bg"
             onClick={() => {
               if (typeof window !== "undefined") {
                 window.open(
@@ -331,7 +331,7 @@ const PerpetualsForm = () => {
                     className={cn(
                       " rounded-lg text-sm w-full uppercase gap-2",
                       upOrDown
-                        ? "bg-[#8bd796] hover:!bg-[#8bd796]"
+                        ? "guac-bg hover:!bg-[#8bd796]"
                         : "bg-[#141414]  text-white hover:!bg-[#141414] "
                     )}
                     size="lg"
@@ -349,7 +349,7 @@ const PerpetualsForm = () => {
                     className={cn(
                       " rounded-lg text-sm w-full uppercase ",
                       !upOrDown
-                        ? "bg-destructive hover:!bg-destructive"
+                        ? "earn-bg hover:!bg-destructive"
                         : "bg-[#141414] text-white  hover:!bg-[#141414] "
                     )}
                     size="lg"
@@ -543,7 +543,7 @@ const PerpetualsForm = () => {
               <Button
                 type="submit"
                 onClick={placeOrder}
-                className="w-full "
+                className="w-full trade-bg"
                 size="lg"
               >
                 Place Trade
