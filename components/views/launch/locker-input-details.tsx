@@ -17,7 +17,6 @@ const LockerInputDetails = () => {
   const { connected, publicKey } = useWallet();
   const { connection } = useConnection();
   const { selectedPool } = usePool();
-  const { tokenMap, tokenList } = useJupiterApiContext();
   const [lockAmount, setLockAmount] = useState<number>(0);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
@@ -27,9 +26,10 @@ const LockerInputDetails = () => {
     connection,
     publicKey
   );
-  const tokenAccount = tokenAccounts
-    ? tokenAccounts?.getByMint(new PublicKey(selectedPool?.lpMint))
-    : null;
+  const tokenAccount =
+    tokenAccounts && selectedPool
+      ? tokenAccounts?.getByMint(new PublicKey(selectedPool?.lpMint))
+      : null;
   const guacTokenAccount = tokenAccounts
     ? tokenAccounts?.getByMint(
         new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR")
@@ -46,12 +46,11 @@ const LockerInputDetails = () => {
         Math.pow(10, guacTokenAccount.decimals)
       : 0;
   useEffect(() => {
-
+  
     if (selectedPool) {
-      let base = tokenList.find((elm) => elm.address == selectedPool.baseMint);
-      let quote = tokenList.find(
-        (elm) => elm.address == selectedPool.quoteMint
-      );
+   
+      const base = selectedPool.baseMint;
+      const quote = selectedPool.quoteMint;
       setBaseToken(base);
       setQuoteToken(quote);
 

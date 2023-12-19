@@ -33,7 +33,7 @@ const InfoCard: FC<InfoCardProps> = ({
   disabled = false,
   target,
 }) => {
-  console.log("Border",name)
+  //console.log("Border",name)
   return (
     <Container
       className={`p-6 rounded-lg max-w-xs bg-foreground  border border-transparent  ${

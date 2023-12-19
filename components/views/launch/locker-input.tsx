@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import useLockerTools from "@/hooks/use-locker";
-import { usePool } from "@/hooks/use-pool-list";
+import { PoolExtended, usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { PublicKey } from "@solana/web3.js";
 
@@ -28,8 +28,14 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const [mintAdr, setMintAdr] = useState("");
 
   const { initNewVault, getAllVaults } = useLockerTools();
-  const { poolList, setSelectedPool, selectedPool, getPoolByLpMint } =
-    usePool();
+  const {
+    poolList,
+    setSelectedPool,
+    selectedPool,
+    getPoolByLpMint,
+    setSelectedMintAdr,
+  } = usePool();
+  const [poolToUser, setPoolToUse] = useState<PoolExtended | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
@@ -53,7 +59,9 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const handleCreateVault = async () => {
     // console.log("POol list", poolList);
     const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
+
     if (poolFound) {
+      setSelectedMintAdr(mintAdr);
       setSelectedPool(poolFound);
       const resp = await initNewVault(
         new PublicKey(poolFound.lpMint),
@@ -67,14 +75,17 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   };
   const getUserInfo = async () => {
     const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
+    // console.log("Pool", poolFound);
     if (poolFound) {
+      setPoolToUse(poolFound);
       const base = poolFound.baseMint;
       const quote = poolFound.quoteMint;
       setBaseToken(base);
       setQuoteToken(quote);
-      const tokenAccount = tokenAccounts
-        ? tokenAccounts?.getByMint(new PublicKey(poolFound?.lpMint))
-        : null;
+      const tokenAccount =
+        tokenAccounts && poolFound
+          ? tokenAccounts?.getByMint(new PublicKey(poolFound?.lpMint))
+          : null;
       const balance =
         tokenAccount && tokenAccount.decimals
           ? Number(tokenAccount.account.amount) /
@@ -156,11 +167,8 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
               if (!vault) {
                 setIsCreateOpen(true);
               } else {
-                const selectedPool = poolList.find(
-                  (elm) => elm.lpMint == mintAdr.replace(/\s/g, "")
-                );
-
-                setSelectedPool(selectedPool);
+                
+                setSelectedPool(poolToUser);
                 handleStepChange(2);
               }
             }}

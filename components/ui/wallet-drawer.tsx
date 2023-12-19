@@ -58,7 +58,7 @@ const WalletDrawer = () => {
             },
           }
         );
-        console.log("Resp Tokens", data.result.items);
+      
         const tokenInfo = data.result.items.map(async (tkn) => {
           const balance =
             tkn.content && tkn.token_info ? tkn.token_info.balance : 0;

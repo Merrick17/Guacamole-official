@@ -130,7 +130,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
         ),
       });
       setDepositStatus("success");
-      console.log("HERE CONFIRMED");
+     // console.log("HERE CONFIRMED");
     },
   };
 

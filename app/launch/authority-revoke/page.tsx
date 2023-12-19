@@ -91,7 +91,7 @@ const Revoke = () => {
           elm.tokenInfo.mintAuthority &&
           elm.tokenInfo.mintAuthority.toBase58() == publicKey.toBase58()
       );
-      console.log("Resp", filtred);
+      //console.log("Resp", filtred);
       setFiltredTokens(filtred);
     }
   };

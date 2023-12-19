@@ -152,7 +152,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
 
   useEffect(() => {
     if (vaultImpl && info && vaultInfo) {
-      console.log("Vault INFO",vaultInfo)
+      //console.log("Vault INFO",vaultInfo)
       const virtualPrice =
         vaultUnlockedAmount / vaultImpl.lpSupply.toNumber() || 0;
       // Vault reserves + all strategy allocations

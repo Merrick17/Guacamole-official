@@ -19,7 +19,7 @@ interface Pool {
   provider: string;
   liquidity: number;
 }
-interface PoolExtended {
+export interface PoolExtended {
   poolId: string;
   baseMint: TokenInfo;
   quoteMint: TokenInfo;
@@ -31,28 +31,26 @@ interface PoolExtended {
   quoteAdr: string;
 }
 interface PoolContextType {
-  poolList: Pool[];
+  poolList: PoolExtended[];
   loading: boolean;
   error: string | null;
-  selectedPool: Pool | null;
-  setSelectedPool: (value: SetStateAction<Pool>) => void;
+  selectedPool: PoolExtended | null;
+  selectedMintAdr:string | null; 
+  setSelectedMintAdr:(value: SetStateAction<string>) => void;
+  setSelectedPool: (value: SetStateAction<PoolExtended>) => void;
   getPoolByLpMint: (lpMint: string) => Promise<PoolExtended | null>;
   getPoolByPoolId: (lpMint: string) => Promise<PoolExtended | null>;
+
 }
 
 const PoolContext = createContext<PoolContextType | undefined>(undefined);
 
 const PoolProvider: React.FC<{ children: any }> = ({ children }) => {
-  const [poolList, setPoolList] = useState<Pool[]>([]);
-  const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
+  const [poolList, setPoolList] = useState<PoolExtended[]>([]);
+  const [selectedPool, setSelectedPool] = useState<PoolExtended | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  // const getPoolByLpMint = useCallback(
-  //   (lpMint: string): Pool | null => {
-  //     return poolList.find((pool) => pool.lpMint === lpMint) || null;
-  //   },
-  //   [poolList]
-  // );
+  const [selectedMintAdr, setSelectedMintAdr] = useState<string | null>(null);
   const getPoolByLpMint = useCallback(
     async (lpMint: string): Promise<PoolExtended | null> => {
       try {
@@ -99,7 +97,7 @@ const PoolProvider: React.FC<{ children: any }> = ({ children }) => {
 
       const data = await response.json();
       // Assuming the structure of the API response is an array under the 'pools' key
-      const fetchedPoolList: Pool[] = data;
+      const fetchedPoolList: PoolExtended[] = data;
 
       setPoolList(fetchedPoolList);
     } catch (error) {
@@ -123,6 +121,8 @@ const PoolProvider: React.FC<{ children: any }> = ({ children }) => {
         setSelectedPool,
         getPoolByLpMint,
         getPoolByPoolId,
+        selectedMintAdr, // Provide selectedMintAdr
+        setSelectedMintAdr,
       }}
     >
       {children}

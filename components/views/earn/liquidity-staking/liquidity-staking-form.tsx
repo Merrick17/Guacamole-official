@@ -55,7 +55,7 @@ const LiquidityStackingForm = () => {
           elm.account.mint.toBase58() ==
           "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
       );
-      console.log("MsOL", msSol);
+      //console.log("MsOL", msSol);
       setMSolData(msSol);
       fetchSolBalance();
     }
