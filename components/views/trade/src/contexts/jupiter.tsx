@@ -1,5 +1,5 @@
 "use client";
-import { Configuration, DefaultApi, createJupiterApiClient } from "@jup-ag/api";
+import { DefaultApi, createJupiterApiClient } from "@jup-ag/api";
 import { TokenInfo } from "@solana/spl-token-registry";
 import axios from "axios";
 import React, { useContext, useEffect, useMemo, useState } from "react";
@@ -19,7 +19,9 @@ const JupiterApiContext = React.createContext<JupiterApiContext | null>(null);
 
 const getTokens = async () => {
   const { data } = await axios.get("https://token.jup.ag/all");
-  return data as TokenInfo[];
+  return (data as TokenInfo[]).filter(
+    (elm) => elm.logoURI !== null && elm.logoURI !== undefined
+  );
 };
 
 const getTopTokens = async () => {

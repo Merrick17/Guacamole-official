@@ -135,11 +135,19 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <img
-                src={baseToken.logoURI}
+                src={
+                  baseToken && baseToken.logoURI
+                    ? baseToken.logoURI
+                    : "/images/No_Logo_Found_Guacamole-min.png"
+                }
                 className="h-[30px] w-[30px] rounded-full"
               />
               <img
-                src={quoteToken.logoURI}
+                src={
+                  quoteToken && quoteToken.logoURI
+                    ? quoteToken.logoURI
+                    : "/images/No_Logo_Found_Guacamole-min.png"
+                }
                 className="h-[30px] w-[30px] rounded-full"
               />
               <span className="text-[#FFF] text-sm">
@@ -167,7 +175,6 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
               if (!vault) {
                 setIsCreateOpen(true);
               } else {
-                
                 setSelectedPool(poolToUser);
                 handleStepChange(2);
               }

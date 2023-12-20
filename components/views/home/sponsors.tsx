@@ -1,3 +1,4 @@
+import FallbackImage from '@/components/common/FallbackImage';
 import {
   Tooltip,
   TooltipContent,
@@ -13,7 +14,7 @@ const Sponsors = () => {
         <TooltipProvider key={sponsor.name}>
           <Tooltip>
             <TooltipTrigger>
-              <Image
+              <FallbackImage
                 src={sponsor.href}
                 alt={sponsor.name}
                 width={42}

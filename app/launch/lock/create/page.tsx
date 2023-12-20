@@ -2,23 +2,21 @@
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import LockerInput from "@/components/views/launch/locker-input";
 import LockerInputDetails from "@/components/views/launch/locker-input-details";
-import {
-  JupiterApiProvider,
-  useJupiterApiContext,
-} from "@/components/views/trade/src/contexts";
+import { JupiterApiProvider } from "@/components/views/trade/src/contexts";
 import useLockerTools from "@/hooks/use-locker";
 import { PoolProvider, usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import FallbackImage from "@/components/common/FallbackImage";
 const LockItem = ({ lock }) => {
   const { poolList, getPoolByLpMint } = usePool();
-  const { tokenList, tokenMap } = useJupiterApiContext();
+
   const [poolInfo, setPoolInfo] = useState(null);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
@@ -41,15 +39,31 @@ const LockItem = ({ lock }) => {
     <Container className="bg-[#0F0F0F] px-[15px] py-[16px] flex gap-3 justify-between h-[60px] my-[5px]">
       <div className="flex justify-start items-center">
         {baseToken && (
-          <img
-            src={baseToken.logoURI}
-            className="h-[30px] w-[30px] rounded-full object-contain"
+          <FallbackImage
+            unoptimized
+            src={
+              baseToken.logoURI
+                ? baseToken.logoURI
+                : "/images/No_Logo_Found_Guacamole-min.png"
+            }
+            className="rounded-full object-contain"
+            alt={baseToken.name}
+            width={30}
+            height={30}
           />
         )}
         {quoteToken && (
-          <img
-            src={quoteToken.logoURI}
-            className="h-[30px] w-[30px] rounded-full object-contain"
+          <FallbackImage
+            unoptimized
+            src={
+              quoteToken.logoURI
+                ? quoteToken.logoURI
+                : "/images/No_Logo_Found_Guacamole-min.png"
+            }
+            className="rounded-full object-contain"
+            alt={quoteToken.name}
+            width={30}
+            height={30}
           />
         )}
         {baseToken && quoteToken && (

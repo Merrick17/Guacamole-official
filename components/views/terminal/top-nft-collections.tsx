@@ -1,4 +1,5 @@
 "use client";
+import FallbackImage from "@/components/common/FallbackImage";
 import Container from "@/components/common/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -189,7 +190,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <Container className="hover:border-2 px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full cursor-pointer">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image
+                <FallbackImage
                   src={image}
                   fill
                   alt={title}
@@ -217,7 +218,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <div className="flex justify-between items-center pb-3 border-b-2 border-[#FFFFF]">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image
+                <FallbackImage
                   src={image}
                   fill
                   alt={title}

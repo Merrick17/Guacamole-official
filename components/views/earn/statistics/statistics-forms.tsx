@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LiquidityAllocation from "./liquidity-allocation";
 import { Modal } from "../../play/Modal";
+import FallbackImage from "@/components/common/FallbackImage";
 interface IData {
   virtualPrice: number;
   tvl: number;
@@ -111,7 +112,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
           </p>
         </div>
         <Button className="text-[#8BD796] bg-foreground font-medium px-4 py-2 rounded-lg">
-           {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
+          {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
         </Button>
       </Container>
       <Form {...form}>
@@ -175,8 +176,12 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
 
               <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
                 {token && (
-                  <Image
-                    src={token.logoURI}
+                  <FallbackImage
+                    src={
+                      token && token.logoURI
+                        ? token.logoURI
+                        : "/images/No_Logo_Found_Guacamole-min.png"
+                    }
                     width={32}
                     height={32}
                     alt="solana"
@@ -221,8 +226,12 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
               </header>
               <form className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
                 {token && (
-                  <Image
-                    src={token.logoURI}
+                  <FallbackImage
+                    src={
+                      token && token.logoURI
+                        ? token.logoURI
+                        : "/images/No_Logo_Found_Guacamole-min.png"
+                    }
                     width={32}
                     height={32}
                     alt="solana"

@@ -1,7 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from './button';
-import { cn } from '@/lib/utils';
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "./button";
+import { cn } from "@/lib/utils";
+import FallbackImage from "../common/FallbackImage";
 
 const PlayCard = ({
   title,
@@ -21,13 +22,13 @@ const PlayCard = ({
       href={href}
       aria-disabled={disabled}
       className={cn(
-        'w-full lg:max-w-[322px]  overflow-hidden h-[216px] group flex flex-col items-center gap-8  relative transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out',
-        disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+        "w-full lg:max-w-[322px]  overflow-hidden h-[216px] group flex flex-col items-center gap-8  relative transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out",
+        disabled && "opacity-50 cursor-not-allowed pointer-events-none",
         !disabled && ` hover:border-[var(--accent)]  hover:border`,
         className
       )}
     >
-      <Image
+      <FallbackImage
         src={image}
         alt={title}
         fill

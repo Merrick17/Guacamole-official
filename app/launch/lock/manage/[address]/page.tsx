@@ -23,7 +23,8 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import withAuth from "./guard";
+import Image from "next/image";
+import FallbackImage from "@/components/common/FallbackImage";
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 const Page = () => {
@@ -153,15 +154,31 @@ const Page = () => {
             </span>
             <div className="flex justify-start items-center">
               {baseToken && (
-                <img
-                  src={baseToken.logoURI}
-                  className="h-[30px] w-[30px] rounded-full object-contain"
+                <FallbackImage
+                  src={
+                    baseToken.logoURI
+                      ? baseToken.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
+                  className="rounded-full object-contain"
+                  unoptimized
+                  width={30}
+                  height={30}
+                  alt={baseToken.logoURI}
                 />
               )}
               {quoteToken && (
-                <img
-                  src={quoteToken.logoURI}
-                  className="h-[30px] w-[30px] rounded-full object-contain"
+                <FallbackImage
+                  src={
+                    quoteToken.logoURI
+                      ? quoteToken.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
+                  className="rounded-full object-contain"
+                  unoptimized
+                  width={30}
+                  height={30}
+                  alt={quoteToken.name}
                 />
               )}
               {baseToken && quoteToken && (

@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import FallbackImage from "@/components/common/FallbackImage";
 interface SolanaTvlRankingProps extends React.HTMLAttributes<HTMLDivElement> {}
 const relDiff = (final, init) => {
   return ((final - init) / init) * 100;
@@ -125,7 +126,9 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="tvl">Solana TVL Rankings </SelectItem>
-              <SelectItem value="yields" disabled>Estimated APY Rankings</SelectItem>
+              <SelectItem value="yields" disabled>
+                Estimated APY Rankings
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -227,7 +230,15 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image src={image} fill alt={title} className="rounded-[5px]" />
+                <FallbackImage
+                  src={image}
+                  fill
+                  alt={title}
+                  className="rounded-[5px]"
+                  onError={(e) => {
+                    console.log("Er", e);
+                  }}
+                />
               </div>
               <div className="text-xs  flex flex-col gap-2">
                 <h1 className="font-medium">{title}</h1>
@@ -254,7 +265,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <div className="flex justify-between items-center pb-3 border-b-2 border-[#FFFFF]">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image
+                <FallbackImage
                   src={image}
                   fill
                   alt={title}
@@ -336,7 +347,7 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image src={image} fill alt={title} className="rounded-[5px]" />
+                <FallbackImage src={image} fill alt={title} className="rounded-[5px]" />
               </div>
               <div className="text-xs  flex flex-col gap-2">
                 <h1 className="font-medium">{item.symbol}</h1>
@@ -358,7 +369,7 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <div className="flex justify-between items-center pb-3 border-b-2 border-[#FFFFF]">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image
+                <FallbackImage
                   src={image}
                   fill
                   alt={title}

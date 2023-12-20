@@ -340,7 +340,7 @@ const LockerList = () => {
       );
 
       const filterPools = poolList.filter(
-        (elm) => elm.baseMint == token.address || elm.quoteMint == token.address
+        (elm) => elm.baseMint.address == token.address || elm.quoteMint.address == token.address
       );
 
       const filteredVaults = vaults.filter((vault) =>

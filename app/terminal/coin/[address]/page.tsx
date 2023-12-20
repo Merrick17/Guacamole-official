@@ -48,7 +48,11 @@ export default function CoinDetails() {
             <div className="flex  flex-row items-center gap-3">
               {selectedToken && (
                 <img
-                  src={selectedToken.logoURI}
+                  src={
+                    selectedToken.logoURI
+                      ? selectedToken.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
                   alt="bitcoin"
                   className="w-10 h-10 rounded-full"
                 />

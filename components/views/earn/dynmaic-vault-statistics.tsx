@@ -102,7 +102,11 @@ const DynamicVaultStatisticsItem: FC<DynamicVaultStatisticsItemProps> = ({
     <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background  hover:border-[var(--accent)]  hover:border ">
       <div className="flex flex-row items-center gap-2 lg:gap-5">
         <img
-          src={token?.logoURI}
+          src={
+            token && token.logoURI
+              ? token.logoURI
+              : "/images/No_Logo_Found_Guacamole-min.png"
+          }
           className="w-5 h-5 lg:w-10 lg:h-10 rounded-full hidden"
           alt="logo"
           onLoad={(e) => {

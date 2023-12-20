@@ -16,7 +16,7 @@ dayjs.extend(relativeTime);
 const Page = () => {
   const router = useRouter();
   const params = useParams();
-  const { poolList,getPoolByLpMint,getPoolByPoolId } = usePool();
+  const { poolList, getPoolByLpMint, getPoolByPoolId } = usePool();
   const [selectedPool, setSelectedPool] = useState<any>(null);
   const { tokenList, api } = useJupiterApiContext();
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
@@ -31,11 +31,11 @@ const Page = () => {
     //console.log("ADR", adr);
     if (adr !== "") {
       setPoolAdr(adr);
-      const pool = await getPoolByPoolId(adr)
-      
+      const pool = await getPoolByPoolId(adr);
+
       //console.log("Pool Details", pool);
       const base = pool.baseMint;
-      const quote =pool.quoteMint; 
+      const quote = pool.quoteMint;
 
       setBaseToken(base);
       setQuoteToken(quote);
@@ -164,13 +164,21 @@ const Page = () => {
           {baseToken && (
             <div className=" w-[267.609px] h-[256px] p-5  overflow-hidden rounded-lg relative border-2 border-[#a8a8a8] border-opacity-10">
               <img
-                src={baseToken.logoURI}
+                src={
+                  baseToken.logoURI
+                    ? baseToken.logoURI
+                    : "/images/No_Logo_Found_Guacamole-min.png"
+                }
                 className="w-full h-full object-cover transform scale-[2] opacity-25 absolute top-0 bottom-0 left-0 right-0 z-0"
                 alt="Guac Image"
               />
               <div className="w-[232px] h-[216px] rounded-lg bg-[#0F0F0F] border-2 border-[#a8a8a8] border-opacity-10 z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
                 <img
-                  src={baseToken.logoURI}
+                  src={
+                    baseToken.logoURI
+                      ? baseToken.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
                   className="h-[46px] w-[46px] rounded-full"
                 />
                 <p className="text-[#FFFF] font-medium text-[24px]">
@@ -372,8 +380,8 @@ const Page = () => {
             Liquidity Locks
           </h5>
           <p className="text-muted-foreground text-center text-[12px]">
-            Please note that only the Liquidity Provider (LP) tokens are
-            locked, not the corresponding dollar value of these positions, which
+            Please note that only the Liquidity Provider (LP) tokens are locked,
+            not the corresponding dollar value of these positions, which
             fluctuates with market changes. Additionally, as more participants
             contribute liquidity to the pool, new LP tokens are minted.
           </p>

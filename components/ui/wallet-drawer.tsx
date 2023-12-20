@@ -3,16 +3,16 @@ import routes from "@/config/routes";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Metaplex } from "@metaplex-foundation/js";
+import { TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BiLinkExternal, BiSolidLeftArrow } from "react-icons/bi";
 import { Skeleton } from "./skeleton";
-import { TokenInfo } from "@solana/spl-token-registry";
+import FallbackImage from "../common/FallbackImage";
 interface CustomTokenInfo {
   balance: number;
   balanceInUSD: number;
@@ -34,7 +34,7 @@ const WalletDrawer = () => {
   const fetchTokenList = useCallback(async () => {
     try {
       const { data } = await axios.get("https://token.jup.ag/all");
-     
+
       setTokenList(data);
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -58,7 +58,7 @@ const WalletDrawer = () => {
             },
           }
         );
-      
+
         const tokenInfo = data.result.items.map(async (tkn) => {
           const balance =
             tkn.content && tkn.token_info ? tkn.token_info.balance : 0;
@@ -269,10 +269,12 @@ const Row = ({ token }: { token: CustomTokenInfo }) => {
         )
       }
     >
-      <img
+      <FallbackImage
         src={token.logoURI as string}
         alt={token.name}
-        className="h-[24px] w-[24px] "
+        width={24}
+        height={24}
+        unoptimized
       />
       <div className="w-full">
         <div className=" flex flex-row items-center justify-between gap-4 ">

@@ -1,19 +1,19 @@
 "use client";
-import Image from "next/image";
-import { FC, useCallback, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import { BsDiscord } from "react-icons/bs";
-import { Logo } from "../views/trade/src/components/navigation-frame/TopBar/Logo";
-import Hamburger from "./hamburger";
-import { MenuItems } from "./menu-items";
-import { DrawerMenu } from "./drawer-menu";
 import routes from "@/config/routes";
-import { SearchInput } from "./search-input";
-import { useJupiterApiContext } from "../views/trade/src/contexts";
 import { TokenInfo } from "@solana/spl-token-registry";
 import axios from "axios";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { BsDiscord } from "react-icons/bs";
+import { Logo } from "../views/trade/src/components/navigation-frame/TopBar/Logo";
+import { DrawerMenu } from "./drawer-menu";
+import Hamburger from "./hamburger";
+import { MenuItems } from "./menu-items";
+import { SearchInput } from "./search-input";
+import FallbackImage from "../common/FallbackImage";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -160,9 +160,17 @@ const Header: FC<HeaderProps> = () => {
                           // console.log("SEARCH", search);
                         }}
                       >
-                        <img
-                          src={tkn.logoURI}
-                          className="h-[30px] w-[30px] rounded-full"
+                        <FallbackImage
+                          unoptimized
+                          src={
+                            tkn.logoURI
+                              ? tkn.logoURI
+                              : "/images/No_Logo_Found_Guacamole-min.png"
+                          }
+                          alt="/images/No_Logo_Found_Guacamole-min.png"
+                          width={30}
+                          height={30}
+                          className="rounded-full"
                         />
                         <div className="text-xs  flex flex-col gap-2">
                           <h1 className="font-medium">{tkn.symbol}</h1>
@@ -219,9 +227,21 @@ const Header: FC<HeaderProps> = () => {
                         // console.log("SEARCH", search);
                       }}
                     >
-                      <img
+                      {/* <img
                         src={tkn.logoURI}
                         className="h-[30px] w-[30px] rounded-full"
+                      /> */}
+                      <FallbackImage
+                        unoptimized
+                        src={
+                          tkn.logoURI
+                            ? tkn.logoURI
+                            : "/images/No_Logo_Found_Guacamole-min.png"
+                        }
+                        alt="/images/No_Logo_Found_Guacamole-min.png"
+                        width={30}
+                        height={30}
+                        className="rounded-full"
                       />
                       <div className="text-xs  flex flex-col gap-2">
                         <h1 className="font-medium">{tkn.symbol}</h1>
@@ -317,9 +337,22 @@ const HeaderLeftArea = () => {
                   // console.log("SEARCH", search);
                 }}
               >
-                <img
+                {/* <img
                   src={tkn.logoURI}
                   className="h-[30px] w-[30px] rounded-full"
+                /> */}
+
+                <FallbackImage
+                  unoptimized
+                  src={
+                    tkn.logoURI
+                      ? tkn.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
+                  alt="/images/No_Logo_Found_Guacamole-min.png"
+                  width={30}
+                  height={30}
+                  className="rounded-full"
                 />
                 <div className="text-xs  flex flex-col gap-2">
                   <h1 className="font-medium">{tkn.symbol}</h1>

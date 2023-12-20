@@ -1,4 +1,5 @@
 'use client'
+import FallbackImage from '@/components/common/FallbackImage'
 import Container from '@/components/common/container'
 import { GAMES } from '@/components/games'
 import { Button } from '@/components/ui/button'
@@ -28,7 +29,7 @@ const Play = () => {
                 )}
               >
                 <header>
-                  <Image
+                  <FallbackImage
                     src={game.image!}
                     alt={game.short_name}
                     width={90}
