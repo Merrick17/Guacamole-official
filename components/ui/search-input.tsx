@@ -20,9 +20,9 @@ const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(
             <path
               d="M14 14L11.3333 11.3333M11.3333 6.66667C11.3333 7.90434 10.8417 9.09133 9.9665 9.9665C9.09133 10.8417 7.90434 11.3333 6.66667 11.3333C5.42899 11.3333 4.242 10.8417 3.36683 9.9665C2.49167 9.09133 2 7.90434 2 6.66667C2 5.42899 2.49167 4.242 3.36683 3.36683C4.242 2.49167 5.42899 2 6.66667 2C7.90434 2 9.09133 2.49167 9.9665 3.36683C10.8417 4.242 11.3333 5.42899 11.3333 6.66667Z"
               stroke="#A8A8A8"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>

@@ -46,11 +46,11 @@ export default function Page({ params }: { params: { shortName: string } }) {
       )}
       <div className="w-full flex flex-col items-center gap-4">
         <GameProvider game={game}>
-          <div className="relative max-w-[512px] min-h-[400px] w-full z-10  bg-foreground rounded-lg ">
+          <div className="relative max-w-[512px] min-h-[400px] w-full z-10  bg-foreground rounded-lg shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] ">
             <game.app />
           </div>
-          <div className="max-w-[512px]  w-full z-10  bg-foreground rounded-lg min-h-[60px] flex items-center justify-center p-5  flex-wrap  gap-2  backdrop:blur-[50px]">
-            <GameUi.ControlView className="w-max  " />
+          <div className="max-w-[512px]  w-full z-10  bg-foreground rounded-lg min-h-[60px] flex items-center justify-center p-5  flex-wrap  gap-2  backdrop:blur-[50px] shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)]">
+            <GameUi.ControlView className="w-max  shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)]" />
             {wallet.connected ? (
               <Button onClick={() => setModal(true)} className="h-11">
                 {formatLamports(gamba.balances.total)}

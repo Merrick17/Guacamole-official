@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
+import FallbackImage from '../FallBackImage';
 
 type ListItemProps = {
   title: string;
@@ -52,7 +53,7 @@ const ListItem: FC<ListItemProps> = ({
       )}
     >
       <div className="w-8 h-8 rounded-full relative">
-        <Image src={image} alt={title} fill />
+        <FallbackImage src={image} alt={title} fill />
       </div>
 
       <h1 className="text-2xl font-medium">{title}</h1>

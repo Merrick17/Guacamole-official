@@ -84,8 +84,10 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
       setTokenBalance(balance);
     }
   };
-  useMemo(() => {
-    getUserInfo();
+  useEffect(() => {
+    if (mintAdr !== "") {
+      getUserInfo();
+    }
   }, [publicKey, mintAdr, selectedPool]);
   return (
     <>

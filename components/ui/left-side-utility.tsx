@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import routes from '@/config/routes';
-import { usePathname } from 'next/navigation';
-import ThemeSwitcher from './theme-switcher';
-import WalletDrawer from './wallet-drawer';
+import routes from "@/config/routes";
+import { usePathname } from "next/navigation";
+import ThemeSwitcher from "./theme-switcher";
+import WalletDrawer from "./wallet-drawer";
 
 const LeftSideUtility = () => {
   const pathname = usePathname();
@@ -17,7 +17,8 @@ const LeftSideUtility = () => {
   ) {
     return <ThemeSwitcher />;
   } else {
-    return <WalletDrawer />;
+    //return <WalletDrawer />;
+    return <></>;
   }
 };
 

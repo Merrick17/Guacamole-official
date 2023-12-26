@@ -57,7 +57,7 @@ const EarnHeader: FunctionComponent<EarnHeaderProps> = ({
         {!hideSecondBtn && (
           <Link
             href={viewAll ? routes.earn.dynamicVault : routes.earn.statistics}
-            className="text-sm font-medium capitalize py-[6px] rounded-lg text-primary-foreground bg-primary px-3 transition-colors "
+            className="text-sm font-medium earn-bg capitalize py-[6px] rounded-lg text-primary-foreground bg-primary px-3 transition-colors "
           >
             <span>{viewAll ? 'View All Vaults' : 'View Statistics'}</span>
           </Link>

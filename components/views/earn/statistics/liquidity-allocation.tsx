@@ -66,9 +66,9 @@ const Icon = () => {
         <path
           d="M13 7C13 3.68629 10.3137 1 7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13C10.3137 13 13 10.3137 13 7Z"
           stroke="#FCFCFC"
-          stroke-width="2.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           stroke-dasharray="37.7 37.7"
         />
       </g>

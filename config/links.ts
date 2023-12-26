@@ -181,12 +181,12 @@ export const Links: {
     Icon: GoInfo,
     color: "#D6776A",
   },
-  {
-    name: "Ecosystem",
-    href: "/info",
-    Icon: GoInfo,
-    color: "#FCFCFC",
-  },
+  // {
+  //   name: "Ecosystem",
+  //   href: "/info",
+  //   Icon: GoInfo,
+  //   color: "#FCFCFC",
+  // },
   {
     name: "Info",
     href: routes.info.root,

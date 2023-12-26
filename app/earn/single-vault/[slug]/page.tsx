@@ -1,13 +1,4 @@
-import EarnFooter from "@/components/common/earn-footer";
-import EarnHeader from "@/components/common/earn-header";
 import DetailVaultContainer from "@/components/views/earn/dynmaic-vault/details-vault-container";
-import ApyPerformance from "@/components/views/earn/statistics/apy-performance";
-import LiquidityAllocation from "@/components/views/earn/statistics/liquidity-allocation";
-import StatisticsCardContainer from "@/components/views/earn/statistics/statistics-card-container";
-import StatisticsForm from "@/components/views/earn/statistics/statistics-form";
-import StatisticsForms from "@/components/views/earn/statistics/statistics-forms";
-import TotalLiquidity from "@/components/views/earn/statistics/total-liquidity";
-import YourDeposit from "@/components/views/earn/statistics/your-deposit";
 import { Metadata } from "next";
 import { FC } from "react";
 

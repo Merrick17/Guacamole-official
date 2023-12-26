@@ -13,6 +13,7 @@ import { useJupiterApiContext } from "../../trade/src/contexts";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
+import FallbackImage from "@/components/FallBackImage";
 
 export type DynmaicVaultItemProps = {
   image?: string;
@@ -219,15 +220,27 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   if (!token) return null;
 
   return (
-    <div className="py-4 px-5 border border-transparent bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center w-full min-w-[300px]">
+    <div className="border-2 border-[rgba(168, 168, 168, 0.10)] relative py-4 px-5 border border-transparent bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center w-full min-w-[300px] overflow-hidden">
+      <Image
+        src="/images/earn/bg/earn.png"
+        width={400}
+        height={300}
+        alt="guac background"
+        className="-z-0 absolute sm:translate-x-1/2 rotate-45 opacity-30  "
+      />
       <header className="flex items-center justify-center">
         {token && (
-          <Image src={token.logoURI} width={40} height={40} alt={title} />
+          <FallbackImage
+            src={token.logoURI}
+            width={40}
+            height={40}
+            alt={title}
+          />
         )}
       </header>
       <h1 className="text-3xl">{item.symbol} VAULT</h1>
       <Separator className="bg-foreground" />
-      <div className="flex flex-col gap-1 capitalize text-muted-foreground">
+      <div className="flex flex-col gap-1 capitalize text-muted-foreground z-10">
         <div className="flex items-center justify-between">
           <h2>Wallet Balance</h2>
           <p>{uiState.userTokenBalance.toFixed(2)}</p>
@@ -256,7 +269,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       </div>
       <Separator className="bg-foreground" />
       <div>
-        <h1 className="text-[32px] font-medium">
+        <h1 className="text-[32px] font-medium text-[#87D793]">
           {item.average_apy.toFixed(3)}%
         </h1>
         <div className="flex items-center gap-1 justify-center text-muted-foreground">
@@ -265,6 +278,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
         </div>
       </div>
       <Button
+        className="earn-bg"
         onClick={() => {
           router.push(`/earn/single-vault/${token.address}`);
         }}

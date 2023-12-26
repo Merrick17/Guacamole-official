@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React, { FC, useEffect } from 'react';
 import { Button } from '../ui/button';
 import Container from './container';
+import FallbackImage from '../FallBackImage';
 
 type NftCardProps = {
   className?: string;
@@ -15,7 +16,7 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
   return (
     <div className="rounded-xl  bg-background flex flex-col gap-2 text-xs px-6 py-4 border border-transparent transition-all ease-in-out duration-500  hover:border-primary ">
       <div className="flex flex-col  items-center">
-        <Image
+        <FallbackImage
           unoptimized
           src={token ? token.logoURI : '/images/placeholder.png'}
           alt={token ? token.name : ''}

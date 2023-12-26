@@ -67,9 +67,9 @@ const Swap = () => {
                     <path
                       d="M1.76489 7.88086H13.7649M13.7649 7.88086L9.76489 3.88086M13.7649 7.88086L9.76489 11.8809"
                       stroke="black"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </g>
                   <defs>

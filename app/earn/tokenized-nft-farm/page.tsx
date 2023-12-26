@@ -2,6 +2,7 @@ import Container from "@/components/common/container";
 import EarnHeader from "@/components/common/earn-header";
 import GuacStakeForm from "@/components/views/earn/guac-stake/guac-stake-guac";
 import NftStakeForm from "@/components/views/earn/nft-staking/nft-staking-form";
+import Image from "next/image";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,9 +24,25 @@ const Page = () => {
           hideSecondBtn
         />
         <hr className="border-dashed border-background" />
-        <Container className="p-5 font-medium bg-background">
-          <p className="text-muted-foreground text-sm">Guacamole NFT Farm #1</p>
+        <Container className="p-5 font-medium bg-background text-center h-[40px] flex justify-center items-center">
+          <p className="text-[#FAFAFA] text-[24px]">Guacamole Avotar Farm</p>
           {/* <h1 className="text-3xl">Coming Soon...</h1> */}
+        </Container>
+        <Container className="p-5 font-medium bg-background relative overflow-hidden">
+          <Image
+            src="/images/explore/bg/avocado.png"
+            width={220}
+            height={250}
+            alt="guac background"
+            className="-z-0 absolute rotate-[20deg] sm:translate-x-[10%] right-0 top-[-60px] opacity-30  "
+          />
+          <p className="text-white/50 text-xs">
+            Your Total Points For This Pool
+          </p>
+          <h1 className="text-3xl ">0.00 Points</h1>
+          <p className="text-white/50 text-xs mt-2 font-normal">
+            Staked 0 GUAC{" "}
+          </p>
         </Container>
         <NftStakeForm />
       </div>

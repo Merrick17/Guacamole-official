@@ -29,7 +29,7 @@ const Page = async () => {
         <hr className="border-dashed border-background" />
         <Container className="p-5 font-medium bg-background">
           <p className="text-muted-foreground text-sm">Projected mSOL Yield</p>
-          <h1 className="text-3xl">
+          <h1 className="text-3xl text-[#87D793]">
             {marinadeData && (marinadeData["apy"].value * 100).toFixed(2)}% APY
           </h1>
           <p className="text-white/50 text-xl mt-2 font-normal">

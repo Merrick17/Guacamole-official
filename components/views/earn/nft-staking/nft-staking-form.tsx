@@ -12,6 +12,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Container from "@/components/common/container";
 
 const formSchema = z.object({
   stake: z.boolean(),
@@ -73,7 +74,9 @@ const NftStakeForm = () => {
               <FormItem className="w-full p-0">
                 <FormControl>
                   <Button
-                    className="w-full"
+                    className={`w-full ${
+                      form.watch("stake") === true ? "earn-bg" : ""
+                    }`}
                     size="sm"
                     type="button"
                     onClick={() => form.setValue("stake", true)}
@@ -94,7 +97,9 @@ const NftStakeForm = () => {
               <FormItem className="w-full p-0">
                 <FormControl>
                   <Button
-                    className="w-full"
+                    className={`w-full ${
+                      form.watch("stake") === false ? "earn-bg" : ""
+                    }`}
                     size="sm"
                     type="button"
                     onClick={() => form.setValue("stake", false)}
@@ -112,12 +117,16 @@ const NftStakeForm = () => {
 
         <p className="text-muted-foreground">Enter deposit amount:</p>
 
-        <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
-          <Image src={"/images/logo.png"} width={32} height={32} alt="solana" />
+        <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background max-h-[70px] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
+          <Image
+            src={"/images/logo.png"}
+            width={32}
+            height={32}
+            className="rounded-full"
+            alt="solana"
+          />
           <div className="w-full">
-            <h1 className="font-semibold">
-            GUAC
-            </h1>
+            <h1 className="font-semibold">GUAC</h1>
             <p className=" text-xs ">
               <span className="text-white/50">Balance </span>
               <span className="text-white/[0.35]">
@@ -128,15 +137,15 @@ const NftStakeForm = () => {
               </span>
             </p>
           </div>
-          <FormField
+          <FormField 
             control={form.control}
             name="amount"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="max-h-[65px] ">
                 <FormControl>
                   <Input
                     placeholder="0.00"
-                    className="w-full  h-full  text-right  placeholder:text-xl text-xl font-semibold"
+                    className="w-full  h-full max-h-[65px]  text-right  placeholder:text-xl text-xl font-semibold"
                     type="number"
                   />
                 </FormControl>
@@ -145,7 +154,7 @@ const NftStakeForm = () => {
           />
         </div>
         <Button disabled variant="secondary">
-          Coming Soon
+          <span className="earn-text-color">Coming Soon</span>
         </Button>
         <div className="flex items-center justify-between text-muted-foreground text-sm">
           <p>Estimated Points Per Day</p>
@@ -161,13 +170,8 @@ const NftStakeForm = () => {
         </div>
       </form>
       <div className="p-6 w-full">
-        <Button
-          size="lg"
-          className="w-full"
-          variant="secondary"
-         
-        >
-          <p className="text-primary">Contents Of This Pool Not Loaded Yet.</p>
+        <Button size="lg" className="w-full" variant="secondary">
+          <p className="earn-text-color">Contents Of This Pool Not Loaded Yet.</p>
         </Button>
       </div>
     </Form>

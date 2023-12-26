@@ -91,8 +91,19 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
         <p className="text-center text-muted-foreground">
           Dynamic {token ? token.symbol : ""} Lending Vault
         </p>
+        <p className="text-center   text-sm text-[#8BD796]">
+          {" "}
+          {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
+        </p>
       </div>
-      <Container className="w-full rounded-lg bg-background p-6  flex flex-row items-center justify-between">
+      <Container className="w-full rounded-lg bg-background p-6  flex flex-row items-center justify-between relative overflow-hidden">
+        <Image
+          src="/images/earn/bg/earn.png"
+          width={250}
+          height={400}
+          alt="guac background"
+          className="-z-0 absolute sm:translate-x-[40%] right-0 rotate-[30deg] opacity-30  "
+        />
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm">
             Your {token ? token.symbol : ""} Vault Deposits
@@ -110,9 +121,9 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
               : 0}
           </p>
         </div>
-        <Button className="text-[#8BD796] bg-foreground font-medium px-4 py-2 rounded-lg">
-           {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
-        </Button>
+        {/* <Button className="text-[#8BD796] bg-foreground font-medium px-4 py-2 rounded-lg">
+          {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
+        </Button> */}
       </Container>
       <Form {...form}>
         <form
@@ -127,7 +138,11 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className="w-full"
+                      className={`w-full ${
+                        form.watch("depositOrWithdraw") === true
+                          ? "earn-bg"
+                          : ""
+                      }`}
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("depositOrWithdraw", true)}
@@ -150,7 +165,11 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className="w-full"
+                      className={`w-full ${
+                        form.watch("depositOrWithdraw") === false
+                          ? "earn-bg"
+                          : ""
+                      }`}
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("depositOrWithdraw", false)}
@@ -210,8 +229,8 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                   )}
                 />
               </div>
-              <Button size="lg" type="submit">
-                Deposit
+              <Button size="lg" type="submit" className="guac-bg">
+                {`Deposit ${token?.symbol} to Vault`}
               </Button>
             </>
           ) : (
@@ -258,8 +277,12 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                   )}
                 />
               </form>
-              <Button size="lg" disabled={uiState.userLPBalance == 0}>
-                Withdraw
+              <Button
+                size="lg"
+                disabled={uiState.userLPBalance == 0}
+                className="guac-bg"
+              >
+                {`Withdraw ${token?.symbol} from Vault`}
               </Button>
             </>
           )}
@@ -276,7 +299,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
       <div className="p-6 w-full">
         <Button
           size="lg"
-          className="w-full"
+          className="w-full border-[rgba(168, 168, 168, 0.10)] border-2"
           variant="secondary"
           onClick={() => {
             setShowDetails(true);

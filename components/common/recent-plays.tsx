@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import { GameResult, lamportsToSol } from 'gamba';
-import { useEventFetcher, useGamba,useGambaEvents } from 'gamba/react';
-import { formatLamports } from 'gamba/react-ui';
-import React from 'react';
-import { Section } from '../styles';
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
+import { abbreviate } from "@bonfida/hooks";
+import { PublicKey } from "@solana/web3.js";
+import { GameResult, lamportsToSol } from "gamba";
+import { useGamba, useGambaEvents } from "gamba/react";
+import { formatLamports } from "gamba/react-ui";
+import Image from "next/image";
+import React, { useEffect } from "react";
 
-const VERIFY_URL = 'https://explorer.gamba.so/tx';
+const VERIFY_URL = "https://explorer.gamba.so/tx";
 
 const TimeDiff: React.FC<{ time: number }> = ({ time }) => {
   const diff = Date.now() - time;
@@ -16,12 +18,12 @@ const TimeDiff: React.FC<{ time: number }> = ({ time }) => {
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     if (hours >= 1) {
-      return hours + 'h ago';
+      return hours + "h ago";
     }
     if (minutes >= 1) {
-      return minutes + 'm ago';
+      return minutes + "m ago";
     }
-    return 'Just now';
+    return "Just now";
   }, [diff]);
 };
 
@@ -30,16 +32,26 @@ interface RecentPlayProps {
   isSelf: boolean;
   signature: string;
   time: number;
+  player: PublicKey;
 }
 
-function RecentPlay({ time, signature, result, isSelf }: RecentPlayProps) {
+function RecentPlay({
+  time,
+  signature,
+  result,
+  isSelf,
+  player,
+}: RecentPlayProps) {
+  useEffect(() => {
+    console.log("Player", player.toBase58());
+  });
   const wager = result.wager;
   const multiplier = result.multiplier;
   const payout = wager * multiplier;
   const isRekt = payout === 0;
   const whaleScore = Math.log10(lamportsToSol(wager) / 0.1);
   const litScore = multiplier - 1;
-  const outcome = (whaleScore > 0 || litScore > 0) ? 'won' : (isRekt ? 'lost' : '');
+  const outcome = whaleScore > 0 || litScore > 0 ? "won" : isRekt ? "lost" : "";
   return (
     // <a
     //   className="flex gap-1 p-[10px] justify-between bg-background rounded-lg"
@@ -68,28 +80,47 @@ function RecentPlay({ time, signature, result, isSelf }: RecentPlayProps) {
     //   </span>
     // </a>
     <a
-    className="flex gap-1 p-[10px] justify-between bg-background rounded-lg"
-    href={`${VERIFY_URL}/${signature}`}
-    target="_blank"
-    rel="noreferrer"
-  >
-    <div className="flex gap-1">
+      className="flex gap-1 p-[10px] justify-between bg-[#0F0F0F] rounded-lg border-[1px] border-[rgba(168, 168, 168, 0.10)]"
+      href={`${VERIFY_URL}/${signature}`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <div className="flex gap-2">
+        <span>
+          {(whaleScore > 0 || litScore > 0) && "🎉"}
+          {isRekt && "💀"}
+        </span>
+        <span className="text-[#FFEA25]">
+          {isSelf ? "You " : `${player.toBase58().slice(0, 4)}...`}
+        </span>
+        {outcome && `${outcome} `}
+        {outcome &&
+          (outcome === "won" ? (
+            <div className="flex gap-1">
+              <Image
+                src={"/icons/earn/sol.svg"}
+                alt="sol"
+                height={15}
+                width={15}
+              />{" "}
+              <span className="text-[#8BD796]"> {formatLamports(payout)}</span>
+            </div>
+          ) : (
+            <div className="flex gap-1">
+              <Image
+                src={"/icons/earn/sol.svg"}
+                alt="sol"
+                height={15}
+                width={15}
+              />{" "}
+              <span className="text-destructive">{formatLamports(wager)}</span>
+            </div>
+          ))}
+      </div>
       <span>
-        {(whaleScore > 0 || litScore > 0) && '🎉'}
-        {isRekt && '💀'}
+        <TimeDiff time={time} />
       </span>
-      <span>{isSelf ? 'You ' : 'Someone '}</span>
-      {outcome && `${outcome} `}
-      {outcome && (outcome === 'won' ? (
-        <span className="text-[#8BD796]"> {formatLamports(payout)}</span>
-      ) : (
-        <span className="text-destructive">{formatLamports(wager)}</span>
-      ))}
-    </div>
-    <span>
-      <TimeDiff time={time} />
-    </span>
-  </a>
+    </a>
   );
 }
 
@@ -115,7 +146,7 @@ export default function RecentPlays({
   return (
     <div
       className={cn(
-        'flex max-w-[512px] w-full flex-col  gap-4 rounded-lg bg-foreground p-5',
+        "flex max-w-[512px] w-full flex-col  gap-4 rounded-lg bg-foreground p-5 shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)]",
         className
       )}
     >
@@ -130,6 +161,7 @@ export default function RecentPlays({
               isSelf={transaction.event.gameResult!.player.equals(
                 gamba.wallet.publicKey
               )}
+              player={transaction.event.gameResult!.player}
             />
           ))}
         </div>

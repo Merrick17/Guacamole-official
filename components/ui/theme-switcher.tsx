@@ -24,7 +24,7 @@ const ThemeSwitcher = () => {
         href={routes.home}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname === routes.home && "shadow-themeButtonShadow"
+          pathname === routes.home && "border-[1px]"
         )}
       >
         <Image
@@ -38,7 +38,7 @@ const ThemeSwitcher = () => {
         href={routes.trade.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center  rounded-tr-lg rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.trade.root) && "shadow-themeButtonShadow"
+          pathname.includes(routes.trade.root) && "border-[1px]"
         )}
       >
         <Image
@@ -52,7 +52,7 @@ const ThemeSwitcher = () => {
         href={routes.earn.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.earn.root) && "shadow-themeButtonShadow"
+          pathname.includes(routes.earn.root) && "border-[1px]"
         )}
       >
         <Image
@@ -66,7 +66,7 @@ const ThemeSwitcher = () => {
         href={routes.play.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground",
-          pathname.includes(routes.play.root) && "shadow-themeButtonShadow"
+          pathname.includes(routes.play.root) && "border-[1px]"
         )}
       >
         <Image
@@ -80,7 +80,7 @@ const ThemeSwitcher = () => {
         href={routes.tools.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.tools.root) && "shadow-themeButtonShadow"
+          pathname.includes(routes.tools.root) && "border-[1px]"
         )}
       >
         <Image
@@ -94,7 +94,7 @@ const ThemeSwitcher = () => {
         href={routes.launch.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.launch.root) && "shadow-themeButtonShadow"
+          pathname.includes(routes.launch.root) && "border-[1px]"
         )}
       >
         <Image
