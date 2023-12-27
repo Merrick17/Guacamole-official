@@ -19,7 +19,12 @@ const LaunchPoolsFarm: FunctionComponent<LaunchPoolsFarmProps> = ({
     >
       <div className="flex flex-col gap-2  p-4 md:p-8">
         <header className="flex flex-col items-center  gap-3 ">
-        
+          <Image
+            src={"/images/launch/liquidity_pools.png"}
+            alt=""
+            height={48}
+            width={48}
+          />
 
           <h1 className=" text-lg md:text-xl font-medium">
             Launch Pools & Farms
