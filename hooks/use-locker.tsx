@@ -146,7 +146,9 @@ const useLockerTools = () => {
     payer: PublicKey
   ) => {
     try {
+      console.log("Mint", mint);
       const selectedLock = await getVaultByLpMint(mint);
+      console.log("Selected Lock", selectedLock);
       if (selectedLock) {
         const [lockAccountInfo] = anchor.web3.PublicKey.findProgramAddressSync(
           [
@@ -242,7 +244,8 @@ const useLockerTools = () => {
   };
   const getVaultByLpMint = async (mintAdr: string) => {
     try {
-      const vaultList = await getAllVaults();
+      //const vaultList = await getAllVaults();
+      const vaultList = await program.account.lockerAccount.all();
       const vault = vaultList.find(
         (elm) => elm.account.mint.toBase58() == mintAdr
       );

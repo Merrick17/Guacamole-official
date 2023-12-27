@@ -86,7 +86,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
       setBaseToken(base);
       setQuoteToken(quote);
       const tokenAccount =
-        tokenAccounts && poolFound
+        tokenAccounts && poolFound && poolFound.lpMint
           ? tokenAccounts?.getByMint(new PublicKey(poolFound?.lpMint))
           : null;
       const balance =
