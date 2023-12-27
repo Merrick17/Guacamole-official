@@ -27,7 +27,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const { tokenList } = useJupiterApiContext();
   const [mintAdr, setMintAdr] = useState("");
 
-  const { initNewVault, getAllVaults } = useLockerTools();
+  const { initNewVault, getAllVaults, getLocksByMint } = useLockerTools();
   const {
     poolList,
     setSelectedPool,
@@ -42,6 +42,9 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const [tokenBalance, setTokenBalance] = useState<number | null>(null);
   const { connection } = useConnection();
   const { publicKey } = useWallet();
+  // const publicKey = new PublicKey(
+  //   "CWYZmzEKefx3QwPG4VUyJycwruoYd3YvrVVXQSfQt9Dp"
+  // );
   const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
     connection,
     publicKey
@@ -75,7 +78,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   };
   const getUserInfo = async () => {
     const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
-    // console.log("Pool", poolFound);
+    console.log("Pool", poolFound);
     if (poolFound) {
       setPoolToUse(poolFound);
       const base = poolFound.baseMint;
@@ -95,8 +98,10 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
       setTokenBalance(balance);
     }
   };
-  useMemo(() => {
-    getUserInfo();
+  useEffect(() => {
+    if (mintAdr !== "") {
+      getUserInfo();
+    }
   }, [publicKey, mintAdr, selectedPool]);
   return (
     <>
@@ -166,11 +171,8 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
           <Button
             className="bg-primary rounded-lg h-[50px] w-full mt-3"
             disabled={mintAdr == "" || tokenBalance == 0}
-            onClick={() => {
-              const vault = lockerList.find(
-                (elm) =>
-                  elm.account.mint.toBase58() == mintAdr.replace(/\s/g, "")
-              );
+            onClick={async () => {
+              const vault = await getLocksByMint(mintAdr.replace(/\s/g, ""));
 
               if (!vault) {
                 setIsCreateOpen(true);

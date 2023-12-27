@@ -41,14 +41,12 @@ const LockerInputDetails = () => {
         Math.pow(10, tokenAccount.decimals)
       : 0;
   const guacBalance =
-    tokenAccount && guacTokenAccount.decimals
+    guacTokenAccount && guacTokenAccount.decimals
       ? Number(guacTokenAccount.account.amount) /
         Math.pow(10, guacTokenAccount.decimals)
       : 0;
   useEffect(() => {
-  
     if (selectedPool) {
-   
       const base = selectedPool.baseMint;
       const quote = selectedPool.quoteMint;
       setBaseToken(base);
