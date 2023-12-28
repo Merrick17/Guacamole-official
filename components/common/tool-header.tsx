@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface ToolHeaderProps {
   className?: string;
@@ -22,6 +23,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
   tutorialLink,
   revokeAll,
 }) => {
+ 
   return (
     <header
       className={cn(
@@ -63,7 +65,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
         )}
         <Link href={tutorialLink} target="_blank" rel="noopener noreferrer">
           <Button
-            className="text-sm font-medium capitalize py-[6px] h-[32px]"
+            className={`text-sm font-medium capitalize py-[6px] h-[32px] `}
             size="sm"
           >
             View tutorial

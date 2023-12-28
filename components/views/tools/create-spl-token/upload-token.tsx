@@ -1,7 +1,7 @@
-'use client';
-import Image from 'next/image';
-import { FC, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+"use client";
+import Image from "next/image";
+import { FC, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 type UploadTokenProps = {
   tokenIcon: File | null;
   setTokenIcon: (file: File | null) => void;
@@ -14,14 +14,15 @@ const UploadToken: FC<UploadTokenProps> = ({ tokenIcon, setTokenIcon }) => {
     onDrop,
     maxFiles: 1,
     accept: {
-      'image/jpeg': [],
-      'image/png': [],
+      "image/jpeg": [],
+      "image/png": [],
     },
   });
+
   return (
     <div
       {...getRootProps()}
-      className="flex items-center justify-center w-full bg-background min-h-[70px] text-sm font-medium rounded-lg relative text-muted-foreground"
+      className="flex items-center border-[1px] border-[rgba(168, 168, 168, 0.10)] justify-center w-full bg-background min-h-[70px] text-sm font-medium rounded-lg relative text-muted-foreground "
     >
       {!tokenIcon ? (
         <div>
