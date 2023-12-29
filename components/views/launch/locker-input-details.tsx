@@ -2,7 +2,7 @@ import DateInput from "@/components/common/DateInput";
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { usePool } from "@/hooks/use-pool-list";
+import { PoolExtended, usePool } from "@/hooks/use-pool-list";
 import { useTokenAccounts } from "@bonfida/hooks";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -12,11 +12,14 @@ import { useJupiterApiContext } from "../trade/src/contexts";
 import numeral from "numeral";
 import useLockerTools from "@/hooks/use-locker";
 import Link from "next/link";
+import FallbackImage from "@/components/common/FallbackImage";
 const LockerInputDetails = () => {
   const [lockDate, setLockDate] = useState<Date>(new Date(Date.now()));
+  const [selectedPool, setSeSelectedPool] = useState<PoolExtended>(null);
   const { connected, publicKey } = useWallet();
   const { connection } = useConnection();
-  const { selectedPool } = usePool();
+  const { selectedMintAdr, getPoolByLpMint } = usePool();
+
   const [lockAmount, setLockAmount] = useState<number>(0);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
@@ -45,16 +48,23 @@ const LockerInputDetails = () => {
       ? Number(guacTokenAccount.account.amount) /
         Math.pow(10, guacTokenAccount.decimals)
       : 0;
-  useEffect(() => {
-    if (selectedPool) {
-      const base = selectedPool.baseMint;
-      const quote = selectedPool.quoteMint;
+  const initVault = async () => {
+    if (selectedMintAdr) {
+      //console.log("Selected POOl", selectedMintAdr);
+      const poolInfo = await getPoolByLpMint(selectedMintAdr);
+      //console.log("Selected POOl", poolInfo);
+      setSeSelectedPool(poolInfo);
+      const base = poolInfo.baseMint;
+      const quote = poolInfo.quoteMint;
       setBaseToken(base);
       setQuoteToken(quote);
 
       setBalance(tokenBalance);
     }
-  }, [selectedPool]);
+  };
+  useEffect(() => {
+    initVault();
+  }, [selectedMintAdr]);
   return (
     <div className="flex flex-col items-start w-full gap-4">
       <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
@@ -62,13 +72,17 @@ const LockerInputDetails = () => {
           selected liquidity pool tokens
         </span>
         <div className="flex items-center gap-2">
-          <img
-            src={baseToken ? baseToken.logoURI : "N/A"}
+          <FallbackImage
+            src={baseToken?.logoURI}
             className="h-[30px] w-[30px] rounded-full"
+            width={30}
+            height={30}
           />
-          <img
-            src={quoteToken ? quoteToken.logoURI : "N/A"}
+          <FallbackImage
+            src={quoteToken?.logoURI}
             className="h-[30px] w-[30px] rounded-full"
+            width={30}
+            height={30}
           />
           <span className="text-[#FFF] text-sm">
             {baseToken ? baseToken.symbol : "N/A"} /{" "}

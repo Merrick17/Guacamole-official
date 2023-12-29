@@ -20,7 +20,7 @@ import useLockerTools from "@/hooks/use-locker";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
-import { usePool } from "@/hooks/use-pool-list";
+import { PoolExtended, usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
 import numeral from "numeral";
 import dayjs from "dayjs";
@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Metaplex, PublicKey } from "@metaplex-foundation/js";
 import { useConnection } from "@solana/wallet-adapter-react";
+import FallbackImage from "@/components/common/FallbackImage";
 dayjs.extend(relativeTime);
 const checkRemainder = (nb: number) => {
   return nb % 2;
@@ -97,61 +98,70 @@ const RenderItem = ({
   lock,
   index,
   checkRemainder,
+  pool,
+  quote,
+  base,
+  liquidity,
+  ratio,
 }: {
   lock: any;
   index: number;
+  pool: PoolExtended;
+  quote: TokenInfo;
+  base: TokenInfo;
+  liquidity: any;
+  ratio: any;
   checkRemainder: (nbr: number) => number;
 }) => {
-  const { tokenMap } = useJupiterApiContext();
-  const { connection } = useConnection();
-  const metaplex = new Metaplex(connection);
-  const { getPoolByLpMint } = usePool();
+  // const { connection } = useConnection();
+  // const metaplex = new Metaplex(connection);
+  // const { getPoolByLpMint } = usePool();
   const { getFirstLockByLp } = useLockerTools();
-  const [selectedPool, setSelectedPool] = useState(null);
-  const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
-  const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
+  // const [selectedPool, setSelectedPool] = useState(null);
+  // const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
+  // const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
   const [firstLockTime, setFirstLockTime] = useState<number | null>(null);
 
   const fetchPoolData = useCallback(async () => {
-    const pool = await getPoolByLpMint(lock.account.mint.toBase58());
-    //console.log("Pool",pool);
-    if (pool && lock) {
-      const base = pool.baseMint;
-      const quote = pool.quoteMint;
-      if (!base) {
-        const baseInfo = await metaplex
-          .nfts()
-          .findByMint({ mintAddress: new PublicKey(pool.baseAdr) });
-        const itm: TokenInfo = {
-          symbol: baseInfo.symbol,
-          name: baseInfo.name,
-          address: baseInfo.address.toBase58(),
-          chainId: 101,
-          decimals: baseInfo.mint.decimals,
-          logoURI: baseInfo?.json?.image,
-        };
-        setBaseToken(itm);
-      } else {
-        setBaseToken(base);
-      }
-      if (!quote) {
-        const quoteInfo = await metaplex
-          .nfts()
-          .findByMint({ mintAddress: new PublicKey(pool.quoteAdr) });
-        const itm: TokenInfo = {
-          symbol: quoteInfo.symbol,
-          name: quoteInfo.name,
-          address: quoteInfo.address.toBase58(),
-          chainId: 101,
-          decimals: quoteInfo.mint.decimals,
-          logoURI: quoteInfo?.json?.image,
-        };
-        setQuoteToken(itm);
-      } else {
-        setQuoteToken(quote);
-      }
+    //const pool = await getPoolByLpMint(lock.account.mint.toBase58());
 
-      setSelectedPool(pool);
+    if (pool && lock) {
+      // const base = pool.baseMint;
+      // const quote = pool.quoteMint;
+      // if (!base) {
+      //   const baseInfo = await metaplex
+      //     .nfts()
+      //     .findByMint({ mintAddress: new PublicKey(pool.baseAdr) });
+      //   const itm: TokenInfo = {
+      //     symbol: baseInfo.symbol,
+      //     name: baseInfo.name,
+      //     address: baseInfo.address.toBase58(),
+      //     chainId: 101,
+      //     decimals: baseInfo.mint.decimals,
+      //     logoURI: baseInfo?.json?.image,
+      //   };
+      //   setBaseToken(itm);
+      // } else {
+      //   setBaseToken(base);
+      // }
+      // if (!quote) {
+      //   const quoteInfo = await metaplex
+      //     .nfts()
+      //     .findByMint({ mintAddress: new PublicKey(pool.quoteAdr) });
+      //   const itm: TokenInfo = {
+      //     symbol: quoteInfo.symbol,
+      //     name: quoteInfo.name,
+      //     address: quoteInfo.address.toBase58(),
+      //     chainId: 101,
+      //     decimals: quoteInfo.mint.decimals,
+      //     logoURI: quoteInfo?.json?.image,
+      //   };
+      //   setQuoteToken(itm);
+      // } else {
+      //   setQuoteToken(quote);
+      // }
+
+      // setSelectedPool(pool);
 
       const value = await getFirstLockByLp(pool.lpMint);
       //console.log("Value", value.account.unlockTime.toNumber());
@@ -162,48 +172,43 @@ const RenderItem = ({
   }, [lock]);
 
   useEffect(() => {
+    console.log("Liquidity", liquidity);
     fetchPoolData();
   }, [fetchPoolData]);
+
+  // const calculateLiquidity = () => {
+  //   if (lock && selectedPool) {
+  //     const lockedAmount =
+  //       lock.account.lockedAmount.toNumber() /
+  //       Math.pow(10, selectedPool.lpDecimals);
+
+  //     const tokenAmount = selectedPool.tokenAmount;
+
+  //     const liquidity = (lockedAmount / tokenAmount) * selectedPool.liquidity;
+  //     return liquidity.toFixed(2);
+  //   } else {
+  //     return 0;
+  //   }
+  // };
+  // const calculateLiquidityRatio = () => {
+  //   if (lock && selectedPool) {
+  //     const lockedAmount =
+  //       lock.account.lockedAmount.toNumber() /
+  //       Math.pow(10, selectedPool.lpDecimals);
+  //     //console.log("Locked aMount", lockedAmount);
+  //     const tokenAmount = selectedPool.tokenAmount;
+  //     const percentage = (lockedAmount / tokenAmount) * 100;
+
+  //     return percentage.toFixed(3);
+  //   } else {
+  //     return 0;
+  //   }
+  // };
   const displayName = () => {
-    const tokenName =
-      baseToken && quoteToken
-        ? `${baseToken.symbol}/${quoteToken.symbol}`
-        : "N/A";
-    if (tokenName == "N/A") {
-      console.log("N/A POOL", selectedPool);
-    }
+    const tokenName = base && quote ? `${base.symbol}/${quote.symbol}` : "N/A";
+
     return tokenName;
   };
-
-  const calculateLiquidity = () => {
-    if (lock && selectedPool) {
-      const lockedAmount =
-        lock.account.lockedAmount.toNumber() /
-        Math.pow(10, selectedPool.lpDecimals);
-
-      const tokenAmount = selectedPool.tokenAmount;
-
-      const liquidity = (lockedAmount / tokenAmount) * selectedPool.liquidity;
-      return liquidity.toFixed(2);
-    } else {
-      return 0;
-    }
-  };
-  const calculateLiquidityRatio = () => {
-    if (lock && selectedPool) {
-      const lockedAmount =
-        lock.account.lockedAmount.toNumber() /
-        Math.pow(10, selectedPool.lpDecimals);
-      //console.log("Locked aMount", lockedAmount);
-      const tokenAmount = selectedPool.tokenAmount;
-      const percentage = (lockedAmount / tokenAmount) * 100;
-
-      return percentage.toFixed(3);
-    } else {
-      return 0;
-    }
-  };
-
   return (
     <TableRow
       key={index.toString()}
@@ -214,10 +219,10 @@ const RenderItem = ({
     >
       <TableCell className="font-medium w-full md:w-max overflow-x-auto ">
         <div className="w-full flex flex-row items-center  gap-2 lg:gap-5">
-          {selectedPool ? (
+          {pool ? (
             <img
               src={
-                selectedPool.provider == "RAYDIUM"
+                pool.provider == "RAYDIUM"
                   ? "/images/launch/raydium.png"
                   : "/images/launch/logo-meteora-symbol.svg"
               }
@@ -227,18 +232,24 @@ const RenderItem = ({
             <Loader2 className="animate-spin h-10 w-10 text-primary   " />
           )}
           <div className="flex flex-2 justify-center items-center relative shrink-0">
-            {!baseToken ? (
+            {!base ? (
               <Loader2 className="animate-spin h-10 w-10 text-primary   " />
             ) : (
-              <img
-                src={`${baseToken ? baseToken.logoURI : ""}`}
+              <FallbackImage
+                height={25}
+                width={25}
+                alt=""
+                src={`${base ? base.logoURI : null}`}
                 className="w-[25px] h-[25px]   rounded-full absolute left-[-15px]  shrink-0 "
               />
             )}
 
-            {quoteToken ? (
-              <img
-                src={`${quoteToken ? quoteToken.logoURI : ""}`}
+            {quote ? (
+              <FallbackImage
+                height={25}
+                width={25}
+                alt=""
+                src={`${quote ? quote.logoURI : null}`}
                 className="w-[30px] h-[30px]   rounded-full shrink-0 "
               />
             ) : (
@@ -249,9 +260,7 @@ const RenderItem = ({
             <span className="font-semibold text-[#FFF]">{displayName()}</span>
             <span className="text-muted-foreground">
               Liquidity: $
-              {selectedPool
-                ? numeral(selectedPool.liquidity).format("0,0.000")
-                : 0}{" "}
+              {pool.liquidity ? numeral(pool.liquidity).format("0,0.000") : 0}{" "}
             </span>
           </div>
         </div>
@@ -272,7 +281,7 @@ const RenderItem = ({
                 fill="#D6776A"
               />
             </svg>
-            ${calculateLiquidity()}
+            ${liquidity}
           </span>
           <span className="text-muted-foreground">
             Next{" "}
@@ -298,13 +307,13 @@ const RenderItem = ({
                 fill="#D6776A"
               />
             </svg>
-            {calculateLiquidityRatio()}%
+            {ratio}%
           </span>
         </div>
       </TableCell>
       <TableCell className="text-right">
         <Link
-          href={`/launch/lock/view/${selectedPool ? selectedPool.poolId : ""}`}
+          href={`/launch/lock/view/${pool ? pool.poolId : ""}`}
           className="text-primary"
         >
           View Vault
@@ -317,47 +326,58 @@ const LockerList = () => {
   const { push } = useRouter();
   const [lockerList, setLockerList] = useState<any[]>([]);
   const [totalItems, setTotalItems] = useState(0);
-  const { poolList } = usePool();
-  const { getAllVaults, getTotalVaults } = useLockerTools();
+
+  const {
+    getAllVaults,
+    getTotalVaults,
+    getAllVaultsParsedAndPaginated,
+    getAllVaultsParsed,
+    vaultsData,
+    getPaginatedData,
+  } = useLockerTools();
   const { tokenList } = useJupiterApiContext();
   const [activePage, setActivePage] = useState<number>(1);
   const [searchToken, setSearchToken] = useState("");
+
   const router = useRouter();
   const handleChangePage = (nbr: number) => {
     setActivePage(nbr);
   };
+
   const initVaultList = useCallback(async () => {
-    const vaults = await getAllVaults(10, activePage);
-    const totalItems = await getTotalVaults();
-    setTotalItems(totalItems);
+    // const vaults = await getAllVaultsParsedAndPaginated(activePage, 10);
+    const vaults = getPaginatedData(activePage, 10);
+    const total = await getTotalVaults();
+    setTotalItems(total);
     setLockerList(vaults);
-  }, [activePage]);
+  }, [activePage, vaultsData]);
+
+  useEffect(() => {
+    //newInit();
+    initVaultList();
+  }, [initVaultList]);
   const handleSearch = async (search: string) => {
-    const vaults = await getAllVaults();
     if (search !== "") {
       const token = tokenList.find(
         (elm) => elm.name.includes(search) || elm.symbol.includes(search)
       );
 
-      const filterPools = poolList.filter(
-        (elm) => elm.baseMint.address == token.address || elm.quoteMint.address == token.address
-      );
-
-      const filteredVaults = vaults.filter((vault) =>
-        filterPools.some(
-          (pool) => pool.lpMint === vault.account.mint.toBase58() // Adjust this line based on your vault structure
-        )
-      );
-
-      setLockerList(filteredVaults);
+      if (token) {
+        const filteredVaults = vaultsData.filter(
+          (vault) =>
+            vault.base.address == token.address ||
+            vault.quote.address == token.address
+        );
+        setLockerList(filteredVaults);
+      } else {
+        setLockerList([]);
+      }
     } else {
+      const vaults = getPaginatedData(activePage, 10);
       setLockerList(vaults);
     }
   };
 
-  useEffect(() => {
-    initVaultList();
-  }, [initVaultList, poolList]);
   return (
     <Container className="bg-foreground rounded-md lg:max-w-5xl">
       <div className="w-full flex flex-col mb-5  md:flex-row   md:justify-between items-center text-black  gap-2 py-3">
@@ -406,53 +426,31 @@ const LockerList = () => {
         </TableHeader>
 
         <TableBody>
-          {poolList.length != 0 &&
-            lockerList
-
-              .sort((a, b) => {
-                const calculateLiquidity = (lock, selectedPool: any) => {
-                  if (lock && selectedPool) {
-                    const lockedAmount =
-                      lock.account.lockedAmount.toNumber() /
-                      Math.pow(10, selectedPool.lpDecimals);
-
-                    const tokenAmount = selectedPool.tokenAmount;
-
-                    const liquidity =
-                      (lockedAmount / tokenAmount) * selectedPool.liquidity;
-                    return liquidity;
-                  } else {
-                    return 0;
-                  }
-                };
-                const aPool = poolList.find(
-                  (elm) => elm.lpMint == a.account.mint.toBase58()
-                );
-                const bPool = poolList.find(
-                  (elm) => elm.lpMint == b.account.mint.toBase58()
-                );
-                return (
-                  calculateLiquidity(b, bPool) - calculateLiquidity(a, aPool)
-                );
-                //return bPool.liquidity - aPool.liquidity;
-              })
-              .map((lock, ind) => (
-                <RenderItem
-                  key={ind.toString()}
-                  lock={lock}
-                  index={ind}
-                  checkRemainder={checkRemainder}
-                />
-              ))}
+          {lockerList.map(
+            ({ lock, pool, quote, base, lockedLiquidity, ratio }, ind) => (
+              <RenderItem
+                lock={lock}
+                pool={pool}
+                quote={quote}
+                base={base}
+                checkRemainder={checkRemainder}
+                index={ind}
+                liquidity={lockedLiquidity}
+                ratio={ratio}
+              />
+            )
+          )}
         </TableBody>
       </Table>
-      <div className="flex flex-1 justify-end w-full mt-3">
-        <Pagination
-          totalItems={totalItems}
-          activePage={activePage}
-          changePage={handleChangePage}
-        />
-      </div>
+      {lockerList.length != 0 && (
+        <div className="flex flex-1 justify-end w-full mt-3">
+          <Pagination
+            totalItems={totalItems}
+            activePage={activePage}
+            changePage={handleChangePage}
+          />
+        </div>
+      )}
     </Container>
   );
 };

@@ -13,6 +13,7 @@ const FallbackImage = ({ src, ...rest }) => {
 
   return (
     <Image
+    unoptimized
       {...rest}
       src={imgSrc ? imgSrc : "/images/No_Logo_Found_Guacamole-min.png"}
       onError={() => {

@@ -11,16 +11,147 @@ import { PublicKey, Transaction } from "@solana/web3.js";
 import { BN } from "bn.js";
 import Link from "next/link";
 import { useToast } from "./use-toast";
+import { Metaplex } from "@metaplex-foundation/js";
+import { usePool } from "./use-pool-list";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { useEffect, useState } from "react";
 const useLockerTools = () => {
   const { connection } = useConnection();
   const { connected, publicKey, sendTransaction } = useWallet();
+  const { getPoolByLpMint } = usePool();
+  const metaplex = new Metaplex(connection);
   const { toast } = useToast();
   const anchorWallet = useAnchorWallet();
   const program = getProgram(connection, anchorWallet);
+  const [vaultsData, setVaultsData] = useState([]);
+  const initVaults = async () => {
+    const vaults = await getAllVaultsParsed();
+    setVaultsData(vaults);
+  };
+  useEffect(() => {
+    initVaults();
+  }, []);
   // const getAllVaults = async () => {
   //   const vaults = await program.account.lockerAccount.all();
   //   return vaults;
   // };
+  const getPoolInfo = async (lock) => {
+    let pool = await getPoolByLpMint(lock.account.mint.toBase58());
+
+    if (!pool) {
+      throw new Error("Pool information not found");
+    }
+    if (!pool.baseMint || !pool.quoteMint) {
+      pool = await getPoolByLpMint(lock.account.mint.toBase58());
+      if (!pool) {
+        throw new Error("Pool information not found on second attempt");
+      }
+    }
+    const baseInfo = await metaplex
+      .nfts()
+      .findByMint({ mintAddress: new PublicKey(pool.baseAdr) });
+    const quoteInfo = await metaplex
+      .nfts()
+      .findByMint({ mintAddress: new PublicKey(pool.quoteAdr) });
+
+    const base =
+      pool.baseMint && pool.baseMint.logoURI
+        ? pool.baseMint
+        : {
+            symbol: baseInfo.symbol,
+            name: baseInfo.name,
+            address: baseInfo.address.toBase58(),
+            chainId: 101,
+            decimals: baseInfo.mint.decimals,
+            logoURI: baseInfo?.json?.image,
+          };
+
+    const quote =
+      pool.quoteMint && pool.quoteMint.logoURI
+        ? pool.quoteMint
+        : {
+            symbol: quoteInfo.symbol,
+            name: quoteInfo.name,
+            address: quoteInfo.address.toBase58(),
+            chainId: 101,
+            decimals: quoteInfo.mint.decimals,
+            logoURI: quoteInfo?.json?.image,
+          };
+
+    return { pool, base, quote };
+  };
+
+  const calculateLiquidity = (lock, pool) => {
+    const lockedAmount =
+      lock.account.lockedAmount.toNumber() / Math.pow(10, pool.lpDecimals);
+    const tokenAmount = pool.tokenAmount;
+    return Number(((lockedAmount / tokenAmount) * pool.liquidity).toFixed(2));
+  };
+
+  const calculateLiquidityRatio = (lock, pool) => {
+    const lockedAmount =
+      lock.account.lockedAmount.toNumber() / Math.pow(10, pool.lpDecimals);
+    return ((lockedAmount / pool.tokenAmount) * 100).toFixed(3);
+  };
+
+  const getAllVaultsParsed = async () => {
+    const allVaults = await program.account.lockerAccount.all();
+    const mappedVaults = await Promise.all(
+      allVaults.map(async (lock) => {
+        const { pool, base, quote } = await getPoolInfo(lock);
+
+        return {
+          lock,
+          pool,
+          base,
+          quote,
+          lockedLiquidity: calculateLiquidity(lock, pool),
+          ratio: calculateLiquidityRatio(lock, pool),
+        };
+      })
+    );
+
+    // Sort mappedVaults by liquidity in descending order
+    mappedVaults.sort((a, b) => b.lockedLiquidity - a.lockedLiquidity);
+
+    return mappedVaults;
+  };
+  const getPaginatedData = (currentPage, itemsPerPage) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    return vaultsData.slice(startIndex, endIndex);
+  };
+  const getAllVaultsParsedAndPaginated = async (
+    pageNumber = 1,
+    pageSize = 10
+  ) => {
+    const allVaults = await program.account.lockerAccount.all();
+    const mappedVaults = await Promise.all(
+      allVaults.map(async (lock) => {
+        const { pool, base, quote } = await getPoolInfo(lock);
+
+        return {
+          lock,
+          pool,
+          base,
+          quote,
+          lockedLiquidity: calculateLiquidity(lock, pool),
+          ratio: calculateLiquidityRatio(lock, pool),
+        };
+      })
+    );
+
+    // Sort mappedVaults by liquidity in descending order
+    mappedVaults.sort((a, b) => b.lockedLiquidity - a.lockedLiquidity);
+
+    // Calculate start and end indices for pagination
+    const startIndex = (pageNumber - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    // Return the subset of mappedVaults based on pagination
+    return mappedVaults.slice(startIndex, endIndex);
+  };
   const getAllVaults = async (pageSize = 10, pageNumber = 1) => {
     const start = (pageNumber - 1) * pageSize;
     const end = start + pageSize;
@@ -146,9 +277,8 @@ const useLockerTools = () => {
     payer: PublicKey
   ) => {
     try {
-      console.log("Mint", mint);
       const selectedLock = await getVaultByLpMint(mint);
-      console.log("Selected Lock", selectedLock);
+
       if (selectedLock) {
         const [lockAccountInfo] = anchor.web3.PublicKey.findProgramAddressSync(
           [
@@ -585,6 +715,10 @@ const useLockerTools = () => {
     handleExtendLockTime,
     handleUnlock,
     getTotalVaults,
+    getAllVaultsParsed,
+    getAllVaultsParsedAndPaginated,
+    vaultsData,
+    getPaginatedData,
   };
 };
 export default useLockerTools;

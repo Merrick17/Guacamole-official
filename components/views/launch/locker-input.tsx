@@ -177,6 +177,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
               if (!vault) {
                 setIsCreateOpen(true);
               } else {
+                setSelectedMintAdr(mintAdr);
                 setSelectedPool(poolToUser);
                 handleStepChange(2);
               }

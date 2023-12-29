@@ -100,7 +100,13 @@ import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
 } from "./network-configuration";
-
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { MarinadeProvider } from "./Marinade";
 import { OKXWalletAdapter } from "@/components/wallets/okxwallet";
 import { BraveWalletAdapter } from "@/components/wallets/bravewallet";
@@ -111,13 +117,15 @@ const ReactUIWalletModalProviderDynamic = dynamic(
     (await import("@solana/wallet-adapter-react-ui")).WalletModalProvider,
   { ssr: false }
 );
-
+const queryClient = new QueryClient();
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
   const { networkConfiguration } = useNetworkConfiguration();
-  //const endpoint ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
-   const endpoint =
-     "https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943";
+  const endpoint ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
+  //const endpoint =
+  //"https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943";
+  //  const endpoint =
+  //    "https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
   const wallets = useMemo(
     () => [
       /**
@@ -168,17 +176,19 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     // TODO: updates needed for updating and referencing endpoint: wallet adapter rework
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider
-        wallets={wallets}
-        onError={onError}
-        autoConnect={autoConnect}
-      >
-        <ReactUIWalletModalProviderDynamic>
-          <MarinadeProvider>{children}</MarinadeProvider>
-        </ReactUIWalletModalProviderDynamic>
-      </WalletProvider>
-    </ConnectionProvider>
+    <QueryClientProvider client={queryClient}>
+      <ConnectionProvider endpoint={endpoint}>
+        <WalletProvider
+          wallets={wallets}
+          onError={onError}
+          autoConnect={autoConnect}
+        >
+          <ReactUIWalletModalProviderDynamic>
+            <MarinadeProvider>{children}</MarinadeProvider>
+          </ReactUIWalletModalProviderDynamic>
+        </WalletProvider>
+      </ConnectionProvider>
+    </QueryClientProvider>
   );
 };
 
