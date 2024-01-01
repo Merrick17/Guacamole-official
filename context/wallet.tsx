@@ -104,6 +104,7 @@ import {
 import { MarinadeProvider } from "./Marinade";
 import { OKXWalletAdapter } from "@/components/wallets/okxwallet";
 import { BraveWalletAdapter } from "@/components/wallets/bravewallet";
+import { JupiterApiProvider } from "@/components/views/trade/src/contexts";
 export const dexterity = dexterityTs;
 
 const ReactUIWalletModalProviderDynamic = dynamic(
@@ -190,7 +191,9 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
           <ManifestProvider>
             <TraderProvider>
               <ProductProvider>
-                <WalletContextProvider>{children}</WalletContextProvider>
+                <WalletContextProvider>
+                  <JupiterApiProvider>{children}</JupiterApiProvider>
+                </WalletContextProvider>
               </ProductProvider>
             </TraderProvider>
           </ManifestProvider>

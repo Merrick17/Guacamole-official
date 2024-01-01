@@ -1,21 +1,16 @@
 "use client";
-import Image from "next/image";
-import { FC, useCallback, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import { BsDiscord } from "react-icons/bs";
-import { Logo } from "../views/trade/src/components/navigation-frame/TopBar/Logo";
-import Hamburger from "./hamburger";
-import { MenuItems } from "./menu-items";
-import { DrawerMenu } from "./drawer-menu";
 import routes from "@/config/routes";
-import { SearchInput } from "./search-input";
-import { useJupiterApiContext } from "../views/trade/src/contexts";
 import { TokenInfo } from "@solana/spl-token-registry";
-import { CiMenuKebab } from "react-icons/ci";
 import axios from "axios";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { BsDiscord } from "react-icons/bs";
 import FallbackImage from "../FallBackImage";
+import { Logo } from "../views/trade/src/components/navigation-frame/TopBar/Logo";
+import { DrawerMenu } from "./drawer-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +19,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
-import Container from "../common/container";
+import Hamburger from "./hamburger";
+import { MenuItems } from "./menu-items";
+import { SearchInput } from "./search-input";
+import { useJupiterApiContext } from "../views/trade/src/contexts";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -44,24 +42,25 @@ const Header: FC<HeaderProps> = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  //const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const {tokenList} = useJupiterApiContext();
   const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
     undefined
   );
-  const getTokens = async () => {
-    const { data } = await axios.get("https://cache.jup.ag/tokens");
-    const response = data as TokenInfo[];
-    setTokenList(response);
-  };
-  const fetchTokens = useCallback(async () => {
-    await getTokens();
-  }, []);
+  // const getTokens = async () => {
+  //   const { data } = await axios.get("https://cache.jup.ag/tokens");
+  //   const response = data as TokenInfo[];
+  //   setTokenList(response);
+  // };
+  // const fetchTokens = useCallback(async () => {
+  //   await getTokens();
+  // }, []);
 
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    fetchTokens();
-  }, []);
+  // useEffect(() => {
+  //   fetchTokens();
+  // }, []);
   return (
     <>
       {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
