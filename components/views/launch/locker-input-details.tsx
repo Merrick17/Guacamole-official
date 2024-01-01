@@ -10,9 +10,9 @@ import { PublicKey } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
 import numeral from "numeral";
-import useLockerTools from "@/hooks/use-locker";
 import Link from "next/link";
 import FallbackImage from "@/components/common/FallbackImage";
+import { useLockerTools } from "@/context/locker.context";
 const LockerInputDetails = () => {
   const [lockDate, setLockDate] = useState<Date>(new Date(Date.now()));
   const [selectedPool, setSeSelectedPool] = useState<PoolExtended>(null);

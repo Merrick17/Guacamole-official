@@ -1,5 +1,7 @@
 "use client";
+import FallbackImage from "@/components/common/FallbackImage";
 import Container from "@/components/common/container";
+import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/search-input";
 import {
   Select,
@@ -16,22 +18,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import useLockerTools from "@/hooks/use-locker";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import { useJupiterApiContext } from "../trade/src/contexts";
-import { PoolExtended, usePool } from "@/hooks/use-pool-list";
+
+import { PoolExtended } from "@/hooks/use-pool-list";
+import { cn } from "@/lib/utils";
 import { TokenInfo } from "@solana/spl-token-registry";
-import numeral from "numeral";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Metaplex, PublicKey } from "@metaplex-foundation/js";
-import { useConnection } from "@solana/wallet-adapter-react";
-import FallbackImage from "@/components/common/FallbackImage";
+import numeral from "numeral";
+import { useCallback, useEffect, useState } from "react";
+import { useJupiterApiContext } from "../trade/src/contexts";
+import { useLockerTools } from "@/context/locker.context";
 dayjs.extend(relativeTime);
 const checkRemainder = (nb: number) => {
   return nb % 2;
@@ -113,97 +112,11 @@ const RenderItem = ({
   ratio: any;
   checkRemainder: (nbr: number) => number;
 }) => {
-  // const { connection } = useConnection();
-  // const metaplex = new Metaplex(connection);
-  // const { getPoolByLpMint } = usePool();
-  const { getFirstLockByLp } = useLockerTools();
-  // const [selectedPool, setSelectedPool] = useState(null);
-  // const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
-  // const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
-  const [firstLockTime, setFirstLockTime] = useState<number | null>(null);
-
-  const fetchPoolData = useCallback(async () => {
-    //const pool = await getPoolByLpMint(lock.account.mint.toBase58());
-
-    if (pool && lock) {
-      // const base = pool.baseMint;
-      // const quote = pool.quoteMint;
-      // if (!base) {
-      //   const baseInfo = await metaplex
-      //     .nfts()
-      //     .findByMint({ mintAddress: new PublicKey(pool.baseAdr) });
-      //   const itm: TokenInfo = {
-      //     symbol: baseInfo.symbol,
-      //     name: baseInfo.name,
-      //     address: baseInfo.address.toBase58(),
-      //     chainId: 101,
-      //     decimals: baseInfo.mint.decimals,
-      //     logoURI: baseInfo?.json?.image,
-      //   };
-      //   setBaseToken(itm);
-      // } else {
-      //   setBaseToken(base);
-      // }
-      // if (!quote) {
-      //   const quoteInfo = await metaplex
-      //     .nfts()
-      //     .findByMint({ mintAddress: new PublicKey(pool.quoteAdr) });
-      //   const itm: TokenInfo = {
-      //     symbol: quoteInfo.symbol,
-      //     name: quoteInfo.name,
-      //     address: quoteInfo.address.toBase58(),
-      //     chainId: 101,
-      //     decimals: quoteInfo.mint.decimals,
-      //     logoURI: quoteInfo?.json?.image,
-      //   };
-      //   setQuoteToken(itm);
-      // } else {
-      //   setQuoteToken(quote);
-      // }
-
-      // setSelectedPool(pool);
-
-      const value = await getFirstLockByLp(pool.lpMint);
-      //console.log("Value", value.account.unlockTime.toNumber());
-      if (value !== null) {
-        setFirstLockTime(value.account.unlockTime.toNumber());
-      }
-    }
-  }, [lock]);
+  const [firstLockTime, setFirstLockTime] = useState<any | null>(null);
 
   useEffect(() => {
-    console.log("Liquidity", liquidity);
-    fetchPoolData();
-  }, [fetchPoolData]);
-
-  // const calculateLiquidity = () => {
-  //   if (lock && selectedPool) {
-  //     const lockedAmount =
-  //       lock.account.lockedAmount.toNumber() /
-  //       Math.pow(10, selectedPool.lpDecimals);
-
-  //     const tokenAmount = selectedPool.tokenAmount;
-
-  //     const liquidity = (lockedAmount / tokenAmount) * selectedPool.liquidity;
-  //     return liquidity.toFixed(2);
-  //   } else {
-  //     return 0;
-  //   }
-  // };
-  // const calculateLiquidityRatio = () => {
-  //   if (lock && selectedPool) {
-  //     const lockedAmount =
-  //       lock.account.lockedAmount.toNumber() /
-  //       Math.pow(10, selectedPool.lpDecimals);
-  //     //console.log("Locked aMount", lockedAmount);
-  //     const tokenAmount = selectedPool.tokenAmount;
-  //     const percentage = (lockedAmount / tokenAmount) * 100;
-
-  //     return percentage.toFixed(3);
-  //   } else {
-  //     return 0;
-  //   }
-  // };
+    setFirstLockTime(lock.unlockTime);
+  });
   const displayName = () => {
     const tokenName = base && quote ? `${base.symbol}/${quote.symbol}` : "N/A";
 
@@ -281,11 +194,11 @@ const RenderItem = ({
                 fill="#D6776A"
               />
             </svg>
-            ${liquidity}
+            ${numeral(liquidity).format("0,0.00")}%
           </span>
           <span className="text-muted-foreground">
             Next{" "}
-            {firstLockTime
+            {firstLockTime && firstLockTime !== "N/A"
               ? dayjs(Date.now()).to(new Date(firstLockTime).toISOString())
               : "in Infinity"}
           </span>
@@ -307,7 +220,7 @@ const RenderItem = ({
                 fill="#D6776A"
               />
             </svg>
-            {ratio}%
+            {numeral(ratio).format("0,0.00")}%
           </span>
         </div>
       </TableCell>
@@ -328,10 +241,8 @@ const LockerList = () => {
   const [totalItems, setTotalItems] = useState(0);
 
   const {
-    getAllVaults,
-    getTotalVaults,
-    getAllVaultsParsedAndPaginated,
-    getAllVaultsParsed,
+    //getTotalVaults,
+
     vaultsData,
     getPaginatedData,
   } = useLockerTools();
@@ -347,7 +258,7 @@ const LockerList = () => {
   const initVaultList = useCallback(async () => {
     // const vaults = await getAllVaultsParsedAndPaginated(activePage, 10);
     const vaults = getPaginatedData(activePage, 10);
-    const total = await getTotalVaults();
+    const total = vaultsData.length;
     setTotalItems(total);
     setLockerList(vaults);
   }, [activePage, vaultsData]);

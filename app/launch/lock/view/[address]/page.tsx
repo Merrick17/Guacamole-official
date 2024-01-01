@@ -3,7 +3,8 @@ import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
 import { abbreviate } from "@/components/views/trade/src/utils/abbreviate";
-import useLockerTools from "@/hooks/use-locker";
+import { useLockerTools } from "@/context/locker.context";
+
 import { usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
 import dayjs from "dayjs";

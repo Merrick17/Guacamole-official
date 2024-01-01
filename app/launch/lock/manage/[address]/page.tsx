@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
-import useLockerTools from "@/hooks/use-locker";
+
 import { usePool } from "@/hooks/use-pool-list";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -25,6 +25,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import FallbackImage from "@/components/common/FallbackImage";
+import { useLockerTools } from "@/context/locker.context";
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 const Page = () => {
@@ -62,7 +63,7 @@ const Page = () => {
   const fetchPoolData = useCallback(async () => {
     const adr = params["address"] as string;
 
-    if (poolList.length !== 0 && adr !== "") {
+    if ( adr !== "") {
       setPoolAdr(adr);
       const locker = await getLockerByAdr(adr);
 

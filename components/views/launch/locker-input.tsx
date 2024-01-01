@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import useLockerTools from "@/hooks/use-locker";
+
 import { PoolExtended, usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { PublicKey } from "@solana/web3.js";
@@ -19,6 +19,7 @@ import { useTokenAccounts } from "@bonfida/hooks";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
+import { useLockerTools } from "@/context/locker.context";
 interface LockerInputProps {
   handleStepChange: (nbr: number) => void;
 }
@@ -78,7 +79,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   };
   const getUserInfo = async () => {
     const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
-    console.log("Pool", poolFound);
+
     if (poolFound) {
       setPoolToUse(poolFound);
       const base = poolFound.baseMint;

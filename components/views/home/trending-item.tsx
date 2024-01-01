@@ -33,7 +33,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
         const { data } = await axios.get(
           `https://price.jup.ag/v4/price?ids=${token.address}`
         );
-        console.log("Market Data", data["data"][token.address]["price"]);
+      
         setMarketPrice(data["data"][token.address]["price"]);
       }
     };
