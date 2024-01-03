@@ -15,7 +15,7 @@ const PoolLayout = ({ children }: { children: any }) => {
   return (
     <PoolProvider>
       <LockerProvider>
-        <JupiterApiProvider>{children}</JupiterApiProvider>
+        <>{children}</>
       </LockerProvider>
     </PoolProvider>
   );

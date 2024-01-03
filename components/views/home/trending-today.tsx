@@ -23,7 +23,7 @@ const TrendingToday: FC<TrendingTodayProps> = ({ className }) => {
   });
 
   return (
-    <JupiterApiProvider>
+    <>
       <Container
         className={cn(
           'flex flex-col max-h-[560px] bg-foreground gap-5 overflow-y-auto',
@@ -55,7 +55,7 @@ const TrendingToday: FC<TrendingTodayProps> = ({ className }) => {
           )}
         </div>
       </Container>
-    </JupiterApiProvider>
+    </>
   );
 };
 

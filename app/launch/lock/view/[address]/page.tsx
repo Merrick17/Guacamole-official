@@ -1,4 +1,5 @@
 "use client";
+import FallbackImage from "@/components/common/FallbackImage";
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
 import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
@@ -164,23 +165,27 @@ const Page = () => {
         <div className=" flex flex-1 justify-evenly gap-2">
           {baseToken && (
             <div className=" w-[267.609px] h-[256px] p-5  overflow-hidden rounded-lg relative border-2 border-[#a8a8a8] border-opacity-10">
-              <img
+              <FallbackImage
                 src={
                   baseToken.logoURI
                     ? baseToken.logoURI
                     : "/images/No_Logo_Found_Guacamole-min.png"
                 }
+                height={"100%"}
+                width={"100%"}
                 className="w-full h-full object-cover transform scale-[2] opacity-25 absolute top-0 bottom-0 left-0 right-0 z-0"
                 alt="Guac Image"
               />
               <div className="w-[232px] h-[216px] rounded-lg bg-[#0F0F0F] border-2 border-[#a8a8a8] border-opacity-10 z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
-                <img
+                <FallbackImage
                   src={
                     baseToken.logoURI
                       ? baseToken.logoURI
                       : "/images/No_Logo_Found_Guacamole-min.png"
                   }
                   className="h-[46px] w-[46px] rounded-full"
+                  height={46}
+                  width={46}
                 />
                 <p className="text-[#FFFF] font-medium text-[24px]">
                   {baseToken.symbol}

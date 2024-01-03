@@ -174,20 +174,20 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
   }, [inputTokenInfo, outputTokenInfo, loadingRoute]);
 
   // ensure outputMint can be swapable to inputMint
-  useEffect(() => {
-    if (inputTokenInfo) {
-      const possibleOutputs = routeMap.get(inputTokenInfo.address);
+  // useEffect(() => {
+  //   if (inputTokenInfo) {
+  //     const possibleOutputs = routeMap.get(inputTokenInfo.address);
 
-      if (
-        possibleOutputs &&
-        !possibleOutputs?.includes(outputTokenInfo?.address || "")
-      ) {
-        setHasRoute(false);
-      }
-    } else {
-      setHasRoute(false);
-    }
-  }, [inputTokenInfo, outputTokenInfo]);
+  //     if (
+  //       possibleOutputs &&
+  //       !possibleOutputs?.includes(outputTokenInfo?.address || "")
+  //     ) {
+  //       setHasRoute(false);
+  //     }
+  //   } else {
+  //     setHasRoute(false);
+  //   }
+  // }, [inputTokenInfo, outputTokenInfo]);
   const handleSwap = async () => {
     if (!outputTokenInfo?.address) return;
 

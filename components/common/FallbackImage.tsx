@@ -1,5 +1,5 @@
 //@ts-nocheck
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -13,7 +13,8 @@ const FallbackImage = ({ src, ...rest }) => {
 
   return (
     <Image
-    unoptimized
+      unoptimized
+      loading="lazy"
       {...rest}
       src={imgSrc ? imgSrc : "/images/No_Logo_Found_Guacamole-min.png"}
       onError={() => {

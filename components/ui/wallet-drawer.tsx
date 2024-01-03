@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BiLinkExternal, BiSolidLeftArrow } from "react-icons/bi";
 import { Skeleton } from "./skeleton";
 import FallbackImage from "../common/FallbackImage";
+import { useJupiterApiContext } from "../views/trade/src/contexts";
 interface CustomTokenInfo {
   balance: number;
   balanceInUSD: number;
@@ -29,21 +30,22 @@ const WalletDrawer = () => {
   const { toast } = useToast();
   const { connection } = useConnection();
   const { connected, publicKey } = useWallet();
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const { tokenList } = useJupiterApiContext();
+  //const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
   const metaplex = new Metaplex(connection);
-  const fetchTokenList = useCallback(async () => {
-    try {
-      const { data } = await axios.get("https://token.jup.ag/all");
+  // const fetchTokenList = useCallback(async () => {
+  //   try {
+  //     const { data } = await axios.get("https://token.jup.ag/all");
 
-      setTokenList(data);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  }, []);
+  //     setTokenList(data);
+  //   } catch (error) {
+  //     console.error("Error fetching data: ", error);
+  //   }
+  // }, []);
   const [tokenData, setTokenData] = useState([]); // Store token data including USD values
 
   useEffect(() => {
-    fetchTokenList();
+   
     const getUserTokens = async () => {
       if (publicKey && connected) {
         const { data } = await axios.post(

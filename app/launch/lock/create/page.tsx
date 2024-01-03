@@ -105,102 +105,98 @@ const Page = () => {
   const router = useRouter();
   return (
     <PoolProvider>
-  
-        <JupiterApiProvider>
-          <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
-            <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
-              <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
-                <Button
-                  className="rounded-lg h-[30px] flex flex-2 gap-2"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  <svg
-                    width="7"
-                    height="11"
-                    viewBox="0 0 7 11"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6.1633 10.6633C5.85499 10.9717 5.35513 10.9717 5.04682 10.6633L0.836287 6.45277C0.527977 6.14446 0.527977 5.64459 0.836287 5.33628L5.04682 1.12576C5.35513 0.817454 5.85499 0.817454 6.1633 1.12576C6.47161 1.43407 6.47161 1.93393 6.1633 2.24224L2.51102 5.89453L6.1633 9.54681C6.47161 9.85512 6.47161 10.355 6.1633 10.6633Z"
-                      fill="black"
-                    />
-                  </svg>
-                  <span> Back To Lockers</span>
-                </Button>
-                <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
-              </div>
-              <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+      <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
+        <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+            <Button
+              className="rounded-lg h-[30px] flex flex-2 gap-2"
+              onClick={() => {
+                router.back();
+              }}
+            >
+              <svg
+                width="7"
+                height="11"
+                viewBox="0 0 7 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M6.1633 10.6633C5.85499 10.9717 5.35513 10.9717 5.04682 10.6633L0.836287 6.45277C0.527977 6.14446 0.527977 5.64459 0.836287 5.33628L5.04682 1.12576C5.35513 0.817454 5.85499 0.817454 6.1633 1.12576C6.47161 1.43407 6.47161 1.93393 6.1633 2.24224L2.51102 5.89453L6.1633 9.54681C6.47161 9.85512 6.47161 10.355 6.1633 10.6633Z"
+                  fill="black"
+                />
+              </svg>
+              <span> Back To Lockers</span>
+            </Button>
+            <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
+          </div>
+          <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
 
-              <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
-                <Button
-                  className={`${
-                    activeTab == 1
-                      ? "bg-primary"
-                      : "bg-[#0F0F0F] text-muted-foreground"
-                  } w-full rounded-lg h-[34px]`}
-                  onClick={() => {
-                    setActiveTab(1);
-                  }}
-                >
-                  Create New Lock
-                </Button>
-                <Button
-                  className={`${
-                    activeTab == 2
-                      ? "bg-primary"
-                      : "bg-[#0F0F0F] text-muted-foreground"
-                  } w-full rounded-lg h-[34px]`}
-                  onClick={() => {
-                    setActiveTab(2);
-                  }}
-                >
-                  Manage / Withdraw
-                </Button>
-              </div>
-              {activeTab == 1 ? (
-                <div className="w-full h-full flex flex-col gap-3">
-                  <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center">
-                    <span className="text-[#FCFCFC] text-[16px] font-medium">
-                      Create A New Liquidity Locker
-                    </span>
-                  </Container>
-                  {step == 1 ? (
-                    <LockerInput handleStepChange={changeStep} />
-                  ) : (
-                    <LockerInputDetails />
-                  )}
-                </div>
+          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+            <Button
+              className={`${
+                activeTab == 1
+                  ? "bg-primary"
+                  : "bg-[#0F0F0F] text-muted-foreground"
+              } w-full rounded-lg h-[34px]`}
+              onClick={() => {
+                setActiveTab(1);
+              }}
+            >
+              Create New Lock
+            </Button>
+            <Button
+              className={`${
+                activeTab == 2
+                  ? "bg-primary"
+                  : "bg-[#0F0F0F] text-muted-foreground"
+              } w-full rounded-lg h-[34px]`}
+              onClick={() => {
+                setActiveTab(2);
+              }}
+            >
+              Manage / Withdraw
+            </Button>
+          </div>
+          {activeTab == 1 ? (
+            <div className="w-full h-full flex flex-col gap-3">
+              <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center">
+                <span className="text-[#FCFCFC] text-[16px] font-medium">
+                  Create A New Liquidity Locker
+                </span>
+              </Container>
+              {step == 1 ? (
+                <LockerInput handleStepChange={changeStep} />
               ) : (
-                <div className=" w-full h-full flex flex-col gap-3">
-                  <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center h-[60px]">
-                    <span className="text-[#FCFCFC] text-[16px] font-medium">
-                      Manage Your Liquidity Lockers
-                    </span>
-                  </Container>
-                  <Container className="bg-[#0F0F0F] p-3 flex gap-3 flex-col min-h-[70px] my-5">
-                    <span className="text-muted-foreground text-xs uppercase">
-                      Enter the pair address you would like to ACCESS:
-                    </span>
-                    <Input placeholder="Pair Address" className="w-full" />
-                  </Container>
-                  <p className="text-muted-foreground text-xs">
-                    The following lockers are associated with this account:
-                  </p>
-
-                  {userLocks.map((lock) => (
-                    <LockItem lock={lock} />
-                  ))}
-                </div>
+                <LockerInputDetails />
               )}
             </div>
-          </main>
-        </JupiterApiProvider>
-     
+          ) : (
+            <div className=" w-full h-full flex flex-col gap-3">
+              <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center h-[60px]">
+                <span className="text-[#FCFCFC] text-[16px] font-medium">
+                  Manage Your Liquidity Lockers
+                </span>
+              </Container>
+              <Container className="bg-[#0F0F0F] p-3 flex gap-3 flex-col min-h-[70px] my-5">
+                <span className="text-muted-foreground text-xs uppercase">
+                  Enter the pair address you would like to ACCESS:
+                </span>
+                <Input placeholder="Pair Address" className="w-full" />
+              </Container>
+              <p className="text-muted-foreground text-xs">
+                The following lockers are associated with this account:
+              </p>
+
+              {userLocks.map((lock) => (
+                <LockItem lock={lock} />
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
     </PoolProvider>
   );
 };

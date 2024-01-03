@@ -21,6 +21,7 @@ import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import ReactPaginate from "react-paginate";
 import { useJupiterApiContext } from "../../contexts";
 import { PublicKey } from "@solana/web3.js";
+import FallbackImage from "@/components/common/FallbackImage";
 
 const Row = ({
   info,
@@ -87,9 +88,11 @@ const Row = ({
       }}
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background  "
     >
-      <img
+      <FallbackImage
         src={info.logoURI as string}
         alt={info.name}
+        height={24}
+        width={24}
         className="h-[24px] w-[24px] "
       />
       <div className=" flex flex-col items-start  ">
@@ -121,7 +124,7 @@ const Row = ({
 const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
   return (
     <div className="flex flex-row items-center justify-start rounded-xl  bg-foreground text-white px-3 py-2">
-      <img
+      <FallbackImage
         src={tokenInfo?.logoURI as string}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null; // prevents looping

@@ -14,6 +14,7 @@ import Hamburger from "./hamburger";
 import { MenuItems } from "./menu-items";
 import { SearchInput } from "./search-input";
 import FallbackImage from "../common/FallbackImage";
+import { useJupiterApiContext } from "../views/trade/src/contexts";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -33,24 +34,25 @@ const Header: FC<HeaderProps> = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const { tokenList } = useJupiterApiContext();
+  // const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
   const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
     undefined
   );
-  const getTokens = async () => {
-    const { data } = await axios.get("https://cache.jup.ag/tokens");
-    const response = data as TokenInfo[];
-    setTokenList(response);
-  };
-  const fetchTokens = useCallback(async () => {
-    await getTokens();
-  }, []);
+  // const getTokens = async () => {
+  //   const { data } = await axios.get("https://cache.jup.ag/tokens");
+  //   const response = data as TokenInfo[];
+  //   setTokenList(response);
+  // };
+  // const fetchTokens = useCallback(async () => {
+  //   await getTokens();
+  // }, []);
 
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    fetchTokens();
-  }, []);
+  // useEffect(() => {
+  //   fetchTokens();
+  // }, []);
   return (
     <>
       {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
@@ -272,24 +274,13 @@ const HeaderLeftArea = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const { tokenList } = useJupiterApiContext();
   const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
     undefined
   );
-  const getTokens = async () => {
-    const { data } = await axios.get("https://cache.jup.ag/tokens");
-    const response = data as TokenInfo[];
-    setTokenList(response);
-  };
-  const fetchTokens = useCallback(async () => {
-    await getTokens();
-  }, []);
 
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    fetchTokens();
-  }, []);
   return (
     <div className=" flex items-center gap-8 ">
       <Link href={routes.home} className="flex items-center gap-2 ">
@@ -378,24 +369,11 @@ function HeaderRightArea({
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+
   const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
     undefined
   );
-  const getTokens = async () => {
-    const { data } = await axios.get("https://cache.jup.ag/tokens");
-    const response = data as TokenInfo[];
-    setTokenList(response);
-  };
-  const fetchTokens = useCallback(async () => {
-    await getTokens();
-  }, []);
 
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    fetchTokens();
-  }, []);
   return (
     <div className="order-last flex shrink-0 items-center">
       <div className="hidden gap-6 lg:flex 2xl:gap-8">

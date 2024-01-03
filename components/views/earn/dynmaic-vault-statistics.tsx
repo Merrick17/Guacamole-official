@@ -27,7 +27,7 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
     console.log("Vault Data", vaultData);
   }, [loading]);
   return (
-    <JupiterApiProvider>
+    <>
       <Container
         className={cn(
           "flex flex-col bg-foreground gap-5 overflow-y-auto h-[560px]",
@@ -70,7 +70,7 @@ const DynamicVaultStatistics: FC<DynamicVaultStatisticsProps> = ({
           )}
         </div>
       </Container>
-    </JupiterApiProvider>
+    </>
   );
 };
 

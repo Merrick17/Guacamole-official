@@ -1,14 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import routes from "@/config/routes";
-import Image from "next/image";
+import { convert } from "@/lib/numbers";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import { useJupiterApiContext } from "../trade/src/contexts";
-import axios from "axios";
-import { convert } from "@/lib/numbers";
-import { Loader2 } from "lucide-react";
 
 type TrendingItemProps = {
   className?: string;
