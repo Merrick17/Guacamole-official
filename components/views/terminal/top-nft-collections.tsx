@@ -1,4 +1,5 @@
 "use client";
+import FallbackImage from "@/components/common/FallbackImage";
 import Container from "@/components/common/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,19 +7,21 @@ import {
   Dialog,
   DialogContent,
   DialogFooter,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { AccentColors } from "@/config/themes";
 import { cn } from "@/lib/utils";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import axios from "axios";
+import { HyperspaceClient } from "hyperspace-client-js";
 import Image from "next/image";
 import numeral from "numeral";
 import {
   FunctionComponent,
+  useCallback,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 interface TopNftCollectionsProps extends React.HTMLAttributes<HTMLDivElement> {}
 const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
@@ -26,20 +29,28 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
   ...rest
 }) => {
   const [topCollections, setTopCollections] = useState([]);
-  const getTopNftCollections = async () => {
-    // const { data } = await axios.get(
-    //   `https://api-mainnet.magiceden.dev/v2/marketplace/popular_collections`
-    // );
-    const { data } = await axios.get(
-      `https://corsproxy.io/?https%3A%2F%2Fapi-mainnet.magiceden.dev%2Fv2%2Fmarketplace%2Fpopular_collections`
-    );
-    setTopCollections(data);
-  };
 
-
- 
   useEffect(() => {
+    let isMounted = true;
+
+    const getTopNftCollections = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://corsproxy.io/?https%3A%2F%2Fapi-mainnet.magiceden.dev%2Fv2%2Fmarketplace%2Fpopular_collections`
+        );
+        if (isMounted) {
+          setTopCollections(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     getTopNftCollections();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
   return (
     <Container
@@ -49,14 +60,14 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
       )}
     >
       <div className="w-full flex items-center justify-between text-black">
-        <Badge variant="default" className="rounded-lg guac-btn">
+        <Badge variant="default" className="rounded-lg">
           Trending NFT Collections
         </Badge>
 
         <Dialog>
           <DialogTrigger asChild>
             <Badge
-              className="rounded-lg cursor-pointer trade-bg"
+              className="rounded-lg cursor-pointer"
               style={{
                 backgroundColor: AccentColors.violet,
               }}
@@ -69,7 +80,7 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
             <DialogFooter className="border-t-2 py-3 justify-center items-center flex flex-col w-full border-[#FFFFF]">
               <div className="flex flex-col w-full gap-3">
                 <Button
-                  className="w-full guac-bg"
+                  className="w-full"
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       window.open(
@@ -82,7 +93,7 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
                   View Avotars On Magic Eden
                 </Button>
                 <Button
-                  className="w-full guac-bg"
+                  className="w-full"
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       window.open(
@@ -95,7 +106,7 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
                   View Avotars On Tensor
                 </Button>
                 <Button
-                  className="w-full guac-bg"
+                  className="w-full"
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       window.open(
@@ -107,7 +118,7 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
                 >
                   View Avotars On Hadeswap
                 </Button>
-                <Button className="w-full guac-bg" disabled>
+                <Button className="w-full" disabled>
                   View Avotars On Guacamole
                 </Button>
               </div>
@@ -131,27 +142,6 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
   );
 };
 
-const topNfts = [
-  {
-    price: "1,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 1",
-    floor: "0.5",
-  },
-  {
-    price: "2,500.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 2",
-    floor: "1.2",
-  },
-  {
-    price: "5,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 3",
-    floor: "2.5",
-  },
-];
-
 type TopNftCollectionItemProps = {
   price: string;
   image: string;
@@ -168,20 +158,27 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
   item,
 }) => {
   const [nftDetails, setNftDetails] = useState(null);
-  const [open, setOpen] = useState<boolean>(false);
-  const getNftData = async () => {
-    const url =
-      "https://corsproxy.io/?" +
-      encodeURIComponent(
-        `https://api-mainnet.magiceden.dev/v2/collections/${item.symbol}/stats`
-      );
-    const { data } = await axios.get(url);
-    setNftDetails(data);
-    //console.log("MY ITEM DATA", data);
-  };
-  useMemo(() => {
-    getNftData();
-  }, [open]);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      const getNftData = async () => {
+        try {
+          const url =
+            `https://corsproxy.io/?` +
+            encodeURIComponent(
+              `https://api-mainnet.magiceden.dev/v2/collections/${item.symbol}/stats`
+            );
+          const { data } = await axios.get(url);
+          setNftDetails(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      getNftData();
+    }
+  }, [open, item.symbol]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -193,7 +190,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <Container className="hover:border-2 px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full cursor-pointer">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image
+                <FallbackImage
                   src={image}
                   fill
                   alt={title}
@@ -221,7 +218,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
           <div className="flex justify-between items-center pb-3 border-b-2 border-[#FFFFF]">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
-                <Image
+                <FallbackImage
                   src={image}
                   fill
                   alt={title}
@@ -269,7 +266,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
             </p>
           </div>
         </div>
-        <DialogFooter className="border-t-2 py-3 guac-bg justify-center items-center flex w-full border-[#FFFFF]">
+        <DialogFooter className="border-t-2 py-3 justify-center items-center flex w-full border-[#FFFFF]">
           <Button
             className="w-full"
             onClick={() => {

@@ -9,12 +9,13 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import CustomTicker from "@/components/common/custom-ticker";
 import { usePathname } from "next/navigation";
-
+import FallbackImage from "@/components/common/FallbackImage";
+import React from "react";
 interface TrendingSwapProps {
   className?: string;
 }
 
-const TrendingSwap: FC<TrendingSwapProps> = ({ className }) => {
+const TrendingSwap: FC<TrendingSwapProps> = React.memo(({ className }) => {
   const { trending } = useGetTrendingToday({
     maxNumberOfTokens: 9,
   });
@@ -30,12 +31,12 @@ const TrendingSwap: FC<TrendingSwapProps> = ({ className }) => {
       </Button>
       <CustomTicker>
         {trending.map((x, idx) => (
-          <TrendingSwapItem key={x.symbol} {...x} idx={idx + 1} />
+          <TrendingSwapItem key={x.idx} {...x} idx={idx + 1} />
         ))}
       </CustomTicker>
     </Container>
   );
-};
+});
 
 export default TrendingSwap;
 
@@ -68,7 +69,9 @@ const TrendingSwapItem: FC<TrendingSwapItemProps> = ({
     >
       <p className="uppercase">#{idx}</p>
       <div className="w-4 h-4 lg:w-6 lg:h-6 rounded-full shrink-0">
-        <img
+        <FallbackImage
+          height={16}
+          width={16}
           src={token.logoURI}
           className="w-4 h-4 lg:w-6 lg:h-6  rounded-full"
           alt="logo"

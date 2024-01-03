@@ -7,5 +7,5 @@ export default function SwapLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <JupiterApiProvider>{children}</JupiterApiProvider>;
+  return <>{children}</>;
 }

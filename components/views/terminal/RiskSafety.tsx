@@ -10,6 +10,8 @@ import { useSelectedToken } from "@/context/coin-details";
 import { abbreviate } from "../trade/src/utils/abbreviate";
 import numeral from "numeral";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTokenData } from "@/hooks/use-token-data";
+import { useParams } from "next/navigation";
 interface RiskSafetyProps {
   className?: string;
 }
@@ -17,6 +19,9 @@ interface RiskSafetyProps {
 
 const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
   const { tokenInfo, selectedToken } = useSelectedToken();
+  const params = useParams();
+  const adr: any = params["address"];
+  const { isLoading, data } = useTokenData(adr);
   const calculateTotalPercentage = () => {
     let totalPercentage = 0;
 
@@ -34,7 +39,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
     return totalPercentage;
   };
   return (
-    <JupiterApiProvider>
+    <>
       <Container
         className={cn(
           "flex flex-col max-h-[580px] bg-foreground gap-5  ",
@@ -60,49 +65,167 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             </Badge>
           </div>
         </div>
-        {/* <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
+        <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
           <h1 className="text-[12px] text-[#FCFCFC] ">
-            Risk Analysis (Ripe Or Rotten)
+            Risk Analysis - Via Rugcheck.xyz
           </h1>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              Risk Score
+              Safety Score
             </div>
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              Guacamole
+              {!isLoading ? data["score"] : 0}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
               Mintable
             </div>
+            <div
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
+                !isLoading && data["_mint"]["MintAuthority"]
+                  ? " text-[#8BD796]"
+                  : "text-[#FF8F8F]"
+              }`}
+            >
+              {!isLoading && data["_mint"]["MintAuthority"] ? "Yes" : "No"}
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              Guacamole
+              Mint Authority
+            </div>
+            <div
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
+                !isLoading && data["_mint"]["MintAuthority"]
+                  ? " text-[#8BD796]"
+                  : "text-[#FF8F8F]"
+              }`}
+            >
+              {!isLoading && data["_mint"]["MintAuthority"]
+                ? abbreviate(data["_mint"]["MintAuthority"])
+                : "-"}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
               Mutable Info
             </div>
-            <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              Guacamole
+            <div
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
+                !isLoading && data.report["metadata"]["mutable"]
+                  ? "text-[#FF8F8F]"
+                  : "text-[#8BD796]"
+              }`}
+            >
+              {!isLoading && data.report["metadata"]["mutable"] ? "Yes" : "No"}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              Ownership Renounced
+              Freeze Authority
             </div>
-            <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              Guacamole
+            <div
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
+                !isLoading && data["_mint"]["FreezeAuthority"]
+                  ? " text-[#8BD796]"
+                  : "text-[#FF8F8F]"
+              }`}
+            >
+              {!isLoading && data["_mint"]["FreezeAuthority"] ? "Yes" : "No"}
             </div>
           </div>
-        </div> */}
-        {tokenInfo ? (
+          <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
+            <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              Jupiter Verified
+            </div>
+            <div
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
+                !isLoading && data.report["jupiterVerified"]
+                  ? " text-[#8BD796]"
+                  : "text-[#FF8F8F]"
+              }`}
+            >
+              {!isLoading && data.report["jupiterVerified"] ? "Yes" : "No"}
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
+            <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              Known Scammer
+            </div>
+            <div
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
+                !isLoading &&
+                data.report["creator"] &&
+                data.report["creator"]["knownScammer"]
+                  ? " text-[#8BD796]"
+                  : "text-[#FF8F8F]"
+              }`}
+            >
+              {!isLoading &&
+              data.report["creator"] &&
+              data.report["creator"]["knownScammer"]
+                ? "Yes"
+                : "No"}
+            </div>
+          </div>
+        </div>
+        {!isLoading ? (
           <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
             <h1 className="text-[12px] text-[#FCFCFC] ">
-              Top 10 Holders ({calculateTotalPercentage().toFixed(3)})
+              Top Holder Information
             </h1>
-            <div className="grid grid-cols-3 gap-1 p-1 w-full max-h-[440px] overflow-y-auto no-scrollbar">
+            <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
+              <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                Top Owner Amount
+              </div>
+              <div
+                className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
+              >
+                {!isLoading
+                  ? numeral(data.report["topOwnerAmount"]).format("0,0")
+                  : 0}
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
+              <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                Top Owner %
+              </div>
+              <div
+                className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
+              >
+                %
+                {!isLoading
+                  ? numeral(data.report["topOwnerPct"]).format("0,0.00")
+                  : 0}
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
+              <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                Top 10 Holder Amount
+              </div>
+              <div
+                className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
+              >
+                {!isLoading
+                  ? numeral(data.report["topHoldersAmount"]).format("0,0.00")
+                  : 0}
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
+              <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                Top 10 Holder %
+              </div>
+              <div
+                className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
+              >
+                %
+                {!isLoading
+                  ? numeral(data.report["topHoldersPct"]).format("0,0.00")
+                  : 0}
+              </div>
+            </div>
+            {/* <div className="grid grid-cols-3 gap-1 p-1 w-full max-h-[440px] overflow-y-auto no-scrollbar">
               <div className="col-span-1  p-2 text-left">
                 <span className="text-muted-foreground text-[12px]">
                   Account
@@ -155,7 +278,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
                   </div>
                 </>
               ))}
-            </div>
+            </div> */}
           </div>
         ) : (
           <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
@@ -165,7 +288,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
           </div>
         )}
       </Container>
-    </JupiterApiProvider>
+    </>
   );
 };
 

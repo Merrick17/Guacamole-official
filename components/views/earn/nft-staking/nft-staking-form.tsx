@@ -34,7 +34,7 @@ const NftStakeForm = () => {
   };
   useEffect(() => {
     if (connected && publicKey) {
-      console.log("Wallet", walletTokens);
+      //console.log("Wallet", walletTokens);
       const msSol = walletTokens.find(
         (elm) =>
           elm.account.mint.toBase58() ==

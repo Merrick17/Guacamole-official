@@ -8,5 +8,5 @@ export default function EarnLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <JupiterApiProvider>{children}</JupiterApiProvider>;
+  return <>{children}</>;
 }

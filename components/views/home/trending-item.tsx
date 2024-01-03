@@ -1,14 +1,13 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import routes from '@/config/routes';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
-import { BiLinkExternal } from 'react-icons/bi';
-import { useJupiterApiContext } from '../trade/src/contexts';
-import axios from 'axios';
-import { convert } from '@/lib/numbers';
-import { Loader2 } from 'lucide-react';
+"use client";
+import { Button } from "@/components/ui/button";
+import routes from "@/config/routes";
+import { convert } from "@/lib/numbers";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { FC, useEffect, useState } from "react";
+import { BiLinkExternal } from "react-icons/bi";
+import { useJupiterApiContext } from "../trade/src/contexts";
 
 type TrendingItemProps = {
   className?: string;
@@ -33,15 +32,15 @@ const TrendingItem: FC<TrendingItemProps> = ({
         const { data } = await axios.get(
           `https://price.jup.ag/v4/price?ids=${token.address}`
         );
-        console.log('Market Data', data['data'][token.address]['price']);
-        setMarketPrice(data['data'][token.address]['price']);
+      
+        setMarketPrice(data["data"][token.address]["price"]);
       }
     };
     const getMarketCap = async () => {
-      console.log('TOKEN', token);
+      console.log("TOKEN", token);
       if (token && token.extensions) {
         const { data } = await axios.get(
-          'https://api.coingecko.com/api/v3/coins/' +
+          "https://api.coingecko.com/api/v3/coins/" +
             token.extensions.coingeckoId
         );
 
@@ -56,12 +55,16 @@ const TrendingItem: FC<TrendingItemProps> = ({
     <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background  hover:border-[var(--accent)]  hover:border">
       <div className="flex flex-row items-center  gap-2 lg:gap-5">
         <img
-          src={token?.logoURI}
+          src={
+            token && token.logoURI
+              ? token.logoURI
+              : "/images/No_Logo_Found_Guacamole-min.png"
+          }
           className="w-5 h-5 lg:w-10 lg:h-10 rounded-full hidden"
           alt="logo"
           onLoad={(e) => {
             setLoading(false);
-            e.currentTarget.classList.remove('hidden');
+            e.currentTarget.classList.remove("hidden");
           }}
         />
         {loading && (
@@ -86,7 +89,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
             </div>
           </div>
           <p className=" text-xs lg:text-base max-w-[80px]  lg:max-w-full text-muted-foreground text-ellipsis overflow-hidden">
-            {'$' + convert(marketPrice)}
+            {"$" + convert(marketPrice)}
           </p>
         </div>
       </div>

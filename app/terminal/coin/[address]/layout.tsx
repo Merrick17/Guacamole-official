@@ -5,9 +5,9 @@ import React from "react";
 
 const Layout = ({ children }: { children: any }) => {
   return (
-    <JupiterApiProvider>
+    <>
       <SelectedTokenProvider>{children}</SelectedTokenProvider>
-    </JupiterApiProvider>
+    </>
   );
 };
 

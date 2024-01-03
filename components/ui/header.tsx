@@ -8,20 +8,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { BsDiscord } from "react-icons/bs";
-import FallbackImage from "../FallBackImage";
 import { Logo } from "../views/trade/src/components/navigation-frame/TopBar/Logo";
 import { DrawerMenu } from "./drawer-menu";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./dropdown-menu";
 import Hamburger from "./hamburger";
 import { MenuItems } from "./menu-items";
 import { SearchInput } from "./search-input";
+import FallbackImage from "../common/FallbackImage";
 import { useJupiterApiContext } from "../views/trade/src/contexts";
 
 const WalletMultiButtonDynamic = dynamic(
@@ -42,8 +34,8 @@ const Header: FC<HeaderProps> = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
-  //const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
-  const {tokenList} = useJupiterApiContext();
+  const { tokenList } = useJupiterApiContext();
+  // const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
   const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
     undefined
   );
@@ -117,7 +109,7 @@ const Header: FC<HeaderProps> = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-between w-full px-3 py-3 mx-auto max-w-8xl lg:px-4 max-w-[1400px]">
+        <div className="flex items-center justify-between w-full px-3 py-3 mx-auto max-w-8xl lg:px-4">
           <div className="flex items-center">
             <div className="flex items-center justify-between">
               <Link href={routes.home} className="flex items-center gap-2 ">
@@ -171,10 +163,16 @@ const Header: FC<HeaderProps> = () => {
                         }}
                       >
                         <FallbackImage
-                          src={tkn.logoURI}
+                          unoptimized
+                          src={
+                            tkn.logoURI
+                              ? tkn.logoURI
+                              : "/images/No_Logo_Found_Guacamole-min.png"
+                          }
+                          alt="/images/No_Logo_Found_Guacamole-min.png"
                           width={30}
                           height={30}
-                          className=" rounded-full"
+                          className="rounded-full"
                         />
                         <div className="text-xs  flex flex-col gap-2">
                           <h1 className="font-medium">{tkn.symbol}</h1>
@@ -231,11 +229,21 @@ const Header: FC<HeaderProps> = () => {
                         // console.log("SEARCH", search);
                       }}
                     >
-                      <FallbackImage
+                      {/* <img
                         src={tkn.logoURI}
+                        className="h-[30px] w-[30px] rounded-full"
+                      /> */}
+                      <FallbackImage
+                        unoptimized
+                        src={
+                          tkn.logoURI
+                            ? tkn.logoURI
+                            : "/images/No_Logo_Found_Guacamole-min.png"
+                        }
+                        alt="/images/No_Logo_Found_Guacamole-min.png"
                         width={30}
                         height={30}
-                        className=" rounded-full"
+                        className="rounded-full"
                       />
                       <div className="text-xs  flex flex-col gap-2">
                         <h1 className="font-medium">{tkn.symbol}</h1>
@@ -266,24 +274,13 @@ const HeaderLeftArea = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const { tokenList } = useJupiterApiContext();
   const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
     undefined
   );
-  const getTokens = async () => {
-    const { data } = await axios.get("https://cache.jup.ag/tokens");
-    const response = data as TokenInfo[];
-    setTokenList(response);
-  };
-  const fetchTokens = useCallback(async () => {
-    await getTokens();
-  }, []);
 
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    fetchTokens();
-  }, []);
   return (
     <div className=" flex items-center gap-8 ">
       <Link href={routes.home} className="flex items-center gap-2 ">
@@ -331,11 +328,22 @@ const HeaderLeftArea = () => {
                   // console.log("SEARCH", search);
                 }}
               >
-                <FallbackImage
+                {/* <img
                   src={tkn.logoURI}
+                  className="h-[30px] w-[30px] rounded-full"
+                /> */}
+
+                <FallbackImage
+                  unoptimized
+                  src={
+                    tkn.logoURI
+                      ? tkn.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
+                  alt="/images/No_Logo_Found_Guacamole-min.png"
                   width={30}
                   height={30}
-                  className=" rounded-full"
+                  className="rounded-full"
                 />
                 <div className="text-xs  flex flex-col gap-2">
                   <h1 className="font-medium">{tkn.symbol}</h1>
@@ -358,26 +366,18 @@ function HeaderRightArea({
   openDrawer: () => void;
   closeDrawer: () => void;
 }) {
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const router = useRouter();
+  const [search, setSearch] = useState<string>("");
 
-  const getTokens = async () => {
-    const { data } = await axios.get("https://cache.jup.ag/tokens");
-    const response = data as TokenInfo[];
-    setTokenList(response);
-  };
-  const fetchTokens = useCallback(async () => {
-    await getTokens();
-  }, []);
+  const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
+    undefined
+  );
 
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    fetchTokens();
-  }, []);
   return (
     <div className="order-last flex shrink-0 items-center">
       <div className="hidden gap-6 lg:flex 2xl:gap-8">
-        {/* <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1">
           <div className="w-10 h-10 flex items-center justify-center">
             <Link
               href="https://discord.com/invite/MjdtaGXCVY"
@@ -458,38 +458,10 @@ function HeaderRightArea({
               />
             </svg>
           </Link>
-        </div> */}
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="41"
-              height="40"
-              viewBox="0 0 41 40"
-              fill="none"
-            >
-              <path
-                d="M20.3195 16C21.4195 16 22.3195 15.1 22.3195 14C22.3195 12.9 21.4195 12 20.3195 12C19.2195 12 18.3195 12.9 18.3195 14C18.3195 15.1 19.2195 16 20.3195 16ZM20.3195 18C19.2195 18 18.3195 18.9 18.3195 20C18.3195 21.1 19.2195 22 20.3195 22C21.4195 22 22.3195 21.1 22.3195 20C22.3195 18.9 21.4195 18 20.3195 18ZM20.3195 24C19.2195 24 18.3195 24.9 18.3195 26C18.3195 27.1 19.2195 28 20.3195 28C21.4195 28 22.3195 27.1 22.3195 26C22.3195 24.9 21.4195 24 20.3195 24Z"
-                fill="#A8A8A8"
-              />
-            </svg>
-            {/* <CiMenuKebab /> */}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <div className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
-          <Image width={18} height={18} alt="logo" src={"/images/logo.png"} />
-          <span className="text-muted-foreground text-xs">$0.063002</span>
         </div>
+
         <WalletMultiButtonDynamic
-          className={" text-black rounded-lg guac-btn "}
+          className={" text-black rounded-lg  "}
           style={{
             backgroundColor: "#8bd796",
           }}

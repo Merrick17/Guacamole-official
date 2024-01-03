@@ -1,9 +1,9 @@
-import routes from '@/config/routes';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FC } from 'react';
-import FallbackImage from '../FallBackImage';
+import routes from "@/config/routes";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { FC } from "react";
+import FallbackImage from "./FallbackImage";
 
 type ListItemProps = {
   title: string;
@@ -43,12 +43,12 @@ const ListItem: FC<ListItemProps> = ({
       aria-disabled={disabled}
       style={
         {
-          '--accent': accent,
+          "--accent": accent,
         } as React.CSSProperties
       }
       className={cn(
-        'w-full lg:max-w-[322px] flex flex-col gap-2  transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out',
-        disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+        "w-full lg:max-w-[322px] flex flex-col gap-2  transition-colors p-4 rounded-lg cursor-pointer bg-background  border border-transparent  duration-500 ease-in-out",
+        disabled && "opacity-50 cursor-not-allowed pointer-events-none",
         !disabled && ` hover:border-[var(--accent)]  hover:border`
       )}
     >

@@ -6,15 +6,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetTrendingTodayFull } from "@/hooks/use-get-trending-today";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import numeral from "numeral";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import { useJupiterApiContext } from "../trade/src/contexts";
 
 import useLocalStorageState from "use-local-storage-state";
+import FallbackImage from "@/components/common/FallbackImage";
 const WatchList = () => {
   const { tokenMap } = useJupiterApiContext();
   const [watchList, setWatchList, { isPersistent }] = useLocalStorageState(
@@ -58,24 +58,30 @@ const WatchList = () => {
             <TableCell className="font-medium">
               <div className="flex flex-row items-center  gap-2 lg:gap-5">
                 {watchList.find((tkn) => tkn.symbol == token.symbol) ? (
-                  <img
+                  <FallbackImage
                     src={"/icons/star_filled.svg"}
                     className="w-[20px] h-[20px]  cursor-pointer "
+                    width={20}
+                    height={20}
                     onClick={() => {
                       removeFromWatch(token);
                     }}
                   />
                 ) : (
-                  <img
+                  <FallbackImage
                     src={"/icons/star.svg"}
                     className="w-[20px] h-[20px]  cursor-pointer "
+                    width={20}
+                    height={20}
                     onClick={() => {
                       addToWatchList(token);
                     }}
                   />
                 )}
-                <img
+                <FallbackImage
                   src={tokenMap.get(token.mint)?.logoURI}
+                  width={20}
+                  height={20}
                   className="w-5 h-5 lg:w-10 lg:h-10 rounded-full "
                 />
 

@@ -1,9 +1,9 @@
-'use client';
-import Image from 'next/image';
-import React, { FC, useEffect } from 'react';
-import { Button } from '../ui/button';
-import Container from './container';
-import FallbackImage from '../FallBackImage';
+"use client";
+import Image from "next/image";
+import React, { FC, useEffect } from "react";
+import { Button } from "../ui/button";
+import Container from "./container";
+import FallbackImage from "./FallbackImage";
 
 type NftCardProps = {
   className?: string;
@@ -18,13 +18,13 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
       <div className="flex flex-col  items-center">
         <FallbackImage
           unoptimized
-          src={token ? token.logoURI : '/images/placeholder.png'}
-          alt={token ? token.name : ''}
+          src={token ? token.logoURI : "/images/placeholder.png"}
+          alt={token ? token.name : ""}
           className="rounded-xl w-[200px] h-[200px] "
           width={200}
           height={200}
         />
-        <p>{token ? token.name : ''}</p>
+        <p>{token ? token.name : ""}</p>
       </div>
       <div className="flex flex-row items-center justify-between">
         {SelectButton}
@@ -34,7 +34,7 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
         <Button
           size="sm"
           onClick={() => {
-            if (typeof window !== 'undefined' && token) {
+            if (typeof window !== "undefined" && token) {
               window.open(`https://solscan.io/address/${token.mint}`);
             }
           }}

@@ -89,7 +89,7 @@ export const SelectTraderAccounts: FC = () => {
         new PublicKey(mpgPubkey)
       );
       setTrgsArr(trgs);
-      console.log("TGRS", trgs.map((elm)=>elm.pubkey.toBase58()));
+      //console.log("TGRS", trgs.map((elm)=>elm.pubkey.toBase58()));
     } catch (error: any) {
       toast({
         variant: 'destructive',

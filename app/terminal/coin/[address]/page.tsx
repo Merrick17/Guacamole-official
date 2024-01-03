@@ -1,39 +1,32 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import CoinDetailsChart from "@/components/views/terminal/CoinDetailsCharts";
-import TokenInformation from "@/components/views/terminal/TokenInformation";
-import SolanaTvlRanking from "@/components/views/terminal/solana-tvl-ranking";
-import TopNftCollections from "@/components/views/terminal/top-nft-collections";
-import Trade from "@/components/views/trade/src/Trade";
-import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
-import TrendingSwap from "@/components/views/trade/trending-swap";
-import { useSelectedToken } from "@/context/coin-details";
-import { cn } from "@/lib/utils";
-import { TokenInfo } from "@solana/spl-token-registry";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
-import TerminalLayout from "../../terminal";
-import RiskSafety from "@/components/views/terminal/RiskSafety";
-import YieldInfo from "@/components/views/terminal/YieldInfos";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { CoinSelect } from "@/components/views/terminal/Coin-Select";
+import CoinDetailsChart from "@/components/views/terminal/CoinDetailsCharts";
+import RiskSafety from "@/components/views/terminal/RiskSafety";
+import TokenInformation from "@/components/views/terminal/TokenInformation";
+import YieldInfo from "@/components/views/terminal/YieldInfos";
+import Trade from "@/components/views/trade/src/Trade";
+import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
+import TrendingSwap from "@/components/views/trade/trending-swap";
+import { useSelectedToken } from "@/context/coin-details";
+import { cn } from "@/lib/utils";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { TokenInfo } from "@solana/spl-token-registry";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
+import TerminalLayout from "../../terminal";
 export default function CoinDetails() {
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [search, setSearch] = useState("");
-  const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
-    undefined
-  );
+
   const { selectedToken, poolDetails, selectToken } = useSelectedToken();
   const { tokenList } = useJupiterApiContext();
-  const inputRef = useRef(null);
+
   const router = useRouter();
 
   return (
@@ -48,7 +41,11 @@ export default function CoinDetails() {
             <div className="flex  flex-row items-center gap-3">
               {selectedToken && (
                 <img
-                  src={selectedToken.logoURI}
+                  src={
+                    selectedToken.logoURI
+                      ? selectedToken.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
                   alt="bitcoin"
                   className="w-10 h-10 rounded-full"
                 />

@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LiquidityAllocation from "./liquidity-allocation";
 import { Modal } from "../../play/Modal";
+import FallbackImage from "@/components/common/FallbackImage";
 interface IData {
   virtualPrice: number;
   tvl: number;
@@ -91,19 +92,8 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
         <p className="text-center text-muted-foreground">
           Dynamic {token ? token.symbol : ""} Lending Vault
         </p>
-        <p className="text-center   text-sm text-[#8BD796]">
-          {" "}
-          {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
-        </p>
       </div>
-      <Container className="w-full rounded-lg bg-background p-6  flex flex-row items-center justify-between relative overflow-hidden">
-        <Image
-          src="/images/earn/bg/earn.png"
-          width={250}
-          height={400}
-          alt="guac background"
-          className="-z-0 absolute sm:translate-x-[40%] right-0 rotate-[30deg] opacity-30  "
-        />
+      <Container className="w-full rounded-lg bg-background p-6  flex flex-row items-center justify-between">
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm">
             Your {token ? token.symbol : ""} Vault Deposits
@@ -121,9 +111,9 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
               : 0}
           </p>
         </div>
-        {/* <Button className="text-[#8BD796] bg-foreground font-medium px-4 py-2 rounded-lg">
+        <Button className="text-[#8BD796] bg-foreground font-medium px-4 py-2 rounded-lg">
           {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
-        </Button> */}
+        </Button>
       </Container>
       <Form {...form}>
         <form
@@ -138,11 +128,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className={`w-full ${
-                        form.watch("depositOrWithdraw") === true
-                          ? "earn-bg"
-                          : ""
-                      }`}
+                      className="w-full"
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("depositOrWithdraw", true)}
@@ -165,11 +151,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className={`w-full ${
-                        form.watch("depositOrWithdraw") === false
-                          ? "earn-bg"
-                          : ""
-                      }`}
+                      className="w-full"
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("depositOrWithdraw", false)}
@@ -194,8 +176,12 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
 
               <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
                 {token && (
-                  <Image
-                    src={token.logoURI}
+                  <FallbackImage
+                    src={
+                      token && token.logoURI
+                        ? token.logoURI
+                        : "/images/No_Logo_Found_Guacamole-min.png"
+                    }
                     width={32}
                     height={32}
                     alt="solana"
@@ -229,8 +215,8 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                   )}
                 />
               </div>
-              <Button size="lg" type="submit" className="guac-bg">
-                {`Deposit ${token?.symbol} to Vault`}
+              <Button size="lg" type="submit">
+                Deposit
               </Button>
             </>
           ) : (
@@ -240,8 +226,12 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
               </header>
               <form className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
                 {token && (
-                  <Image
-                    src={token.logoURI}
+                  <FallbackImage
+                    src={
+                      token && token.logoURI
+                        ? token.logoURI
+                        : "/images/No_Logo_Found_Guacamole-min.png"
+                    }
                     width={32}
                     height={32}
                     alt="solana"
@@ -277,12 +267,8 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
                   )}
                 />
               </form>
-              <Button
-                size="lg"
-                disabled={uiState.userLPBalance == 0}
-                className="guac-bg"
-              >
-                {`Withdraw ${token?.symbol} from Vault`}
+              <Button size="lg" disabled={uiState.userLPBalance == 0}>
+                Withdraw
               </Button>
             </>
           )}
@@ -299,7 +285,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
       <div className="p-6 w-full">
         <Button
           size="lg"
-          className="w-full border-[rgba(168, 168, 168, 0.10)] border-2"
+          className="w-full"
           variant="secondary"
           onClick={() => {
             setShowDetails(true);

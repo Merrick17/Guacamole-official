@@ -10,8 +10,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import useLockerTools from "@/hooks/use-locker";
-import { usePool } from "@/hooks/use-pool-list";
+
+import { PoolExtended, usePool } from "@/hooks/use-pool-list";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { PublicKey } from "@solana/web3.js";
 
@@ -19,6 +19,7 @@ import { useTokenAccounts } from "@bonfida/hooks";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useJupiterApiContext } from "../trade/src/contexts";
+import { useLockerTools } from "@/context/locker.context";
 interface LockerInputProps {
   handleStepChange: (nbr: number) => void;
 }
@@ -27,15 +28,24 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const { tokenList } = useJupiterApiContext();
   const [mintAdr, setMintAdr] = useState("");
 
-  const { initNewVault, getAllVaults } = useLockerTools();
-  const { poolList, setSelectedPool, selectedPool, getPoolByLpMint } =
-    usePool();
+  const { initNewVault, getAllVaults, getLocksByMint } = useLockerTools();
+  const {
+    poolList,
+    setSelectedPool,
+    selectedPool,
+    getPoolByLpMint,
+    setSelectedMintAdr,
+  } = usePool();
+  const [poolToUser, setPoolToUse] = useState<PoolExtended | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
   const [tokenBalance, setTokenBalance] = useState<number | null>(null);
   const { connection } = useConnection();
   const { publicKey } = useWallet();
+  // const publicKey = new PublicKey(
+  //   "CWYZmzEKefx3QwPG4VUyJycwruoYd3YvrVVXQSfQt9Dp"
+  // );
   const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
     connection,
     publicKey
@@ -53,7 +63,9 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const handleCreateVault = async () => {
     // console.log("POol list", poolList);
     const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
+
     if (poolFound) {
+      setSelectedMintAdr(mintAdr);
       setSelectedPool(poolFound);
       const resp = await initNewVault(
         new PublicKey(poolFound.lpMint),
@@ -67,14 +79,17 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   };
   const getUserInfo = async () => {
     const poolFound = await getPoolByLpMint(mintAdr.replace(/\s/g, ""));
+
     if (poolFound) {
+      setPoolToUse(poolFound);
       const base = poolFound.baseMint;
       const quote = poolFound.quoteMint;
       setBaseToken(base);
       setQuoteToken(quote);
-      const tokenAccount = tokenAccounts
-        ? tokenAccounts?.getByMint(new PublicKey(poolFound?.lpMint))
-        : null;
+      const tokenAccount =
+        tokenAccounts && poolFound && poolFound.lpMint
+          ? tokenAccounts?.getByMint(new PublicKey(poolFound?.lpMint))
+          : null;
       const balance =
         tokenAccount && tokenAccount.decimals
           ? Number(tokenAccount.account.amount) /
@@ -126,11 +141,19 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <img
-                src={baseToken.logoURI}
+                src={
+                  baseToken && baseToken.logoURI
+                    ? baseToken.logoURI
+                    : "/images/No_Logo_Found_Guacamole-min.png"
+                }
                 className="h-[30px] w-[30px] rounded-full"
               />
               <img
-                src={quoteToken.logoURI}
+                src={
+                  quoteToken && quoteToken.logoURI
+                    ? quoteToken.logoURI
+                    : "/images/No_Logo_Found_Guacamole-min.png"
+                }
                 className="h-[30px] w-[30px] rounded-full"
               />
               <span className="text-[#FFF] text-sm">
@@ -149,20 +172,14 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
           <Button
             className="bg-primary rounded-lg h-[50px] w-full mt-3"
             disabled={mintAdr == "" || tokenBalance == 0}
-            onClick={() => {
-              const vault = lockerList.find(
-                (elm) =>
-                  elm.account.mint.toBase58() == mintAdr.replace(/\s/g, "")
-              );
+            onClick={async () => {
+              const vault = await getLocksByMint(mintAdr.replace(/\s/g, ""));
 
               if (!vault) {
                 setIsCreateOpen(true);
               } else {
-                const selectedPool = poolList.find(
-                  (elm) => elm.lpMint == mintAdr.replace(/\s/g, "")
-                );
-
-                setSelectedPool(selectedPool);
+                setSelectedMintAdr(mintAdr);
+                setSelectedPool(poolToUser);
                 handleStepChange(2);
               }
             }}

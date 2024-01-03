@@ -1,9 +1,9 @@
-import { Metaplex, TokenMetadataGpaBuilder } from "@metaplex-foundation/js";
-import { TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
+import { Metaplex } from "@metaplex-foundation/js";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 const { get } = require("lodash");
 const connection = new Connection(
-  "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7"
+  "https://radial-delicate-layer.solana-mainnet.discover.quiknode.pro/124d30642a313843475e1ac3f67e59d11d55d943"
 );
 const getTokenOwners = async (address, decimals) => {
   const filters = [

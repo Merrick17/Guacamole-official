@@ -1,5 +1,5 @@
 // "use client";
-// import { Configuration, DefaultApi, createJupiterApiClient } from "@jup-ag/api";
+// import { DefaultApi, createJupiterApiClient } from "@jup-ag/api";
 // import { TokenInfo } from "@solana/spl-token-registry";
 // import axios from "axios";
 // import React, { useContext, useEffect, useMemo, useState } from "react";
@@ -19,7 +19,9 @@
 
 // const getTokens = async () => {
 //   const { data } = await axios.get("https://token.jup.ag/all");
-//   return data as TokenInfo[];
+//   return (data as TokenInfo[]).filter(
+//     (elm) => elm.logoURI !== null && elm.logoURI !== undefined
+//   );
 // };
 
 // const getTopTokens = async () => {
@@ -95,18 +97,31 @@
 
 //   return context;
 // };
+"use client";
 import React, { useContext, useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { createJupiterApiClient, DefaultApi } from "@jup-ag/api";
-import { TokenInfo } from "@solana/spl-token-registry";
+import {
+  ENV as ChainID,
+  TokenInfo,
+  TokenListContainer,
+} from "@solana/spl-token-registry";
+import { useConnection } from "@solana/wallet-adapter-react";
 
 type RouteMap = Map<string, string[]>;
-
+export type ENV = "mainnet-beta" | "testnet" | "devnet" | "localnet";
+export const CLUSTER_TO_CHAIN_ID: Record<ENV, ChainID> = {
+  "mainnet-beta": ChainID.MainnetBeta,
+  testnet: ChainID.Testnet,
+  devnet: ChainID.Devnet,
+  localnet: ChainID.Devnet,
+};
+export type PreferredTokenListMode = "all" | "strict";
 interface JupiterApiContext {
   api: DefaultApi;
   loaded: boolean;
   tokenMap: Map<string, TokenInfo>;
-  routeMap: RouteMap;
+  routeMap?: RouteMap;
   tokenList: TokenInfo[];
   allTokens: TokenInfo[];
 }
@@ -115,71 +130,109 @@ const JupiterApiContext = React.createContext<JupiterApiContext | null>(null);
 
 const getTokens = async () => {
   const { data } = await axios.get("https://token.jup.ag/all");
-  return data.filter((elm: TokenInfo) => elm.logoURI);
+  return data.filter(
+    (elm: TokenInfo) => elm.logoURI && !elm.logoURI.includes("file:/")
+  );
 };
 
 const getTopTokens = async () => {
   const { data } = await axios.get("https://cache.jup.ag/top-tokens");
   return data;
 };
+const fetchAllMints = async (
+  env: ENV,
+  preferredTokenListMode: PreferredTokenListMode
+) => {
+  const tokens = await (preferredTokenListMode === "strict"
+    ? await fetch("https://token.jup.ag/strict")
+    : await fetch("https://token.jup.ag/all")
+  ).json();
+  const res = new TokenListContainer(tokens);
+  const list = res.filterByChainId(CLUSTER_TO_CHAIN_ID[env]).getList();
 
+  return list.reduce((acc, item) => {
+    acc.set(item.address, item);
+    return acc;
+  }, new Map());
+};
 export const JupiterApiProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [tokenMap, setTokenMap] = useState<Map<string, TokenInfo>>(new Map());
-  const [routeMap, setRouteMap] = useState<RouteMap>(new Map());
-  const [loaded, setLoaded] = useState(false);
+  // const [tokenMap, setTokenMap] = useState<Map<string, TokenInfo>>(new Map());
+  // const [routeMap, setRouteMap] = useState<RouteMap>(new Map());
+  // const [loaded, setLoaded] = useState(false);
   const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
   const [allTokens, setAllTokens] = useState<TokenInfo[]>([]);
 
   const api = useMemo(() => createJupiterApiClient(), []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const [tokens, topTokens, indexedRouteMapResult] = await Promise.all([
+  //         getTokens(),
+  //         getTopTokens(),
+  //         api.indexedRouteMapGet(),
+  //       ]);
+
+  //       // Filter tokens based on topTokens if necessary
+  //       const filteredTokens = tokens; // Implement any additional filtering logic here
+
+  //       setTokenList(filteredTokens);
+  //       setAllTokens(filteredTokens);
+
+  //       const routeMap = new Map<string, string[]>();
+  //       Object.entries(indexedRouteMapResult.indexedRouteMap || {}).forEach(
+  //         ([key, value]) => {
+  //           routeMap.set(
+  //             indexedRouteMapResult.mintKeys[Number(key)],
+  //             value.map((index) => indexedRouteMapResult.mintKeys[index])
+  //           );
+  //         }
+  //       );
+
+  //       setTokenMap(
+  //         filteredTokens.reduce((map, item) => {
+  //           map.set(item.address, item);
+  //           return map;
+  //         }, new Map())
+  //       );
+
+  //       setRouteMap(routeMap);
+  //       setLoaded(true);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       // Handle error state here, e.g., setting an error state, retrying, etc.
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [api]);
+  const { connection } = useConnection();
+  const defaultPreferredTokenListMode = "all";
+  const [preferredTokenListMode, setPreferredTokenListMode] =
+    useState<PreferredTokenListMode>(defaultPreferredTokenListMode);
+
+  const [{ tokenMap, loaded }, setState] = useState({
+    loaded: false,
+    tokenMap: new Map<string, TokenInfo>(),
+  });
+  const cluster = "mainnet-beta";
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [tokens, topTokens, indexedRouteMapResult] = await Promise.all([
-          getTokens(),
-          getTopTokens(),
-          api.indexedRouteMapGet(),
-        ]);
-
-        // Filter tokens based on topTokens if necessary
-        const filteredTokens = tokens; // Implement any additional filtering logic here
-
-        setTokenList(filteredTokens);
-        setAllTokens(filteredTokens);
-
-        const routeMap = new Map<string, string[]>();
-        Object.entries(indexedRouteMapResult.indexedRouteMap || {}).forEach(
-          ([key, value]) => {
-            routeMap.set(
-              indexedRouteMapResult.mintKeys[Number(key)],
-              value.map((index) => indexedRouteMapResult.mintKeys[index])
-            );
-          }
-        );
-
-        setTokenMap(
-          filteredTokens.reduce((map, item) => {
-            map.set(item.address, item);
-            return map;
-          }, new Map())
-        );
-
-        setRouteMap(routeMap);
-        setLoaded(true);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        // Handle error state here, e.g., setting an error state, retrying, etc.
-      }
-    };
-
-    fetchData();
-  }, [api]);
+    fetchAllMints(cluster, preferredTokenListMode).then(async (tokenMap) => {
+      setTokenList([...tokenMap.values()]);
+      setAllTokens([...tokenMap.values()]);
+      setState({
+        loaded: true,
+        tokenMap,
+      });
+    });
+  }, [connection, preferredTokenListMode]);
 
   return (
     <JupiterApiContext.Provider
-      value={{ api, loaded, tokenMap, routeMap, tokenList, allTokens }}
+      value={{ api, loaded, tokenMap, tokenList, allTokens }}
     >
       {children}
     </JupiterApiContext.Provider>

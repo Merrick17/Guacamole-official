@@ -3,16 +3,17 @@ import routes from "@/config/routes";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Metaplex } from "@metaplex-foundation/js";
+import { TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BiLinkExternal, BiSolidLeftArrow } from "react-icons/bi";
 import { Skeleton } from "./skeleton";
-import { TokenInfo } from "@solana/spl-token-registry";
+import FallbackImage from "../common/FallbackImage";
+import { useJupiterApiContext } from "../views/trade/src/contexts";
 interface CustomTokenInfo {
   balance: number;
   balanceInUSD: number;
@@ -29,21 +30,22 @@ const WalletDrawer = () => {
   const { toast } = useToast();
   const { connection } = useConnection();
   const { connected, publicKey } = useWallet();
-  const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
+  const { tokenList } = useJupiterApiContext();
+  //const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
   const metaplex = new Metaplex(connection);
-  const fetchTokenList = useCallback(async () => {
-    try {
-      const { data } = await axios.get("https://token.jup.ag/all");
-     
-      setTokenList(data);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  }, []);
+  // const fetchTokenList = useCallback(async () => {
+  //   try {
+  //     const { data } = await axios.get("https://token.jup.ag/all");
+
+  //     setTokenList(data);
+  //   } catch (error) {
+  //     console.error("Error fetching data: ", error);
+  //   }
+  // }, []);
   const [tokenData, setTokenData] = useState([]); // Store token data including USD values
 
   useEffect(() => {
-    fetchTokenList();
+   
     const getUserTokens = async () => {
       if (publicKey && connected) {
         const { data } = await axios.post(
@@ -58,7 +60,7 @@ const WalletDrawer = () => {
             },
           }
         );
-        console.log("Resp Tokens", data.result.items);
+
         const tokenInfo = data.result.items.map(async (tkn) => {
           const balance =
             tkn.content && tkn.token_info ? tkn.token_info.balance : 0;
@@ -269,10 +271,12 @@ const Row = ({ token }: { token: CustomTokenInfo }) => {
         )
       }
     >
-      <img
+      <FallbackImage
         src={token.logoURI as string}
         alt={token.name}
-        className="h-[24px] w-[24px] "
+        width={24}
+        height={24}
+        unoptimized
       />
       <div className="w-full">
         <div className=" flex flex-row items-center justify-between gap-4 ">

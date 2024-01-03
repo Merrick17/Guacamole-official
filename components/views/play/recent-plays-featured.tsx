@@ -19,7 +19,7 @@ interface RecentPlaysFeaturedProps {
 
 const RecentPlaysFeatured: FC<RecentPlaysFeaturedProps> = ({ className }) => {
   return (
-    <JupiterApiProvider>
+    <>
       <Container
         className={cn(
           'flex flex-col max-h-[560px] bg-foreground  gap-5 overflow-y-auto  ',
@@ -41,7 +41,7 @@ const RecentPlaysFeatured: FC<RecentPlaysFeaturedProps> = ({ className }) => {
           <RecentPlays className="p-0" />
         </div>
       </Container>
-    </JupiterApiProvider>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
-import useLockerTools from "@/hooks/use-locker";
+
+import { useLockerTools } from "@/context/locker.context";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";

@@ -6,6 +6,7 @@ import { TokenInfo } from "@solana/spl-token-registry";
 import axios from "axios";
 import { convert } from "@/lib/numbers";
 import { Loader } from "@/components/games/Roulette/trash.styles";
+import FallbackImage from "@/components/common/FallbackImage";
 
 const data = [
   {
@@ -56,11 +57,17 @@ const CoinChart: FC<CoinChartProps> = ({ coinMint }) => {
     getSellAndBuy(coin);
   }, [coin]);
   return (
-    <Container className="bg-foreground bg-background flex flex-col gap-10">
+    <Container className="bg-foreground  flex flex-col gap-10">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="bg-foreground p-2 rounded-lg">
-            <img src={coin.logoURI} className="w-6 h-6" alt="logo" />
+            <FallbackImage
+              src={coin.logoURI}
+              className="w-6 h-6"
+              alt="logo"
+              width={24}
+              height={24}
+            />
           </div>
           <h1 className="text-lg font-semibold">{coin.symbol}</h1>
         </div>

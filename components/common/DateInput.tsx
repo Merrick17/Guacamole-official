@@ -33,7 +33,7 @@ const DateInput: React.FC<DateInputProps> = ({
         >
          
           {selectedDate ? (
-            format(selectedDate, "PPP")
+            format(selectedDate, "MMMM d, yyyy, h:mm a")
           ) : (
             <span>Pick a date</span>
           )}

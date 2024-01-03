@@ -54,12 +54,11 @@ const Perceptual = () => {
       signAllTransactions,
     };
     console.log({ DexWallet });
-    const rpc =
-      "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
+   const rpc ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7"
     //const rpc ="https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
     //clusterApiUrl(network)
     const manifest = await dexterity.getManifest(rpc, true, DexWallet);
-
+    console.log("Manifest: ", manifest);
     setManifest(manifest);
   }, [publicKey]);
 
@@ -106,10 +105,12 @@ const Perceptual = () => {
         for (const [productName, obj] of dexterity.Manifest.GetProductsOfMPG(
           trader.mpg
         )) {
-          if (!productName.includes("OPOS0D")) {
+          if (!productName.includes('OPOS0D')) {
+
             if (!ProductMap.get(productName.trim())) {
               continue;
             }
+
           }
           const { index: productIndex, product } = obj;
           const meta = dexterity.productToMeta(product);
@@ -130,6 +131,7 @@ const Perceptual = () => {
         }
         setMarkPrice(productMarkArray);
         setIndexPrice(productIndexArray);
+        console.log({productMarkArray, productIndexArray})
       } catch (error) {
         console.error("Error updating prices:", error);
       }
@@ -143,12 +145,13 @@ const Perceptual = () => {
       for (const [productName, obj] of dexterity.Manifest.GetProductsOfMPG(
         trader.mpg
       )) {
-        if (!productName.includes("OPOS0D")) {
+
+        if (!productName.includes('OPOS0D')){
           if (!ProductMap.get(productName.trim())) {
             continue;
           }
         }
-
+        
         const { index: productIndex, product } = obj;
 
         await manifest.updateCovarianceMetadatas();
@@ -194,24 +197,24 @@ const Perceptual = () => {
             )}
           >
             <div className="w-full bg-foreground grid  z-20  grid-cols-1 lg:grid-cols-12 gap-[10px] px-5 py-7">
-              <div className="col-span-1 lg:col-span-4 ">
-                <PerceptualForm />
-              </div>
               <div className="flex flex-1 justify-center col-span-1 lg:col-span-8">
                 <TVChartContainer productSelect={"SOLUSD-PERP"} />
+              </div>
+              <div className="col-span-1 lg:col-span-4 ">
+                <PerceptualForm />
               </div>
             </div>
             {connected && trader && (
               <>
                 <div className="w-full bg-foreground grid  z-20  grid-cols-1 lg:grid-cols-12 gap-[10px] px-5 py-7">
-                  <div className="col-span-1 lg:col-span-4 ">
-                    <SelectTradingAccount />
+                  <div className="flex flex-1 justify-center  col-span-1  lg:col-span-4">
+                    <PerceptualTable />
                   </div>
                   <div className="col-span-1 lg:col-span-4 ">
                     <TableDetails />
                   </div>
-                  <div className="flex flex-1 justify-center  col-span-1  lg:col-span-4">
-                    <PerceptualTable />
+                  <div className="col-span-1 lg:col-span-4 ">
+                    <SelectTradingAccount />
                   </div>
                 </div>
               </>

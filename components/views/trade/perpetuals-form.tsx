@@ -42,6 +42,7 @@ import Link from "next/link";
 import { Product, ProductMap } from "./perpetual-constants";
 import useWalletTokens from "@/lib/tokens/useWalletTokens";
 import { useRouter } from "next/navigation";
+import FallbackImage from "@/components/common/FallbackImage";
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -378,7 +379,9 @@ const PerpetualsForm = () => {
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-5">
                           <div className="w-5 h-5 shrink-0">
-                            <img
+                            <FallbackImage
+                              width={20}
+                              height={20}
                               src={product.baseLogo}
                               alt={product.base}
                               className="w-5 h-5"

@@ -8,12 +8,6 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-interface MarketData {
-  name: string;
-  data: [number, number, number][];
-  color: string;
-}
-
 const MarketPulseChart = ({ selection }: { selection: string }) => {
   const [options, setOptions] = useState<any>({
     chart: {
@@ -145,7 +139,8 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
     });
     return percentagePrices;
   };
-  const initChartData = async () => {
+
+  const fetchChartData = async () => {
     try {
       let data = await getTrendingTokensCharts(convertParams(selection));
 
@@ -189,9 +184,8 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
     } catch (error) {}
   };
   useEffect(() => {
-    initChartData();
+    fetchChartData();
   }, [selection]);
-
   return (
     <>
       <div id="chart-timeline" className="bg-[#0F0F0F] rounded-xl ">
@@ -212,8 +206,8 @@ const MarketPulseChart = ({ selection }: { selection: string }) => {
         />
       </div>
       <div className="bg-[#0F0F0F] w-max flex p-2 mx-auto sm:w-full max-sm:w-[100%] max-sm:flex-wrap items-center gap-4 rounded-lg">
-        {marketInfo.map((elm) => (
-          <div className="flex w-full justify-center items-center">
+        {marketInfo.map((elm,ind) => (
+          <div className="flex w-full justify-center items-center" key={ind.toString()}>
             <div
               style={{
                 backgroundColor: elm.color,

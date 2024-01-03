@@ -8,7 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import useLockerTools from "@/hooks/use-locker";
+import { useJupiterApiContext } from "@/components/views/trade/src/contexts";
+
 import { usePool } from "@/hooks/use-pool-list";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -22,7 +23,9 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-
+import Image from "next/image";
+import FallbackImage from "@/components/common/FallbackImage";
+import { useLockerTools } from "@/context/locker.context";
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 const Page = () => {
@@ -33,7 +36,7 @@ const Page = () => {
   const [selectedPool, setSelectedPool] = useState<any>(null);
   const { publicKey } = useWallet();
   const { connection } = useConnection();
-
+  const { tokenList, tokenMap } = useJupiterApiContext();
   const [baseToken, setBaseToken] = useState<TokenInfo | null>(null);
   const [quoteToken, setQuoteToken] = useState<TokenInfo | null>(null);
   const [lock, setLock] = useState(null);
@@ -60,7 +63,7 @@ const Page = () => {
   const fetchPoolData = useCallback(async () => {
     const adr = params["address"] as string;
 
-    if (poolList.length !== 0 && adr !== "") {
+    if ( adr !== "") {
       setPoolAdr(adr);
       const locker = await getLockerByAdr(adr);
 
@@ -152,15 +155,31 @@ const Page = () => {
             </span>
             <div className="flex justify-start items-center">
               {baseToken && (
-                <img
-                  src={baseToken.logoURI}
-                  className="h-[30px] w-[30px] rounded-full object-contain"
+                <FallbackImage
+                  src={
+                    baseToken.logoURI
+                      ? baseToken.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
+                  className="rounded-full object-contain"
+                  unoptimized
+                  width={30}
+                  height={30}
+                  alt={baseToken.logoURI}
                 />
               )}
               {quoteToken && (
-                <img
-                  src={quoteToken.logoURI}
-                  className="h-[30px] w-[30px] rounded-full object-contain"
+                <FallbackImage
+                  src={
+                    quoteToken.logoURI
+                      ? quoteToken.logoURI
+                      : "/images/No_Logo_Found_Guacamole-min.png"
+                  }
+                  className="rounded-full object-contain"
+                  unoptimized
+                  width={30}
+                  height={30}
+                  alt={quoteToken.name}
                 />
               )}
               {baseToken && quoteToken && (

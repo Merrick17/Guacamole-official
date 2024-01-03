@@ -49,13 +49,13 @@ const LiquidityStackingForm = () => {
   };
   useEffect(() => {
     if (connected && publicKey) {
-     
+      console.log("Wallet tokens", walletTokens);
       const msSol = walletTokens.find(
         (elm) =>
           elm.account.mint.toBase58() ==
           "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
       );
-     
+      //console.log("MsOL", msSol);
       setMSolData(msSol);
       fetchSolBalance();
     }
@@ -169,9 +169,7 @@ const LiquidityStackingForm = () => {
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className={`${
-                        form.watch("stake") === true ? "earn-bg" : ""
-                      } w-full`}
+                      className="w-full"
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("stake", true)}
@@ -192,9 +190,7 @@ const LiquidityStackingForm = () => {
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className={`${
-                        form.watch("stake") === false ? "earn-bg" : ""
-                      } w-full`}
+                      className="w-full"
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("stake", false)}
@@ -264,7 +260,7 @@ const LiquidityStackingForm = () => {
               )}
             />
           </div>
-          <Button type="submit" className="earn-bg">
+          <Button type="submit">
             {form.watch("stake") === true ? "Stake" : "Unstake"} SOL for mSOL
           </Button>
           <div className="flex items-center justify-between text-muted-foreground text-sm">

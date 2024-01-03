@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect } from "react";
 import Container from "./container";
+import FallbackImage from "./FallbackImage";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -33,7 +34,7 @@ const InfoCard: FC<InfoCardProps> = ({
   disabled = false,
   target,
 }) => {
-  console.log("Border",name)
+  //console.log("Border",name)
   return (
     <Container
       className={`p-6 rounded-lg max-w-xs bg-foreground  border border-transparent  ${
@@ -42,7 +43,7 @@ const InfoCard: FC<InfoCardProps> = ({
     >
       <div className="relative aspect-square w-7 h-7 mb-3">
         {image !== "" ? (
-          <Image src={image} alt={name} fill />
+          <FallbackImage src={image} alt={name} fill />
         ) : (
           <svg
             width="28"

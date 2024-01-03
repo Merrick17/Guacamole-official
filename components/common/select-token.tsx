@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,10 +6,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
-import useWalletTokens from '@/lib/tokens/useWalletTokens';
-import { useWallet } from '@solana/wallet-adapter-react';
+} from "@/components/ui/dialog";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import useWalletTokens from "@/lib/tokens/useWalletTokens";
+import { useWallet } from "@solana/wallet-adapter-react";
+import Image from "next/image";
+import FallbackImage from "./FallbackImage";
 const Row = ({
   info,
   handleSelect,
@@ -28,10 +30,12 @@ const Row = ({
       className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background border border-transparent hover:border-primary transition-all duration-500 ease-in-out "
     >
       {info && info.token && (
-        <img
+        <FallbackImage
           src={info.token.logoURI as string}
           alt={info.token.name}
-          className="h-[24px] w-[24px] "
+          width={24}
+          height={24}
+          unoptimized
         />
       )}
       <div className=" flex flex-col items-start  ">
@@ -64,7 +68,7 @@ export const SelectToken = ({
           <p className=" font-medium text-sm">
             {selectedToken
               ? selectedToken.token.name
-              : 'Select token from dropdown'}
+              : "Select token from dropdown"}
           </p>
         </div>
       </DialogTrigger>
@@ -98,7 +102,7 @@ export const SelectToken = ({
                   )
               )}
             </div>
-          )}{' '}
+          )}{" "}
         </div>
       </DialogContent>
     </Dialog>
