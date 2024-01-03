@@ -292,7 +292,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
         //     computeUnitPriceMicroLamports: 1000,
         //   },
         // });
-        console.log("feeAccount", feeAccount.toBase58());
+        //console.log("feeAccount", feeAccount.toBase58());
         const { swapTransaction } = await api.swapPost({
           swapRequest: {
             quoteResponse: swapQuote,

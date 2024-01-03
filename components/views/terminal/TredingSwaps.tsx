@@ -118,7 +118,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = React.memo(({ className }) => {
             )}
           </div>
         )} */}
-        <div className=" flex flex-col  gap-5 overflow-y-auto no-scrollbar">
+        <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
           {loading ? (
             Array.from({ length: 10 }).map((_, i) => (
               <Skeleton key={i} className="w-full min-h-[92px]" />
