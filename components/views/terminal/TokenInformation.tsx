@@ -318,7 +318,7 @@ const TokenInformation = ({ className }) => {
 
   const fetchPrice = useCallback(async () => {
     if (selectedToken) {
-      console.log("Selected Token", selectedToken);
+      //console.log("Selected Token", selectedToken);
       try {
         const response = await axios.get(
           `https://price.jup.ag/v4/price?ids=${selectedToken.symbol}`
@@ -414,7 +414,7 @@ const TokenInformation = ({ className }) => {
               className="text-xs flex items-center text-primary  rounded-[4px] px-2 py-[2px] "
             >
               <span className=" max-w-full  lg:max-w-[44px] text-ellipsis overflow-hidden">
-                {!isLoading && data.report.creator
+                {!isLoading && data && data.report.creator
                   ? abbreviate(data.report.creator.account)
                   : "-"}
               </span>
@@ -457,13 +457,13 @@ const TokenInformation = ({ className }) => {
             </div>
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
               $
-              {!isLoading && currentMarketPrice != 0
+              {!isLoading && currentMarketPrice != 0 && data
                 ? numeral(
                     (data["_mint"].Supply /
                       Math.pow(10, data["_mint"].Decimals)) *
                       currentMarketPrice
                   ).format("0,0")
-                : 0}
+                : "N/A"}
             </div>
           </div>
         ) : (
@@ -475,7 +475,7 @@ const TokenInformation = ({ className }) => {
               Holders
             </div>
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              {tokenInfo ? tokenInfo.holders.length : 0}
+              {tokenInfo ? tokenInfo.holders.length : "N/A"}
             </div>
           </div>
         ) : (
@@ -484,7 +484,7 @@ const TokenInformation = ({ className }) => {
       </div>
       <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
         <h1 className="text-[12px] text-[#FCFCFC] mb-2">Market Information</h1>
-        {!isLoading ? (
+        {!isLoading && data && data.report ? (
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
               Tracked Markets
@@ -543,7 +543,7 @@ const TokenInformation = ({ className }) => {
               24H Buy Volume
             </div>
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              ${topBuy ? numeral(topBuy.amount).format("0,0.000") : 0}
+              ${topBuy ? numeral(topBuy.amount).format("0,0.000") : "N/A"}
             </div>
           </div>
         ) : (
@@ -555,7 +555,7 @@ const TokenInformation = ({ className }) => {
               24H Sell Volume
             </div>
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              ${topSell ? numeral(topSell.amount).format("0,0.000") : 0}
+              ${topSell ? numeral(topSell.amount).format("0,0.000") : "N/A"}
             </div>
           </div>
         ) : (
