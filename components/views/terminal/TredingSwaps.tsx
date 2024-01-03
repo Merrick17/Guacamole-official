@@ -16,6 +16,7 @@ import Link from "next/link";
 import React from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import { useJupiterApiContext } from "../trade/src/contexts";
+import FallbackImage from "@/components/common/FallbackImage";
 interface TrendingSwapsProps {
   className?: string;
 }
@@ -180,15 +181,18 @@ const TrendingItem: FC<TrendingItemProps> = ({
   }, [token]);
 
   return (
-    <div className="p-5 flex flex-row justify-between items-center rounded-lg bg-background  hover:border-[var(--accent)]  hover:border">
+    <div className="hover:border-2 px-3 py-[10px] rounded-[8px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full cursor-pointer">
       <div className="flex flex-row items-center  gap-2 lg:gap-5">
-        <img
+        <FallbackImage
           src={
             token && token.logoURI
               ? token.logoURI
               : "/images/No_Logo_Found_Guacamole-min.png"
           }
-          className="w-5 h-5 lg:w-10 lg:h-10 rounded-full hidden"
+          className="w-9 h-9 rounded-full hidden"
+          unoptimized
+          width={26}
+          height={26}
           alt="logo"
           onLoad={(e) => {
             setLoading(false);
@@ -201,7 +205,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
 
         <div className="flex flex-col gap-1 ">
           <div className="flex items-center gap-1 lg:gap-2">
-            <p className="uppercase text-xs lg:text-sm">{symbol}</p>
+            <p className="uppercase text-[12px]">{symbol}</p>
             <div className="text-xs flex items-center bg-foreground text-primary  rounded-sm px-2 py-1 ">
               <Link
                 href={`https://explorer.solana.com/address/${mint}`}
@@ -216,7 +220,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
               </Link>
             </div>
           </div>
-          <p className=" text-xs lg:text-base max-w-[80px]  lg:max-w-full text-muted-foreground text-ellipsis overflow-hidden">
+          <p className=" text-xs  max-w-[80px]  lg:max-w-full text-muted-foreground text-ellipsis overflow-hidden">
             {"$" + convert(marketPrice)}
           </p>
         </div>

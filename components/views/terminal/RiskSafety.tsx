@@ -74,7 +74,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               Safety Score
             </div>
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-              {!isLoading ? data["score"] : 0}
+              {!isLoading && data ? data["score"] : 0}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -83,12 +83,14 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             </div>
             <div
               className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data["_mint"]["MintAuthority"]
+                !isLoading && data && data["_mint"]["MintAuthority"]
                   ? " text-[#8BD796]"
                   : "text-[#FF8F8F]"
               }`}
             >
-              {!isLoading && data["_mint"]["MintAuthority"] ? "Yes" : "No"}
+              {!isLoading && data && data["_mint"]["MintAuthority"]
+                ? "Yes"
+                : "No"}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -97,12 +99,12 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             </div>
             <div
               className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data["_mint"]["MintAuthority"]
+                !isLoading && data && data["_mint"]["MintAuthority"]
                   ? " text-[#8BD796]"
                   : "text-[#FF8F8F]"
               }`}
             >
-              {!isLoading && data["_mint"]["MintAuthority"]
+              {!isLoading && data && data["_mint"]["MintAuthority"]
                 ? abbreviate(data["_mint"]["MintAuthority"])
                 : "-"}
             </div>
@@ -113,12 +115,14 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             </div>
             <div
               className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data.report["metadata"]["mutable"]
+                !isLoading && data && data.report["metadata"]["mutable"]
                   ? "text-[#FF8F8F]"
                   : "text-[#8BD796]"
               }`}
             >
-              {!isLoading && data.report["metadata"]["mutable"] ? "Yes" : "No"}
+              {!isLoading && data && data.report["metadata"]["mutable"]
+                ? "Yes"
+                : "No"}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -127,12 +131,14 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             </div>
             <div
               className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data["_mint"]["FreezeAuthority"]
+                !isLoading && data && data["_mint"]["FreezeAuthority"]
                   ? " text-[#8BD796]"
                   : "text-[#FF8F8F]"
               }`}
             >
-              {!isLoading && data["_mint"]["FreezeAuthority"] ? "Yes" : "No"}
+              {!isLoading && data && data["_mint"]["FreezeAuthority"]
+                ? "Yes"
+                : "No"}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -141,12 +147,14 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             </div>
             <div
               className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data.report["jupiterVerified"]
+                !isLoading && data && data.report["jupiterVerified"]
                   ? " text-[#8BD796]"
                   : "text-[#FF8F8F]"
               }`}
             >
-              {!isLoading && data.report["jupiterVerified"] ? "Yes" : "No"}
+              {!isLoading && data && data.report["jupiterVerified"]
+                ? "Yes"
+                : "No"}
             </div>
           </div>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -156,6 +164,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             <div
               className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
                 !isLoading &&
+                data &&
                 data.report["creator"] &&
                 data.report["creator"]["knownScammer"]
                   ? " text-[#8BD796]"
@@ -163,6 +172,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               }`}
             >
               {!isLoading &&
+              data &&
               data.report["creator"] &&
               data.report["creator"]["knownScammer"]
                 ? "Yes"
@@ -182,9 +192,9 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               <div
                 className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
               >
-                {!isLoading
+                {!isLoading && data
                   ? numeral(data.report["topOwnerAmount"]).format("0,0")
-                  : 0}
+                  : "N/A"}
               </div>
             </div>
             <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -194,10 +204,10 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               <div
                 className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
               >
-                %
-                {!isLoading
+                {!isLoading && data
                   ? numeral(data.report["topOwnerPct"]).format("0,0.00")
-                  : 0}
+                  : "N/A"}
+                %
               </div>
             </div>
             <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -207,9 +217,9 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               <div
                 className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
               >
-                {!isLoading
+                {!isLoading && data
                   ? numeral(data.report["topHoldersAmount"]).format("0,0.00")
-                  : 0}
+                  : "N/A"}
               </div>
             </div>
             <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
@@ -219,10 +229,10 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               <div
                 className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground`}
               >
-                %
-                {!isLoading
+                {!isLoading && data
                   ? numeral(data.report["topHoldersPct"]).format("0,0.00")
-                  : 0}
+                  : "N/A"}{" "}
+                %
               </div>
             </div>
             {/* <div className="grid grid-cols-3 gap-1 p-1 w-full max-h-[440px] overflow-y-auto no-scrollbar">
