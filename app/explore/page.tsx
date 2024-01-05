@@ -1,24 +1,12 @@
-import ColorBlocks from "@/components/common/color-block";
-import HeroHeadline from "@/components/common/hero-headline";
 
-import BackgroundSplash from "@/components/common/background-splash";
-import HeroList from "@/components/common/hero-list";
-import TrendingToday from "@/components/views/home/trending-today";
 import routes from "@/config/routes";
 import { AccentColors } from "@/config/themes";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import GuacContentCard from "@/components/views/home/guac-content-card";
-import TradeContentCard from "@/components/views/home/trade-content-card";
-import EarnContentCard from "@/components/views/home/earn-content-card";
-import PlayContentCard from "@/components/views/home/play-content-card";
 
-import LaunchContentCard from "@/components/views/home/launch-content-card";
-import ManageContentCard from "@/components/views/home/manage-content-card";
-import ExploreCardContent from "@/components/views/explore/ExploreCardContent";
-import DaoCardContent from "@/components/views/explore/DaoCardContent";
 import AvocadoCardContent from "@/components/views/explore/AvocadoCardContent";
+import DaoCardContent from "@/components/views/explore/DaoCardContent";
 import EarnRewardShop from "@/components/views/explore/EarnRewardShop";
+import ExploreCardContent from "@/components/views/explore/ExploreCardContent";
 
 export default function Explore() {
   return (

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 import { FaCheck } from "react-icons/fa6";
 
 interface GameLiquidityComponentProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+  extends React.HTMLAttributes<any> {}
 
 const GameLiquidityComponent: FunctionComponent<
   GameLiquidityComponentProps
@@ -15,7 +16,7 @@ const GameLiquidityComponent: FunctionComponent<
   ...props
 }) => {
   return (
-    <div
+    <Link href={"/play/game-pools"}
       className={cn(
         "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className
@@ -89,7 +90,7 @@ const GameLiquidityComponent: FunctionComponent<
           <p>Expanding DEX & Token Support</p>
         </li>
       </ul>
-    </div>
+    </Link>
   );
 };
 

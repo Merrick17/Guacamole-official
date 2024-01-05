@@ -6,6 +6,7 @@ import useMarinadeData from "@/hooks/use-marinade-data";
 import fetchMarinadeData from "@/lib/marinade-data";
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Liquid Solana Staking | Guacamole",
@@ -27,7 +28,13 @@ const Page = async () => {
           hideSecondBtn
         />
         <hr className="border-dashed border-background" />
-        <Container className="p-5 font-medium bg-background">
+        <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
+          <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[14px]">
+            Explore The Benefits of Liquid Staking:{" "}
+            <Link href={"#"} className="text-[#8BD796]">Click Here</Link>
+          </div>
+        </div>
+        <Container className="p-5 font-medium bg-background relative overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <p className="text-muted-foreground text-sm">Projected mSOL Yield</p>
           <h1 className="text-3xl text-[#87D793]">
             {marinadeData && (marinadeData["apy"].value * 100).toFixed(2)}% APY
@@ -36,6 +43,13 @@ const Page = async () => {
             1 MSOL = {marinadeData && marinadeData["currentPrice"].toFixed(3)}{" "}
             SOL
           </p>
+          <Image
+            src="/images/earn/bg/liquid_staking.png"
+            width={282}
+            height={282}
+            alt="launch background"
+            className="-z-0 absolute  opacity-30  rotate-[30deg] top-[-50px] right-4"
+          />
         </Container>
         <LiquidityStackingForm />
         <div className="flex items-center justify-center w-full gap-3">

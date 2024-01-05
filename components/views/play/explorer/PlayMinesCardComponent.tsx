@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 
 interface PlayMinesCardComponentProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+  extends React.HTMLAttributes<any> {}
 
 const PlayMinesCardComponent: FunctionComponent<PlayMinesCardComponentProps> = ({
   className,
@@ -11,7 +12,7 @@ const PlayMinesCardComponent: FunctionComponent<PlayMinesCardComponentProps> = (
   ...props
 }) => {
   return (
-    <div
+    <Link href={"/play/mines"}
       className={cn(
         "flex flex-col  min-h-[400px]  bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className
@@ -43,7 +44,7 @@ const PlayMinesCardComponent: FunctionComponent<PlayMinesCardComponentProps> = (
           className="absolute top-0 left-0 h-[295px] w-full p-4 opacity-30"
         />
       </div>
-    </div>
+    </Link>
   );
 };
 

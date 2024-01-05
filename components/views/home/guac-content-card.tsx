@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 import { FaCheck } from "react-icons/fa6";
 
-interface GuacContentCardProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface GuacContentCardProps extends React.HTMLAttributes<any> {}
 
 const GuacContentCard: FunctionComponent<GuacContentCardProps> = ({
   className,
@@ -11,9 +12,10 @@ const GuacContentCard: FunctionComponent<GuacContentCardProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <Link
+      href={"/explore"}
       className={cn(
-        "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
+        "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 cursor-pointer ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className
       )}
       {...props}
@@ -57,7 +59,7 @@ const GuacContentCard: FunctionComponent<GuacContentCardProps> = ({
           <p>Explore New Ways To Interact</p>
         </li>
       </ul>
-    </div>
+    </Link>
   );
 };
 

@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 import { FaCheck } from "react-icons/fa6";
 
-interface TokenizedNftFarmCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+interface TokenizedNftFarmCardProps extends React.HTMLAttributes<any> {}
 
 const TokenizedNftFarmCard: FunctionComponent<TokenizedNftFarmCardProps> = ({
   className,
@@ -12,7 +12,8 @@ const TokenizedNftFarmCard: FunctionComponent<TokenizedNftFarmCardProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <Link
+      href={"/earn/tokenized-nft-farm"}
       className={cn(
         "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className
@@ -20,7 +21,7 @@ const TokenizedNftFarmCard: FunctionComponent<TokenizedNftFarmCardProps> = ({
       {...props}
     >
       <Image
-       src="/images/earn/bg/nft_farm.png"
+        src="/images/earn/bg/nft_farm.png"
         width={582}
         height={582}
         alt="launch background"
@@ -58,7 +59,7 @@ const TokenizedNftFarmCard: FunctionComponent<TokenizedNftFarmCardProps> = ({
           <p>Liquidity Lockers</p>
         </li>
       </ul>
-    </div>
+    </Link>
   );
 };
 

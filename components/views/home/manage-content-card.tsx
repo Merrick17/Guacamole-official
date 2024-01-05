@@ -1,16 +1,18 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 
-interface ManageContentCardProps extends React.HTMLAttributes<HTMLDivElement> {}
-
+interface ManageContentCardProps extends React.HTMLAttributes<any> {}
+//interface ManageContentCardProps extends React.HTMLAttributes<HTMLDivElement> {}
 const ManageContentCard: FunctionComponent<ManageContentCardProps> = ({
   className,
 
   ...props
 }) => {
   return (
-    <div
+    <Link
+      href={"/tools"}
       className={cn(
         "flex flex-col  min-h-[400px]   bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className
@@ -44,7 +46,7 @@ const ManageContentCard: FunctionComponent<ManageContentCardProps> = ({
           className="absolute top-0 left-0 h-[366px] w-full p-4 opacity-30"
         />
       </div>
-    </div>
+    </Link>
   );
 };
 

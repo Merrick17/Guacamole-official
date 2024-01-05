@@ -100,7 +100,7 @@ const PerpetualsForm = () => {
   });
   useEffect(() => {
     if (connected && publicKey) {
-      console.log("Wallet", walletTokens);
+      
       const guacInfo = walletTokens.find(
         (elm) =>
           elm.account.mint.toBase58() ==

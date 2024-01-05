@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 
-interface RipRottenCardProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface RipRottenCardProps extends React.HTMLAttributes<any> {}
 
 const RipRottenCard: FunctionComponent<RipRottenCardProps> = ({
   className,
@@ -10,7 +11,7 @@ const RipRottenCard: FunctionComponent<RipRottenCardProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <Link href={"/trade/perpetuals"}
       className={cn(
         "flex flex-col  min-h-[400px]  bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className
@@ -42,7 +43,7 @@ const RipRottenCard: FunctionComponent<RipRottenCardProps> = ({
           className="absolute top-0 left-0 h-[600px] w-full p-4 opacity-30"
         />
       </div>
-    </div>
+    </Link>
   );
 };
 

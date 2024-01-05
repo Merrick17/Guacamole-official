@@ -384,3 +384,21 @@ input[type="number"] {
   background: linear-gradient(180deg, #d6776a 0%, #e05744 100%);
   box-shadow: 0px 8px 16px 0px rgba(17, 24, 39, 0.1);
 }
+
+.tools-bg {
+  background: linear-gradient(180deg, #ffedd7 0%, #ffc581 100%);
+}
+.tools-text-color {
+  background: linear-gradient(180deg, #ffedd7 0%, #ffc581 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.trade-bg-2 {
+  /* border-radius: 8px; */
+  background: linear-gradient(180deg, #b7a9dd 0%, #8d6bee 100%);
+  /* box-shadow: 0px 8px 16px 0px rgba(17, 24, 39, 0.1); */
+}
+.top-shadow {
+  box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.75);
+}

@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 
-interface TokenManagerContentCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+interface TokenManagerContentCardProps extends React.HTMLAttributes<any> {}
 
 const TokenManagerContentCard: FunctionComponent<
   TokenManagerContentCardProps
@@ -13,7 +13,8 @@ const TokenManagerContentCard: FunctionComponent<
   ...props
 }) => {
   return (
-    <div
+    <Link
+      href={"/launch/token-creator?active=2"}
       className={cn(
         "flex flex-col  min-h-[400px]  bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className
@@ -129,7 +130,7 @@ const TokenManagerContentCard: FunctionComponent<
           className="absolute top-0 left-0 h-[600px] w-full p-4 opacity-30"
         />
       </div>
-    </div>
+    </Link>
   );
 };
 

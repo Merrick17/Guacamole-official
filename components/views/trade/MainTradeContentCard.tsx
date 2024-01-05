@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 import { FaCheck } from "react-icons/fa6";
 
-interface MainTradeContentCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+interface MainTradeContentCardProps extends React.HTMLAttributes<any> {}
 
 const MainTradeContentCard: FunctionComponent<MainTradeContentCardProps> = ({
   className,
@@ -13,14 +13,17 @@ const MainTradeContentCard: FunctionComponent<MainTradeContentCardProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <Link
+      href={"/trade/swap"}
       className={cn(
         "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className
       )}
       {...props}
     >
-      <Button className="max-w-[134.75px] absolute right-2 z-30 trade-bg ">fast And Simple!</Button>
+      <Button className="max-w-[134.75px] absolute right-2 z-30 trade-bg ">
+        fast And Simple!
+      </Button>
       <Image
         src="/images/trade/bg/main.gif"
         width={582}
@@ -60,7 +63,7 @@ const MainTradeContentCard: FunctionComponent<MainTradeContentCardProps> = ({
           <p>Best Routing With Jup v6</p>
         </li>
       </ul>
-    </div>
+    </Link>
   );
 };
 

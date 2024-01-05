@@ -1,10 +1,11 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 import { FaCheck } from "react-icons/fa6";
 
 interface EarnMainContentCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+  extends React.HTMLAttributes<any> {}
 
 const EarnMainContentCard: FunctionComponent<EarnMainContentCardProps> = ({
   className,
@@ -12,7 +13,7 @@ const EarnMainContentCard: FunctionComponent<EarnMainContentCardProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <Link href={"/earn/dynamic-vault"}
       className={cn(
         "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className
@@ -58,7 +59,7 @@ const EarnMainContentCard: FunctionComponent<EarnMainContentCardProps> = ({
           <p>Advanced Data & Details</p>
         </li>
       </ul>
-    </div>
+    </Link>
   );
 };
 

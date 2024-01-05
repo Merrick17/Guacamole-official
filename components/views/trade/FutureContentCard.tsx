@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 
-interface FutureContentCardProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface FutureContentCardProps extends React.HTMLAttributes<any> {}
 
 const FutureContentCard: FunctionComponent<FutureContentCardProps> = ({
   className,
@@ -10,7 +11,8 @@ const FutureContentCard: FunctionComponent<FutureContentCardProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <Link
+      href={"/trade/perpetuals"}
       className={cn(
         "flex flex-col min-h-[400px]  bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className
@@ -36,14 +38,14 @@ const FutureContentCard: FunctionComponent<FutureContentCardProps> = ({
       </div>
       <div className="relative ">
         <Image
-              src="/images/trade/bg/futures.png"
+          src="/images/trade/bg/futures.png"
           height={426}
           width={300}
           alt="guac background"
           className="absolute top-0 left-0 h-[426px] w-full p-4 opacity-30"
         />
       </div>
-    </div>
+    </Link>
   );
 };
 

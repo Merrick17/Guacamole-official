@@ -1,13 +1,3 @@
-import BackgroundSplash from "@/components/common/background-splash";
-import ColorBlocks from "@/components/common/color-block";
-import HeroHeadline from "@/components/common/hero-headline";
-import HeroList from "@/components/common/hero-list";
-import EarnContentCard from "@/components/views/home/earn-content-card";
-import GuacContentCard from "@/components/views/home/guac-content-card";
-import LaunchContentCard from "@/components/views/home/launch-content-card";
-import ManageContentCard from "@/components/views/home/manage-content-card";
-import PlayContentCard from "@/components/views/home/play-content-card";
-import TradeContentCard from "@/components/views/home/trade-content-card";
 import BridgeSwapContent from "@/components/views/trade/BridgeSwapContent";
 import BuyCryptoContentCard from "@/components/views/trade/BuyCryptoContentCard";
 import FutureContentCard from "@/components/views/trade/FutureContentCard";
@@ -15,11 +5,9 @@ import LiquidityContentCard from "@/components/views/trade/LiquidityContentCard"
 import MainTradeContentCard from "@/components/views/trade/MainTradeContentCard";
 import PeerToPeerContentCard from "@/components/views/trade/PeerToPeerContent";
 import RipRottenCard from "@/components/views/trade/RipRottenCard";
-import Trade from "@/components/views/trade/src/Trade";
 import routes from "@/config/routes";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
-import Link from "next/link";
 import { FC } from "react";
 
 export const metadata: Metadata = {

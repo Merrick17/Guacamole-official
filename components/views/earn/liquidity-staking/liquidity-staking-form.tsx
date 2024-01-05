@@ -49,13 +49,12 @@ const LiquidityStackingForm = () => {
   };
   useEffect(() => {
     if (connected && publicKey) {
-      console.log("Wallet tokens", walletTokens);
       const msSol = walletTokens.find(
         (elm) =>
           elm.account.mint.toBase58() ==
           "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
       );
-      //console.log("MsOL", msSol);
+
       setMSolData(msSol);
       fetchSolBalance();
     }
@@ -169,7 +168,9 @@ const LiquidityStackingForm = () => {
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className="w-full"
+                      className={`${
+                        form.watch("stake") === true ? "earn-bg" : ""
+                      } w-full`}
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("stake", true)}
@@ -190,7 +191,9 @@ const LiquidityStackingForm = () => {
                 <FormItem className="w-full p-0">
                   <FormControl>
                     <Button
-                      className="w-full"
+                      className={`${
+                        form.watch("stake") === false ? "earn-bg" : ""
+                      } w-full`}
                       size="sm"
                       type="button"
                       onClick={() => form.setValue("stake", false)}
@@ -208,7 +211,7 @@ const LiquidityStackingForm = () => {
 
           <p className="text-muted-foreground">Enter deposit amount:</p>
 
-          <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
+          <div className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background border-[1px] border-[rgba(168, 168, 168, 0.10)] max-h-[70px]">
             <Image
               src={
                 form.getValues("stake") == true
@@ -242,12 +245,12 @@ const LiquidityStackingForm = () => {
               control={form.control}
               name="amount"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="  ">
                   <FormControl>
                     <Input
                       {...field}
                       placeholder="0.00"
-                      className="w-full  h-full  text-right  placeholder:text-xl text-xl font-semibold"
+                      className="w-full  max-h-[40px] p-0 text-right  placeholder:text-xl text-xl font-semibold"
                       type="number"
                       onChange={(e) => {
                         const numericValue = parseFloat(e.target.value);
@@ -260,7 +263,7 @@ const LiquidityStackingForm = () => {
               )}
             />
           </div>
-          <Button type="submit">
+          <Button type="submit" className="guac-bg">
             {form.watch("stake") === true ? "Stake" : "Unstake"} SOL for mSOL
           </Button>
           <div className="flex items-center justify-between text-muted-foreground text-sm">

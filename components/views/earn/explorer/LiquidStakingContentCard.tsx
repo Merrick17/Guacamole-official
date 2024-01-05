@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 import { FaCheck } from "react-icons/fa6";
 
-interface LiquidStakingContentCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+interface LiquidStakingContentCardProps extends React.HTMLAttributes<any> {}
 
 const LiquidStakingContentCard: FunctionComponent<
   LiquidStakingContentCardProps
@@ -14,7 +14,8 @@ const LiquidStakingContentCard: FunctionComponent<
   ...props
 }) => {
   return (
-    <div
+    <Link
+      href={"/earn/liquidity-staking"}
       className={cn(
         "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className
@@ -59,7 +60,7 @@ const LiquidStakingContentCard: FunctionComponent<
           <p>Use mSOL in DeFi protocols</p>
         </li>
       </ul>
-    </div>
+    </Link>
   );
 };
 

@@ -77,9 +77,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
 
   // User interaction
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
+
   useMemo(() => {
     if (!isLoading && data) {
       const item = data.find((elm) => elm.token_address == tokenAdr);
@@ -152,7 +150,6 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
 
   useEffect(() => {
     if (vaultImpl && info && vaultInfo) {
-      //console.log("Vault INFO",vaultInfo)
       const virtualPrice =
         vaultUnlockedAmount / vaultImpl.lpSupply.toNumber() || 0;
       // Vault reserves + all strategy allocations
@@ -330,7 +327,6 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
         withdrawBalance={withdrawBalance}
         vaultInfo={vaultInfo}
       />
-     
     </div>
   );
 };

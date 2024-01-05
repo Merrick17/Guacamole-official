@@ -14,7 +14,7 @@ const LiquidityCardContent: FunctionComponent<LiquidityCardContentProps> = ({
 }) => {
   return (
     <Link
-      href={"/explore/guac-token"}
+      href={"/launch/lock"}
       className={cn(
         "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className

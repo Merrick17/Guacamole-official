@@ -2,25 +2,24 @@
 import LaunchHeader from "@/components/common/LaunchHeader";
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import TokenManagementForm from "@/components/views/launch/TokenManagementForm";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 dayjs.extend(relativeTime);
 const Page = () => {
-  const router = useRouter();
-  const poolAdr = "";
+  const searchParams = useSearchParams();
+  const params = searchParams.get("active");
   const [selectedScreen, setSelectedScreen] = useState<number>(1);
+  useEffect(() => {
+    const selected = Number(params);
+    setSelectedScreen(selected);
+    console.log("Selected Screen", selectedScreen);
+  }, [params]);
 
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
@@ -110,7 +109,7 @@ const Page = () => {
                 Easily create your own SPL token on Solana in just two minutes
                 with our no-code creator!
               </p>
-              <Link href={""} className="flex items-start  gap-2">
+              <Link href={"/launch/create-spl-token"} className="flex items-start  gap-2">
                 <span className="text-[#D77668] text-[16px]">Get Started</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

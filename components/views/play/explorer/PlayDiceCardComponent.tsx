@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 
-interface PlayDiceCardComponentProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+interface PlayDiceCardComponentProps extends React.HTMLAttributes<any> {}
 
 const PlayDiceCardComponent: FunctionComponent<PlayDiceCardComponentProps> = ({
   className,
@@ -11,7 +11,7 @@ const PlayDiceCardComponent: FunctionComponent<PlayDiceCardComponentProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <Link href={"/play/dice"}
       className={cn(
         "flex flex-col  min-h-[400px]  bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className
@@ -43,7 +43,7 @@ const PlayDiceCardComponent: FunctionComponent<PlayDiceCardComponentProps> = ({
           className="absolute top-0 left-0 h-[295px] w-full p-4 opacity-30"
         />
       </div>
-    </div>
+    </Link>
   );
 };
 
