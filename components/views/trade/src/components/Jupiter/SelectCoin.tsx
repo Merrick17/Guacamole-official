@@ -1,3 +1,4 @@
+import FallbackImage from "@/components/common/FallbackImage";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,10 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import useWalletTokens from "@/lib/tokens/useWalletTokens";
 import { useTokenAccounts } from "@bonfida/hooks";
 import { TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
@@ -20,8 +21,6 @@ import { BiChevronDown, BiLinkExternal } from "react-icons/bi";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import ReactPaginate from "react-paginate";
 import { useJupiterApiContext } from "../../contexts";
-import { PublicKey } from "@solana/web3.js";
-import FallbackImage from "@/components/common/FallbackImage";
 
 const Row = ({
   info,

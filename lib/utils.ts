@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AccountLayout } from "@solana/spl-token";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -8,6 +9,20 @@ import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
 import BN from "bn.js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import {
+  CryptoEnum,
+  getMarketPubkeys,
+  MarketPairEnum,
+  ParimutuelMarket,
+  ParimutuelWeb3,
+} from "@hxronetwork/parimutuelsdk";
+
+// import { TOKEN_LIST } from "@constants/tokens";
+// import { KnownTokenMap } from "@contexts/token";
+// import hxroSvg from "/images/hxro.svg";
+// import solonaSvg from "@public/images/solona.svg";
+// import usdcSvg from "@public/images/usdc.svg";
+import { getWeb3Config } from "@/constants/config";
 const SOL_MINT = new PublicKey("So11111111111111111111111111111111111111112");
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -122,7 +137,7 @@ export function getRandomHexColor() {
   return hexColor;
 }
 export function getColorByName(name: string) {
-  console.log("Name",name)
+  console.log("Name", name);
   const colorMap = {
     FRANCIUM: "#832941",
     TULIP: "#E74267",
@@ -135,3 +150,115 @@ export function getColorByName(name: string) {
   // Check if the name exists in the color map, if not, return a default color
   return colorMap[name] || getRandomHexColor(); // Default to black if name not found
 }
+
+export const notEmpty = <T>(value: T): value is NonNullable<typeof value> =>
+  !!value;
+
+export enum PositionSummaryOptionEnum {
+  ALL = "all",
+  LIVE = "live",
+  UPCOMING = "upcoming",
+}
+
+// export const getCryptoAddress = (crypto: string): string => {
+//   return TOKEN_LIST[crypto];
+// };
+
+export const getMarketByPubkey = (
+  marketPubkey: string,
+  markets: ParimutuelMarket[]
+): ParimutuelMarket | undefined => {
+  return markets.find((market) => market.pubkey.toBase58() === marketPubkey);
+};
+
+export const getMarketPairByPubkey = (
+  marketKey: string,
+  web3?: ParimutuelWeb3
+): string => {
+  const config = getWeb3Config();
+  const solMarkets = getMarketPubkeys(config, MarketPairEnum.SOLUSD);
+  const solMarket = solMarkets.find(
+    (market) => market.pubkey.toBase58() === marketKey
+  );
+  if (solMarket) return MarketPairEnum.SOLUSD;
+
+  const btcMarkets = getMarketPubkeys(config, MarketPairEnum.BTCUSD);
+  const btcMarket = btcMarkets.find(
+    (market) => market.pubkey.toBase58() === marketKey
+  );
+  if (btcMarket) return MarketPairEnum.BTCUSD;
+
+  return MarketPairEnum.ETHUSD;
+};
+
+export const getCryptoName = (crypto: CryptoEnum): string => {
+  switch (crypto) {
+    case CryptoEnum.SOLANA:
+      return "Solana";
+    case CryptoEnum.USDC:
+      return "USDC Coin";
+    case CryptoEnum.HXRO:
+      return "HXRO";
+  }
+};
+
+export const formatMarketPair = (pair: MarketPairEnum): string => {
+  const fiatSymbol = pair.slice(-3);
+  const cryptoSymbol = pair.slice(0, -3);
+  return cryptoSymbol + "/" + fiatSymbol;
+};
+
+export const getCryptoAbbr = (crypto: CryptoEnum): string => {
+  switch (crypto) {
+    case CryptoEnum.SOLANA:
+      return "SOL";
+    case CryptoEnum.USDC:
+      return "USDC";
+    case CryptoEnum.HXRO:
+      return "HXRO";
+  }
+};
+
+export const getCryptoIcon = (crypto: CryptoEnum): string => {
+  switch (crypto) {
+    case CryptoEnum.SOLANA:
+      return solonaSvg;
+    case CryptoEnum.USDC:
+      return usdcSvg;
+    case CryptoEnum.HXRO:
+      return hxroSvg;
+  }
+};
+
+// TODO: use this method for get icon
+// export const getTokenIcon = (
+//   map: KnownTokenMap,
+//   mintAddress?: string | PublicKey
+// ): string | undefined => {
+//   const address =
+//     typeof mintAddress === "string" ? mintAddress : mintAddress?.toBase58();
+//   if (!address) {
+//     return;
+//   }
+
+//   return map.get(address)?.logoURI;
+// };
+export const AmountFormating = (amount: number, fixed: number) => {
+  const absAmount = Math.abs(amount);
+  let suffix = "";
+  let divisor = 1;
+
+  if (absAmount >= 1e9) {
+    suffix = "B";
+    divisor = 1e9;
+  } else if (absAmount >= 1e6) {
+    suffix = "M";
+    divisor = 1e6;
+  } else if (absAmount >= 1e3) {
+    suffix = "K";
+    divisor = 1e3;
+  }
+
+  const formatted = (amount / divisor).toFixed(fixed);
+  return `${formatted}${suffix}`;
+};

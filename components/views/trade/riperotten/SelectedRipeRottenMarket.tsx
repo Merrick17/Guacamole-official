@@ -1,23 +1,18 @@
 import { useProduct } from "@/context/dexterity";
+import { useSetting } from "@/context/setting";
 import { cn } from "@/lib/utils";
 import { FC, Fragment, useMemo, useState } from "react";
 
-type SelectedCoinProps = {
+type SelectedRipeRottenMarketProps = {
   coin: string[];
   onClick?: () => void;
 };
-const SelectedCoin: FC<SelectedCoinProps> = ({ coin, onClick }) => {
+const SelectedRipeRottenMarket: FC<SelectedRipeRottenMarketProps> = ({
+  coin,
+  onClick,
+}) => {
+  const { selectedNetwork } = useSetting();
 
-  const { productLeverage } = useProduct();
-  const [levDisplay, setLevDisplay] = useState(null);
-  useMemo(() => {
-    if (productLeverage) {
-      const res = productLeverage.find((elm) => elm.index == Number(coin[3]));
-      if (res) {
-        setLevDisplay(res.lev.toString());
-      }
-    }
-  }, [productLeverage]);
   return (
     <div className="flex flex-col items-start w-full " onClick={onClick}>
       <p className="left-align text-muted-foreground font-medium">
@@ -32,11 +27,10 @@ const SelectedCoin: FC<SelectedCoinProps> = ({ coin, onClick }) => {
       </p>
 
       <p className="text-muted-foreground text-[10px] ">
-        Effective Leverage:{" "}
-        <span>{levDisplay ? `${levDisplay}(X)` : "N/A"} </span>
+        SETTLEMENT: <span>{selectedNetwork} </span>
       </p>
     </div>
   );
 };
 
-export { SelectedCoin };
+export { SelectedRipeRottenMarket };

@@ -5,11 +5,12 @@ const routes = {
     root: "/trade",
     bridge: "/trade/bridge",
     perpetuals: "/trade/perpetuals",
-    buysell:"/trade/buyandsell",
+    buysell: "/trade/buyandsell",
     swap: "/trade/swap",
     dca: "/trade/dca",
     limit: "/trade/limit",
     liquidity: "/trade/liquidity",
+    ripeRotten: "/trade/riperotten",
   },
   earn: {
     root: "/earn",

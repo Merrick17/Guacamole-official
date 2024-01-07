@@ -52,6 +52,10 @@ export const Links: {
         href: routes.trade.buysell,
       },
       {
+        name: "Ripe Or Rotten",
+        href: routes.trade.ripeRotten,
+      },
+      {
         name: "Limit",
         href: "",
         disabled: true,
