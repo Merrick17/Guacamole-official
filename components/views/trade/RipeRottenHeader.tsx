@@ -54,11 +54,11 @@ const RipeRottenHeader = () => {
 
   // Dropdown menu items data
   const marketOptions = [
-    {
-      coin: ["BTC", "Bitcoin"],
-      logo: "/images/tokens/BTC.png",
-      name: "BTC-USD",
-    },
+    // {
+    //   coin: ["BTC", "Bitcoin"],
+    //   logo: "/images/tokens/BTC.png",
+    //   name: "BTC-USD",
+    // },
     {
       coin: ["SOL", "Solana"],
       logo: "/images/tokens/SOL.png",
@@ -69,7 +69,7 @@ const RipeRottenHeader = () => {
 
   const handleSelectMarket = (market) => {
     setSelectedMarket(market);
-    console.log("Selected MARKET", market);
+    //console.log("Selected MARKET", market);
     handleMarketChange(market.name);
   };
 

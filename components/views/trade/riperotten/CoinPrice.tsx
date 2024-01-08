@@ -20,7 +20,7 @@ const CoinPrice: React.FC<CoinPriceProps> = ({ market }) => {
   const { livePrice, setLivePrice } = useSetting();
 
   useEffect(() => {
-    const ws = new WebSocket("wss://tickingprice-dev.hxro.trade/ws");
+    const ws = new WebSocket("wss://price-dev.bitbloxrgs.com/ws");
 
     ws.onopen = () => {
       console.log("Websocket connected");

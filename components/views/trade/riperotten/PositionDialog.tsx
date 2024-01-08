@@ -8,14 +8,20 @@ import {
 } from "@/components/ui/dialog";
 import { FaArrowUp } from "react-icons/fa6";
 import { FaArrowDown } from "react-icons/fa6";
-import { PositionSideEnum, calculateOdd } from "@hxronetwork/parimutuelsdk";
-import React, { FC, useMemo } from "react";
+import {
+  PositionSideEnum,
+  WalletSigner,
+  calculateOdd,
+} from "@hxronetwork/parimutuelsdk";
+import React, { FC, useCallback, useMemo, useState } from "react";
 import { useSetting } from "@/context/setting";
 import { useParimutuel } from "@/context/parimutuel";
 import { useTokenAccounts } from "@bonfida/hooks";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import numeral from "numeral";
+import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
 type PositionDialogProps = {
   isDialogOpen: boolean;
   onOpenChange?: (x: boolean) => void;
@@ -31,6 +37,7 @@ const PositionDialog: FC<PositionDialogProps> = ({
   const { selectedParimutuel, positionSide, decimalPlaces, selectedNetwork } =
     useSetting();
   const { publicKey } = useWallet();
+  const wallet = useWallet();
   const { connection } = useConnection();
   const { parimutuels, getPositions, markets, web3 } = useParimutuel();
   const contractSize = useMemo(
@@ -52,6 +59,8 @@ const PositionDialog: FC<PositionDialogProps> = ({
   const longPosition = parimutuel?.activeLongPositions.toNumber() ?? 0;
   const shortPosition = parimutuel?.activeShortPositions.toNumber() ?? 0;
   const poolSize = longPosition + shortPosition;
+  const [amount, setAmount] = useState(0);
+  const { toast } = useToast();
 
   const odd = calculateOdd(isLong ? longPosition : shortPosition, poolSize);
   const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
@@ -68,6 +77,36 @@ const PositionDialog: FC<PositionDialogProps> = ({
       ? Number(guacTokenAccount.account.amount) /
         Math.pow(10, guacTokenAccount.decimals)
       : 0;
+  const handleEnterPosition = useCallback(async () => {
+    const transactionId = await web3?.placePosition(
+      wallet as WalletSigner,
+      new PublicKey(selectedParimutuel),
+      //@ts-ignore
+      parseFloat(amount) * (10 ** decimalPlaces / contractSize),
+      positionSide,
+      Date.now()
+    );
+
+    if (transactionId) {
+      toast({
+        variant: "success",
+        title: "Position Entered",
+        description: "Position has been placed successfully",
+      });
+      getPositions();
+      onOpenChange(false);
+    }
+  }, [
+    web3,
+    wallet,
+    selectedParimutuel,
+    amount,
+    contractSize,
+    positionSide,
+
+    getPositions,
+  ]);
+
   return (
     <Dialog open={isDialogOpen} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -77,7 +116,7 @@ const PositionDialog: FC<PositionDialogProps> = ({
             Open A New Position
           </span>
         </DialogTitle>
-        <Container className="bg-[#0F0F0F] p-2 flex gap-3  min-h-[50px] my-1 items-center">
+        <Container className="bg-[#0F0F0F] p-2 flex gap-3  min-h-[50px] my-1 items-center border border-[rgba(168, 168, 168, 0.10)]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -95,7 +134,7 @@ const PositionDialog: FC<PositionDialogProps> = ({
           </span>
         </Container>
 
-        <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
+        <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col border border-[rgba(168, 168, 168, 0.10)]">
           <div className="flex gap-2 items-center">
             {isLong ? (
               <FaArrowUp color="#7ED88A" size={24} />
@@ -109,7 +148,7 @@ const PositionDialog: FC<PositionDialogProps> = ({
             {`${poolSize / (10 ** decimalPlaces / contractSize)} / ${odd}X`}
           </span>
         </Container>
-        <Container>
+        <div className="w-full flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Enter Amount</span>
             <div className="flex gap-1 items-center">
@@ -131,8 +170,27 @@ const PositionDialog: FC<PositionDialogProps> = ({
               </span>
             </div>
           </div>
-        </Container>
-        <Button onClick={() => {}}>Confirm</Button>
+          <div className="bg-[#0F1010] border border-[rgba(168, 168, 168, 0.10)] px-2 rounded-[8px] w-full flex justify-between items-center">
+            <Input
+              value={amount.toString()}
+              onChange={(e) => setAmount(parseFloat(e.target.value))}
+            />
+            <div className="flex items-center justify-center p-2 gap-2">
+              <Button className="bg-[#141414]" size="sm" variant="secondary">
+                1/2
+              </Button>
+              <Button className="bg-[#141414]" size="sm" variant="secondary">
+                x2
+              </Button>
+            </div>
+          </div>
+        </div>
+        <Button
+          onClick={handleEnterPosition}
+          className={`${isLong ? "guac-bg" : "earn-bg"}`}
+        >
+          Place Position
+        </Button>
       </DialogContent>
     </Dialog>
   );

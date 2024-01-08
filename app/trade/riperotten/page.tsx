@@ -54,7 +54,6 @@ const RipeOrRotten = () => {
     selectedNetwork,
   } = useSetting();
 
-
   const { connected, publicKey } = useWallet();
   const { nextFiveUpcomingParimuels, liveParimutuels, lastParimutuel } =
     useMarket();
@@ -123,6 +122,7 @@ const RipeOrRotten = () => {
   };
 
   useEffect(() => {
+    handleNetworkChange("USDC");
     const market_key = web3
       ? _get(web3?.config.markets, [
           selectedMarketPair,

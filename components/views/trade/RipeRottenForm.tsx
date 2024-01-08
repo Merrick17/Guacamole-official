@@ -15,7 +15,7 @@ import {
   calculateNetOdd,
 } from "@hxronetwork/parimutuelsdk";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useInterval } from "react-use";
 import _get from "lodash/get";
 import {
@@ -41,7 +41,8 @@ const RipeRottenForm = () => {
   const bonkMarkets = ["SOL-USD"];
 
   const { connection } = useConnection();
-  const { web3, setWeb3 } = useParimutuel();
+
+  const { parimutuels, getPositions, markets, web3 } = useParimutuel();
   const {
     selectedMarketPair,
     setSelectedMarketPair,
@@ -52,6 +53,7 @@ const RipeRottenForm = () => {
     livePrice,
     setSelectedNetwork,
     selectedNetwork,
+    selectedParimutuel,
   } = useSetting();
 
   const { connected, publicKey } = useWallet();
@@ -83,7 +85,18 @@ const RipeRottenForm = () => {
   const [lastBonk, setLastBonk] = useState<string>("");
   const [previousPosition, setPreviousPosition] = useState<number[]>([]);
   const [isRipeModalOpen, setIsRipeModalOpen] = useState<boolean>(false);
-
+  const [isRottenModalOpen, setIsRottenModalOpen] = useState<boolean>(false);
+  const parimutuelAccount = useMemo(
+    () =>
+      parimutuels.find(
+        (parimutuel) => parimutuel.pubkey.toBase58() === selectedParimutuel
+      ),
+    [parimutuels, selectedParimutuel]
+  );
+  const { parimutuel } = parimutuelAccount?.info || {};
+  const longPosition = parimutuel?.activeLongPositions.toNumber() ?? 0;
+  const shortPosition = parimutuel?.activeShortPositions.toNumber() ?? 0;
+  const poolSize = longPosition + shortPosition;
   useEffect(() => {
     const market_key = web3
       ? _get(web3?.config.markets, [
@@ -315,12 +328,14 @@ const RipeRottenForm = () => {
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Pool</span>
             <FallbackImage
-              src={"/images/logo.png"}
+              src={"/icons/earn/usd-coin-usdc-logo.svg"}
               height={16}
               width={16}
               className="rounded-full"
             />
-            <span className="text-muted-foreground">300.00m</span>
+            <span className="text-muted-foreground">
+              {AmountFormating(poolSize, 5)}
+            </span>
           </div>
           <span className="text-muted-foreground">{countDownTime}</span>
         </div>
@@ -335,7 +350,7 @@ const RipeRottenForm = () => {
               />
               <div className="flex justify-center items-center gap-1 z-10 pt-10">
                 <FallbackImage
-                  src={"/images/guac_token.png"}
+                  src={"/icons/earn/usd-coin-usdc-logo.svg"}
                   height={16}
                   width={16}
                 />
@@ -379,7 +394,18 @@ const RipeRottenForm = () => {
             {/* <Input placeholder="Enter GUAC Amount To Bet Here" className="w-full"/> */}
           </div>
           <div className="flex flex-col w-full relative">
-            <Button className="earn-bg  absolute top-4  shadow-2xl rounded-xl p-2 top-shadow w-full z-10">
+            <PositionDialog
+              isDialogOpen={isRottenModalOpen}
+              countDown={countDownTime}
+              position={PositionSideEnum.SHORT}
+              onOpenChange={setIsRottenModalOpen}
+            />
+            <Button
+              className="earn-bg  absolute top-4  shadow-2xl rounded-xl p-2 top-shadow w-full z-10"
+              onClick={() => {
+                setIsRottenModalOpen(true);
+              }}
+            >
               Rotten
             </Button>
             <div className="flex justify-center items-center gap-4 w-full relative h-[200px]">
@@ -391,7 +417,7 @@ const RipeRottenForm = () => {
               />
               <div className="flex justify-center items-center gap-1 z-10 pb-10">
                 <FallbackImage
-                  src={"/images/guac_token.png"}
+                  src={"/icons/earn/usd-coin-usdc-logo.svg"}
                   height={16}
                   width={16}
                 />
@@ -423,20 +449,22 @@ const RipeRottenForm = () => {
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Pool</span>
             <FallbackImage
-              src={"/images/logo.png"}
+              src={"/icons/earn/usd-coin-usdc-logo.svg"}
               height={16}
               width={16}
               className="rounded-full"
             />
-            <span className="text-muted-foreground">300.00m</span>
+            <span className="text-muted-foreground">
+              {AmountFormating(poolSize, 5)}
+            </span>
           </div>
-          <span className="text-muted-foreground">0:19</span>
+          <span className="text-muted-foreground">{countDownTime}</span>
         </div>
         <div className="flex flex-col items-center w-full gap-6 p-3 border border-[rgba(168, 168, 168, 0.10)]">
           <div className="flex justify-center items-center gap-5">
             <div className="flex justify-center items-center gap-1 z-10 ">
               <FallbackImage
-                src={"/images/guac_token.png"}
+                src={"/icons/earn/usd-coin-usdc-logo.svg"}
                 height={16}
                 width={16}
               />
@@ -477,13 +505,13 @@ const RipeRottenForm = () => {
                 : "Loading..."}
             </span>
             <span className="text-black text-[12px] font-normal z-10">
-              Last Price $60.5692
+              Current Price ${truncateToThirdDecimal(livePrice)}
             </span>
           </div>
           <div className="flex justify-center items-center gap-5">
             <div className="flex justify-center items-center gap-1 z-10 ">
               <FallbackImage
-                src={"/images/guac_token.png"}
+                src={"/icons/earn/usd-coin-usdc-logo.svg"}
                 height={16}
                 width={16}
               />
