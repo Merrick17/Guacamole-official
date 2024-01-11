@@ -98,7 +98,7 @@ const VaultItemsContainer = () => {
                 return a.long_apy > b.long_apy ? -1 : 1;
               })
               .map((item, index) => (
-                <DynmaicVaultItem key={index} item={item} />
+                <DynmaicVaultItem key={index} item={item} index={index} />
               ))
           : Array.from({ length: 7 }).map((_, index) => (
               <Skeleton

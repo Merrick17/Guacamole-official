@@ -8,6 +8,7 @@ import PlayContentCard from "@/components/views/home/play-content-card";
 //import ManageContentCard from "@/components/views/home/Manage-content-card";
 import LaunchContentCard from "@/components/views/home/launch-content-card";
 import ManageContentCard from "@/components/views/home/manage-content-card";
+import ColorBlocks from "@/components/common/color-block";
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
       {/* <BackgroundSplash className="bg-home-bg " /> */}
       <main
         className={cn(
-          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
         )}
       >
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
@@ -43,7 +44,9 @@ export default function Home() {
           </div>
           <HeroList listItems={HomeListItems} />
           <ColorBlocks className="mx-auto" /> */}
+        
         </section>
+        <ColorBlocks className="mx-auto" />
       </main>
     </>
   );

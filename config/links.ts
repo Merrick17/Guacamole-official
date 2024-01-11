@@ -181,7 +181,7 @@ export const Links: {
   },
   {
     name: "Launch",
-    href: "/launch/explore",
+    href: "/launch",
     Icon: GoInfo,
     color: "#D6776A",
   },

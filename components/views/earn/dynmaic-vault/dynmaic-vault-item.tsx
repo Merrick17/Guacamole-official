@@ -24,6 +24,7 @@ export type DynmaicVaultItemProps = {
   TVL?: string;
   estimatedAPY?: string;
   item?: any;
+  index: number;
 };
 
 interface IData {
@@ -58,6 +59,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   TVL,
   estimatedAPY,
   item,
+  index,
 }) => {
   const router = useRouter();
   const { tokenMap } = useJupiterApiContext();
@@ -68,7 +70,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   const [info, setInfo] = useState<any | null>(null);
   const { networkConfiguration } = useNetworkConfiguration();
   const URL = KEEPER_URL[networkConfiguration];
-
+  const [isHovered, setIsHovered] = useState(false);
   // Vault State
   const [vaultUnlockedAmount, setVaultUnlockedAmount] = useState<number>(0);
   const [vaultStateAPI, setVaultStateAPI] = useState<VaultStateAPI>({
@@ -226,14 +228,20 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   if (!token) return null;
 
   return (
-    <div className="py-4 px-5 border  bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center w-full min-w-[300px] relative overflow-hidden border-[rgba(168, 168, 168, 0.10)] ">
-      <Image
-        src="/images/earn/bg/earn.png"
-        width={282}
-        height={362}
-        alt="guac background"
-        className="-z-0 absolute sm:translate-x-[60%] rotate-45 opacity-30  "
-      />
+    <div
+      className="py-4 px-5 border  bg-background rounded-lg flex flex-col gap-3 hover:border-primary transition-colors duration-500 ease-in-out text-center w-full min-w-[300px] relative overflow-hidden border-[rgba(168, 168, 168, 0.10)] "
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {(index === 0 || isHovered) && (
+        <Image
+          src="/images/earn/bg/earn.png"
+          width={282}
+          height={362}
+          alt="guac background"
+          className="-z-0 absolute sm:translate-x-[60%] rotate-45 opacity-30"
+        />
+      )}
       <header className="flex items-center justify-center">
         {token && (
           <FallbackImage

@@ -21,7 +21,7 @@ const MainTradeContentCard: FunctionComponent<MainTradeContentCardProps> = ({
       )}
       {...props}
     >
-      <Button className="max-w-[134.75px] absolute right-2 z-30 trade-bg ">
+      <Button className="max-w-[134.75px] absolute right-2 z-30 trade-bg h-[32px]">
         fast And Simple!
       </Button>
       <Image
@@ -33,12 +33,37 @@ const MainTradeContentCard: FunctionComponent<MainTradeContentCardProps> = ({
       />
       <header className="flex flex-col  gap-3 z-10">
         <div className="bg-background h-12 w-12 p-3 rounded-md flex items-center justify-center">
-          <Image
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="24"
+            viewBox="0 0 22 24"
+            fill="none"
+          >
+            <path
+              d="M4.8 6H16.8V9.6L21.6 4.8L16.8 0V3.6H2.4V10.8H4.8V6ZM16.8 18H4.8V14.4L0 19.2L4.8 24V20.4H19.2V13.2H16.8V18Z"
+              fill="url(#paint0_linear_3275_6668)"
+            />
+            <defs>
+              <linearGradient
+                id="paint0_linear_3275_6668"
+                x1="10.8"
+                y1="0"
+                x2="10.8"
+                y2="24"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#BBB0DB" />
+                <stop offset="1" stop-color="#8D6BEE" />
+              </linearGradient>
+            </defs>
+          </svg>
+          {/* <Image
             src="/images/trade/swap.svg"
             width={24}
             height={24}
             alt="guac logo"
-          />
+          /> */}
         </div>
         <h1 className="trade-text-color text-lg md:text-2xl lg:text-[32px] font-medium">
           Swap With Guacamole

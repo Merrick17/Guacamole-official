@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useContext } from "react";
 import { getTokenAccount } from "@/lib/get-ata";
 import { getProgram } from "@/program/program";
@@ -309,17 +309,32 @@ const LockerProvider = ({ children }) => {
         const sig = await sendTransaction(tx, connection, {
           skipPreflight: true,
         });
-
         toast({
           variant: "success",
-          title: "Vault Created Successfully!",
+          title: "Woot Woot!",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction sent successfully.</p>
-              <Link href={`https://solscan.io/tx/${sig}`}>View on solscan</Link>
+              <Link
+                href={`https://solscan.io/tx/${sig}`}
+                className="bg-background h-[32px] w-[206px]"
+              >
+                View On Explorer
+              </Link>
             </div>
           ),
         });
+        // toast({
+        //   variant: "success",
+        //   title: "Vault Created Successfully!",
+        //   description: (
+        //     <div className="flex flex-col gap-1">
+        //       <p>Transaction sent successfully.</p>
+        //       <Link href={`https://solscan.io/tx/${sig}`}>View on solscan</Link>
+        //     </div>
+        //   ),
+        // });
+
         return sig;
       } catch (error) {
         console.log("Error", error.message);
@@ -421,16 +436,31 @@ const LockerProvider = ({ children }) => {
         });
         toast({
           variant: "success",
-          title: "Lock Created Successfully!",
+          title: "Woot Woot!",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction sent successfully.</p>
-              <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-                View on solscan
+              <Link
+                href={`https://solscan.io/tx/${sig}`}
+                className="bg-background h-[32px] w-[206px]"
+              >
+                View On Explorer
               </Link>
             </div>
           ),
         });
+        // toast({
+        //   variant: "success",
+        //   title: "Lock Created Successfully!",
+        //   description: (
+        //     <div className="flex flex-col gap-1">
+        //       <p>Transaction sent successfully.</p>
+        //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+        //         View on solscan
+        //       </Link>
+        //     </div>
+        //   ),
+        // });
       }
     } catch (error) {
       toast({
@@ -494,20 +524,34 @@ const LockerProvider = ({ children }) => {
         .instruction();
       const tx = new Transaction().add(ix);
       const sig = await sendTransaction(tx, connection);
-      console.log("Sig", sig);
-
+      //console.log("Sig", sig);
       toast({
         variant: "success",
-        title: "Amount Withdrawn Successfully!",
+        title: "Woot Woot!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-              View on solscan
+            <Link
+              href={`https://solscan.io/tx/${sig}`}
+              className="bg-background h-[32px] w-[206px]"
+            >
+              View On Explorer
             </Link>
           </div>
         ),
       });
+      // toast({
+      //   variant: "success",
+      //   title: "Amount Withdrawn Successfully!",
+      //   description: (
+      //     <div className="flex flex-col gap-1">
+      //       <p>Transaction sent successfully.</p>
+      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+      //         View on solscan
+      //       </Link>
+      //     </div>
+      //   ),
+      // });
       return sig;
     } catch (error) {
       toast({
@@ -617,16 +661,31 @@ const LockerProvider = ({ children }) => {
       });
       toast({
         variant: "success",
-        title: "Lock Amount Extended Successfully!",
+        title: "Woot Woot!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-              View on solscan
+            <Link
+              href={`https://solscan.io/tx/${sig}`}
+              className="bg-background h-[32px] w-[206px]"
+            >
+              View On Explorer
             </Link>
           </div>
         ),
       });
+      // toast({
+      //   variant: "success",
+      //   title: "Lock Amount Extended Successfully!",
+      //   description: (
+      //     <div className="flex flex-col gap-1">
+      //       <p>Transaction sent successfully.</p>
+      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+      //         View on solscan
+      //       </Link>
+      //     </div>
+      //   ),
+      // });
     } catch (err) {
       toast({
         variant: "destructive",
@@ -683,16 +742,31 @@ const LockerProvider = ({ children }) => {
       });
       toast({
         variant: "success",
-        title: "Lock Time Extended Successfully!",
+        title: "Woot Woot!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-              View on solscan
+            <Link
+              href={`https://solscan.io/tx/${sig}`}
+              className="bg-background h-[32px] w-[206px]"
+            >
+              View On Explorer
             </Link>
           </div>
         ),
       });
+      // toast({
+      //   variant: "success",
+      //   title: "Lock Time Extended Successfully!",
+      //   description: (
+      //     <div className="flex flex-col gap-1">
+      //       <p>Transaction sent successfully.</p>
+      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+      //         View on solscan
+      //       </Link>
+      //     </div>
+      //   ),
+      // });
     } catch (err) {
       toast({
         variant: "destructive",
@@ -748,16 +822,31 @@ const LockerProvider = ({ children }) => {
       });
       toast({
         variant: "success",
-        title: "Lock Unlocked Successfully!",
+        title: "Woot Woot!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-              View on solscan
+            <Link
+              href={`https://solscan.io/tx/${sig}`}
+              className="bg-background h-[32px] w-[206px]"
+            >
+              View On Explorer
             </Link>
           </div>
         ),
       });
+      // toast({
+      //   variant: "success",
+      //   title: "Lock Unlocked Successfully!",
+      //   description: (
+      //     <div className="flex flex-col gap-1">
+      //       <p>Transaction sent successfully.</p>
+      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+      //         View on solscan
+      //       </Link>
+      //     </div>
+      //   ),
+      // });
       console.log("Your transaction signature", tx);
     } catch (error) {
       toast({

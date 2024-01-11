@@ -1,4 +1,3 @@
-
 import routes from "@/config/routes";
 import { AccentColors } from "@/config/themes";
 import { cn } from "@/lib/utils";
@@ -7,6 +6,7 @@ import AvocadoCardContent from "@/components/views/explore/AvocadoCardContent";
 import DaoCardContent from "@/components/views/explore/DaoCardContent";
 import EarnRewardShop from "@/components/views/explore/EarnRewardShop";
 import ExploreCardContent from "@/components/views/explore/ExploreCardContent";
+import ColorBlocks from "@/components/common/color-block";
 
 export default function Explore() {
   return (
@@ -14,7 +14,7 @@ export default function Explore() {
       {/* <BackgroundSplash className="bg-home-bg " /> */}
       <main
         className={cn(
-          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
         )}
       >
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
@@ -56,6 +56,7 @@ export default function Explore() {
           <HeroList listItems={HomeListItems} />
           <ColorBlocks className="mx-auto" /> */}
         </section>
+        <ColorBlocks className="mx-auto" />
       </main>
     </>
   );

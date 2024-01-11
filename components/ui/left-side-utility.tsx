@@ -13,7 +13,8 @@ const LeftSideUtility = () => {
     pathname === routes.trade.root ||
     pathname === routes.tools.root ||
     pathname === routes.launch.root ||
-    pathname === routes.home
+    pathname === routes.home ||
+    pathname === routes.explore.root
   ) {
     return <ThemeSwitcher />;
   } else {

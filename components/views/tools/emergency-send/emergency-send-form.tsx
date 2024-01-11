@@ -1,8 +1,8 @@
-'use client';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,17 +10,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
   Token,
-} from '@solana/spl-token-v1';
+} from "@solana/spl-token-v1";
 
 const formSchema = z.object({
   walletAddress: z.string().refine((val) => isValidSolanaAddress(val), {
-    message: 'Invalid Solana address',
+    message: "Invalid Solana address",
   }),
 });
 const isValidSolanaAddress = (address: string) => {
@@ -39,18 +39,18 @@ import {
   getAllDomains,
   performReverseLookup,
   transferNameOwnership,
-} from '@bonfida/spl-name-service';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+} from "@bonfida/spl-name-service";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
-} from '@solana/web3.js';
-import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useToast } from '@/hooks/use-toast';
-import { Link } from 'lucide-react';
+} from "@solana/web3.js";
+import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "lucide-react";
 
 interface EmergencySendFormProps {}
 
@@ -58,7 +58,7 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
   const [selectedToken, setSelectedToken] = useState<any>(null);
   const { publicKey, sendTransaction } = useWallet();
   const { connection } = useConnection();
-  const [receiver, setReceiver] = useState<string>('');
+  const [receiver, setReceiver] = useState<string>("");
   const [currentTx, setCurrentTx] = useState<number | undefined>();
   const [nbTotalTx, setNbTotalTx] = useState<number | undefined>();
   const { toast } = useToast();
@@ -68,7 +68,7 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      walletAddress: '',
+      walletAddress: "",
     },
   });
   async function send(receiver: string) {
@@ -77,7 +77,7 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
         const { value: splAccounts } =
           await connection.getParsedTokenAccountsByOwner(publicKey, {
             programId: new PublicKey(
-              'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+              "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
             ),
           });
         const userTokens = splAccounts
@@ -100,13 +100,13 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
             connection,
             new PublicKey(domains[i])
           );
-          const domain = domainName + '.sol';
-          userTokens.push({ mintAddress: domain, account: '', amount: 1 });
+          const domain = domainName + ".sol";
+          userTokens.push({ mintAddress: domain, account: "", amount: 1 });
         }
 
         userTokens.push({
-          mintAddress: 'So11111111111111111111111111111111111111112',
-          account: '',
+          mintAddress: "So11111111111111111111111111111111111111112",
+          account: "",
           amount: 0,
         });
 
@@ -139,7 +139,7 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
           for (let j = nbTransferPerTx * i; j < bornSup; j++) {
             if (
               userTokens[j].mintAddress ==
-              'So11111111111111111111111111111111111111112'
+              "So11111111111111111111111111111111111111112"
             ) {
               const SOLBalance = await connection.getBalance(publicKey);
               Tx.add(
@@ -150,14 +150,14 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
                     SOLBalance - (0.00001 + 0.00203928) * LAMPORTS_PER_SOL,
                 })
               );
-            } else if (userTokens[j].mintAddress.includes('.sol')) {
-              const domain = userTokens[j].mintAddress.replace('.sol', '');
+            } else if (userTokens[j].mintAddress.includes(".sol")) {
+              const domain = userTokens[j].mintAddress.replace(".sol", "");
               const transferDomainIx = await transferNameOwnership(
                 connection,
                 domain,
                 receiverPubkey,
                 undefined,
-                new PublicKey('58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx')
+                new PublicKey("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx")
               );
               Tx.add(transferDomainIx);
             } else {
@@ -203,16 +203,31 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
           const signature = await sendTransaction(Tx, connection);
           const confirmed = await connection.confirmTransaction(
             signature,
-            'processed'
+            "processed"
           );
+          // toast({
+          //   variant: 'success',
+          //   title: 'Success',
+          //   description: (
+          //     <div className="flex flex-col gap-1">
+          //       <p>Transaction sent successfully.</p>
+          //       <Link href={`https://solscan.io/tx/${signature}`}>
+          //         View on solscan
+          //       </Link>
+          //     </div>
+          //   ),
+          // });
           toast({
-            variant: 'success',
-            title: 'Success',
+            variant: "success",
+            title: "Woot Woot!",
             description: (
               <div className="flex flex-col gap-1">
                 <p>Transaction sent successfully.</p>
-                <Link href={`https://solscan.io/tx/${signature}`}>
-                  View on solscan
+                <Link
+                  href={`https://solscan.io/tx/${signature}`}
+                  className="bg-background h-[32px] w-[206px]"
+                >
+                  View On Explorer
                 </Link>
               </div>
             ),
@@ -228,14 +243,14 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
           )
         ) {
           toast({
-            variant: 'destructive',
-            title: 'Error',
+            variant: "destructive",
+            title: "Error",
             description: <p>It is not a valid Backpack username.</p>,
           });
         } else {
           toast({
-            variant: 'destructive',
-            title: 'Error',
+            variant: "destructive",
+            title: "Error",
             description: err.message,
           });
         }
@@ -245,7 +260,7 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
 
   // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('Here');
+    console.log("Here");
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // if (!form.formState.isValid) return;

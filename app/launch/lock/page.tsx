@@ -31,7 +31,7 @@ export default function Lock() {
         <LockerProvider>
           <main
             className={cn(
-              "container mx-auto  flex flex-col justify-center  min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+              "container mx-auto  flex flex-col justify-center  min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
             )}
           >
             <section className="flex flex-1  items-center flex-col my-3 gap-5">

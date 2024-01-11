@@ -11,7 +11,8 @@ const RipRottenCard: FunctionComponent<RipRottenCardProps> = ({
   ...props
 }) => {
   return (
-    <Link href={"/trade/perpetuals"}
+    <Link
+      href={"/trade/riperotten"}
       className={cn(
         "flex flex-col  min-h-[400px]  bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className

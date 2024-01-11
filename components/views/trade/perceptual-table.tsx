@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -7,56 +7,71 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Price, dexterity, useManifest, useProduct, useTrader } from '@/context/dexterity';
-import { toast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { PublicKey } from '@solana/web3.js';
-import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Product, ProductMap } from './perpetual-constants';
+} from "@/components/ui/table";
+import {
+  Price,
+  dexterity,
+  useManifest,
+  useProduct,
+  useTrader,
+} from "@/context/dexterity";
+import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import Link from "next/link";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Product, ProductMap } from "./perpetual-constants";
 
 export function PerceptualTable() {
-  const {
-    lastUpdated,
-    updated,
-    trader,
-    positionsData,
-  } = useTrader();
+  const { lastUpdated, updated, trader, positionsData } = useTrader();
   const [requested, setRequested] = useState(false);
   const { markPrice } = useProduct();
 
   const callbacks = {
     onGettingBlockHashFn: () =>
-      toast({ variant: 'default', title: 'Fetching BlockHash...' }),
+      toast({ variant: "default", title: "Fetching BlockHash..." }),
     onGotBlockHashFn: () =>
-      toast({ variant: 'success', title: 'Got BlockHash!' }),
+      toast({ variant: "success", title: "Got BlockHash!" }),
     onConfirm: (txn: string) =>
       toast({
-        variant: 'success',
-        title: 'Order Placed Successfully!',
+        variant: "success",
+        title: "Woot Woot!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+            <Link
+              href={`https://solscan.io/tx/${txn}`}
+              className="bg-background h-[32px] w-[206px]"
+            >
+              View On Explorer
+            </Link>
           </div>
         ),
       }),
+    // toast({
+    //   variant: 'success',
+    //   title: 'Order Placed Successfully!',
+    //   description: (
+    //     <div className="flex flex-col gap-1">
+    //       <p>Transaction sent successfully.</p>
+    //       <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+    //     </div>
+    //   ),
+    // }),
   };
 
   const { manifest } = useManifest();
   const { publicKey } = useWallet();
 
-  useEffect(() => {
-  }, [markPrice, manifest, publicKey, trader])
+  useEffect(() => {}, [markPrice, manifest, publicKey, trader]);
 
   const handleCloseOrder = async (
     selectedProduct: Product,
     orderType: boolean,
-    size: number,
+    size: number
   ) => {
-    let slippage = selectedProduct.index === 6 ? 5 : 0.5
+    let slippage = selectedProduct.index === 6 ? 5 : 0.5;
     console.log(
       markPrice,
       0.5,
@@ -65,33 +80,27 @@ export function PerceptualTable() {
       manifest,
       selectedProduct
     );
-    if (
-      !markPrice ||
-      !size ||
-      !publicKey ||
-      !manifest ||
-      !selectedProduct
-    ) {
-      console.log('Market Price', markPrice);
+    if (!markPrice || !size || !publicKey || !manifest || !selectedProduct) {
+      console.log("Market Price", markPrice);
       if (!markPrice) {
-        console.log('markPrice is falsy');
+        console.log("markPrice is falsy");
       }
 
       if (!size) {
-        console.log('size is falsy');
+        console.log("size is falsy");
       }
 
       if (!publicKey) {
-        console.log('publicKey is falsy');
+        console.log("publicKey is falsy");
       }
 
       if (!manifest) {
-        console.log('manifest is falsy');
+        console.log("manifest is falsy");
       }
 
       if (!selectedProduct) {
-        console.log('selectedProduct is falsy');
-        console.log({selectedProduct})
+        console.log("selectedProduct is falsy");
+        console.log({ selectedProduct });
       }
       return;
     }
@@ -99,16 +108,30 @@ export function PerceptualTable() {
     const IndexMap = {
       0: 1,
       1: 2,
-      2: 4
-    }
+      2: 4,
+    };
 
-    const selectedMarketPrice = (markPrice.find((p) => p.index === selectedProduct.index)).price
+    const selectedMarketPrice = markPrice.find(
+      (p) => p.index === selectedProduct.index
+    ).price;
 
     const priceFraction = dexterity.Fractional.New(
       !orderType
-      ? (Number((selectedMarketPrice - ((selectedMarketPrice * slippage) / 100)).toFixed(IndexMap[selectedProduct.index])) * 10 ** 10)
-      : (Number((selectedMarketPrice + ((selectedMarketPrice * slippage) / 100)).toFixed(IndexMap[selectedProduct.index])) * 10 ** 10),
-        10
+        ? Number(
+            (
+              selectedMarketPrice -
+              (selectedMarketPrice * slippage) / 100
+            ).toFixed(IndexMap[selectedProduct.index])
+          ) *
+            10 ** 10
+        : Number(
+            (
+              selectedMarketPrice +
+              (selectedMarketPrice * slippage) / 100
+            ).toFixed(IndexMap[selectedProduct.index])
+          ) *
+            10 ** 10,
+      10
     );
     const sizeFraction = dexterity.Fractional.New(
       Math.abs(size) * 10 ** selectedProduct.exponent,
@@ -116,21 +139,24 @@ export function PerceptualTable() {
     );
     const referralTrg =
       process.env.NEXT_PUBLIC_REFERRER_TRG_MAINNET ||
-      'EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC';
+      "EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC";
 
-    console.log(JSON.stringify({close: {
-      index: selectedProduct.index,
-      orderType,
-      priceFraction,
-      sizeFraction,
-      isIOC: false,
-      referPubkey: new PublicKey(referralTrg),
-      bpsfee: Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
-      clientOrderId: null,
-      matchLimit: null,
-      callbacks
-    }})
-    )
+    console.log(
+      JSON.stringify({
+        close: {
+          index: selectedProduct.index,
+          orderType,
+          priceFraction,
+          sizeFraction,
+          isIOC: false,
+          referPubkey: new PublicKey(referralTrg),
+          bpsfee: Number(process.env.NEXT_PUBLIC_REFERRER_BPS!),
+          clientOrderId: null,
+          matchLimit: null,
+          callbacks,
+        },
+      })
+    );
 
     try {
       await trader.newOrder(
@@ -147,14 +173,14 @@ export function PerceptualTable() {
       );
 
       toast({
-        variant: 'success',
-        title: `Successfully closed ${!orderType? 'LONG' : 'SHORT'} Position!`,
+        variant: "success",
+        title: `Successfully closed ${!orderType ? "LONG" : "SHORT"} Position!`,
       });
     } catch (error: any) {
       console.log(error);
       toast({
-        variant: 'destructive',
-        title: 'Placing order failed!',
+        variant: "destructive",
+        title: "Placing order failed!",
         description: error?.message,
       });
     } finally {
@@ -177,13 +203,17 @@ export function PerceptualTable() {
         {updated &&
           positionsData &&
           positionsData.map((position, ind) => {
-            if (!markPrice) return
+            if (!markPrice) return;
             if (Math.abs(parseFloat(position[1].m)) > 0) {
               const qty =
                 parseFloat(position[1].m) /
                 Math.pow(10, parseInt(position[1].exp));
-                const product = position[0].includes('OPOS0D') ? ProductMap.get('OPOS0D') : ProductMap.get(position[0].trim())
-              const selectedMarketPrice = (markPrice.find((p) => p.index === product.index)).price
+              const product = position[0].includes("OPOS0D")
+                ? ProductMap.get("OPOS0D")
+                : ProductMap.get(position[0].trim());
+              const selectedMarketPrice = markPrice.find(
+                (p) => p.index === product.index
+              ).price;
 
               const value = qty * selectedMarketPrice;
 
@@ -192,17 +222,23 @@ export function PerceptualTable() {
                   <TableCell className="font-medium">{position[0]}</TableCell>
                   <TableCell
                     className={cn(
-                      position[1].m > 0 ? 'text-[#8BD796]' : 'text-destructive'
+                      position[1].m > 0 ? "text-[#8BD796]" : "text-destructive"
                     )}
                   >
-                    {position[1].m > 0 ? 'Long' : 'Short'}
+                    {position[1].m > 0 ? "Long" : "Short"}
                   </TableCell>
                   <TableCell>{qty}</TableCell>
                   <TableCell>${value.toLocaleString()}</TableCell>
                   <TableCell>
-                    <Button variant="default" className='bg-[#bbb0db]' onClick={() => {
-                      handleCloseOrder(product, !(position[1].m > 0), qty)
-                    }}>Close </Button>
+                    <Button
+                      variant="default"
+                      className="bg-[#bbb0db]"
+                      onClick={() => {
+                        handleCloseOrder(product, !(position[1].m > 0), qty);
+                      }}
+                    >
+                      Close{" "}
+                    </Button>
                   </TableCell>
                 </TableRow>
               );

@@ -62,7 +62,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
     accountLeverage,
     setPositionsData,
   } = useTrader();
-  
+
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey, trader]);
@@ -121,24 +121,29 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
     onConfirm: async (txn: string) => {
       toast({
         variant: "success",
-        title: "Deposited successfully into trader account!",
+        title: "Woot Woot!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+            <Link
+              href={`https://solscan.io/tx/${txn}`}
+              className="bg-background h-[32px] w-[206px]"
+            >
+              View On Explorer
+            </Link>
           </div>
         ),
       });
       setDepositStatus("success");
-     // console.log("HERE CONFIRMED");
+      // console.log("HERE CONFIRMED");
     },
   };
 
   const handleDeposit = useCallback(async () => {
     if (!amount || !publicKey || !manifest) {
-      console.log({amount, publicKey})
-      return
-    };
+      console.log({ amount, publicKey });
+      return;
+    }
     try {
       setIsLoading(true);
       setDepositStatus("processing");
@@ -184,7 +189,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
       handleClose();
     }
   }, [amount, publicKey, manifest, trader, selectedProduct]);
-  
+
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey]);

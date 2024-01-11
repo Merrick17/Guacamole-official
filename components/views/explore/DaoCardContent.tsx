@@ -33,13 +33,13 @@ const DaoCardContent: FunctionComponent<DaoCardContentProps> = ({
       />
       <header className="flex flex-col  gap-3 z-10">
         <div className="bg-background h-12 w-12 p-1 rounded-md flex items-center justify-center">
-          {/* <Image
+          <Image
             src="/images/themes/green.png"
             width={24}
             height={24}
             alt="guac logo"
-          /> */}
-          <svg
+          />
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             width="36"
             height="36"
@@ -63,7 +63,7 @@ const DaoCardContent: FunctionComponent<DaoCardContentProps> = ({
                 <stop offset="1" stop-color="#FF6161" />
               </linearGradient>
             </defs>
-          </svg>
+          </svg> */}
         </div>
         <h1 className=" text-lg md:text-2xl lg:text-[32px] font-medium">
           GUAC Token & DAO

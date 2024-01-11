@@ -1,3 +1,4 @@
+import ColorBlocks from "@/components/common/color-block";
 import BridgeSwapContent from "@/components/views/trade/BridgeSwapContent";
 import BuyCryptoContentCard from "@/components/views/trade/BuyCryptoContentCard";
 import FutureContentCard from "@/components/views/trade/FutureContentCard";
@@ -23,7 +24,7 @@ const Page: FC = () => {
   return (
     <>
       {/* <BackgroundSplash className="bg-trade-bg" />
-      <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
+      <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
         <section className="flex flex-col gap-[60px]">
           <div className="grid grid-cols-1 lg:grid-cols-8  gap-[60px] h-full lg:h-[560px] overflow-hidden ">
             <HeroHeadline
@@ -58,7 +59,7 @@ const Page: FC = () => {
       </main> */}
       <main
         className={cn(
-          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
         )}
       >
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
@@ -67,8 +68,8 @@ const Page: FC = () => {
           <FutureContentCard className="hover:border-[#bbb0db]" />
           <BridgeSwapContent className="hover:border-[#bbb0db]" />
           <BuyCryptoContentCard className="hover:border-[#bbb0db]" />
-          <PeerToPeerContentCard className="hover:border-[#bbb0db]" />
           <LiquidityContentCard className=" hover:border-[#bbb0db]" />
+          <PeerToPeerContentCard className="hover:border-[#bbb0db]" />
 
           {/* {lg:h-[560px]} */}
           {/* <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full  overflow-hidden">
@@ -103,6 +104,7 @@ const Page: FC = () => {
           <HeroList listItems={HomeListItems} />
           <ColorBlocks className="mx-auto" /> */}
         </section>
+        <ColorBlocks className="mx-auto" />
       </main>
     </>
   );

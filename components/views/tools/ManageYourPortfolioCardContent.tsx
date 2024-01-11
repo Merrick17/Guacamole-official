@@ -35,7 +35,7 @@ const ManageYourPortfolioCardContent: FunctionComponent<
         className="-z-0 absolute sm:translate-x-1/2 rotate-45 opacity-30  "
       />
       <header className="flex flex-col  gap-3 z-10">
-        <div className="bg-background h-12 w-12 p-3 rounded-md flex items-center justify-center">
+        <div className="bg-background h-12 w-12  rounded-md flex items-center justify-center">
           {/* <Image
             src="/images/trade/swap.svg"
             width={24}

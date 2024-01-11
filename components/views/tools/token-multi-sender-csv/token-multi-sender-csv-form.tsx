@@ -1,20 +1,20 @@
-'use client';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-import { Button } from '@/components/ui/button';
-import Papa from 'papaparse';
+import { Button } from "@/components/ui/button";
+import Papa from "papaparse";
 
-import { FC, FormEvent, FormEventHandler, useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { SelectToken } from '@/components/common/select-token';
-import { useToast } from '@/hooks/use-toast';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { FC, FormEvent, FormEventHandler, useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { SelectToken } from "@/components/common/select-token";
+import { useToast } from "@/hooks/use-toast";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   Token,
   TOKEN_PROGRAM_ID,
-} from '@solana/spl-token-v1';
+} from "@solana/spl-token-v1";
 import {
   getAllDomains,
   performReverseLookup,
@@ -23,15 +23,15 @@ import {
   getTwitterRegistry,
   NameRegistryState,
   transferNameOwnership,
-} from '@bonfida/spl-name-service';
-import { TldParser } from '@onsol/tldparser';
+} from "@bonfida/spl-name-service";
+import { TldParser } from "@onsol/tldparser";
 import {
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
-} from '@solana/web3.js';
-import Link from 'next/link';
+} from "@solana/web3.js";
+import Link from "next/link";
 interface TokenMultiSenderCsvFormProps {}
 
 const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
@@ -62,18 +62,18 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
       complete: function (results) {
         const data = results.data;
         const keys = Object.keys(data[0]);
-        console.log('Keys', keys);
+        console.log("Keys", keys);
         if (
-          !keys.includes('address') ||
-          !keys.includes('token') ||
-          !keys.includes('amount') ||
+          !keys.includes("address") ||
+          !keys.includes("token") ||
+          !keys.includes("amount") ||
           keys.length !== 3
         ) {
           toast({
-            title: 'Invalid CSV file',
+            title: "Invalid CSV file",
             description:
-              'Please select a valid CSV file with the following headers: address, token, amount',
-            variant: 'destructive',
+              "Please select a valid CSV file with the following headers: address, token, amount",
+            variant: "destructive",
           });
         } else {
           setFile(acceptedFiles[0]);
@@ -96,14 +96,14 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
   }, []);
   const onDropRejected = useCallback((fileRejections: any) => {
     // Do something with the files
-    console.error('please select only one file of type CSV');
+    console.error("please select only one file of type CSV");
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     onDropAccepted,
     onDropRejected,
-    accept: { 'text/csv': ['.csv'] },
+    accept: { "text/csv": [".csv"] },
   });
   const send = async () => {
     if (publicKey != null) {
@@ -132,18 +132,18 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
             setCurrentTx(i + 1);
             for (let j = nbTransferPerTx * i; j < bornSup; j++) {
               const receiver = csvData[j][csvHeaders[0]];
-              if (receiver !== '') {
-                console.log('Receiver', receiver);
+              if (receiver !== "") {
+                console.log("Receiver", receiver);
                 let receiverPubkey: PublicKey;
-                if (receiver.includes('.sol')) {
+                if (receiver.includes(".sol")) {
                   const hashedName = await getHashedName(
-                    receiver.replace('.sol', '')
+                    receiver.replace(".sol", "")
                   );
                   const nameAccountKey = await getNameAccountKey(
                     hashedName,
                     undefined,
                     new PublicKey(
-                      '58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx'
+                      "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx"
                     ) // SOL TLD Authority
                   );
                   const owner = await NameRegistryState.retrieve(
@@ -152,34 +152,34 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
                   );
                   receiverPubkey = owner.registry.owner;
                 } else if (
-                  !receiver.includes('.sol') &&
-                  receiver.includes('.')
+                  !receiver.includes(".sol") &&
+                  receiver.includes(".")
                 ) {
                   const owner = await parser.getOwnerFromDomainTld(receiver);
                   if (owner != undefined) {
                     receiverPubkey = owner;
                     console.log(receiverPubkey.toBase58());
                   } else {
-                    receiverPubkey = new PublicKey('');
+                    receiverPubkey = new PublicKey("");
                   }
-                } else if (receiver.includes('@')) {
-                  const handle = receiver.replace('@', '');
+                } else if (receiver.includes("@")) {
+                  const handle = receiver.replace("@", "");
                   const registry = await getTwitterRegistry(connection, handle);
                   receiverPubkey = registry.owner;
                 } else if (
-                  !receiver.includes('.') &&
-                  !receiver.includes('@') &&
+                  !receiver.includes(".") &&
+                  !receiver.includes("@") &&
                   !isValidSolanaAddress(receiver)
                 ) {
                   const url =
-                    'https://xnft-api-server.xnfts.dev/v1/users/fromUsername?username=' +
+                    "https://xnft-api-server.xnfts.dev/v1/users/fromUsername?username=" +
                     receiver;
                   const response = await fetch(url);
                   const responseData = await response.json();
-                  console.log('Response Data', responseData);
+                  console.log("Response Data", responseData);
                   receiverPubkey = new PublicKey(
                     responseData.user.public_keys.find(
-                      (key: any) => key.blockchain == 'solana'
+                      (key: any) => key.blockchain == "solana"
                     ).public_key
                   );
                 } else {
@@ -189,7 +189,7 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
                 const token = csvData[j][csvHeaders[1]];
                 const amount = parseFloat(csvData[j][csvHeaders[2]]);
 
-                if (token == 'So11111111111111111111111111111111111111112') {
+                if (token == "So11111111111111111111111111111111111111112") {
                   Tx.add(
                     SystemProgram.transfer({
                       fromPubkey: publicKey,
@@ -197,14 +197,14 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
                       lamports: amount * LAMPORTS_PER_SOL,
                     })
                   );
-                } else if (token.includes('.sol')) {
+                } else if (token.includes(".sol")) {
                   const transferDomainIx = await transferNameOwnership(
                     connection,
-                    token.replace('.sol', ''),
+                    token.replace(".sol", ""),
                     receiverPubkey,
                     undefined,
                     new PublicKey(
-                      '58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx'
+                      "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx"
                     ) // SOL TLD Authority
                   );
 
@@ -260,17 +260,32 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
             const signature = await sendTransaction(Tx, connection);
             const confirmed = await connection.confirmTransaction(
               signature,
-              'processed'
+              "processed"
             );
-            console.log('confirmation', signature);
+            console.log("confirmation", signature);
+            // toast({
+            //   variant: 'success',
+            //   title: 'Success',
+            //   description: (
+            //     <div className="flex flex-col gap-1">
+            //       <p>Transaction sent successfully.</p>
+            //       <Link href={`https://solscan.io/tx/${signature}`}>
+            //         View on solscan
+            //       </Link>
+            //     </div>
+            //   ),
+            // });
             toast({
-              variant: 'success',
-              title: 'Success',
+              variant: "success",
+              title: "Woot Woot!",
               description: (
                 <div className="flex flex-col gap-1">
                   <p>Transaction sent successfully.</p>
-                  <Link href={`https://solscan.io/tx/${signature}`}>
-                    View on solscan
+                  <Link
+                    href={`https://solscan.io/tx/${signature}`}
+                    className="bg-background h-[32px] w-[206px]"
+                  >
+                    View On Explorer
                   </Link>
                 </div>
               ),
@@ -288,15 +303,15 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
           )
         ) {
           toast({
-            variant: 'destructive',
-            title: 'Error',
-            description: 'It is not a valid Backpack username.',
+            variant: "destructive",
+            title: "Error",
+            description: "It is not a valid Backpack username.",
           });
           //setError("It is not a valid Backpack username");
         } else {
           toast({
-            variant: 'destructive',
-            title: 'Error',
+            variant: "destructive",
+            title: "Error",
             description: err.message,
           });
           //setError(err);
@@ -309,7 +324,7 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) {
-      console.log('No file selected');
+      console.log("No file selected");
       return;
     }
     send();
@@ -318,7 +333,7 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
   return (
     <form onSubmit={(e) => onSubmit(e)} className="space-y-6 pb-6">
       {!file ? (
-        <div {...getRootProps({ className: 'dropzone' })}>
+        <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
           <Button type="button" className="w-full py-4 font-medium">
             Select File To Upload

@@ -25,7 +25,7 @@ export function MenuItems() {
                       "flex items-center gap-3 text-base font-medium capitalize rounded-lg transition justify-center ",
                       isActive && `text-primary`
                     )}
-                    onClick={() => router.push(item.href + "/explore")}
+                    onClick={() => router.push(item.href)}
                   >
                     {item.name}
                   </Menu.Button>

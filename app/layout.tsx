@@ -10,6 +10,10 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import React from "react";
 import "./globals.css";
+import Preloader from "@/components/common/preloader";
+import DisclaimerDialog from "@/components/common/DisclaimerDialog";
+import DisclaimerConfirm from "@/components/common/DisclaimerConfirm";
+import DisclaimerMain from "@/components/common/DisclaimerMain";
 export const metadata: Metadata = {
   title: " A Fresh Solana Experience | Guacamole",
   description:
@@ -30,18 +34,19 @@ export default function RootLayout({
       <body className={kanit.className}>
         <Themes>
           <TransitionContextProvider>
-            <Disclaimer />
+            {/* <Disclaimer /> */}
+            <DisclaimerMain />
             <ContextProvider>
               <Header />
               {/* <WalletDrawer /> */}
               <LeftSideUtility />
-              <div className=" min-h-screen relative">
+              <div className=" min-h-screen relative bg-[url('/images/home/Guacamole_BG_Image_v2_1.png')] bg-cover bg-no-repeat">
                 <div className="z-10">{children}</div>
               </div>
               <Footer />
             </ContextProvider>
             <Toaster />
-            {/* <Preloader key={'perloader'} /> */}
+            <Preloader key={"perloader"} />
           </TransitionContextProvider>
         </Themes>
       </body>

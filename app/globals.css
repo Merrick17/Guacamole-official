@@ -402,3 +402,7 @@ input[type="number"] {
 .top-shadow {
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.75);
 }
+
+.bg-hover {
+  background: rgba(15, 15, 15, 0.85);
+}

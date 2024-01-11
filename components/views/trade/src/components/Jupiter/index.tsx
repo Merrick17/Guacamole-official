@@ -309,19 +309,33 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
           const txid = await sendTransaction(transaction, connection, {
             skipPreflight: true,
           });
-
           toast({
             variant: "success",
-            title: "Success",
+            title: "Woot Woot!",
             description: (
               <div className="flex flex-col gap-1">
                 <p>Transaction sent successfully.</p>
-                <Link href={`https://solscan.io/tx/${txid}`} target="_blank">
-                  View on solscan
+                <Link
+                  href={`https://solscan.io/tx/${txid}`}
+                  className="bg-background h-[32px] w-[206px]"
+                >
+                  View On Explorer
                 </Link>
               </div>
             ),
           });
+          // toast({
+          //   variant: "success",
+          //   title: "Success",
+          //   description: (
+          //     <div className="flex flex-col gap-1">
+          //       <p>Transaction sent successfully.</p>
+          //       <Link href={`https://solscan.io/tx/${txid}`} target="_blank">
+          //         View on solscan
+          //       </Link>
+          //     </div>
+          //   ),
+          // });
         }
       }
     } catch (e) {

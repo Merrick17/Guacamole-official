@@ -21,10 +21,12 @@ const ThemeSwitcher = () => {
   return (
     <div className="fixed z-50 bg-foreground p-1 md:p-0 sm:mb-5 md:bg-transparent bottom-0 md:top-1/4 w-screen  left-0 md:w-max h-max flex flex-row md:flex-col gap-5  justify-between ">
       <Link
-        href={routes.home}
+        href={routes.explore.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname === routes.home && "border-[1px]"
+          pathname === routes.explore.root
+            ? "border-primary border"
+            : "border border-[rgba(168, 168, 168, 0.10)]"
         )}
       >
         <Image
@@ -38,7 +40,9 @@ const ThemeSwitcher = () => {
         href={routes.trade.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center  rounded-tr-lg rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.trade.root) && "border-[1px]"
+          pathname.includes(routes.trade.root)
+            ? "border-primary border"
+            : "border border-[rgba(168, 168, 168, 0.10)]"
         )}
       >
         <Image
@@ -52,7 +56,9 @@ const ThemeSwitcher = () => {
         href={routes.earn.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.earn.root) && "border-[1px]"
+          pathname.includes(routes.earn.root)
+            ? "border-primary border"
+            : "border border-[rgba(168, 168, 168, 0.10)]"
         )}
       >
         <Image
@@ -66,7 +72,9 @@ const ThemeSwitcher = () => {
         href={routes.play.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground",
-          pathname.includes(routes.play.root) && "border-[1px]"
+          pathname.includes(routes.play.root)
+            ? "border-primary border"
+            : "border border-[rgba(168, 168, 168, 0.10)]"
         )}
       >
         <Image
@@ -80,7 +88,9 @@ const ThemeSwitcher = () => {
         href={routes.tools.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.tools.root) && "border-[1px]"
+          pathname.includes(routes.tools.root)
+            ? "border-primary border"
+            : "border border-[rgba(168, 168, 168, 0.10)]"
         )}
       >
         <Image
@@ -94,7 +104,9 @@ const ThemeSwitcher = () => {
         href={routes.launch.root}
         className={cn(
           "p-3 w-max h-max flex items-center justify-center rounded-lg md:rounded-none  md:rounded-tr-lg md:rounded-br-lg overflow-hidden bg-foreground ",
-          pathname.includes(routes.launch.root) && "border-[1px]"
+          pathname.includes(routes.launch.root)
+            ? "border-primary border"
+            : "border border-[rgba(168, 168, 168, 0.10)]"
         )}
       >
         <Image

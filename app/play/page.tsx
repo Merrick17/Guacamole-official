@@ -1,3 +1,4 @@
+import ColorBlocks from "@/components/common/color-block";
 import GameLiquidityComponent from "@/components/views/play/explorer/GameLiquidityComponent";
 import MainPlayComponent from "@/components/views/play/explorer/MainPlayComponent";
 import PlayDiceCardComponent from "@/components/views/play/explorer/PlayDiceCardComponent";
@@ -25,7 +26,7 @@ const Page: FC = () => {
       {/* <BackgroundSplash className="bg-play-bg" />
       <main
         className={cn(
-          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
         )}
       >
         <section className="flex flex-col gap-[60px] ">
@@ -60,7 +61,7 @@ const Page: FC = () => {
       </main> */}
       <main
         className={cn(
-          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-80px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+          "container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
         )}
       >
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
@@ -104,6 +105,7 @@ const Page: FC = () => {
           <HeroList listItems={HomeListItems} />
           <ColorBlocks className="mx-auto" /> */}
         </section>
+        <ColorBlocks className="mx-auto" />
       </main>
     </>
   );

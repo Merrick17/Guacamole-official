@@ -8,7 +8,7 @@ export interface InputProps
 const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
-      <div className="flex h-[40px] items-center w-full gap-4 rounded-md  bg-background p-[10px] md:max-w-[200px]  xl:max-w-full focus-within:outline-none focus-within:ring-1 focus-within:ring-[#8BD796] ">
+      <div className="flex h-[40px] items-center w-full gap-4 rounded-md  bg-background p-[10px]  xl:max-w-full focus-within:outline-none focus-within:ring-1 focus-within:ring-[#8BD796] ">
         <div className="text-gray-500 sm:text-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"

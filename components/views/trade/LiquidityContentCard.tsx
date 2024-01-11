@@ -18,9 +18,41 @@ const LiquidityContentCard: FunctionComponent<LiquidityContentCardProps> = ({
       )}
       {...props}
     >
+      <div
+        className={cn(
+          " w-full h-full absolute top-0 right-0 bg-hover z-30 justify-center items-center flex-col gap-4 flex opacity-0 hover:opacity-100"
+        )}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="80"
+          height="80"
+          viewBox="0 0 80 80"
+          fill="none"
+        >
+          <path
+            d="M39.96 0C17.88 0 0 17.92 0 40C0 62.08 17.88 80 39.96 80C62.08 80 80 62.08 80 40C80 17.92 62.08 0 39.96 0ZM40 72C22.32 72 8 57.68 8 40C8 22.32 22.32 8 40 8C57.68 8 72 22.32 72 40C72 57.68 57.68 72 40 72ZM42 20H36V44L57 56.6L60 51.68L42 41V20Z"
+            fill="url(#paint0_linear_2924_13496)"
+          />
+          <defs>
+            <linearGradient
+              id="paint0_linear_2924_13496"
+              x1="40"
+              y1="0"
+              x2="40"
+              y2="80"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#BAAEDC" />
+              <stop offset="1" stop-color="#8A67EF" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <h3 className="trade-text-color">Coming Soon</h3>
+      </div>
       <div className="flex flex-col gap-2  p-4 md:p-8">
         <header className="flex flex-col items-center  gap-3 ">
-          <div className="bg-background h-12 w-12 p-3 rounded-md flex items-center justify-center">
+          <div className="bg-background h-12 w-12  rounded-md flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="49"

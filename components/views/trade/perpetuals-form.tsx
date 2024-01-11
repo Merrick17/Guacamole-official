@@ -100,16 +100,15 @@ const PerpetualsForm = () => {
   });
   useEffect(() => {
     if (connected && publicKey) {
-      
       const guacInfo = walletTokens.find(
         (elm) =>
           elm.account.mint.toBase58() ==
           "AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"
       );
-     
+
       if (guacInfo) {
         const balance = Number(guacInfo.account.amount) / guacInfo.decimals;
-      
+
         setGuacBalance(balance);
         setGuac(guacInfo);
       }
@@ -140,15 +139,30 @@ const PerpetualsForm = () => {
     onConfirm: (txn: string) =>
       toast({
         variant: "success",
-        title: "Order Placed Successfully!",
+        title: "Woot Woot!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-
-            <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+            <Link
+              href={`https://solscan.io/tx/${txn}`}
+              className="bg-background h-[32px] w-[206px]"
+            >
+              View On Explorer
+            </Link>
           </div>
         ),
       }),
+    // toast({
+    //   variant: "success",
+    //   title: "Order Placed Successfully!",
+    //   description: (
+    //     <div className="flex flex-col gap-1">
+    //       <p>Transaction sent successfully.</p>
+
+    //       <Link href={`https://solscan.io/tx/${txn}`}>View on solscan</Link>
+    //     </div>
+    //   ),
+    // }),
   };
 
   const selectedMarketPrice = useMemo(() => {

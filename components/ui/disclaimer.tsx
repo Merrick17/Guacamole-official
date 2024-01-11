@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -7,118 +7,65 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useEffect, useState } from 'react';
+} from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useEffect, useState } from "react";
+import FallbackImage from "../FallBackImage";
 
 const Disclaimer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAccepted, setIsAccepted] = useState<boolean>(false);
 
   useEffect(() => {
-    const isDisclaimerAccepted = localStorage.getItem('isDisclaimerAccepted');
+    const isDisclaimerAccepted = localStorage.getItem("isDisclaimerAccepted");
     if (!isDisclaimerAccepted) {
       setIsOpen(true);
     }
   }, []);
   const save = () => {
-    localStorage.setItem('isDisclaimerAccepted', 'true');
+    localStorage.setItem("isDisclaimerAccepted", "true");
     setIsOpen(false);
   };
 
   return (
-    <AlertDialog open={isOpen}>
-      <AlertDialogContent>
+    <AlertDialog open={isOpen} >
+      <AlertDialogContent className="w-[700px]">
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            <h1 className="text-base">Before Continuing...</h1>
+          <AlertDialogTitle >
+            <h1 className="text-[24px] text-[#FCFCFC] leading-7 text-center">Welcome To Guacamole!</h1>
           </AlertDialogTitle>
-          <AlertDialogDescription className="h-[50vh] max-h-[50vh] overflow-auto text-xs text-muted-foreground flex flex-col items-start gap-4">
-            <p>
-              This website-hosted user interface {'(this "Interface")'} is an
-              open source frontend software portal that interacts with several
-              blockchain-enabled smart contracts and tools created by reputable
-              third-parties and the Guacamole community. This interface is made
-              available by the AvocaDAO and maintained through community
-              contributions. However, all transactions conducted are run by
-              related permissionless smart contracts. As this interface is
-              open-sourced and all smart contracts are accessible by any user,
-              entity, or third-party, there may be a number of different
-              applications or interfaces that interact or allow for interaction
-              with the same third-party contracts or protocols specifically
-              developed as the {'Guacamole Protocol'}.
+          <hr />
+          <AlertDialogDescription className="h-[35vh] max-h-[50vh]  text-xs text-muted-foreground flex flex-col items-center gap-4 relative overflow-hidden ">
+            <FallbackImage alt="" src={"/images/toast/success.png"} className="absolute z-0 top-[-40px] opacity-10" width={500} height={1700} />
+            <h3 className="text-[20px] text-[#FCFCFC] font-semibold leading-8 text-center z-20">
+              The <span className="text-[#8BD796]">best ingredients</span> to
+              keep your crypto portfolio{" "}
+              <span className="text-[#8BD796]">super fresh</span>.
+            </h3>
+            <p className="text-[16px] text-[#A8A8A8] z-20">
+              Experience a fresh take on Solana DeFi with{" "}
+              <span className="text-[#8BD796] ">Guacamole</span>. Trade, earn,
+              create, and play effortlessly, while enjoying a seamless and
+              user-friendly experience. Each section is represented by a fresh
+              ingredient of our favorite Guacamole recipe and color-coded to
+              make navigation easier!
             </p>
-            <p>
-              This interface and related integrations are provided {'AS IS'}, at
-              your own risk, and without warranties of any kind. The AvocaDAO
-              does not provide, own, or control any of the blockchain-enabled
-              smart contract integrations or transactions conducted through
-              protocols or related smart contracts. By using or accessing this
-              interface or related protocols and smart contracts, you agree that
-              no developer or entity involved in creating, deploying, or
-              maintaining this interface or related protocols will be liable for
-              any claims or damages whatsoever associated with your use,
-              inability to use, or your interaction with other users of this
-              interface or related protocols, including any direct, indirect,
-              incidental, special, , exemplary, punitive, or consequential
-              damages, or loss of profits, digital assets, tokens, NFTs, or
-              anything else that may be considered of value. This deployment of
-              Guacamole may not be available to residents of Belarus, The
-              Central African Republic, The Democratic Republic of Congo, The
-              Democratic {"People's"} Republic of Korea, The Crimea, Donetsk{' '}
-              {"People's"} Republic, and Luhansk {"People's"} Republic regions
-              of Ukraine, Cuba, Iran, Libya, Somalia, Sudan, South Sudan, Syria,
-              regions of the USA, Yemen, Zimbabwe, and any other jurisdiction in
-              which accessing or using integrated protocols is or may be
-              prohibited.
+            <p className="text-[16px] text-[#A8A8A8] mt-4 z-20">
+              Make sure to stop by the Ecosystem page to learn more about other
+              amazing offerings within the Guacamole ecosystem like our token,
+              the Avotars, and even ways to redeem rewards for special prizes.
+              Press continue and unlock a world of possibilities!
             </p>
-            <p>
-              By using or accessing this Interface, you represent that you are
-              not located in, incorporated, or established in, or a citizen or
-              resident of the Prohibited Jurisdictions. You also represent that
-              you are not subject to sanctions or otherwise designated on any
-              list of prohibited or restricted parties or excluded or denied
-              persons, including but not limited to the lists maintained by the
-              United {"States'"} Department of {"Treasury's"} Office of Foreign
-              Assets Control, the United Nations Security Council, the European
-              Union, or its Member States, or any other government authority.
-            </p>
-            <p>
-              By using this interface you also agree to being 18 or older. We
-              encourage all users to be aware of the potential risks associated
-              with decentralized gaming activities. It is important to set
-              limits before engaging in any of these gaming activities,
-              establishing clear boundaries on the amount of time and money you
-              are willing to spend. All forms of gaming carry inherent risks
-              based on chance. Never use borrowed funds and only participate
-              with funds that you can afford to lose. Should you ever feel that
-              your gaming habits are becoming problematic, seek help and support
-              from friends, family, or professional resources.
-            </p>
+            <AlertDialogAction
+              className="!ml-0 guac-bg w-[150px] rounded-md z-20"
+
+            >
+              Continue
+            </AlertDialogAction>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="terms"
-              checked={isAccepted}
-              onCheckedChange={() => setIsAccepted((s) => !s)}
-            />
-            <label
-              htmlFor="terms"
-              className="text-sm text-[#828282]  leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              I have read, understand, and accept these terms
-            </label>
-          </div>
-          <AlertDialogAction
-            className="w-full !ml-0"
-            disabled={!isAccepted}
-            onClick={save}
-          >
-            Accept And Continue
-          </AlertDialogAction>
-        </AlertDialogFooter>
+
+
       </AlertDialogContent>
     </AlertDialog>
   );
