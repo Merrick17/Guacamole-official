@@ -1,14 +1,13 @@
+import getConfig from "next/config";
 import {
   ConfigEnum,
-  DEV_BONK_CONFIG,
   DEV_CONFIG,
-  MAINNET_CONFIG,
-  ParimutuelConfig,
   STAGING_BONK_CONFIG,
+  DEV_BONK_CONFIG,
+  ParimutuelConfig,
   STAGING_CONFIG,
 } from "@hxronetwork/parimutuelsdk";
 import { clusterApiUrl } from "@solana/web3.js";
-import getConfig from "next/config";
 
 // eslint-disable-next-line
 export const getWeb3Config = (
@@ -29,6 +28,7 @@ export const getWeb3Config = (
 
   return c as ParimutuelConfig;
 };
+
 export const getWeb3Url = () => {
   const {
     publicRuntimeConfig: { SOLANA_CLUSTER_URL },

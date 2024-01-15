@@ -47,7 +47,7 @@ const CoinPrice: React.FC<CoinPriceProps> = ({ market }) => {
     };
   }, [market, setLivePrice]);
   useMemo(() => {
-    console.log("Live PRICE", livePrice);
+   
   }, [livePrice]);
   return <>${truncateToThirdDecimal(livePrice)}</>;
 };

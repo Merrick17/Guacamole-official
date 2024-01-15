@@ -93,9 +93,9 @@ export const Section = styled.div`
     width: 960px;
   }
   display: grid;
-  gap: 10px;
+  // gap: 10px;
   margin: 0 auto;
-  padding: 20px;
+  // padding: 20px;
 `;
 
 export const Banner = styled.div<{ size: 'big' | 'medium' | 'default' }>`

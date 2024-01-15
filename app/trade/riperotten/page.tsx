@@ -122,7 +122,7 @@ const RipeOrRotten = () => {
   };
 
   useEffect(() => {
-    handleNetworkChange("USDC");
+    //handleNetworkChange("USDC");
     const market_key = web3
       ? _get(web3?.config.markets, [
           selectedMarketPair,

@@ -39,7 +39,7 @@ const defaultContext: SettingContextProps = {
   decimalPlaces: 5,
   selectedMarketKey: "",
   livePrice: 0,
-  selectedNetwork: "BONK",
+  selectedNetwork: "USDC",
   setSelectedMarketPair: () => null,
   setSelectedDurations: () => null,
   setSelectedParimutuel: () => null,
@@ -90,7 +90,7 @@ export const SettingProvider = ({ children }: { children: any }) => {
 
   const [livePrice, setLivePrice] = useState<number>(0);
 
-  const [selectedNetwork, setSelectedNetwork] = useState<string>("BONK");
+  const [selectedNetwork, setSelectedNetwork] = useState<string>("USDC");
 
   return (
     <SettingContext.Provider

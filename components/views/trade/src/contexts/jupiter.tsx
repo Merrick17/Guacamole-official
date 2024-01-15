@@ -148,7 +148,10 @@ const fetchAllMints = async (
     : await fetch("https://token.jup.ag/all")
   ).json();
   const res = new TokenListContainer(tokens);
-  const list = res.filterByChainId(CLUSTER_TO_CHAIN_ID[env]).getList();
+  const list = res
+    .filterByChainId(CLUSTER_TO_CHAIN_ID[env])
+    .getList()
+    .filter((elm: TokenInfo) => elm.logoURI && !elm.logoURI.includes("file:/"));
 
   return list.reduce((acc, item) => {
     acc.set(item.address, item);

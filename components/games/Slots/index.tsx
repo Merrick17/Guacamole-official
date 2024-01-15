@@ -3,6 +3,7 @@ import App from './App';
 
 const game = {
   name: 'Slots',
+  id:"slots",
   short_name: 'slots',
   description: `
     Play and pray. At the top of the slot machine you can see your potential rewards. Always fair.

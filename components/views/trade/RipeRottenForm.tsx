@@ -176,9 +176,10 @@ const RipeRottenForm = () => {
   }
 
   useInterval(() => {
+    console.log("Upcoming markets", nextFiveUpcomingParimuels);
     const upcoming_bonk_market = nextFiveUpcomingParimuels[0];
     const locked_bonk_market = liveParimutuels[0];
-    console.log("next Market", nextFiveUpcomingParimuels, liveParimutuels);
+
     if (upcoming_bonk_market) {
       setOurParimutuel(upcoming_bonk_market);
       setSelectedParimutuel(upcoming_bonk_market.key.parimutuelPubkey);

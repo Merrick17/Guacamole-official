@@ -1,7 +1,7 @@
 import { useProduct } from "@/context/dexterity";
 import { useSetting } from "@/context/setting";
 import { cn } from "@/lib/utils";
-import { FC, Fragment, useMemo, useState } from "react";
+import { FC, Fragment, useEffect, useMemo, useState } from "react";
 
 type SelectedRipeRottenMarketProps = {
   coin: string[];
@@ -12,6 +12,9 @@ const SelectedRipeRottenMarket: FC<SelectedRipeRottenMarketProps> = ({
   onClick,
 }) => {
   const { selectedNetwork } = useSetting();
+  useEffect(()=>{
+    console.log("selected netwrook init",selectedNetwork)
+  },[selectedNetwork])
 
   return (
     <div className="flex flex-col items-start w-full " onClick={onClick}>
