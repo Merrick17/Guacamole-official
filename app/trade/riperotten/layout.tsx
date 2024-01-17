@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import React from "react";
+import { RiperottenProvider } from "./riperotten.provider";
 export const metadata: Metadata = {
   title: "Gamified Crypto Futures | Guacamole",
   description:
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   },
 };
 const layout = ({ children }) => {
-  return <>{children}</>;
+  return <RiperottenProvider>{children}</RiperottenProvider>;
 };
 
 export default layout;

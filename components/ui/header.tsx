@@ -583,7 +583,7 @@ function HeaderRightArea({
         <Hamburger
           isOpen={isOpen}
           onClick={() => (isOpen ? closeDrawer() : openDrawer())}
-          color="white"
+          color="black"
         />
       </div>
     </div>

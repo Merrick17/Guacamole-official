@@ -30,7 +30,7 @@ const Page = () => {
 
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] ">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <div className="w-[153px] text-black font-semibold">
             {/* <Select
@@ -60,18 +60,17 @@ const Page = () => {
             </Select> */}
             <NavigationList filter="Trade" />
           </div>
-          <Button
-            className="rounded-lg h-[30px] trade-bg"
-            onClick={() => {
-              router.push("/trade/swap");
-            }}
-          >
-            Scoop The Dip
+          <Button className="rounded-lg h-[30px] trade-bg">
+            <Link
+              href={`/trade/swap?outputMint=AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR&inputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+            >
+              Scoop The Dip
+            </Link>
           </Button>
         </div>
         <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
-          <div className="text-[#FFF] w-full flex items-center justify-center gap-1 text-[24px]">
+          <div className="text-[#FFF] w-full flex items-center justify-center gap-1 text-[24px] text-wrap">
             Buy, Sell, And Use Crypto
           </div>
         </div>
@@ -86,12 +85,12 @@ const Page = () => {
           />
           <div className="flex flex-col gap-4 z-10">
             <h1>On/Off Ramp With Kado</h1>
-            <p className="text-[#A8A8A8] text-[14px] w-[369px]">
+            <p className="text-[#A8A8A8] text-[14px] lg:w-[369px] text-wrap">
               We’ve partnered with Kado.Money to allow you to easily fund your
               connected Solana wallet or offramp funds back to your bank.
             </p>
             <Link href={""} className="flex items-start  gap-2">
-              <span className="text-[#B8ABDD] text-[16px]">
+              <span className="text-[#B8ABDD] text-[16px] text-wrap">
                 Buy And Sell Crypto
               </span>
               <svg
@@ -122,7 +121,7 @@ const Page = () => {
         </Container>
         <Container className="bg-[#0F0F0F] hover:border-[#B8ABDD]  relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)] ">
           <h1>Use GUAC With The Zebec Instant Card</h1>
-          <p className="text-[#A8A8A8] text-[14px] w-[369px]">
+          <p className="text-[#A8A8A8] text-[14px] lg:w-[369px] text-wrap">
             You can now fund your Zebec Instant Card with GUAC! Yes, you really
             can go buy some guacamole with your Guacamole.
           </p>
@@ -188,7 +187,7 @@ const Page = () => {
                   className="w-[160px] guac-bg"
                   onClick={() => {
                     if (typeof window !== "undefined") {
-                      // window.open(item.poolInfo.url, "blank");
+                      window.open("https://card.zebec.io/", "blank");
                     }
                   }}
                 >
@@ -210,7 +209,7 @@ const Page = () => {
         </Container>
         <Container className="bg-[#0F0F0F] hover:border-[#B8ABDD]   relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)] ">
           <h1>Buy Games, Software, & More</h1>
-          <p className="text-[#A8A8A8] text-[14px] w-[369px]">
+          <p className="text-[#A8A8A8] text-[14px] lg:w-[369px]">
             Looking to do something fun with your crypto? You can easily
             purchase 100’s of games or other items in one-click!
           </p>

@@ -437,5 +437,12 @@ button.iVRAcF {
   border: 1px solid rgba(168, 168, 168, 0.1);
   background-color: #141414 !important;
   margin-left: 3px !important;
-  color: #BBB0DB !important;
+  color: #bbb0db !important;
+}
+.wallet-adapter-button-trigger {
+  border-radius: 8px !important;
+  background: linear-gradient(180deg, #b2dbb6 0%, #6ed87c 100%) !important;
+  height: 40px !important;
+  margin-left: 3px;
+  color: #000 !important;
 }

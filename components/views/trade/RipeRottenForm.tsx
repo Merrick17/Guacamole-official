@@ -176,7 +176,7 @@ const RipeRottenForm = () => {
   }
 
   useInterval(() => {
-    console.log("Upcoming markets", nextFiveUpcomingParimuels);
+    // console.log("Upcoming markets", nextFiveUpcomingParimuels);
     const upcoming_bonk_market = nextFiveUpcomingParimuels[0];
     const locked_bonk_market = liveParimutuels[0];
 
@@ -335,7 +335,11 @@ const RipeRottenForm = () => {
               className="rounded-full"
             />
             <span className="text-muted-foreground">
-              {AmountFormating(poolSize, 5)}
+              {ourLockedParimutuel &&
+                AmountFormating(
+                  ourLockedParimutuel.pool.poolSize,
+                  fixedNetworkDigits
+                )}
             </span>
           </div>
           <span className="text-muted-foreground">{countDownTime}</span>
@@ -456,7 +460,11 @@ const RipeRottenForm = () => {
               className="rounded-full"
             />
             <span className="text-muted-foreground">
-              {AmountFormating(poolSize, 5)}
+              {ourLockedParimutuel &&
+                AmountFormating(
+                  ourLockedParimutuel.pool.poolSize,
+                  fixedNetworkDigits
+                )}
             </span>
           </div>
           <span className="text-muted-foreground">{countDownTime}</span>

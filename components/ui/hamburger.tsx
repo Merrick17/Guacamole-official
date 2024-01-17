@@ -17,9 +17,9 @@ export default function Hamburger({
       className="focus:outline-none cursor-pointer rounded-lg p-3 w-[40px] h-[40px] guac-bg  flex items-center justify-center aspect-square"
     >
       {isOpen ? (
-        <GrClose className="w-[25px] h-[25px] " />
+        <GrClose className="w-[25px] h-[25px] stroke-black " />
       ) : (
-        <GrMenu className="w-[25px] h-[25px] stroke-white" />
+        <GrMenu className="w-[25px] h-[25px] stroke-black" />
       )}
     </div>
   );

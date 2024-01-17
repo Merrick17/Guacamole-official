@@ -453,7 +453,7 @@ const RipeOrRotten = () => {
             </div>
           </Container>
         </div>
-        <Container className="bg-foreground w-full h-auto border border-[rgba(168, 168, 168, 0.10)]">
+        {/* <Container className="bg-foreground w-full h-auto border border-[rgba(168, 168, 168, 0.10)]">
           <Table className="max-sm:w-96 max-sm:overflow-x-auto min-h-[200px] ">
             <TableHeader>
               <TableRow className="bg-[#0F0F0F] border-none">
@@ -480,31 +480,10 @@ const RipeOrRotten = () => {
               {Array.from({ length: 5 }).map((elm) => (
                 <TableRowRender />
               ))}
-              {/* <TableRow>
-                  <TableCell>
-                    {Array.from({ length: 7 }).map((_, i) => (
-                      <Skeleton key={i} className="w-full min-h-[50px] my-3" />
-                    ))}
-                  </TableCell>
-                  <TableCell>
-                    {Array.from({ length: 7 }).map((_, i) => (
-                      <Skeleton key={i} className="w-full min-h-[50px] my-3" />
-                    ))}
-                  </TableCell>
-                  <TableCell>
-                    {Array.from({ length: 7 }).map((_, i) => (
-                      <Skeleton key={i} className="w-full min-h-[50px] my-3" />
-                    ))}
-                  </TableCell>
-                  <TableCell>
-                    {Array.from({ length: 7 }).map((_, i) => (
-                      <Skeleton key={i} className="w-full min-h-[50px] my-3" />
-                    ))}
-                  </TableCell>
-                </TableRow> */}
+           
             </TableBody>
           </Table>
-        </Container>
+        </Container> */}
       </main>
     </>
   );
