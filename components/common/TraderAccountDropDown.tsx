@@ -73,7 +73,7 @@ export const SelectTraderAccounts: FC = () => {
 
   useEffect(() => {
     fetchTraderAccounts();
-  }, [publicKey]);
+  }, [publicKey, mpgPubkey]);
 
   const fetchTraderAccounts = useCallback(async () => {
     //alert("Working");
@@ -97,7 +97,7 @@ export const SelectTraderAccounts: FC = () => {
         description: error?.message,
       });
     }
-  }, [publicKey, manifest]);
+  }, [publicKey, manifest, mpgPubkey]);
 
   const handleCreateTRG = useCallback(async () => {
     try {
@@ -132,7 +132,7 @@ export const SelectTraderAccounts: FC = () => {
       await manifest.updateOrderbooks(new PublicKey(mpgPubkey));
       setTrader(trader);
     },
-    [manifest, setTrader]
+    [manifest, setTrader, mpgPubkey]
   );
 
   return (

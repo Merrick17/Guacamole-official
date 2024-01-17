@@ -107,7 +107,7 @@ const Perceptual = () => {
           trader.mpg
         )) {
           if (!productName.includes("OPOS0D")) {
-            if (!ProductMap.get(productName.trim())) {
+            if (!ProductMap.get(0).get(productName.trim())) {
               continue;
             }
           }
@@ -144,7 +144,7 @@ const Perceptual = () => {
         trader.mpg
       )) {
         if (!productName.includes("OPOS0D")) {
-          if (!ProductMap.get(productName.trim())) {
+          if (!ProductMap.get(0).get(productName.trim())) {
             continue;
           }
         }

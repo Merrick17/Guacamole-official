@@ -1,5 +1,6 @@
 import React, { ReactNode, createContext, useContext, useState } from "react";
 import dexterityTs from "@hxronetwork/dexterity-ts";
+import { GroupPubkeyMap } from "@/components/views/trade/perpetual-constants";
 
 export const dexterity = dexterityTs;
 
@@ -181,7 +182,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
   // if (devnet) BITCCOIN MPG; else if (mainnet) MAJORS MPG
   let defaultMpg =
     network == "mainnet-beta"
-      ? "4cKB5xKtDpv4xo6ZxyiEvtyX3HgXzyJUS1Y8hAfoNkMT"
+      ? GroupPubkeyMap.get(0).pubkey
       : null;
 
   let defaultProduct: Product = {

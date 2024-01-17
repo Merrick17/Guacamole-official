@@ -6,6 +6,7 @@ type SelectedCoinProps = {
   coin: string[];
   onClick?: () => void;
 };
+
 const SelectedCoin: FC<SelectedCoinProps> = ({ coin, onClick }) => {
 
   const { productLeverage } = useProduct();

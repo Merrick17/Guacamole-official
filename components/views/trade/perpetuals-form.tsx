@@ -224,14 +224,14 @@ const PerpetualsForm = () => {
             (
               selectedMarketPrice -
               (selectedMarketPrice * slippage) / 100
-            ).toFixed(ProductMap.get(selectedProduct.index).priceTrim)
+            ).toFixed(ProductMap.get(0).get(selectedProduct.index).priceTrim)
           ) *
             10 ** 10
         : Number(
             (
               selectedMarketPrice +
               (selectedMarketPrice * slippage) / 100
-            ).toFixed(ProductMap.get(selectedProduct.index).priceTrim)
+            ).toFixed(ProductMap.get(0).get(selectedProduct.index).priceTrim)
           ) *
             10 ** 10,
       10
@@ -295,10 +295,10 @@ const PerpetualsForm = () => {
     await handlePlaceOrder(position, Number(slippage), Number(tradeQuantity));
   };
 
-  const [product, setProduct] = useState<Product>(ProductMap.get(0));
+  const [product, setProduct] = useState<Product>(ProductMap.get(0).get(0));
 
   useMemo(() => {
-    setProduct(ProductMap.get(selectedProduct.index));
+    setProduct(ProductMap.get(0).get(selectedProduct.index));
     setTradeQuantity(selectedProduct.minSize.toString());
   }, [selectedProduct]);
 

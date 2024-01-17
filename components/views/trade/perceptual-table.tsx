@@ -209,8 +209,8 @@ export function PerceptualTable() {
                 parseFloat(position[1].m) /
                 Math.pow(10, parseInt(position[1].exp));
               const product = position[0].includes("OPOS0D")
-                ? ProductMap.get("OPOS0D")
-                : ProductMap.get(position[0].trim());
+                ? ProductMap.get(0).get("OPOS0D")
+                : ProductMap.get(0).get(position[0].trim());
               const selectedMarketPrice = markPrice.find(
                 (p) => p.index === product.index
               ).price;

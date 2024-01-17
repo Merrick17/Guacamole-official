@@ -41,31 +41,12 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
   const {
     trader,
     cashBalance,
-    setCashBalance,
-    openPositionsValue,
-    setOpenPositionsValue,
-    portfolioValue,
-    setPortfolioValue,
-    initialMarginReq,
-    setInitialMarginReq,
-    maintananceMarginReq,
-    setMaintananceMarginReq,
-    accountHealth,
-    setAccountHealth,
-    allTimePnl,
-    setAllTimePnl,
     updated,
-    setUpdated,
-    lastUpdated,
-    setLastUpdated,
-    setAccountLeverage,
-    accountLeverage,
-    setPositionsData,
   } = useTrader();
 
   useEffect(() => {
     fetchTraderAccounts();
-  }, [publicKey, trader]);
+  }, [publicKey, trader, mpgPubkey]);
 
   const fetchTraderAccounts = useCallback(async () => {
     if (!publicKey) return;
@@ -87,7 +68,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
         description: error?.message,
       });
     }
-  }, [publicKey, manifest]);
+  }, [publicKey, manifest, mpgPubkey]);
 
   const handleSelection = useCallback(
     async (selectedValue: string) => {
@@ -102,7 +83,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
       await manifest.updateOrderbooks(new PublicKey(mpgPubkey));
       setTrader(trader);
     },
-    [manifest, setTrader]
+    [manifest, setTrader, mpgPubkey]
   );
 
   const [amount, setAmount] = useState<number | null>(null);
@@ -192,7 +173,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
 
   useEffect(() => {
     fetchTraderAccounts();
-  }, [publicKey]);
+  }, [publicKey, mpgPubkey]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>

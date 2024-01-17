@@ -96,7 +96,7 @@ const SelectTradingAccount = () => {
     setUpdated(true);
     setAccountLeverage(portfolioValue / initialMarginReq);
     setLastUpdated(Date.now());
-  }, [trader, selectedProduct]); // Removed markPrice and indexPrice
+  }, [trader, selectedProduct, mpgPubkey]); // Removed markPrice and indexPrice
 
   useEffect(() => {
     if (trader) {
@@ -106,7 +106,7 @@ const SelectTradingAccount = () => {
         trader.disconnect();
       };
     }
-  }, [updateAccountInfo, trader]);
+  }, [updateAccountInfo, trader, mpgPubkey]);
 
   useEffect(() => {
     fetchTraderAccounts();
@@ -132,7 +132,7 @@ const SelectTradingAccount = () => {
         description: error?.message,
       });
     }
-  }, [publicKey, manifest]);
+  }, [publicKey, manifest, mpgPubkey]);
 
   const handleSelection = useCallback(
     async (selectedValue: string) => {
@@ -147,7 +147,7 @@ const SelectTradingAccount = () => {
       await manifest.updateOrderbooks(new PublicKey(mpgPubkey));
       setTrader(trader);
     },
-    [manifest, setTrader]
+    [manifest, setTrader, mpgPubkey]
   );
 
   const callbacks = {
