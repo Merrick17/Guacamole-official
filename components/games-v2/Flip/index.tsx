@@ -1,78 +1,82 @@
-"use client"
-import { Canvas } from '@react-three/fiber'
-import { GambaUi, useCurrentToken, useSound } from 'gamba-react-ui-v2'
-import { useGamba } from 'gamba-react-v2'
-import React from 'react'
-import { Coin, TEXTURE_HEADS, TEXTURE_TAILS } from './Coin'
-import { Effect } from './Effect'
+import { Canvas } from "@react-three/fiber";
+import { GambaUi, useCurrentToken, useSound } from "gamba-react-ui-v2";
+import { useGamba } from "gamba-react-v2";
+import React from "react";
+import { TEXTURE_HEADS, TEXTURE_TAILS } from "./Coin";
+import { Effect } from "./Effect";
+const Coin = dynamic(() => import("./Coin").then((mod) => mod.Coin), {
+  ssr: false,
+});
 
-import SOUND_COIN from './coin.mp3'
-import SOUND_LOSE from './lose.mp3'
-import SOUND_WIN from './win.mp3'
+import SOUND_COIN from "./coin.mp3";
+import SOUND_LOSE from "./lose.mp3";
+import SOUND_WIN from "./win.mp3";
+import dynamic from "next/dynamic";
 
 const SIDES = {
   heads: [2, 0],
   tails: [0, 2],
-}
+};
 
-type Side = keyof typeof SIDES
+type Side = keyof typeof SIDES;
 
 function Flip() {
-  const game = GambaUi.useGame()
-  const token = useCurrentToken()
-  const gamba = useGamba()
-  const [flipping, setFlipping] = React.useState(false)
-  const [win, setWin] = React.useState(false)
-  const [resultIndex, setResultIndex] = React.useState(0)
-  const [side, setSide] = React.useState<Side>('heads')
+  const game = GambaUi.useGame();
+  const token = useCurrentToken();
+  const gamba = useGamba();
+  const [flipping, setFlipping] = React.useState(false);
+  const [win, setWin] = React.useState(false);
+  const [resultIndex, setResultIndex] = React.useState(0);
+  const [side, setSide] = React.useState<Side>("heads");
 
-  const WAGER_OPTIONS = [1, 5, 10, 50, 100].map((x) => x * token.baseWager)
+  const WAGER_OPTIONS = [1, 5, 10, 50, 100].map((x) => x * token.baseWager);
 
-  const [wager, setWager] = React.useState(WAGER_OPTIONS[0])
+  const [wager, setWager] = React.useState(WAGER_OPTIONS[0]);
 
   const sounds = useSound({
     coin: SOUND_COIN,
     win: SOUND_WIN,
     lose: SOUND_LOSE,
-  })
+  });
 
   const play = async () => {
     try {
-      setWin(false)
-      setFlipping(true)
+      setWin(false);
+      setFlipping(true);
 
-      sounds.play('coin', { playbackRate: .5 })
+      sounds.play("coin", { playbackRate: 0.5 });
 
       await game.play({
         bet: SIDES[side],
         wager,
         metadata: [side],
-      })
+      });
 
-      sounds.play('coin')
+      sounds.play("coin");
 
-      const result = await gamba.result()
+      const result = await gamba.result();
 
-      const win = result.payout > 0
+      const win = result.payout > 0;
 
-      setResultIndex(result.resultIndex)
+      setResultIndex(result.resultIndex);
 
-      setWin(win)
+      setWin(win);
 
       if (win) {
-        sounds.play('win')
+        sounds.play("win");
       } else {
-        sounds.play('lose')
+        sounds.play("lose");
       }
     } finally {
-      setFlipping(false)
+      setFlipping(false);
     }
-  }
+  };
 
   return (
     <>
       <GambaUi.Portal target="screen">
         <Canvas
+          style={{ width: "100%", height: "100%" }}
           linear
           flat
           orthographic
@@ -96,7 +100,7 @@ function Flip() {
             color="#CCCCCC"
           />
           <hemisphereLight
-            intensity={.5}
+            intensity={0.5}
             position={[0, 1, 0]}
             scale={[1, 1, 1]}
             color="#ffadad"
@@ -110,18 +114,22 @@ function Flip() {
           value={wager}
           onChange={setWager}
         />
-        <GambaUi.Button disabled={gamba.isPlaying} onClick={() => setSide(side === 'heads' ? 'tails' : 'heads')}>
-          <div style={{ display: 'flex' }}>
-            <img height="20px" src={side === 'heads' ? TEXTURE_HEADS : TEXTURE_TAILS} />
-            {side === 'heads' ? 'Heads' : 'Tails' }
+        <GambaUi.Button
+          disabled={gamba.isPlaying}
+          onClick={() => setSide(side === "heads" ? "tails" : "heads")}
+        >
+          <div style={{ display: "flex" }}>
+            <img
+              height="20px"
+              src={side === "heads" ? TEXTURE_HEADS.src : TEXTURE_TAILS.src}
+            />
+            {side === "heads" ? "Heads" : "Tails"}
           </div>
         </GambaUi.Button>
-        <GambaUi.PlayButton onClick={play}>
-          Flip
-        </GambaUi.PlayButton>
+        <GambaUi.PlayButton onClick={play}>Flip</GambaUi.PlayButton>
       </GambaUi.Portal>
     </>
-  )
+  );
 }
 
-export default Flip
+export default Flip;

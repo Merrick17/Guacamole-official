@@ -532,15 +532,18 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               />
             </div>
             <Slippage slippage={slippage || 0} setSlippage={setSlippage} />
-
-            <WalletMultiButtonDynamic
-              startIcon={undefined}
-              className={`!rounded-lg  h-7 px-3 py-[6px] whitespace-nowrap trade-bg text-black font-medium text-sm hidden lg:flex ${
-                pathname.includes("trade")
-                  ? "guac-btn"
-                  : "bg-[#BBB0DB] trade-bg"
-              } text-primary-foreground hover:!bg-primary`}
-            />
+            <Link href={"https://docs.guacamole.gg/products-and-features/trade/swap-aggregator"} target="_blank" rel="noopener noreferrer">
+              <Button
+                className={`!rounded-lg  h-7 px-3 py-[6px] whitespace-nowrap trade-bg text-black font-medium text-sm hidden lg:flex ${
+                  pathname.includes("trade")
+                    ? "trade-bg"
+                    : "bg-[#BBB0DB] trade-bg"
+                } text-primary-foreground hover:!bg-primary`}
+                size="sm"
+              >
+                View tutorial
+              </Button>
+            </Link>
           </div>
         </div>
         <Separator className="mt-5" />

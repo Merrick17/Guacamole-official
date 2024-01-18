@@ -142,9 +142,7 @@ function CustomRenderer() {
                 />
               </svg>
             </Button>
-            <Button variant="ghost" size="sm">
-              JP
-            </Button>
+          
           </div>
           <GambaUi.PortalTarget target="controls" />
 

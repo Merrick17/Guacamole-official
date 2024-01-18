@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const Page = async () => {
   const marinadeData = await fetchMarinadeData();
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
+    <main className="container mx-auto  items-center flex flex-col gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-2xl ">
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
         <EarnHeader
           title="Dynamic SOL Vault"

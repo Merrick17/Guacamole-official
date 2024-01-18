@@ -187,7 +187,7 @@ const Perceptual = () => {
   return (
     <>
       <WebSocketProvider>
-        <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+        <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-[1440px]">
           <div
             className={cn(
               "flex flex-col gap-10  w-full z-20  rounded-lg bg-background  "

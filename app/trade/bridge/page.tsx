@@ -44,7 +44,7 @@ const Page = () => {
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12  max-w-[1440px] ">
       <Container className="bg-foreground px-5 py-7 max-w-md w-full flex flex-col items-center  gap-5  min-h-[720px] h-full ">
         <div className="flex items-center w-full justify-between">
           <NavigationList filter="Trade" />

@@ -6,7 +6,7 @@ const nextConfig = {
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true,
-  },
+  }, transpilePackages: ['three'],
   images: {
     unoptimized: true,
     domains: [

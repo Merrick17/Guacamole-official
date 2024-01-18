@@ -10,7 +10,7 @@ const tmp = new THREE.Object3D
 const STARS = 10
 
 export const Effect = ({ color }: {color: string}) => {
-  const texture = useTexture(TEXTURE_STAR)
+  const texture = useTexture(TEXTURE_STAR.src); 
   const mesh = React.useRef<THREE.InstancedMesh>(null!)
   const animation = React.useRef(0)
 

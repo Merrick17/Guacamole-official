@@ -18,7 +18,7 @@ interface pageProps {
 
 const Page: FC<pageProps> = ({ params }) => {
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
       {/* <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
           <div className="lg:col-span-3">
             <TotalLiquidity />

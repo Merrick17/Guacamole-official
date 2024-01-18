@@ -11,7 +11,7 @@ const Swap = () => {
   const [showCharts, setShowCharts] = useState(false);
   return (
     <>
-      <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12 w-full  max-w-[1200px]">
+      <main className="container mx-auto  items-center flex flex-col  gap-14 p-3 lg:px-8 py-6 md:px-16 md:py-12 w-full  max-w-[1200px] sm:px-3">
         <div
           className={cn(
             "grid grid-cols-1 gap-[40px] max-w-[462px] w-full place-content-center",

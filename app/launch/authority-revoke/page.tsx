@@ -166,7 +166,7 @@ const Revoke = () => {
     }
   };
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-[1440px]">
       <Container className=" mx-auto flex w-full max-w-4xl flex-col gap-6 bg-foreground rounded-lg px-6 py-5  shadow-md">
         <ToolHeader
           title="Revoke Authority "

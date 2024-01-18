@@ -81,7 +81,7 @@ import Link from "next/link";
 
 const Page = () => {
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] h-full">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-[1440px] h-full">
       <Container className="max-w-[1000px] max-sm:max-w-xs  bg-[url('/images/tools.png')] border border-transparent min-h-[238px] hover:border-primary">
         <div className="flex w-full h-full flex-col items-start justify-start gap-4">
           <svg

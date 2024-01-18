@@ -93,7 +93,7 @@ export default function TokenSelect() {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {tokenList.map((x, i) => (
-            <DropdownMenuItem>
+            <DropdownMenuItem key={i.toString()}>
               <StyledTokenButton onClick={() => setToken(x.mint)} key={i}>
                 <TokenImage src={x.image} /> {x.symbol}
               </StyledTokenButton>

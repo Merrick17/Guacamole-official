@@ -9,7 +9,7 @@ export default function ToolsLayout({ children }: { children: ReactNode }) {
   const { connected } = useWallet();
 
   return (
-    <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]">
+    <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-[1440px]">
       {connected ? (
         <>{children}</>
       ) : (

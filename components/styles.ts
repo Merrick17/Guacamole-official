@@ -83,7 +83,7 @@ const fadeIn = keyframes`
 `;
 
 export const Section = styled.div`
-  padding: 10px;
+  // padding: 10px;
   width: 100%;
   transition: width 0.25s ease;
   @media (min-width: 800px) {
