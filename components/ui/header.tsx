@@ -275,7 +275,7 @@ function HeaderRightArea({
 
   return (
     <div className="order-last flex shrink-0 items-center">
-      <div className="hidden gap-6 lg:flex 2xl:gap-8">
+      <div className="hidden gap-2 lg:flex 2xl:gap-2">
         {/* <div className="flex items-center gap-1">
           <div className="w-10 h-10 flex items-center justify-center">
             <Link
@@ -485,7 +485,7 @@ function HeaderRightArea({
         />
       </div>
 
-      <div className="flex items-center gap-2 lg:hidden  ">
+      <div className="flex items-center  lg:hidden  ">
         <div className=" hidden sm:flex items-center">
           <div className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
             <Image width={18} height={18} alt="logo" src={"/images/logo.png"} />

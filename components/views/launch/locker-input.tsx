@@ -175,7 +175,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
             onClick={async () => {
               const vault = await getLocksByMint(mintAdr.replace(/\s/g, ""));
 
-              if (!vault) {
+              if (!vault[0]) {
                 setIsCreateOpen(true);
               } else {
                 setSelectedMintAdr(mintAdr);
