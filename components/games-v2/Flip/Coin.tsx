@@ -4,8 +4,8 @@ import React from "react";
 import { Group } from "three";
 import { clamp } from "three/src/math/MathUtils";
 import MODEL_COIN from "./Coin.glb";
-import TEXTURE_HEADS from "./heads.png";
-import TEXTURE_TAILS from "./tails.png";
+import TEXTURE_HEADS from "./heads_guac_flip.png";
+import TEXTURE_TAILS from "./tails_guac_flip.png";
 
 export { TEXTURE_HEADS, TEXTURE_TAILS };
 

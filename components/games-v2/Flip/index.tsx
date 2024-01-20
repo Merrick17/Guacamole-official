@@ -76,7 +76,7 @@ function Flip() {
     <>
       <GambaUi.Portal target="screen">
         <Canvas
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: 500 }}
           linear
           flat
           orthographic
@@ -92,7 +92,23 @@ function Flip() {
 
           {flipping && <Effect color="white" />}
           {win && <Effect color="#42ff78" />}
-          <ambientLight intensity={3} />
+          <ambientLight color="#ffffff" intensity={0.5} />
+          <directionalLight position={[0, 5, 5]} intensity={0.5} />
+          <hemisphereLight
+            color="#ffadad"
+            groundColor="#6666fe"
+            intensity={1}
+          />
+          {/* <ambientLight color="#ffffff" intensity={0.5} />
+          <directionalLight position={[0, 5, 5]} intensity={0.5} />
+          <hemisphereLight
+            color="#ffadad"
+            groundColor="#6666fe"
+            intensity={1}
+          /> */}
+        </Canvas>
+      </GambaUi.Portal>
+      {/* <ambientLight intensity={3} />
           <directionalLight
             position-z={1}
             position-y={1}
@@ -105,9 +121,7 @@ function Flip() {
             scale={[1, 1, 1]}
             color="#ffadad"
             groundColor="#6666fe"
-          />
-        </Canvas>
-      </GambaUi.Portal>
+          /> */}
       <GambaUi.Portal target="controls">
         <GambaUi.WagerSelect
           options={WAGER_OPTIONS}
