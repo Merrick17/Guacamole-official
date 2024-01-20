@@ -1,5 +1,6 @@
 "use client";
-import React, { useContext } from "react";
+import { usePool } from "@/hooks/use-pool-list";
+import { useToast } from "@/hooks/use-toast";
 import { getTokenAccount } from "@/lib/get-ata";
 import { getProgram } from "@/program/program";
 import * as anchor from "@coral-xyz/anchor";
@@ -14,9 +15,7 @@ import { PublicKey, Transaction } from "@solana/web3.js";
 import axios from "axios";
 import { BN } from "bn.js";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { usePool } from "@/hooks/use-pool-list";
-import { useToast } from "@/hooks/use-toast";
+import React, { useContext, useEffect, useState } from "react";
 
 const LockerContext = React.createContext(null);
 const LockerProvider = ({ children }) => {
@@ -36,55 +35,7 @@ const LockerProvider = ({ children }) => {
   useEffect(() => {
     initVaults();
   }, []);
-  // const getAllVaults = async () => {
-  //   const vaults = await program.account.lockerAccount.all();
-  //   return vaults;
-  // };
-  // const getPoolInfo = async (lock) => {
-  //   let pool = await getPoolByLpMint(lock.account.mint.toBase58());
 
-  //   if (!pool) {
-  //     throw new Error("Pool information not found");
-  //   }
-  //   if (!pool.baseMint || !pool.quoteMint) {
-  //     pool = await getPoolByLpMint(lock.account.mint.toBase58());
-  //     if (!pool) {
-  //       throw new Error("Pool information not found on second attempt");
-  //     }
-  //   }
-  //   const baseInfo = await metaplex
-  //     .nfts()
-  //     .findByMint({ mintAddress: new PublicKey(pool.baseAdr) });
-  //   const quoteInfo = await metaplex
-  //     .nfts()
-  //     .findByMint({ mintAddress: new PublicKey(pool.quoteAdr) });
-
-  //   const base =
-  //     pool.baseMint && pool.baseMint.logoURI
-  //       ? pool.baseMint
-  //       : {
-  //           symbol: baseInfo.symbol,
-  //           name: baseInfo.name,
-  //           address: baseInfo.address.toBase58(),
-  //           chainId: 101,
-  //           decimals: baseInfo.mint.decimals,
-  //           logoURI: baseInfo?.json?.image,
-  //         };
-
-  //   const quote =
-  //     pool.quoteMint && pool.quoteMint.logoURI
-  //       ? pool.quoteMint
-  //       : {
-  //           symbol: quoteInfo.symbol,
-  //           name: quoteInfo.name,
-  //           address: quoteInfo.address.toBase58(),
-  //           chainId: 101,
-  //           decimals: quoteInfo.mint.decimals,
-  //           logoURI: quoteInfo?.json?.image,
-  //         };
-
-  //   return { pool, base, quote };
-  // };
   const getPoolInfo = async (lock) => {
     let pool = await getPoolByLpMint(lock.mint);
 
@@ -144,22 +95,6 @@ const LockerProvider = ({ children }) => {
     return ((lockedAmount / pool.tokenAmount) * 100).toFixed(3);
   };
 
-  // const getAllVaultsParsed = async () => {
-  //   const allVaults = await program.account.lockerAccount.all();
-  //   const mappedVaults = await Promise.all(
-  //     allVaults.map(async (lock) => {
-  //       const { pool, base, quote } = await getPoolInfo(lock);
-
-  //       return {
-  //         lock,
-  //         pool,
-  //         base,
-  //         quote,
-  //         lockedLiquidity: calculateLiquidity(lock, pool),
-  //         ratio: calculateLiquidityRatio(lock, pool),
-  //       };
-  //     })
-  //   );
   const getAllVaultsParsed = async () => {
     const { data: allVaults } = await axios.get(
       "https://corsproxy.io/?https%3A%2F%2F159.223.197.10.nip.io%2Fvaults"
@@ -309,32 +244,17 @@ const LockerProvider = ({ children }) => {
         const sig = await sendTransaction(tx, connection, {
           skipPreflight: true,
         });
+
         toast({
           variant: "success",
-          title: "Woot Woot!",
+          title: "Vault Created Successfully!",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction sent successfully.</p>
-              <Link
-                href={`https://solscan.io/tx/${sig}`}
-                className="bg-background h-[32px] w-[206px]"
-              >
-                View On Explorer
-              </Link>
+              <Link href={`https://solscan.io/tx/${sig}`}>View on solscan</Link>
             </div>
           ),
         });
-        // toast({
-        //   variant: "success",
-        //   title: "Vault Created Successfully!",
-        //   description: (
-        //     <div className="flex flex-col gap-1">
-        //       <p>Transaction sent successfully.</p>
-        //       <Link href={`https://solscan.io/tx/${sig}`}>View on solscan</Link>
-        //     </div>
-        //   ),
-        // });
-
         return sig;
       } catch (error) {
         console.log("Error", error.message);
@@ -436,31 +356,16 @@ const LockerProvider = ({ children }) => {
         });
         toast({
           variant: "success",
-          title: "Woot Woot!",
+          title: "Lock Created Successfully!",
           description: (
             <div className="flex flex-col gap-1">
               <p>Transaction sent successfully.</p>
-              <Link
-                href={`https://solscan.io/tx/${sig}`}
-                className="bg-background h-[32px] w-[206px]"
-              >
-                View On Explorer
+              <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+                View on solscan
               </Link>
             </div>
           ),
         });
-        // toast({
-        //   variant: "success",
-        //   title: "Lock Created Successfully!",
-        //   description: (
-        //     <div className="flex flex-col gap-1">
-        //       <p>Transaction sent successfully.</p>
-        //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-        //         View on solscan
-        //       </Link>
-        //     </div>
-        //   ),
-        // });
       }
     } catch (error) {
       toast({
@@ -473,11 +378,19 @@ const LockerProvider = ({ children }) => {
   };
   const getVaultByLpMint = async (mintAdr: string) => {
     try {
-      //const vaultList = await getAllVaults();
-      const vaultList = await program.account.lockerAccount.all();
-      const vault = vaultList.find(
-        (elm) => elm.account.mint.toBase58() == mintAdr
-      );
+      const mintPublicKey = new PublicKey(mintAdr);
+
+      // Assuming the program's RPC interface supports direct filtering by mint
+      const filters = [
+        { memcmp: { offset: 16, bytes: mintPublicKey.toBase58() } },
+      ];
+      const vaultList = await program.account.lockerAccount.all(filters);
+      //console.log("Vault List",vaultList);
+      const vault = vaultList ? vaultList[0] : null;
+      // const vaultList = await program.account.lockerAccount.all();
+      // const vault = vaultList.find(
+      //   (elm) => elm.account.mint.toBase58() == mintAdr
+      // );
       return vault;
     } catch (error) {
       return null;
@@ -493,7 +406,6 @@ const LockerProvider = ({ children }) => {
         ],
         program.programId
       );
-      const vaults = await getAllVaults();
 
       const { pubkey: LockAccountAta, ix: lockAccountAtaIx } =
         await getTokenAccount(
@@ -524,34 +436,20 @@ const LockerProvider = ({ children }) => {
         .instruction();
       const tx = new Transaction().add(ix);
       const sig = await sendTransaction(tx, connection);
-      //console.log("Sig", sig);
+      console.log("Sig", sig);
+
       toast({
         variant: "success",
-        title: "Woot Woot!",
+        title: "Amount Withdrawn Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link
-              href={`https://solscan.io/tx/${sig}`}
-              className="bg-background h-[32px] w-[206px]"
-            >
-              View On Explorer
+            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+              View on solscan
             </Link>
           </div>
         ),
       });
-      // toast({
-      //   variant: "success",
-      //   title: "Amount Withdrawn Successfully!",
-      //   description: (
-      //     <div className="flex flex-col gap-1">
-      //       <p>Transaction sent successfully.</p>
-      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-      //         View on solscan
-      //       </Link>
-      //     </div>
-      //   ),
-      // });
       return sig;
     } catch (error) {
       toast({
@@ -563,11 +461,31 @@ const LockerProvider = ({ children }) => {
       return null;
     }
   };
+  // const getLocksByMint = async (tokenMint: string) => {
+  //   try {
+  //     const locks = (await program.account.deposit.all()).filter(
+  //       (elm) => elm.account.mint.toBase58() == tokenMint
+  //     );
+  //     return locks;
+  //   } catch (error) {
+  //     toast({
+  //       variant: "destructive",
+  //       title: "Error",
+  //       description: error.message,
+  //     });
+  //     return null;
+  //   }
+  // };
   const getLocksByMint = async (tokenMint: string) => {
     try {
-      const locks = (await program.account.deposit.all()).filter(
-        (elm) => elm.account.mint.toBase58() == tokenMint
-      );
+      const mintPublicKey = new PublicKey(tokenMint);
+
+      // Assuming the program's RPC interface supports direct filtering by mint
+      const filters = [
+        { memcmp: { offset: 16, bytes: mintPublicKey.toBase58() } },
+      ];
+      const locks = await program.account.deposit.all(filters);
+      console.log("lock", locks[0].account.mint.toBase58());
       return locks;
     } catch (error) {
       toast({
@@ -585,10 +503,6 @@ const LockerProvider = ({ children }) => {
     payer: PublicKey
   ) => {
     try {
-      // const vaults = await getAllVaults();
-      // const selectedLock = vaults.find(
-      //   (elm) => elm.account.mint.toBase58() == mint
-      // );
       const selectedLock = await getVaultByLpMint(mint);
       const [lockAccountInfo] = anchor.web3.PublicKey.findProgramAddressSync(
         [
@@ -661,31 +575,16 @@ const LockerProvider = ({ children }) => {
       });
       toast({
         variant: "success",
-        title: "Woot Woot!",
+        title: "Lock Amount Extended Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link
-              href={`https://solscan.io/tx/${sig}`}
-              className="bg-background h-[32px] w-[206px]"
-            >
-              View On Explorer
+            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+              View on solscan
             </Link>
           </div>
         ),
       });
-      // toast({
-      //   variant: "success",
-      //   title: "Lock Amount Extended Successfully!",
-      //   description: (
-      //     <div className="flex flex-col gap-1">
-      //       <p>Transaction sent successfully.</p>
-      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-      //         View on solscan
-      //       </Link>
-      //     </div>
-      //   ),
-      // });
     } catch (err) {
       toast({
         variant: "destructive",
@@ -742,31 +641,16 @@ const LockerProvider = ({ children }) => {
       });
       toast({
         variant: "success",
-        title: "Woot Woot!",
+        title: "Lock Time Extended Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link
-              href={`https://solscan.io/tx/${sig}`}
-              className="bg-background h-[32px] w-[206px]"
-            >
-              View On Explorer
+            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+              View on solscan
             </Link>
           </div>
         ),
       });
-      // toast({
-      //   variant: "success",
-      //   title: "Lock Time Extended Successfully!",
-      //   description: (
-      //     <div className="flex flex-col gap-1">
-      //       <p>Transaction sent successfully.</p>
-      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-      //         View on solscan
-      //       </Link>
-      //     </div>
-      //   ),
-      // });
     } catch (err) {
       toast({
         variant: "destructive",
@@ -822,31 +706,16 @@ const LockerProvider = ({ children }) => {
       });
       toast({
         variant: "success",
-        title: "Woot Woot!",
+        title: "Lock Unlocked Successfully!",
         description: (
           <div className="flex flex-col gap-1">
             <p>Transaction sent successfully.</p>
-            <Link
-              href={`https://solscan.io/tx/${sig}`}
-              className="bg-background h-[32px] w-[206px]"
-            >
-              View On Explorer
+            <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
+              View on solscan
             </Link>
           </div>
         ),
       });
-      // toast({
-      //   variant: "success",
-      //   title: "Lock Unlocked Successfully!",
-      //   description: (
-      //     <div className="flex flex-col gap-1">
-      //       <p>Transaction sent successfully.</p>
-      //       <Link href={`https://solscan.io/tx/${sig}`} target="_blank">
-      //         View on solscan
-      //       </Link>
-      //     </div>
-      //   ),
-      // });
       console.log("Your transaction signature", tx);
     } catch (error) {
       toast({
@@ -894,4 +763,4 @@ const useLockerTools = () => {
   return context;
 };
 
-export { useLockerTools, LockerProvider };
+export { LockerProvider, useLockerTools };
