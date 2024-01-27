@@ -23,7 +23,7 @@ const Page = () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/earn/tokenized-nft-farms"
           hideSecondBtn
         />
-        <hr className="border-dashed border-background" />
+       <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <Container className="p-5 font-medium bg-background text-center h-[40px] flex justify-center items-center">
           <p className="text-[#FAFAFA] text-[24px]">Guacamole Avotar Farm</p>
           {/* <h1 className="text-3xl">Coming Soon...</h1> */}

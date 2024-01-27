@@ -21,7 +21,7 @@ const Page = () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"
           hideSecondBtn
         />
-        <hr className="border-dashed border-background" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <Container className="p-5 font-medium bg-background">
           <p className="text-muted-foreground text-sm">
             Projected Staking Yield

@@ -37,7 +37,7 @@ export default function Terminal() {
           <Trade className="sm:col-span-1 lg:col-span-2  lg:h-full bg-foreground" />
           <TerminalGraph
             activePage={activePage}
-            className="sm:col-span-1 lg:col-span-4 "
+            className="sm:col-span-1 lg:col-span-4 border border-[rgba(168, 168, 168, 0.10)]"
             handleSelect={setChartType}
             handleDisplayChange={handleDisplayChange}
             handlePageChange={handlePageChange}
@@ -55,9 +55,9 @@ export default function Terminal() {
               </div>
             )}
           </TerminalGraph>
-          <TrendingSwaps className="sm:col-span-1 lg:col-span-2 lg:h-full bg-foreground" />
-          <TopNftCollections className=" sm:col-span-1 lg:col-span-2 w-full" />
-          <SolanaTvlRanking className="sm:col-span-1 lg:col-span-2 w-full" />
+          <TrendingSwaps className="sm:col-span-1 lg:col-span-2 lg:h-full bg-foreground border border-[rgba(168, 168, 168, 0.10)]" />
+          <TopNftCollections className=" sm:col-span-1 lg:col-span-2 w-full border border-[rgba(168, 168, 168, 0.10)]" />
+          <SolanaTvlRanking className="sm:col-span-1 lg:col-span-2 w-full border border-[rgba(168, 168, 168, 0.10)]" />
         </section>
       </main>
     </TerminalLayout>

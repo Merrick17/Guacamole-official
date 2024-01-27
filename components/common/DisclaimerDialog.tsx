@@ -4,10 +4,9 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  DialogTitle
 } from "@/components/ui/dialog";
-import React, { FC } from "react";
+import { FC } from "react";
 import FallbackImage from "../FallBackImage";
 import { Button } from "../ui/button";
 type DisclaimerDialogProps = {

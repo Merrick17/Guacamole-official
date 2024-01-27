@@ -26,7 +26,7 @@ const Page = () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"
           viewAll={true}
         />
-        <hr className="border-dashed border-background" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 ">
           <div className="lg:col-span-3">{/* <TotalLiquidity /> */}</div>
           <div className="lg:col-span-2">{/* <YourDeposit /> */}</div>

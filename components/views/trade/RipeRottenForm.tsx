@@ -301,7 +301,7 @@ const RipeRottenForm = () => {
     setCountDownTime(formattedTime);
   }, 1000);
   return (
-    <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
+    <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 border ">
       <div className="flex items-center justify-between">
         <NavigationList filter="Trade" />
 

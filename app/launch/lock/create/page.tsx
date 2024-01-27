@@ -132,7 +132,7 @@ const Page = () => {
             </Button>
             <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
           </div>
-          <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+          <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
 
           <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
             <Button

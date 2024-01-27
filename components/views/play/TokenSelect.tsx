@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PublicKey } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import {
   GambaPlatformContext,
   useCurrentToken,
@@ -17,6 +17,7 @@ import {
 import React from "react";
 import { FaChevronDown } from "react-icons/fa";
 import styled from "styled-components";
+import { useJupiterApiContext } from "../trade/src/contexts";
 const StyledToken = styled.div`
   display: flex;
   align-items: center;
@@ -45,9 +46,11 @@ export default function TokenSelect() {
   const [visible, setVisible] = React.useState(false);
   const context = React.useContext(GambaPlatformContext);
   const selectedToken = useCurrentToken();
+
   const balance = useUserBalance();
   const tokenList = useTokenList();
   const currentPool = useCurrentPool();
+  const { tokenMap } = useJupiterApiContext();
 
   const setToken = (token: PublicKey) => {
     context.setToken(token);
@@ -59,7 +62,7 @@ export default function TokenSelect() {
   };
 
   return (
-    <div className="flex w-full  max-w-[512px] bg-foreground h-16 rounded-md items-center justify-between px-2 border border-[rgba(168, 168, 168, 0.10)]">
+    <div className="flex w-full   !bg-background h-16 rounded-md items-center justify-between px-2 border border-[rgba(168, 168, 168, 0.10)]">
       <div className="flex items-center justify-center gap-2">
         <FallbackImage
           src={selectedToken.image}
@@ -72,7 +75,10 @@ export default function TokenSelect() {
             Place Bets In {selectedToken.symbol}
           </p>
           <p className="text-xs text-muted-foreground">
-            Min Bet: {currentPool.minWager} Max Payout: {currentPool.maxPayout}
+            Min Bet: {currentPool.minWager} Max Payout:{" "}
+            {selectedToken.symbol == "SOL"
+              ? currentPool.maxPayout / LAMPORTS_PER_SOL
+              : currentPool.maxPayout / Math.pow(10, selectedToken.decimals)}
           </p>
         </div>
       </div>

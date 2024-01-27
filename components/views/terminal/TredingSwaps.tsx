@@ -38,7 +38,7 @@ const TrendingSwaps: FC<TrendingSwapsProps> = React.memo(({ className }) => {
         )}
       >
         <div className=" text-black">
-          <Badge className="w-[150px] h-[27px] rounded-lg inline-flex items-center border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 ">
+          <Badge className=" h-[27px] rounded-lg guac-bg inline-flex items-center border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent  text-primary-foreground hover:bg-primary/80 ">
             Trending Swaps
           </Badge>
           {/* <Select
@@ -181,7 +181,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
   }, [token]);
 
   return (
-    <div className="hover:border-2 px-3 py-[10px] rounded-[8px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full cursor-pointer">
+    <div className="hover:border-2 px-3 py-[10px] rounded-[8px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full cursor-pointer border-[rgba(168, 168, 168, 0.10)] border">
       <div className="flex flex-row items-center  gap-2 lg:gap-5">
         <FallbackImage
           src={

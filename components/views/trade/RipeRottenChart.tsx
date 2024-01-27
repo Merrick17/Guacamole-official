@@ -78,7 +78,7 @@ const RipeRottenCandleChart = () => {
 
   return (
     <>
-      <div id={containerId.current} style={{ height: "100%", width: "100%" }} />
+      <div id={containerId.current} style={{ height: "100%", width: "100%" }} className="border"/>
       <Script
         src="https://s3.tradingview.com/tv.js"
         strategy="lazyOnload"

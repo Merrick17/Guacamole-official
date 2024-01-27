@@ -35,10 +35,10 @@ const YieldInfo: FunctionComponent<YieldInfoProps> = ({
     >
       <div className="w-full flex items-center justify-between text-black">
         <div className=" text-black">
-          <Badge>Liquidity Pools</Badge>
+          <Badge className="guac-bg">Liquidity Pools</Badge>
         </div>
         <Badge
-          className="rounded-lg"
+          className="rounded-lg earn-bg"
           style={{
             backgroundColor: AccentColors.red,
           }}
@@ -82,13 +82,12 @@ const PoolItem: FunctionComponent<PoolItemProps> = ({
   info,
 }) => {
   const [open, setOpen] = useState(false);
-  const { selectedToken } = useSelectedToken();
 
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="w-full cursor-pointer ">
-          <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full">
+          <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full border-[rgba(168, 168, 168, 0.10)] border">
             <div className="text-xs  flex items-start gap-[10px]">
               <div className="text-xs  flex items-start flex-col gap-2">
                 <h1 className="font-medium">{name}</h1>

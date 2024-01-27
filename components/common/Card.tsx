@@ -14,7 +14,7 @@ export function Card({
 }: Props) {
   return (
     <div
-      className="group relative bg-foreground shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] shadow-lg rounded-[10px] flex flex-col  max-h-full transition-[height] duration-200 ease-in-out overflow-hidden flex-grow-0 flex-shrink-0 items-center justify-center"
+      className="group relative bg-background shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] shadow-lg rounded-[10px] flex flex-col  max-h-full transition-[height] duration-200 ease-in-out overflow-hidden flex-grow-0 flex-shrink-0 items-center justify-center"
       style={{ width, height }}
     >
       {children}

@@ -110,10 +110,10 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
       )}
     >
       <div className="w-full flex items-center justify-between text-black">
-        {/* <Badge variant="default" className="rounded-lg">
+        <Badge variant="default" className="rounded-lg guac-bg">
           Solana TVL Rankings
-        </Badge> */}
-        <div className=" text-black">
+        </Badge>
+        {/* <div className=" text-black">
           <Select
             defaultValue="tvl"
             value={selectedValue}
@@ -131,14 +131,14 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
               </SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
         <Badge
-          className="rounded-lg"
+          className="rounded-lg earn-bg"
           style={{
             backgroundColor: AccentColors.red,
           }}
         >
-          <Link href={"/earn/explore"}>Start Earning</Link>
+          <Link href={"/earn/explore"}>Start Liquid Staking</Link>
         </Badge>
       </div>
       <div className="flex flex-col gap-[10px] w-full max-h-[530px] overflow-auto no-scrollbar">
@@ -179,26 +179,6 @@ const SolanaTvlRanking: FunctionComponent<SolanaTvlRankingProps> = ({
   );
 };
 
-const topNfts = [
-  {
-    price: "1,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 1",
-    floor: "0.5",
-  },
-  {
-    price: "2,500.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 2",
-    floor: "1.2",
-  },
-  {
-    price: "5,000.00",
-    image: "/images/solscan.png",
-    title: "NFT Collection 3",
-    floor: "2.5",
-  },
-];
 
 type TopNftCollectionItemProps = {
   price: string;
@@ -227,7 +207,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
             setOpen(true);
           }}
         >
-          <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full">
+          <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full border border-[rgba(168, 168, 168, 0.10)]">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
                 <FallbackImage
@@ -344,7 +324,7 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
             setOpen(true);
           }}
         >
-          <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full">
+          <Container className="hover:border-2 cursor-pointer px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full border border-[rgba(168, 168, 168, 0.10)]">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
                 <FallbackImage src={image} fill alt={title} className="rounded-[5px]" />
@@ -407,7 +387,7 @@ const TopYieldItem: FunctionComponent<TopNftCollectionItemProps> = ({
         </div>
         <DialogFooter className="border-t-2 py-3 justify-center items-center flex w-full border-[#FFFFF]">
           <Button
-            className="w-full"
+            className="w-full guac-bg"
             onClick={() => {
               if (typeof window !== "undefined") {
                 window.open(item.poolInfo.url, "blank");

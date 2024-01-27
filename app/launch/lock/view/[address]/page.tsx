@@ -123,7 +123,7 @@ const Page = () => {
             Lock liquidity
           </Button>
         </div>
-        <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F]">
           <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[14px]">
             {selectedPool

@@ -70,14 +70,14 @@ const GameDisclaimer = () => {
           </div>
           <div className="flex w-full justify-evenly p-[24px]">
             <AlertDialogAction
-              className="bg-[#ABD8AE] !ml-0 w-[150px]"
+              className="guac-bg !ml-0 w-[150px]"
               disabled={!isAccepted}
               onClick={save}
             >
               Confirm
             </AlertDialogAction>
             <AlertDialogAction
-              className="bg-[#FF8B8B] !ml-0 w-[150px]"
+              className="earn-bg !ml-0 w-[150px]"
               onClick={() => {
                 router.replace("/");
               }}

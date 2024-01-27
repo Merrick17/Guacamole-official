@@ -22,22 +22,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
   const params = useParams();
   const adr: any = params["address"];
   const { isLoading, data } = useTokenData(adr);
-  const calculateTotalPercentage = () => {
-    let totalPercentage = 0;
 
-    try {
-      if (tokenInfo) {
-        totalPercentage = tokenInfo.holders
-          .slice(0, 10)
-          .reduce((accumulator, elm) => {
-            const percentage =
-              (elm.amount / tokenInfo.totalSupply.uiAmount) * 100;
-            return accumulator + percentage;
-          }, 0);
-      }
-    } catch (error) {}
-    return totalPercentage;
-  };
   return (
     <>
       <Container
@@ -48,11 +33,11 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
       >
         <div className="flex items-center justify-between">
           <div className=" text-black">
-            <Badge>Risks & Safety</Badge>
+            <Badge className="guac-bg">Risks & Safety</Badge>
           </div>
           <div className=" text-black">
             <Badge
-              className="bg-[#BBB0DB] cursor-pointer"
+              className="trade-bg cursor-pointer"
               onClick={() => {
                 if (typeof window !== "undefined") {
                   window.open(
@@ -65,9 +50,12 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
             </Badge>
           </div>
         </div>
-        <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
+        <div className="flex flex-col items-start justify-start space-y-4 border rounded-xl p-3">
           <h1 className="text-[12px] text-[#FCFCFC] ">
-            Risk Analysis - Via Rugcheck.xyz
+            Risk Analysis -{" "}
+            <Link href={`https://rugcheck.xyz/tokens/${adr}`} target="_blank" className="underline">
+              Via Rugcheck.xyz
+            </Link>
           </h1>
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
             <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -82,11 +70,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               Mintable
             </div>
             <div
-              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data && data["_mint"]["MintAuthority"]
-                  ? " text-[#8BD796]"
-                  : "text-[#FF8F8F]"
-              }`}
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap`}
             >
               {!isLoading && data && data["_mint"]["MintAuthority"]
                 ? "Yes"
@@ -98,11 +82,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               Mint Authority
             </div>
             <div
-              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data && data["_mint"]["MintAuthority"]
-                  ? " text-[#8BD796]"
-                  : "text-[#FF8F8F]"
-              }`}
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap `}
             >
               {!isLoading && data && data["_mint"]["MintAuthority"]
                 ? abbreviate(data["_mint"]["MintAuthority"])
@@ -114,11 +94,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               Mutable Info
             </div>
             <div
-              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data && data.report["metadata"]["mutable"]
-                  ? "text-[#FF8F8F]"
-                  : "text-[#8BD796]"
-              }`}
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap `}
             >
               {!isLoading && data && data.report["metadata"]["mutable"]
                 ? "Yes"
@@ -130,11 +106,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               Freeze Authority
             </div>
             <div
-              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data && data["_mint"]["FreezeAuthority"]
-                  ? " text-[#8BD796]"
-                  : "text-[#FF8F8F]"
-              }`}
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap `}
             >
               {!isLoading && data && data["_mint"]["FreezeAuthority"]
                 ? "Yes"
@@ -146,11 +118,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               Jupiter Verified
             </div>
             <div
-              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading && data && data.report["jupiterVerified"]
-                  ? " text-[#8BD796]"
-                  : "text-[#FF8F8F]"
-              }`}
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap `}
             >
               {!isLoading && data && data.report["jupiterVerified"]
                 ? "Yes"
@@ -162,14 +130,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
               Known Scammer
             </div>
             <div
-              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${
-                !isLoading &&
-                data &&
-                data.report["creator"] &&
-                data.report["creator"]["knownScammer"]
-                  ? " text-[#8BD796]"
-                  : "text-[#FF8F8F]"
-              }`}
+              className={` max-w-full overflow-hidden text-ellipsis whitespace-nowrap `}
             >
               {!isLoading &&
               data &&
@@ -181,7 +142,7 @@ const RiskSafety: FC<RiskSafetyProps> = ({ className }) => {
           </div>
         </div>
         {!isLoading ? (
-          <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
+          <div className="flex flex-col items-start justify-start space-y-4 border rounded-xl p-3">
             <h1 className="text-[12px] text-[#FCFCFC] ">
               Top Holder Information
             </h1>

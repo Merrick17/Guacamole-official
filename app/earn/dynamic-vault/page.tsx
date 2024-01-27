@@ -21,7 +21,7 @@ const Page = () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/earn/dynamic-lending-vaults"
           hideSecondBtn
         />
-        <hr className="border-dashed border-background" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <VaultItemsContainer />
         <EarnFooter />
       </div>

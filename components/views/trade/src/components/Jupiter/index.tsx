@@ -541,12 +541,12 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                 } text-primary-foreground hover:!bg-primary`}
                 size="sm"
               >
-                View tutorial
+                Tutorial
               </Button>
             </Link>
           </div>
         </div>
-        <Separator className="mt-5" />
+        <Separator className="mt-5 bg-[#A8A8A8] opacity-30"  />
 
         <div className="mt-4 flex flex-col justify-between gap-2 px-2">
           <div className="flex items-center justify-end  sm:justify-between">
@@ -561,7 +561,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
             />
           </div>
           {inputTokenInfo ? (
-            <div className="flex flex-col gap-4 rounded-xl bg-background p-2  sm:p-4 ">
+            <div className="flex flex-col gap-4 rounded-xl bg-background p-2  sm:p-4 border border-[rgba(168, 168, 168, 0.10)] ">
               <div className="flex flex-col w-full sm:flex-row items-center  gap-2 rounded-lg   text-white">
                 <div className=" w-full rounded-xl">
                   <SelectCoin
@@ -594,7 +594,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
           )}
           <div className="flex w-full flex-row justify-center ">
             <div
-              className="h-[32px] w-[32px] cursor-pointer rounded-lg bg-background  p-2"
+              className="h-[32px] w-[32px] cursor-pointer rounded-lg bg-background  p-2 border border-[rgba(168, 168, 168, 0.10)]"
               onClick={handleSwitch}
             >
               <HiOutlineSwitchVertical className=" h-full w-full rotate-45  text-white  " />
@@ -612,7 +612,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
                   solBalance={solBalance}
                 />
               </div>
-              <div className=" flex flex-col gap-4 rounded-xl bg-background p-2  sm:p-4  ">
+              <div className=" flex flex-col gap-4 rounded-xl bg-background p-2  sm:p-4 border border-[rgba(168, 168, 168, 0.10)] ">
                 <div className=" flex w-full flex-col sm:flex-row items-center gap-2 rounded-lg ">
                   <div className="w-full  rounded-xl">
                     <SelectCoin
@@ -673,15 +673,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = ({ showDetails }) => {
               <Button
                 onClick={handleSwap}
                 disabled={swapping || !loaded || !hasRoute}
-                className={`flex ${
-                  pathname.includes("trade")
-                    ? "bg-primary"
-                    : "bg-[#BBB0DB] trade-bg"
-                } hover:${
-                  pathname.includes("trade")
-                    ? "!bg-primary"
-                    : "!bg-[#BBB0DB] trade-bg"
-                } text-primary-foreground items-center justify-center w-full py-5 h-14`}
+                className={`flex trade-bg text-primary-foreground items-center justify-center w-full py-5 h-14`}
               >
                 {swapping ? (
                   <div className="flex flex-row justify-center text-black">

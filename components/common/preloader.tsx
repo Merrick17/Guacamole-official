@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
 import { useTransitionContext } from "@/context/transition-context";
+import { cn } from "@/lib/utils";
 import { gsap } from "gsap";
+import Image from "next/image";
+import { useLayoutEffect, useRef } from "react";
 
 const Preloader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -51,6 +51,7 @@ const Preloader = () => {
         height={50}
         className="img opacity-10"
         alt="green"
+        loading="lazy"
       />
       <Image
         src="/images/themes/violet.png"
@@ -58,6 +59,7 @@ const Preloader = () => {
         height={50}
         className="img opacity-10"
         alt="violet"
+        loading="lazy"
       />
       <Image
         src="/images/themes/orange.png"
@@ -65,6 +67,7 @@ const Preloader = () => {
         height={50}
         className="img opacity-10"
         alt="orange"
+        loading="lazy"
       />
       <Image
         src="/images/themes/yellow.png"
@@ -72,6 +75,7 @@ const Preloader = () => {
         height={50}
         className="img opacity-10"
         alt="yellow"
+        loading="lazy"
       />
       <Image
         src="/images/themes/white.png"
@@ -79,6 +83,7 @@ const Preloader = () => {
         height={50}
         className="img opacity-10"
         alt="white"
+        loading="lazy"
       />
       <Image
         src="/images/themes/red.png"
@@ -86,6 +91,7 @@ const Preloader = () => {
         height={50}
         alt="red"
         className="img opacity-10"
+        loading="lazy"
       />
     </div>
   );

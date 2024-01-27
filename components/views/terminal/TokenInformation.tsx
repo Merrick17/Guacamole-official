@@ -348,11 +348,11 @@ const TokenInformation = ({ className }) => {
     >
       <div className="flex items-center justify-between">
         <div className=" text-black">
-          <Badge>Token Information</Badge>
+          <Badge className="guac-bg">Token Information</Badge>
         </div>
         <div className=" text-black">
           <Badge
-            className="bg-[#BBB0DB] cursor-pointer"
+            className="trade-bg cursor-pointer"
             onClick={() => {
               if (typeof window !== "undefined") {
                 window.open(
@@ -366,7 +366,7 @@ const TokenInformation = ({ className }) => {
           </Badge>
         </div>
       </div>
-      <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
+      <div className="flex flex-col items-start justify-start space-y-4 border  rounded-xl p-3">
         <h1 className="text-[12px] text-[#FCFCFC] mb-2">Token Overview</h1>
         <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">
           <div className="text-muted-foreground max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -482,7 +482,7 @@ const TokenInformation = ({ className }) => {
           <Skeleton className="w-full min-h-[10px]" />
         )}
       </div>
-      <div className="flex flex-col items-start justify-start space-y-4 border border-background rounded-xl p-3">
+      <div className="flex flex-col items-start justify-start space-y-4 border  rounded-xl p-3">
         <h1 className="text-[12px] text-[#FCFCFC] mb-2">Market Information</h1>
         {!isLoading && data && data.report ? (
           <div className="flex items-center justify-between text-xs  text-muted-foreground w-full ">

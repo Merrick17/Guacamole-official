@@ -22,7 +22,7 @@ const ExploreCardContent: FunctionComponent<ExploreCardContentProps> = ({
       )}
       {...props}
     >
-      <Button className="guac-btn w-[131px]  absolute z-20 top-5 right-3 p-3">
+      <Button className="guac-btn w-[131px] h-[32px] absolute z-20 top-3 right-3 p-3">
         Indepth Insights
       </Button>
       <Image

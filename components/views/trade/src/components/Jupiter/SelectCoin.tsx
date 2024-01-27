@@ -85,7 +85,7 @@ const Row = ({
               pathname + "?" + createQueryString("outputMint", info.address)
             );
       }}
-      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-background  "
+      className="flex items-center justify-start gap-4 w-full rounded-xl p-3 bg-[#0F0F0F] border border-[rgba(168, 168, 168, 0.10)]"
     >
       <FallbackImage
         src={info.logoURI as string}
@@ -122,7 +122,7 @@ const Row = ({
 
 const Coin = ({ tokenInfo }: { tokenInfo: TokenInfo }) => {
   return (
-    <div className="flex flex-row items-center justify-start rounded-xl  bg-foreground text-white px-3 py-2">
+    <div className="flex flex-row items-center justify-start rounded-xl  bg-foreground text-white px-3 py-2 border border-[rgba(168, 168, 168, 0.10)]">
       <FallbackImage
         src={tokenInfo?.logoURI as string}
         onError={({ currentTarget }) => {
@@ -223,7 +223,7 @@ export const SelectCoin = ({
         <Coin tokenInfo={tokenInfo} />
       </DialogTrigger>
 
-      <DialogContent closeBtn={false}>
+      <DialogContent closeBtn={false} className="bg-[#141414]">
         <DialogHeader>
           <DialogTitle>
             <div className="relative">
@@ -242,7 +242,7 @@ export const SelectCoin = ({
               type="text"
               id="search-token"
               placeholder="Search"
-              className=" mt-4  w-full rounded-xl !border-none !bg-background  text-xs placeholder:text-muted-foreground !outline-none sm:text-lg p-2"
+              className=" mt-4  w-full rounded-xl  !bg-background  text-xs placeholder:text-muted-foreground !outline-none sm:text-lg p-2 border border-[rgba(168, 168, 168, 0.10)]"
               spellCheck={false}
             />
           </DialogDescription>
@@ -251,7 +251,7 @@ export const SelectCoin = ({
         <PaginatedItems
           items={originalList}
           handleSelect={handleSelect}
-          itemsPerPage={50}
+          itemsPerPage={3000}
           isInput={isInput}
         />
       </DialogContent>
@@ -283,7 +283,7 @@ function PaginatedItems({ itemsPerPage, items, handleSelect, isInput }) {
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  //console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = items.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(items.length / itemsPerPage);
 
@@ -306,7 +306,7 @@ function PaginatedItems({ itemsPerPage, items, handleSelect, isInput }) {
         />
       </DialogDescription>
       <DialogFooter className="w-full">
-        <ReactPaginate
+        {/* <ReactPaginate
           breakLabel="..."
           nextLabel={
             <Button
@@ -335,7 +335,7 @@ function PaginatedItems({ itemsPerPage, items, handleSelect, isInput }) {
             "flex justify-center items-center h-8 p-2 rounded-xl  cursor-pointer hover:bg-slate-100 hover:text-slate-900 "
           }
           activeClassName="bg-slate-100 text-slate-900"
-        />
+        /> */}
       </DialogFooter>
     </>
   );

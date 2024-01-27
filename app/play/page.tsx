@@ -2,8 +2,10 @@ import ColorBlocks from "@/components/common/color-block";
 import GameLiquidityComponent from "@/components/views/play/explorer/GameLiquidityComponent";
 import MainPlayComponent from "@/components/views/play/explorer/MainPlayComponent";
 import PlayDiceCardComponent from "@/components/views/play/explorer/PlayDiceCardComponent";
+import PlayFlipCardComponent from "@/components/views/play/explorer/PlayFlipCardComponent";
 import PlayHiloCardComponent from "@/components/views/play/explorer/PlayHiloCardComponent";
 import PlayMinesCardComponent from "@/components/views/play/explorer/PlayMinesCardComponent";
+import PlayPlinkoCardComponent from "@/components/views/play/explorer/PlayPlinkoCardComponent";
 import PlaySlotsCardComponent from "@/components/views/play/explorer/PlaySlotsCardComponent";
 import routes from "@/config/routes";
 import { cn } from "@/lib/utils";
@@ -66,11 +68,13 @@ const Page: FC = () => {
       >
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
           <MainPlayComponent className="col-span-1 md:col-span-2" />
+          <PlayFlipCardComponent className=" hover:border-[#FCED7B]" />
           <PlayDiceCardComponent className=" hover:border-[#FCED7B]" />
+          <PlayPlinkoCardComponent className=" hover:border-[#FCED7B]" />
           <PlaySlotsCardComponent className=" hover:border-[#FCED7B]" />
           <PlayHiloCardComponent className=" hover:border-[#FCED7B]" />
           <PlayMinesCardComponent className=" hover:border-[#FCED7B]" />
-          <GameLiquidityComponent className="col-span-1 md:col-span-2 hover:border-[#FCED7B]" />
+          {/* <GameLiquidityComponent className="col-span-1 md:col-span-2 hover:border-[#FCED7B]" /> */}
 
           {/* {lg:h-[560px]} */}
           {/* <div className="grid grid-cols-1 lg:grid-cols-8    gap-[60px] h-full  overflow-hidden">

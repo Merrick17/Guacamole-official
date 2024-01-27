@@ -37,7 +37,7 @@ const Page = async () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/earn/liquid-solana-staking"
           hideSecondBtn
         /> */}
-        <hr className="border-dashed border-background" />
+      <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <Container className="p-5 font-medium bg-background flex flex-col justify-center items-center gap-1">
           <p className="text-[#FFFF] text-3xl">Solana Play Pool</p>
           <h1 className=" text-[#A8A8A8] text-[20px]">

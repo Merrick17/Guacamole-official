@@ -18,7 +18,7 @@ const EmergencySend = () => {
         title="Emergency Send Tool"
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/emergency-send"
       />
-      <hr className="border-dashed border-[#E5E7EB]" />
+   <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
       <div className="text-muted-foreground text-sm font-normal">
         <p>
           This tool will send all tokens and NFTs in a wallet to a new address

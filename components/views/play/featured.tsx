@@ -13,7 +13,7 @@ const Featured: FC = () => {
   const gamba = useGamba();
 
   return (
-    <div className="flex max-w-[512px] w-full flex-col gap-4 rounded-lg ">
+    <div className="flex max-w-[700px] w-full flex-col gap-4 rounded-lg ">
       <div className="flex flex-row gap-[10px] overflow-auto px-0">
         <Section>
           <Slider>

@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { abbreviate } from "@bonfida/hooks";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -20,20 +21,22 @@ const Page = () => {
 
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md border border-[rgba(168, 168, 168, 0.10)] ">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <div className="w-[153px] text-black font-semibold">
             <Select
-              defaultValue="token"
+              defaultValue="avotars"
               onValueChange={(val) => {
                 switch (val) {
                   case "token":
                     router.push("/explore/guac-token");
+                    break;
                   case "avotars":
                     router.push("/explore/avotars");
+                    break;
                   case "shop":
                     router.push("/explore/shop");
-
+                    break;
                   default:
                     break;
                 }
@@ -58,7 +61,7 @@ const Page = () => {
             Scoop The Dip
           </Button>
         </div>
-        <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <div className="text-[#FFF] w-full flex items-center justify-center gap-1 text-[24px]">
             GUAC & The AvocaDAO
@@ -66,13 +69,19 @@ const Page = () => {
         </div>
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[14px]">
-            Official Token Address::{" "}
+            Official Token Address:{" "}
             <Link
-              href={`https://solscan.io/account/${poolAdr}`}
+              href={`https://solscan.io/account/AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR`}
               className="text-[#8BD796] "
+              target="_blank"
             >
               <div className="flex items-center justify-center gap-1 flex-nowrap">
-                <span>{}</span>
+                <span>
+                  {abbreviate(
+                    "AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR",
+                    4
+                  )}
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="10"
@@ -104,7 +113,11 @@ const Page = () => {
               Explore our documentation for official links, tokenomics, and
               everything else you need to know!
             </p>
-            <Link href={""} className="flex items-start  gap-2">
+            <Link
+              href={"https://docs.guacamole.gg/guacamole-guac/guac-token"}
+              className="flex items-start  gap-2"
+              target="_blank"
+            >
               <span className="text-[#70D87D] text-[16px]">
                 Open Documentation
               </span>
@@ -140,7 +153,13 @@ const Page = () => {
             Excited about using that GUAC? We created a complete catalog of
             native and third-party integrations to make it simpler.
           </p>
-          <Link href={""} className="flex items-start  gap-2">
+          <Link
+            href={
+              "https://docs.guacamole.gg/guacamole-guac/guac-token/native-integrations"
+            }
+            target="_blank"
+            className="flex items-start  gap-2"
+          >
             <span className="text-[#70D87D] text-[16px]">
               View Complete List
             </span>
@@ -175,7 +194,13 @@ const Page = () => {
             Guacamole is decentralized and funds objectives through governance
             proposals and community votes. Come participate and help out!
           </p>
-          <Link href={""} className="flex items-start  gap-2">
+          <Link
+            href={
+              "https://app.realms.today/dao/Ha56K8MGrJuiJSyK2UaYRpAf7Hu2BZw2XALEmW9EQemu"
+            }
+            className="flex items-start  gap-2"
+            target="_blank"
+          >
             <span className="text-[#70D87D] text-[16px]">
               Open AvocaDAO On Realms
             </span>

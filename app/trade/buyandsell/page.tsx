@@ -9,13 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import NavigationList from "@/components/ui/navigation-list";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import BuyAndSellDialog from "@/components/views/trade/buyandsell/BuyAndSellDialog";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -27,38 +21,18 @@ const Page = () => {
   const router = useRouter();
   const poolAdr = "";
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isBuyDialogOpen, setIsBuyDialogOpen] = useState<boolean>(false);
 
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-2xl ">
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] ">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <div className="w-[153px] text-black font-semibold">
-            {/* <Select
-              defaultValue="token"
-              onValueChange={(val) => {
-                switch (val) {
-                  case "token":
-                    router.push("/explore/guac-token");
-                  case "avotars":
-                    router.push("/explore/avotars");
-                  case "shop":
-                    router.push("/explore/shop");
-
-                  default:
-                    break;
-                }
-              }}
-            >
-              <SelectTrigger className="rounded-lg h-[30px] flex flex-2 gap-2 guac-btn">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="token">The GUAC Token </SelectItem>
-                <SelectItem value="avotars">The Avotars </SelectItem>
-                <SelectItem value="shop">Earn & Shop</SelectItem>
-              </SelectContent>
-            </Select> */}
             <NavigationList filter="Trade" />
+            <BuyAndSellDialog
+              isOpen={isBuyDialogOpen}
+              handleOpenChange={setIsBuyDialogOpen}
+            />
           </div>
           <Button className="rounded-lg h-[30px] trade-bg">
             <Link
@@ -68,7 +42,7 @@ const Page = () => {
             </Link>
           </Button>
         </div>
-        <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <div className="text-[#FFF] w-full flex items-center justify-center gap-1 text-[24px] text-wrap">
             Buy, Sell, And Use Crypto
@@ -89,7 +63,14 @@ const Page = () => {
               We’ve partnered with Kado.Money to allow you to easily fund your
               connected Solana wallet or offramp funds back to your bank.
             </p>
-            <Link href={""} className="flex items-start  gap-2">
+            <Link
+              href={""}
+              className="flex items-start  gap-2"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsBuyDialogOpen(true);
+              }}
+            >
               <span className="text-[#B8ABDD] text-[16px] text-wrap">
                 Buy And Sell Crypto
               </span>
@@ -192,16 +173,6 @@ const Page = () => {
                   }}
                 >
                   Open Zebec
-                </Button>
-                <Button
-                  className="w-[160px] earn-bg"
-                  onClick={() => {
-                    if (typeof window !== "undefined") {
-                      // window.open(item.poolInfo.url, "blank");
-                    }
-                  }}
-                >
-                  Stay On Guacamole
                 </Button>
               </DialogFooter>
             </DialogContent>

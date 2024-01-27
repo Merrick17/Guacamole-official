@@ -58,16 +58,7 @@ const VaultItemsContainer = () => {
               >
                Open MarginFi
               </Button>
-              <Button
-                className="w-[160px] earn-bg"
-                onClick={() => {
-                  if (typeof window !== "undefined") {
-                    // window.open(item.poolInfo.url, "blank");
-                  }
-                }}
-              >
-                Stay On Guacamole
-              </Button>
+            
             </DialogFooter>
           </DialogContent>
         </Dialog>{" "}

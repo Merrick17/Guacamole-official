@@ -1,20 +1,22 @@
 "use client";
 import { Links } from "@/config/links";
-import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { BsChevronDown } from "react-icons/bs";
+import { cn } from "@/lib/utils";
+import { Menu } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { Fragment, useEffect } from "react";
 
 export function MenuItems() {
   const pathname = usePathname();
   const router = useRouter();
+  useEffect(() => {
+    
+  }, [pathname]);
   return (
     <div className="flex items-center gap-[30px] text-muted-foreground p-2  rounded-lg">
       {Links.filter((item) => !item.hide).map((item, index) => {
         const isActive = pathname !== item.href && pathname.includes(item.href);
-
+        console.log("Item", item.href == pathname);
         return (
           <Fragment key={item.name + index}>
             {item.dropdownItems ? (

@@ -6,7 +6,7 @@ interface FooterProps {}
 
 const Footer: FC<FooterProps> = () => {
   return (
-    <div className="bg-foreground px-10 py-3 max-sm:pb-12 flex flex-col lg:flex-row justify-between gap-4 text-mutebg-muted-foreground pb-12 md:pb-3">
+    <div className="bg-foreground px-10 py-3 max-sm:pb-12 flex flex-col lg:flex-row justify-center gap-4 text-mutebg-muted-foreground pb-12 md:pb-3">
       <ul className="flex flex-col lg:flex-row lg:items-center gap-2 text-sm">
         <Link
           href="https://docs.guacamole.gg/"
@@ -68,7 +68,7 @@ const Footer: FC<FooterProps> = () => {
           Disclaimer{" "}
         </Link>
       </ul>
-      <div className="flex flex-row justify-center lg:items-center gap-8">
+      {/* <div className="flex flex-row justify-center lg:items-center gap-8">
         <Link
           href={"https://x.com/guac_gg"}
           rel="noopener noreferrer"
@@ -108,7 +108,7 @@ const Footer: FC<FooterProps> = () => {
             alt="discord"
           />
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };

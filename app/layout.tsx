@@ -1,4 +1,5 @@
-import Disclaimer from "@/components/ui/disclaimer";
+import DisclaimerMain from "@/components/common/DisclaimerMain";
+import Preloader from "@/components/common/preloader";
 import Footer from "@/components/ui/footer";
 import Header from "@/components/ui/header";
 import LeftSideUtility from "@/components/ui/left-side-utility";
@@ -10,10 +11,8 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import React from "react";
 import "./globals.css";
-import Preloader from "@/components/common/preloader";
-import DisclaimerDialog from "@/components/common/DisclaimerDialog";
-import DisclaimerConfirm from "@/components/common/DisclaimerConfirm";
-import DisclaimerMain from "@/components/common/DisclaimerMain";
+import { Analytics } from '@vercel/analytics/react';
+//bg-[url('/images/home/Guacamole_BG_Image_v2_1.png')] bg-cover bg-no-repeat"
 export const metadata: Metadata = {
   title: " A Fresh Solana Experience | Guacamole",
   description:
@@ -40,13 +39,14 @@ export default function RootLayout({
               <Header />
               {/* <WalletDrawer /> */}
               <LeftSideUtility />
-              <div className=" min-h-screen relative bg-[url('/images/home/Guacamole_BG_Image_v2_1.png')] bg-cover bg-no-repeat">
+              <div className=" min-h-screen relative ">
                 <div className="z-10">{children}</div>
+                <Analytics />
               </div>
               <Footer />
             </ContextProvider>
             <Toaster />
-            <Preloader key={"perloader"} />
+            {/* <Preloader key={"perloader"} /> */}
           </TransitionContextProvider>
         </Themes>
       </body>

@@ -58,8 +58,7 @@ const BridgeSwapContent: FunctionComponent<BridgeSwapContentProps> = ({
           <h1 className=" text-lg md:text-xl font-medium">Bridge Swap</h1>
         </header>
         <p className=" text-center sm:max-w-xs text-muted-foreground text-sm  h-9 overflow-hidden text-ellipsis  ">
-          Bridge your ETH, BNB, AVAX, and ARB to Solana and pick up tokens like
-          GUAC.
+          Bridge your ETH, BNB, AVAX, and ARB to Solana for tokens like GUAC.
         </p>
       </div>
       <div className="relative ">

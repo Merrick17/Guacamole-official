@@ -60,14 +60,14 @@ const TopNftCollections: FunctionComponent<TopNftCollectionsProps> = ({
       )}
     >
       <div className="w-full flex items-center justify-between text-black">
-        <Badge variant="default" className="rounded-lg">
+        <Badge variant="default" className="rounded-lg guac-bg">
           Trending NFT Collections
         </Badge>
 
         <Dialog>
           <DialogTrigger asChild>
             <Badge
-              className="rounded-lg cursor-pointer"
+              className="rounded-lg cursor-pointer trade-bg"
               style={{
                 backgroundColor: AccentColors.violet,
               }}
@@ -187,7 +187,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
             setOpen(true);
           }}
         >
-          <Container className="hover:border-2 px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full cursor-pointer">
+          <Container className="hover:border-2 px-3 py-[10px] bg-background hover:border-primary flex items-center justify-between gap-4 w-full cursor-pointer border border-[rgba(168, 168, 168, 0.10)]">
             <div className="text-xs  flex items-center gap-[10px]">
               <div className="w-9 h-9 rounded-[5px] relative">
                 <FallbackImage
@@ -234,7 +234,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center w-full my-2">
+          <div className="flex justify-between items-center w-full my-2 ">
             <p className="text-muted-foreground text-xs ">Floor: </p>
             <p className="text-muted-foreground text-xs "> {floor} SOL</p>
           </div>
@@ -268,7 +268,7 @@ const TopNftCollectionItem: FunctionComponent<TopNftCollectionItemProps> = ({
         </div>
         <DialogFooter className="border-t-2 py-3 justify-center items-center flex w-full border-[#FFFFF]">
           <Button
-            className="w-full"
+            className="w-full guac-bg"
             onClick={() => {
               if (typeof window !== "undefined") {
                 window.open(

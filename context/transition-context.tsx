@@ -36,7 +36,7 @@ const TransitionContextProvider = ({
         window.scrollTo(0, 0);
         router.push(path);
       }
-    }, 1000);
+    }, 500);
   };
 
   const runPreloader = () => {

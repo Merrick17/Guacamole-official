@@ -25,7 +25,7 @@ const Page = () => {
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
         <LaunchHeader tutorialLink="" />
-        <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="flex items-center gap-4 w-full">
           <Button
             className={`${selectedScreen == 1 ? "launch-bg" : ""} w-full`}

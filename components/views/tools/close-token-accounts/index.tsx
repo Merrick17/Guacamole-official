@@ -287,7 +287,7 @@ const CloseTokenAccount = () => {
         handleBurn={CloseAccounts}
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/close-empty-accounts"
       />
-      <hr className="border-dashed border-[#E5E7EB]" />
+     <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
         {emptyAccounts &&
           emptyAccounts.map((token, index) => (

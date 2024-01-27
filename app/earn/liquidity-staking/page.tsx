@@ -27,7 +27,7 @@ const Page = async () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/earn/liquid-solana-staking"
           hideSecondBtn
         />
-        <hr className="border-dashed border-background" />
+       <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[14px]">
             Explore The Benefits of Liquid Staking:{" "}

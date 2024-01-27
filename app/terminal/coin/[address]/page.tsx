@@ -17,13 +17,10 @@ import TrendingSwap from "@/components/views/trade/trending-swap";
 import { useSelectedToken } from "@/context/coin-details";
 import { cn } from "@/lib/utils";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { TokenInfo } from "@solana/spl-token-registry";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import TerminalLayout from "../../terminal";
 export default function CoinDetails() {
-
   const { selectedToken, poolDetails, selectToken } = useSelectedToken();
   const { tokenList } = useJupiterApiContext();
 
@@ -37,7 +34,7 @@ export default function CoinDetails() {
         )}
       >
         <section className="grid sm:grid-cols-1 lg:grid-cols-6 gap-10 ">
-          <div className="sm:col-span-1 lg:col-span-2 px-3  bg-foreground h-full p-1 rounded-lg">
+          <div className="sm:col-span-1 lg:col-span-2 px-3  bg-foreground h-full p-1 rounded-lg border">
             <div className="flex  flex-row items-center gap-3">
               {selectedToken && (
                 <img
@@ -57,7 +54,7 @@ export default function CoinDetails() {
                     token={selectedToken}
                     selectedToken={selectedToken}
                   />
-                  <Button size="icon" className="bg-[#BBB0DB]">
+                  <Button size="icon" className="bg-[#BBB0DB] trade-bg">
                     <BsChevronDown />
                   </Button>
                 </DropdownMenuTrigger>
@@ -166,9 +163,9 @@ export default function CoinDetails() {
               ></iframe>
             )}
           </CoinDetailsChart>
-          <TokenInformation className="sm:col-span-1 lg:col-span-2 lg:h-full bg-foreground" />
-          <RiskSafety className=" sm:col-span-1 lg:col-span-2 w-full" />
-          <YieldInfo className="sm:col-span-1 lg:col-span-2 w-full" />
+          <TokenInformation className="sm:col-span-1 lg:col-span-2 lg:h-full bg-foreground border border-[rgba(168, 168, 168, 0.10)]" />
+          <RiskSafety className=" sm:col-span-1 lg:col-span-2 w-full  border border-[rgba(168, 168, 168, 0.10)]" />
+          <YieldInfo className="sm:col-span-1 lg:col-span-2 w-full  border border-[rgba(168, 168, 168, 0.10)]" />
         </section>
       </main>
     </TerminalLayout>

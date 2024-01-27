@@ -88,10 +88,10 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
         </Modal>
       )}
       <div className="w-full bg-background p-2 rounded-lg border-[1px] border-[rgba(168, 168, 168, 0.10)]">
-        <p className="text-center text-muted-foreground">
+        <p className="text-center text-[#FAFAFA] text-[24px]">
           Dynamic {token ? token.symbol : ""} Lending Vault
         </p>
-        <p className="text-center   text-sm text-[#8BD796]">
+        <p className="text-center   text-sm text-[#8BD796] text-[20px]">
           {" "}
           {vaultInfo ? `${vaultInfo.long_apy.toFixed(3)}%` : "N/A"} APY
         </p>

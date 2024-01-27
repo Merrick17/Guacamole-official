@@ -58,8 +58,7 @@ const FutureContentCard: FunctionComponent<FutureContentCardProps> = ({
           <h1 className=" text-lg md:text-xl font-medium">Crypto Futures</h1>
         </header>
         <p className=" text-center max-w-xs text-muted-foreground text-sm h-9 overflow-hidden text-ellipsis ">
-          Use margin to trade gamified perpetual futures markets for BTC, ETH,
-          SOL, and more.
+          Use margin to trade gamified perpetual futures markets for Solana.
         </p>
       </div>
       <div className="relative ">

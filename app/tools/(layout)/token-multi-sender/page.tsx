@@ -20,7 +20,7 @@ const TokenMultiSender = () => {
           title="Token Multi Sender"
           tutorialLink="https://docs.guacamole.gg/products-and-features/tools/token-multi-sender"
         />
-        <hr className="border-dashed border-[#E5E7EB]" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="flex flex-col gap-3">
           <Banner
             title="1 Token To Multiple Wallets"
@@ -42,7 +42,7 @@ const TokenMultiSender = () => {
           />
         </div>
 
-        <hr className="border-dashed border-[#E5E7EB]" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <p className="text-center text-muted-foreground text-sm ">
           Select one of the token multi send options above to proceed. All multi
           send options support public addresses, .sol domains, and the new ANS

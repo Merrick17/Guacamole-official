@@ -317,7 +317,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
         tutorialLink="https://docs.guacamole.gg/products-and-features/earn/dynamic-lending-vaults"
         viewAll={true}
       />
-      <hr className="border-dashed border-background" />
+  <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
 
       <StatisticsForms
         uiState={uiState}

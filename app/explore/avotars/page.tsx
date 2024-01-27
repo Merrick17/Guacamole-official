@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { abbreviate } from "@bonfida/hooks";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -16,11 +17,10 @@ import { useRouter } from "next/navigation";
 dayjs.extend(relativeTime);
 const Page = () => {
   const router = useRouter();
-  const poolAdr = "";
 
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-2xl ">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md border border-[rgba(168, 168, 168, 0.10)] ">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <div className="w-[153px] text-black font-semibold">
             <Select
@@ -29,11 +29,13 @@ const Page = () => {
                 switch (val) {
                   case "token":
                     router.push("/explore/guac-token");
+                    break;
                   case "avotars":
                     router.push("/explore/avotars");
+                    break;
                   case "shop":
                     router.push("/explore/shop");
-
+                    break;
                   default:
                     break;
                 }
@@ -49,16 +51,13 @@ const Page = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button
-            className="rounded-lg h-[30px] guac-btn"
-            onClick={() => {
-              router.push("/launch/lock/create");
-            }}
-          >
-            Scoop The Dip
+          <Button className="rounded-lg h-[30px] guac-btn">
+            <Link href={"https://guac.gg/avotars"} target="_blank">
+              View GUAC.GG Page
+            </Link>
           </Button>
         </div>
-        <hr className="border-dashed border-[rgba(168_168_168_0.10)]" />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <div className="text-[#FFF] w-full flex items-center justify-center gap-1 text-[24px]">
             The Avotar Collection
@@ -79,7 +78,13 @@ const Page = () => {
               Curious about these cute little avocados? Explore everything you
               need to know about our official NFT collection.
             </p>
-            <Link href={""} className="flex items-start  gap-2">
+            <Link
+              href={
+                "https://docs.guacamole.gg/guacamole-guac/guacamole-avotars"
+              }
+              target="_blank"
+              className="flex items-start  gap-2"
+            >
               <span className="text-[#70D87D] text-[16px]">
                 Open Documentation
               </span>
@@ -115,7 +120,11 @@ const Page = () => {
             Did you know that you can stake GUAC for points, which you can then
             use to redeem a random Avotar out of the staking pool?
           </p>
-          <Link href={""} className="flex items-start  gap-2">
+          <Link
+            href={"/earn/tokenized-nft-farm"}
+            target="_blank"
+            className="flex items-start  gap-2"
+          >
             <span className="text-[#70D87D] text-[16px]">
               Visit Tokenized NFT Farms
             </span>
@@ -147,7 +156,11 @@ const Page = () => {
         <Container className="bg-[#0F0F0F] hover:border-[#70D87D]  relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <h1>Trade On Tensor</h1>
 
-          <Link href={""} className="flex items-start  gap-2">
+          <Link
+            href={"https://www.tensor.trade/trade/avotar"}
+            className="flex items-start  gap-2"
+            target="_blank"
+          >
             <span className="text-[#70D87D] text-[16px]">Visit Website</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +190,11 @@ const Page = () => {
         <Container className="bg-[#0F0F0F] hover:border-[#70D87D]  relative flex-col gap-[17px] flex p-[25px] overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)] ">
           <h1>Trade On Magic Eden</h1>
 
-          <Link href={""} className="flex items-start  gap-2">
+          <Link
+            href={"https://magiceden.io/marketplace/avotar"}
+            className="flex items-start  gap-2"
+            target="_blank"
+          >
             <span className="text-[#70D87D] text-[16px]">Visit Website</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"

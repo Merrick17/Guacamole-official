@@ -217,7 +217,7 @@ export default function RecentPlays({
   return (
     <div
       className={cn(
-        "flex max-w-[512px] w-full flex-col  gap-4 rounded-lg bg-foreground p-5 shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)]",
+        "flex  w-full flex-col  gap-4 rounded-lg bg-foreground p-5 shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)]",
         className
       )}
     >

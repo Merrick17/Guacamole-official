@@ -2,6 +2,7 @@ import Featured from "@/components/views/play/featured";
 import RecentPlays from "@/components/common/recent-plays";
 
 import type { Metadata, ResolvingMetadata } from "next";
+import { cn } from "@/lib/utils";
 
 type Props = {
   params: { shortName: string };
@@ -84,11 +85,20 @@ export async function generateMetadata(
 }
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-4  px-8 py-6 md:px-16 md:py-12 ">
-      {children}
-      <Featured />
+    // <div className="flex flex-col items-center gap-4  px-8 py-6 md:px-16 md:py-12 ">
+    //   {children}
+    //   {/* <Featured /> */}
 
-      <RecentPlays />
-    </div>
+    //   {/* <RecentPlays /> */}
+    // </div>
+    <main
+      className={cn(
+        "container mx-auto my-auto flex flex-col justify-center items-center min-h-[calc(100vh-160px)] gap-12 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] "
+      )}
+    >
+      {" "}
+      {children}
+      <RecentPlays /> 
+    </main>
   );
 }

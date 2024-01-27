@@ -75,7 +75,7 @@ const Details = ({
   }, [quoteResponse]);
   return (
     <div
-      className={cn("mt-4 space-y-4 border border-background rounded-xl p-3")}
+      className={cn("mt-4 space-y-4 border border-[rgba(168, 168, 168, 0.10)] rounded-xl p-3 ")}
     >
       <div className="flex items-center justify-between text-xs ">
         <div className="text-muted-foreground">{<span>Rate</span>}</div>
