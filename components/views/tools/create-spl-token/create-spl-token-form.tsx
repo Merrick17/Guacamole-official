@@ -11,8 +11,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Image from 'next/image'
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 const formSchema = z.object({
   tokenName: z.string().min(2, {
@@ -39,16 +39,15 @@ const formSchema = z.object({
   authority: z.boolean(),
 });
 
-import { FC, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checkbox";
-import UploadToken from "./upload-token";
+import Container from "@/components/common/container";
+import { useToast } from "@/hooks/use-toast";
+import { createSPLToken } from "@/lib/tokens/create-spl-token";
 import { uploadMetaData } from "@/lib/tokens/upload-token-metadata";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { createSPLToken } from "@/lib/tokens/create-spl-token";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import Container from "@/components/common/container";
+import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import UploadToken from "./upload-token";
 interface CreateSplTokenFormProps {}
 
 const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
@@ -56,12 +55,9 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   const wallet = useWallet();
   const { publicKey } = wallet;
   const { connection } = useConnection();
-  const [createUrl, setCreateUrl] = useState<boolean>(true);
-  // state
-  const [isCreating, setIsCreating] = useState<boolean>(false);
-  const [tokenAddresss, setTokenAddresss] = useState<string>("");
-  const [signature, setSignature] = useState<string>("");
-  const [error, setError] = useState<string>("");
+
+  const { toast } = useToast();
+
   // 1- .
   const [tokenIcon, setTokenIcon] = useState<File | null>(null);
   // 2- form.
@@ -77,29 +73,144 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
       authority: false,
     },
   });
-  const handleCreateMetadata = async () => {
-    if (wallet.connected) {
-      const uri = await uploadMetaData(
-        wallet,
-        connection,
-        tokenIcon,
-        form.getValues("tokenName"),
-        form.getValues("description"),
-        form.getValues("tokenSymbol")
-      );
-      form.setValue("metadataUrl", uri);
-    } else {
-      alert("You need to connect your wallet");
-    }
-  };
+
   // 2. Define a submit handler.
+  // async function onSubmit(values: z.infer<typeof formSchema>) {
+  //   // Do something with the form values.
+  //   // ✅ This will be type-safe and validated.
+
+  //   if (!tokenIcon) return;
+  //   if (createUrl) {
+  //     const uri = await uploadMetaData(
+  //       wallet,
+  //       connection,
+  //       tokenIcon,
+  //       values.tokenName,
+  //       values.description,
+  //       values.tokenSymbol
+  //     );
+  //     const res = await createSPLToken(
+  //       publicKey,
+  //       wallet,
+  //       connection,
+  //       values.tokenSupply,
+  //       values.tokenDecimals,
+  //       values.authority,
+  //       values.tokenName,
+  //       values.tokenSymbol,
+  //       uri,
+  //       values.description,
+  //       undefined,
+  //       "url",
+  //       setIsCreating,
+  //       setTokenAddresss,
+  //       setSignature,
+  //       setError
+  //     );
+  //     console.log("Result", res);
+  //   } else {
+  //     const uri = await uploadMetaData(
+  //       wallet,
+  //       connection,
+  //       tokenIcon,
+  //       values.tokenName,
+  //       values.description,
+  //       values.description
+  //     );
+
+  //     const res = await createSPLToken(
+  //       publicKey,
+  //       wallet,
+  //       connection,
+  //       values.tokenSupply,
+  //       values.tokenDecimals,
+  //       values.authority,
+  //       values.tokenName,
+  //       values.tokenSymbol,
+  //       values.metadataUrl,
+  //       values.description,
+  //       undefined,
+  //       "url",
+  //       setIsCreating,
+  //       setTokenAddresss,
+  //       setSignature,
+  //       setError
+  //     );
+  //   }
+
+  //   //console.log("Res", res)
+  // }
+  // async function onSubmit(values: z.infer<typeof formSchema>) {
+  //   // Do something with the form values.
+  //   // ✅ This will be type-safe and validated.
+
+  //   if (!tokenIcon) {
+  //     // Handle the case when tokenIcon is not available.
+  //     return;
+  //   }
+
+  //   try {
+  //     let uri;
+  //     if (createUrl) {
+  //       uri = await uploadMetaData(
+  //         wallet,
+  //         connection,
+  //         tokenIcon,
+  //         values.tokenName,
+  //         values.description,
+  //         values.tokenSymbol
+  //       );
+  //     } else {
+  //       uri = await uploadMetaData(
+  //         wallet,
+  //         connection,
+  //         tokenIcon,
+  //         values.tokenName,
+  //         values.description,
+  //         values.metadataUrl // Assuming metadataUrl is used when createUrl is false
+  //       );
+  //     }
+
+  //     const res = await createSPLToken(
+  //       publicKey,
+  //       wallet,
+  //       connection,
+  //       values.tokenSupply,
+  //       values.tokenDecimals,
+  //       values.authority,
+  //       values.tokenName,
+  //       values.tokenSymbol,
+  //       uri,
+  //       values.description,
+  //       undefined,
+  //       "url",
+  //       setIsCreating,
+  //       setTokenAddresss,
+  //       setSignature,
+  //       setError
+  //     );
+
+  //   } catch (error) {
+  //     // Handle errors appropriately
+  //     console.error("Error:", error);
+  //     // You may want to set an error state or show a user-friendly message here
+  //     setError(error.message || "An error occurred");
+  //   }
+  // }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    if (!tokenIcon) return;
-    if (createUrl) {
-      const uri = await uploadMetaData(
+    if (!tokenIcon) {
+      // Handle the case when tokenIcon is not available.
+      return;
+    }
+
+    try {
+      let uri: string;
+
+      // Assuming metadataUrl is used when createUrl is false
+      uri = await uploadMetaData(
         wallet,
         connection,
         tokenIcon,
@@ -107,56 +218,57 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
         values.description,
         values.tokenSymbol
       );
-      const res = await createSPLToken(
-        publicKey,
-        wallet,
-        connection,
-        values.tokenSupply,
-        values.tokenDecimals,
-        values.authority,
-        values.tokenName,
-        values.tokenSymbol,
-        uri,
-        values.description,
-        undefined,
-        "url",
-        setIsCreating,
-        setTokenAddresss,
-        setSignature,
-        setError
-      );
-      console.log("Result", res);
-    } else {
-      const uri = await uploadMetaData(
-        wallet,
-        connection,
-        tokenIcon,
-        values.tokenName,
-        values.description,
-        values.description
-      );
+      // Ensure that uri is available before proceeding with createSPLToken
+      if (uri) {
+        const res = await createSPLToken(
+          publicKey,
+          wallet,
+          connection,
+          values.tokenSupply,
+          values.tokenDecimals,
+          values.authority,
+          values.tokenName,
+          values.tokenSymbol,
+          uri,
+          values.description,
+          undefined,
+          "url"
+        );
 
-      const res = await createSPLToken(
-        publicKey,
-        wallet,
-        connection,
-        values.tokenSupply,
-        values.tokenDecimals,
-        values.authority,
-        values.tokenName,
-        values.tokenSymbol,
-        values.metadataUrl,
-        values.description,
-        undefined,
-        "url",
-        setIsCreating,
-        setTokenAddresss,
-        setSignature,
-        setError
-      );
+        toast({
+          variant: "success",
+          title: "Success",
+          description: (
+            <div className="flex flex-col gap-2">
+              <p>Token Created !</p>
+              <Link
+                href={`https://solscan.io/tx/${res}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"
+              >
+                View on solscan
+              </Link>
+            </div>
+          ),
+        });
+      } else {
+        // Handle the case when the URL is not available.
+
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "URL is not available",
+        });
+      }
+    } catch (error) {
+      console.log("Errr", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
     }
-
-    //console.log("Res", res)
   }
 
   return (
@@ -340,7 +452,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </FormItem>
           )}
         /> */}
-        <Button type="submit" className="launch-bg w-full" disabled>
+        <Button type="submit" className="launch-bg w-full">
           Fill In Applicable Fields
         </Button>
         {/* <p className="text-center text-muted-foreground text-sm ">
@@ -364,7 +476,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </p>
             <Link href={""} className="flex items-start  gap-2">
               <span className="text-[#D77668] text-[16px]">
-              Click Here To Learn More
+                Click Here To Learn More
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -1,38 +1,23 @@
 'use client';
+import Container from '@/components/common/container';
 import NftCard from '@/components/common/nft-card';
 import ToolHeader from '@/components/common/tool-header';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import {
-  Metaplex,
-  toBigNumber,
-  walletAdapterIdentity,
+  Metaplex
 } from '@metaplex-foundation/js';
+import {
+  TOKEN_PROGRAM_ID,
+  Token
+} from '@solana/spl-token-v1';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
   PublicKey,
-  Transaction,
-  SystemProgram,
-  SYSVAR_INSTRUCTIONS_PUBKEY,
+  Transaction
 } from '@solana/web3.js';
-import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  Token,
-  TOKEN_PROGRAM_ID,
-} from '@solana/spl-token-v1';
-import {
-  createBurnEditionNftInstruction,
-  createBurnNftInstruction,
-  PROGRAM_ADDRESS,
-  PROGRAM_ID,
-  createBurnInstruction,
-} from '@metaplex-foundation/mpl-token-metadata';
-import { BN, utils } from '@coral-xyz/anchor';
-import { useEffect, useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import useWalletTokens from '@/lib/tokens/useWalletTokens';
-import Tool from '@/components/common/info-card';
-import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
-import Container from '@/components/common/container';
+import { useEffect, useState } from 'react';
 
 const BurnSplToken = () => {
   const { connection } = useConnection();
@@ -184,7 +169,7 @@ const BurnSplToken = () => {
               <div className="flex flex-col gap-2">
                 <p>Your token have been burned!</p>
                 <Link
-                  href={`https://solscan.com/tx/${signature}`}
+                  href={`https://solscan.io/tx/${signature}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"

@@ -240,7 +240,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
           <div className="flex flex-col gap-2">
             <p>Your SOL has been staked!</p>
             <Link
-              href={`https://solscan.com/tx/${txid}`}
+              href={`https://solscan.io/tx/${txid}`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"
@@ -288,7 +288,7 @@ const DetailVaultContainer = ({ tokenAdr }: { tokenAdr: string }) => {
           <div className="flex flex-col gap-2">
             <p>Your SOL has been staked!</p>
             <Link
-              href={`https://solscan.com/tx/${txid}`}
+              href={`https://solscan.io/tx/${txid}`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-black text-white px-5 py-2 uppercase text-sm rounded-md text-center"

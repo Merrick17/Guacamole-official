@@ -18,7 +18,7 @@ const VaultItemsContainer = () => {
   const { data, isLoading, error } = useVaultInfo();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  useEffect(() => {}, [isLoading]);
+
   return (
     <Container className="flex flex-col gap-4">
       <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
@@ -62,7 +62,7 @@ const VaultItemsContainer = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>{" "}
-        <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[16px]">
+        <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[16px] pt-0">
           You can now lend and borrow GUAC on MarginFi!{" "}
           <Button
             variant="link"
@@ -78,7 +78,7 @@ const VaultItemsContainer = () => {
       </div>
       <Container
         className={cn(
-          "grid grid-cols-1 bg-foreground md:grid-cols-2 lg:grid-cols-3 gap-4  p-0 "
+          "grid grid-cols-1 bg-foreground md:grid-cols-2  lg:grid-cols-3 gap-4  !pt-[-10px] "
         )}
       >
         {!isLoading

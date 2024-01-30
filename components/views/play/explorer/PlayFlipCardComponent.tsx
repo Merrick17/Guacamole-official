@@ -21,13 +21,14 @@ const PlayFlipCardComponent: FunctionComponent<PlayFlipCardComponentProps> = ({
     >
       <div className="flex flex-col gap-2  p-4 md:p-8">
         <header className="flex flex-col items-center  gap-3 ">
-          <div className="bg-background h-12 w-12 p-3 rounded-md flex items-center justify-center">
+          <div className="bg-background h-12 w-12  rounded-md flex items-center justify-center">
             <Image
-              src="/images/play/slots_v2.png"
+              src="/images/play/flip.png"
               width={24}
               height={24}
               alt="trade logo"
             />
+            
           </div>
           <h1 className=" text-lg md:text-xl font-medium">Play Flip</h1>
         </header>

@@ -312,7 +312,7 @@ const PerpetualsForm = () => {
           }}
         />
       )}
-      <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 ">
+      <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 border border-[rgba(168, 168, 168, 0.10)]">
         <div className="flex items-center justify-between">
           <NavigationList filter="Trade" />
 
@@ -328,7 +328,7 @@ const PerpetualsForm = () => {
               }
             }}
           >
-            View Tutorial
+            Tutorial
           </Button>
         </div>
         <Form {...form}>

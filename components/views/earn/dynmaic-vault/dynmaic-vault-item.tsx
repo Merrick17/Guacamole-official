@@ -259,11 +259,11 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       <h1 className="text-3xl">{item.symbol} VAULT</h1>
       <Separator className="bg-foreground" />
       <div className="flex flex-col gap-1 capitalize text-muted-foreground">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between z-30">
           <h2>Wallet Balance</h2>
           <p>{uiState.userTokenBalance.toFixed(2)}</p>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between z-30">
           <h2>Your Deposits</h2>
           {token && (
             <p>{`${
@@ -273,11 +273,11 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
             } ${token.symbol}`}</p>
           )}
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between z-30">
           <h2>Virtual Price</h2>
           <p>{uiState.virtualPrice.toFixed(2)}</p>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between z-30">
           <h2>TVL</h2>
           <p>
             {new Intl.NumberFormat("en-US", {}).format(uiState.tvl)}{" "}

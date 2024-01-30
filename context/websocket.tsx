@@ -46,11 +46,11 @@ export const useWebSocket = () => {
 export const WebSocketProvider = ({ children }: { children: any }) => {
   const [candles, setCandles] = useState<Candle[]>([]);
   const [selectedMarket, setSelectedMarket] = useState<Market | null>({
-    name: "BTCUSD-PERP",
+    name: "SOLUSD-PERP",
     high: "25,901.41",
     low: "25,534.37",
-    coin: ["BTC", "Bitcoin", "HXRO:BTCUSD"],
-    coinLogo: "/images/tokens/BTC.png",
+    coin: ["SOL", "Solana", "HXRO:SOLUSD"],
+    coinLogo: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
   });
   const [marketList, setMarketList] = useState<Market[]>([
     {

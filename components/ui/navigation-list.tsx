@@ -20,7 +20,7 @@ const NavigationList = ({ filter }: { filter?: "Earn" | "Trade" }) => {
       onValueChange={(value) => router.push(value)}
     >
       <SelectTrigger
-        className={`text-black bg-primary w-max h-7 ${
+        className={`text-black font-[500] bg-primary w-max h-7 ${
           pathname.includes("trade") ? "trade-bg" : "earn-bg"
         } rounded-lg text-sm `}
       >

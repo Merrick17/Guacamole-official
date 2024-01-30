@@ -54,9 +54,10 @@ const Perceptual = () => {
       signAllTransactions,
     };
     console.log({ DexWallet });
+    // const rpc =
+    //   "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
     const rpc =
-      "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
-    //const rpc ="https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
+      "https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
     //clusterApiUrl(network)
     const manifest = await dexterity.getManifest(rpc, true, DexWallet);
 
@@ -187,10 +188,10 @@ const Perceptual = () => {
   return (
     <>
       <WebSocketProvider>
-        <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-[1440px]">
+        <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-[1440px] ">
           <div
             className={cn(
-              "flex flex-col gap-10  w-full z-20  rounded-lg bg-background  "
+              "flex flex-col gap-10  w-full z-20  rounded-lg bg-background border border-[rgba(168, 168, 168, 0.10)] "
             )}
           >
             <div className="w-full bg-foreground grid  z-20  grid-cols-1 lg:grid-cols-12 gap-[10px] px-5 py-7">

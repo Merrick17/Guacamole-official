@@ -109,7 +109,10 @@ const Page = () => {
                 Easily create your own SPL token on Solana in just two minutes
                 with our no-code creator!
               </p>
-              <Link href={"/launch/create-spl-token"} className="flex items-start  gap-2">
+              <Link
+                href={"/launch/create-spl-token"}
+                className="flex items-start  gap-2"
+              >
                 <span className="text-[#D77668] text-[16px]">Get Started</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -142,8 +145,11 @@ const Page = () => {
                 Create your very own SuperToken on Solana with various
                 extensions like transaction tax and more.
               </p>
-              <Link href={""} className="flex items-start  gap-2 opacity-50">
-                <span className="text-[#D77668] text-[16px]">Coming Soon</span>
+              <Link
+                href={"create-token-extension"}
+                className="flex items-start  gap-2 "
+              >
+                <span className="text-[#D77668] text-[16px]">Get Started</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"

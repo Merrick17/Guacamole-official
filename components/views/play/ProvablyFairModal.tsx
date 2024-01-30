@@ -2,17 +2,29 @@ import { useGamba, useGambaProgram, useSendTransaction } from "gamba-react-v2";
 import { GambaPlatformContext, GambaUi } from "gamba-react-ui-v2";
 import React from "react";
 import { Modal } from "./Modal";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useToast } from "@/hooks/use-toast";
 
 export function ProvablyFairModal(props: { onClose: () => void }) {
+  const { connected } = useWallet();
   const gamba = useGamba();
   const platform = React.useContext(GambaPlatformContext);
   const program = useGambaProgram();
   const sendTransaction = useSendTransaction();
+  const { toast } = useToast();
 
   const initialize = async () => {
-    sendTransaction(
-      program.methods.playerInitialize().accounts({}).instruction()
-    );
+    if (connected) {
+      sendTransaction(
+        program.methods.playerInitialize().accounts({}).instruction()
+      );
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Wallet not connected",
+        description: "Please connect your wallet to continue",
+      });
+    }
   };
 
   return (

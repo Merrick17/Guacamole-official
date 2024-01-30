@@ -23,9 +23,9 @@ import { GambaUi, useGambaAudioStore, useUserBalance } from "gamba-react-ui-v2";
 import { useGamba } from "gamba-react-v2";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import { useParams, usePathname } from "next/navigation";
 import numeral from "numeral";
+import React, { useState } from "react";
 function CustomError() {
   return (
     <>
@@ -49,6 +49,7 @@ function CustomRenderer() {
   const [modal, setModal] = useState(false);
   const { publicKey } = useWallet();
   const { connection } = useConnection();
+  const pathname = usePathname();
   const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
     connection,
     publicKey
@@ -76,13 +77,17 @@ function CustomRenderer() {
       {provablyFair && (
         <ProvablyFairModal onClose={() => setProvablyFair(false)} />
       )}
-      <div className="w-full flex flex-col items-center gap-4 sm:flex-row">
+      <div className="w-full flex flex-col items-center gap-4 sm:flex-row flex-1">
         <div className="relative w-full max-w-[750px] min-h-[400px] z-10 flex items-center justify-center bg-foreground rounded-lg shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] ">
           <GambaUi.PortalTarget target="error" />
           <GambaUi.PortalTarget target="screen" />
         </div>
 
-        <div className="flex flex-col  gap-6 items-start min-h-[400px] h-full max-w-[700px] bg-foreground p-6 border border-[rgba(168, 168, 168, 0.10)] rounded-md">
+        <div
+          className={`flex flex-col flex-1  gap-6 items-start min-h-[400px] h-full max-w-[700px] bg-foreground p-6 border border-[rgba(168, 168, 168, 0.10)] rounded-md ${
+            pathname.includes("flip") ? "h-[500px]" : ""
+          }`}
+        >
           <TokenSelect />
           <div
             className="  w-full z-10   rounded-lg min-h-[60px] flex items-center justify-evenly p-5   gap-2  backdrop:blur-[50px] shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] px-1 flex-wrap"
@@ -161,13 +166,11 @@ function CustomRenderer() {
             </div>
             <GambaUi.PortalTarget target="controls" />
 
-            {balance.bonusBalance > 1000 && (
-              <Button className="h-11" onClick={() => {}}>
-                Claim
-              </Button>
+            {connected ? (
+              <GambaUi.PortalTarget target="play" />
+            ) : (
+              <WalletMultiButtonDynamic />
             )}
-
-            <GambaUi.PortalTarget target="play" />
           </div>
           <div className="flex justify-end items-center w-full">
             <div className="flex items-center justify-end gap-3  ">

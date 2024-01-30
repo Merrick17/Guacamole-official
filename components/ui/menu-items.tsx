@@ -16,7 +16,6 @@ export function MenuItems() {
     <div className="flex items-center gap-[30px] text-muted-foreground p-2  rounded-lg">
       {Links.filter((item) => !item.hide).map((item, index) => {
         const isActive = pathname !== item.href && pathname.includes(item.href);
-        console.log("Item", item.href == pathname);
         return (
           <Fragment key={item.name + index}>
             {item.dropdownItems ? (
@@ -25,7 +24,7 @@ export function MenuItems() {
                   <Menu.Button
                     className={cn(
                       "flex items-center gap-3 text-base font-medium capitalize rounded-lg transition justify-center ",
-                      isActive && `text-primary`
+                      isActive && `!text-primary`
                     )}
                     onClick={() => router.push(item.href)}
                   >
@@ -38,7 +37,7 @@ export function MenuItems() {
                 href={item.href}
                 className={cn(
                   " text-base font-medium capitalize",
-                  item.href == pathname && "text-primary"
+                  item.href == pathname && "!text-primary"
                 )}
                 // activeClassName="!text-gray-900 dark:!text-white"
               >
