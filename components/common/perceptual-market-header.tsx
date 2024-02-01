@@ -29,27 +29,9 @@ const PerceptualMarketHeader = () => {
     GroupPubkeyMap.get(0)
   );
 
-  
-
   const selectedIndexPrice = useMemo(() => {
     return indexPrice?.find((p) => p.index === selectedProduct?.index)?.price;
   }, [indexPrice, selectedProduct]);
-
-  const handleSelectGroup = (group: Group) => {
-    setSelectedGroup(group);
-    setMpgPubkey(group.pubkey);
-  };
-
-  const renderGroupOptions = () => {
-    return Array.from(GroupPubkeyMap.values()).map((group) => (
-      <DropdownMenuItem
-        key={group.pubkey}
-        onClick={() => handleSelectGroup(group)}
-      >
-        {group.name}
-      </DropdownMenuItem>
-    ));
-  };
 
   const handleSelectMarket = (product: Product) => {
     selectMarket({
@@ -99,15 +81,6 @@ const PerceptualMarketHeader = () => {
       </DropdownMenu>
     );
   };
-
-  const renderGroupDropdown = () => (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button>{selectedGroup?.name || "Select Group"}</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>{renderGroupOptions()}</DropdownMenuContent>
-    </DropdownMenu>
-  );
 
   const renderPriceDisplay = () => (
     <div>

@@ -46,7 +46,7 @@ export const useWebSocket = () => {
 export const WebSocketProvider = ({ children }: { children: any }) => {
   const [candles, setCandles] = useState<Candle[]>([]);
   const [selectedMarket, setSelectedMarket] = useState<Market | null>({
-    name: "SOLUSD-PERP",
+    name: "SOL/USD-PERP",
     high: "25,901.41",
     low: "25,534.37",
     coin: ["SOL", "Solana", "HXRO:SOLUSD"],
@@ -69,7 +69,7 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
       coinLogo: "/images/tokens/ETH.png",
     },
     {
-      name: "SOLUSD-PERP",
+      name: "SOL/USD-PERP",
       high: "25,901.41",
       low: "25,534.37",
       coin: ["SOL", "Solana", "HXRO:SOLUSD"],

@@ -43,26 +43,26 @@ const Perceptual = () => {
     "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
   );
   const { connected } = useWallet();
-  const { setManifest, manifest } = useManifest();
+  const { setManifest, manifest, setGetManifest } = useManifest();
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   const [usdcBalance, setUsdcBalance] = useState(0);
 
-  useMemo(async () => {
+  const getManifest = useCallback(async () => {
     const DexWallet: DexterityWallet = {
       publicKey: publicKey!,
       signTransaction,
       signAllTransactions,
     };
     //console.log({ DexWallet });
-    const rpc =
-      "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
+    // const rpc =
+    //   "https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
     // const rpc =
     //   "https://flashy-frosty-energy.solana-mainnet.discover.quiknode.pro/d43909b1eb698964f230e00afe18c673d10e5c0f/";
     //clusterApiUrl(network)
-    const manifest = await dexterity.getManifest(rpc, true, DexWallet);
+    const manifest = await dexterity.getManifest(`https://hxro.rpcpool.com/0aa48fe6-21f8-42cc-bd76-a60b004ce90e`, true, DexWallet);
 
     setManifest(manifest);
-  }, [publicKey]);
+  }, [publicKey, manifest]);
 
   const { toast } = useToast();
 
@@ -78,7 +78,6 @@ const Perceptual = () => {
           bytes: publicKey.toBase58(),
         },
       },
-
       {
         memcmp: {
           offset: 0,
@@ -107,11 +106,6 @@ const Perceptual = () => {
         for (const [productName, obj] of dexterity.Manifest.GetProductsOfMPG(
           trader.mpg
         )) {
-          if (!productName.includes("OPOS0D")) {
-            if (!ProductMap.get(0).get(productName.trim())) {
-              continue;
-            }
-          }
           const { index: productIndex, product } = obj;
           const meta = dexterity.productToMeta(product);
           if (meta.productKey.equals(UNINITIALIZED)) {
@@ -130,7 +124,6 @@ const Perceptual = () => {
           productIndexArray.push({ index: productIndex, price: index });
         }
         setMarkPrice(productMarkArray);
-        console.log("Product Index Array", productIndexArray);
         setIndexPrice(productIndexArray);
       } catch (error) {
         console.error("Error updating prices:", error);
@@ -178,12 +171,17 @@ const Perceptual = () => {
   }, [markPrice, trader]);
 
   useEffect(() => {
+    setGetManifest(getManifest)
     const intervalId = setInterval(() => {
       updatePrices();
       updateLeverage();
+      if (!manifest && publicKey) {
+        console.log('Fetching manifest...')
+        getManifest()
+      }
     }, 500);
     return () => clearInterval(intervalId);
-  }, [updatePrices, trader]);
+  }, [updatePrices, trader, manifest]);
 
   //const
   return (
@@ -200,7 +198,7 @@ const Perceptual = () => {
                 <PerceptualForm />
               </div>
               <div className="flex flex-1 justify-center col-span-1 lg:col-span-8">
-                <TVChartContainer productSelect={"SOLUSD-PERP"} />
+                <TVChartContainer productSelect={"SOL/USD-PERP"} />
               </div>
             </div>
             {connected && trader && (

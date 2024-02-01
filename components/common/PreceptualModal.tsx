@@ -61,6 +61,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
         new PublicKey(mpgPubkey)
       );
       setTrgsArr(trgs);
+      console.log({trgs})
     } catch (error: any) {
       toast({
         variant: "destructive",

@@ -73,25 +73,27 @@ export const TraderAccountDropdown: FC<TraderAccountDropdownProps> = ({
 
 export const SelectTraderAccounts: FC = () => {
   const { publicKey } = useWallet();
-  const { manifest } = useManifest(); // Assuming createTRG is the function to create a new TRG
+  const { manifest, getManifest } = useManifest(); // Assuming createTRG is the function to create a new TRG
   const [trgsArr, setTrgsArr] = useState<TraderAccount[]>([]);
   const [selectedTrg, setSelectedTrg] = useState<string>("");
   const { setTrader } = useTrader();
-  const { mpgPubkey, setMpgPubkey } = useProduct();
-  const [selectedGroup, setSelectedGroup] = useState<Group>(
-    GroupPubkeyMap.get(0)
-  );
+  const { mpgPubkey } = useProduct();
+
   useEffect(() => {
     fetchTraderAccounts();
-  }, [publicKey, mpgPubkey]);
+  }, [publicKey, mpgPubkey, manifest]);
 
   const fetchTraderAccounts = useCallback(async () => {
     //alert("Working");
-    if (!publicKey) return;
-    if (!manifest) return;
-    if (!manifest.fields) return;
-    if (!manifest.fields.wallet) return;
-    if (!manifest.fields.wallet.publicKey) return;
+    if (!publicKey) return console.log('publicKey');
+    if (!manifest) {
+      console.log('manifest')
+      await getManifest()
+      fetchTraderAccounts()
+    }
+    if (!manifest.fields) return console.log('manifest.fields');
+    if (!manifest.fields.wallet) return console.log('manifest.fields.wallet');
+    if (!manifest.fields.wallet.publicKey) return console.log('manifest.fields.wallet.publicKey');
 
     try {
       const trgs = await manifest.getTRGsOfOwner(
@@ -99,7 +101,7 @@ export const SelectTraderAccounts: FC = () => {
         new PublicKey(mpgPubkey)
       );
       setTrgsArr(trgs);
-      //console.log("TGRS", trgs.map((elm)=>elm.pubkey.toBase58()));
+      console.log("TGRS: ", trgs.map((elm)=>elm.pubkey.toBase58()));
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -144,40 +146,12 @@ export const SelectTraderAccounts: FC = () => {
     },
     [manifest, setTrader, mpgPubkey]
   );
-  const handleSelectGroup = (group: Group) => {
-    setSelectedGroup(group);
-    setMpgPubkey(group.pubkey);
-  };
-  const renderGroupOptions = () => {
-    return Array.from(GroupPubkeyMap.values()).map((group) => (
-      <DropdownMenuItem
-        className="w-full"
-        key={group.pubkey}
-        onClick={() => handleSelectGroup(group)}
-      >
-        {group.name}
-      </DropdownMenuItem>
-    ));
-  };
-  const renderGroupDropdown = () => (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button className="w-full text-[#FFFF] bg-foreground h-12 rounded-md px-5 border border-[rgba(168, 168, 168, 0.10)] flex justify-between">
-          <span>{selectedGroup?.name || "Select Group"}</span> <BsChevronDown color="#FFF" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-full">
-        {renderGroupOptions()}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
   return (
     <div className="flex flex-col  justify-center  rounded-lg  mt-4 gap-5">
-      <h1 className="text-sm mb-4 text-muted-foreground">
+      <h1 className="text-sm text-muted-foreground">
         Select or create a trading account
       </h1>
       <div className="w-full  flex flex-col items-center space-y-4">
-        {renderGroupDropdown()}
         <TraderAccountDropdown accounts={trgsArr} onSelect={handleSelection} />
 
         <div className="flex justify-between items-center gap-2 w-full">

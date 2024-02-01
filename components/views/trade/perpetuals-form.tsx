@@ -180,7 +180,6 @@ const PerpetualsForm = () => {
 
   const selectedMarketPrice = useMemo(() => {
     if (!markPrice || !selectedProduct || !(markPrice.length > 0)) return 0;
-    console.log("MArket PRICE", markPrice);
     return markPrice.find((p) => p.index === selectedProduct.index).price;
   }, [selectedProduct, markPrice]);
 

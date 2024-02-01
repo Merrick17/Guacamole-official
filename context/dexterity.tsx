@@ -9,6 +9,8 @@ interface ManifestContextProps {
   setManifest: React.Dispatch<
     React.SetStateAction<InstanceType<typeof dexterity.Manifest>>
   >;
+  getManifest: () => Promise<void>;
+  setGetManifest: React.Dispatch<React.SetStateAction<() => Promise<void>>>
 }
 
 const ManifestContext = createContext<ManifestContextProps | undefined>(
@@ -19,9 +21,10 @@ export const ManifestProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [manifest, setManifest] = useState(null);
+  const [getManifest, setGetManifest] = useState<() => Promise<void>>()
 
   return (
-    <ManifestContext.Provider value={{ manifest, setManifest }}>
+    <ManifestContext.Provider value={{ manifest, setManifest, getManifest, setGetManifest }}>
       {children}
     </ManifestContext.Provider>
   );
@@ -180,14 +183,11 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
   // const network = networkConfiguration as WalletAdapterNetwork;
   const network = "mainnet-beta";
   // if (devnet) BITCCOIN MPG; else if (mainnet) MAJORS MPG
-  let defaultMpg =
-    network == "mainnet-beta"
-      ? GroupPubkeyMap.get(0).pubkey
-      : null;
+  let defaultMpg = GroupPubkeyMap.get(0).pubkey
 
   let defaultProduct: Product = {
-    index: 2,
-    name: "SOLUSD-PERP",
+    index: 0,
+    name: "SOL/USD-PERP",
     minSize: 0.1,
     exponent: 1,
   };
