@@ -1,39 +1,32 @@
-'use client';
-import NftCard from '@/components/common/nft-card';
-import ToolHeader from '@/components/common/tool-header';
+"use client";
+import Container from "@/components/common/container";
+import NftCard from "@/components/common/nft-card";
+import ToolHeader from "@/components/common/tool-header";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import useWalletTokens from "@/lib/tokens/useWalletTokens";
+import { utils } from "@coral-xyz/anchor";
+import { Metaplex, toBigNumber } from "@metaplex-foundation/js";
 import {
-  Metaplex,
-  toBigNumber,
-  walletAdapterIdentity,
-} from '@metaplex-foundation/js';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import {
-  PublicKey,
-  Transaction,
-  SystemProgram,
-  SYSVAR_INSTRUCTIONS_PUBKEY,
-} from '@solana/web3.js';
-import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  Token,
-  TOKEN_PROGRAM_ID,
-} from '@solana/spl-token-v1';
-import {
-  createBurnEditionNftInstruction,
-  createBurnNftInstruction,
   PROGRAM_ADDRESS,
   PROGRAM_ID,
   createBurnInstruction,
-} from '@metaplex-foundation/mpl-token-metadata';
-import { BN, utils } from '@coral-xyz/anchor';
-import { useEffect, useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import useWalletTokens from '@/lib/tokens/useWalletTokens';
-import Tool from '@/components/common/info-card';
-import Loading from '@/components/views/trade/src/components/Loading';
-import { useToast } from '@/hooks/use-toast';
-import Link from 'next/link';
-import Container from '@/components/common/container';
+  createBurnNftInstruction,
+} from "@metaplex-foundation/mpl-token-metadata-old";
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
+  Token,
+} from "@solana/spl-token-v1";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {
+  PublicKey,
+  SYSVAR_INSTRUCTIONS_PUBKEY,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const BurnNftToken = () => {
   const { connection } = useConnection();
@@ -46,7 +39,7 @@ const BurnNftToken = () => {
   const [currentTx, setCurrentTx] = useState<number | null>(null);
   const [totalTx, setTotalTx] = useState<number | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>("");
   const [toBurn, setToBurn] = useState<any>([]);
   const walletTokens = useWalletTokens();
   async function getUserNFT() {
@@ -63,9 +56,9 @@ const BurnNftToken = () => {
 
     console.log(userNFTs);
 
-    const seed1 = Buffer.from(utils.bytes.utf8.encode('metadata'));
+    const seed1 = Buffer.from(utils.bytes.utf8.encode("metadata"));
     const seed2 = Buffer.from(PROGRAM_ID.toBytes());
-    const seed4 = Buffer.from(utils.bytes.utf8.encode('edition'));
+    const seed4 = Buffer.from(utils.bytes.utf8.encode("edition"));
 
     const userNFTMetadata = await Promise.all(
       userNFTs.map(async (token) => {
@@ -96,13 +89,13 @@ const BurnNftToken = () => {
           .nfts()
           .findByMint({ mintAddress: mintPublickey });
 
-        if (name == '' && NFTloaded.json?.name && NFTloaded.json?.name != '') {
+        if (name == "" && NFTloaded.json?.name && NFTloaded.json?.name != "") {
           name = NFTloaded.json?.name.trim();
         }
-        if (NFTloaded.json?.image && NFTloaded.json?.image != '') {
+        if (NFTloaded.json?.image && NFTloaded.json?.image != "") {
           logoURI = NFTloaded.json?.image;
         } else {
-          logoURI = '/images/Guacamole_Image_Unknown.png';
+          logoURI = "/images/Guacamole_Image_Unknown.png";
         }
 
         // @ts-ignore
@@ -140,7 +133,7 @@ const BurnNftToken = () => {
     });
     setUserNFT(userNFTMetadata);
     setIsFetched(true);
-    console.log('user NFTs', userNFTMetadata);
+    console.log("user NFTs", userNFTMetadata);
   }
 
   useEffect(() => {
@@ -162,7 +155,7 @@ const BurnNftToken = () => {
           // console.log("Tx",tx);
           setIsBurning(true);
           setSuccess(false);
-          setMessage('');
+          setMessage("");
           const nbPerTx = 5;
           let nbTx: number;
           if (toBurn.length % nbPerTx == 0) {
@@ -184,9 +177,9 @@ const BurnNftToken = () => {
               bornSup = nbPerTx * (i + 1);
             }
 
-            const seed1 = Buffer.from(utils.bytes.utf8.encode('metadata'));
+            const seed1 = Buffer.from(utils.bytes.utf8.encode("metadata"));
             const seed2 = Buffer.from(PROGRAM_ID.toBytes());
-            const seed4 = Buffer.from(utils.bytes.utf8.encode('edition'));
+            const seed4 = Buffer.from(utils.bytes.utf8.encode("edition"));
 
             for (let j = nbPerTx * i; j < bornSup; j++) {
               const tokenAccount = new PublicKey(toBurn[j].tokenAccount);
@@ -227,7 +220,7 @@ const BurnNftToken = () => {
                     },
                     {
                       burnArgs: {
-                        __kind: 'V1',
+                        __kind: "V1",
                         amount: toBigNumber(1),
                       },
                     }
@@ -313,12 +306,12 @@ const BurnNftToken = () => {
             const signature = await wallet.sendTransaction(Tx, connection);
             const confirmed = await connection.confirmTransaction(
               signature,
-              'processed'
+              "processed"
             );
-            console.log('confirmation', signature);
+            console.log("confirmation", signature);
             toast({
-              variant: 'success',
-              title: 'Success',
+              variant: "success",
+              title: "Success",
               description: (
                 <div className="flex flex-col gap-2">
                   <p>Your NFTs have been burned!</p>
@@ -340,13 +333,13 @@ const BurnNftToken = () => {
 
           await getUserNFT();
         } else {
-          setMessage('Please choose at least one NFT to burn first!');
+          setMessage("Please choose at least one NFT to burn first!");
           setSuccess(false);
           setIsBurning(false);
           toast({
-            variant: 'destructive',
-            title: 'Error',
-            description: 'Please choose at least one NFT to burn first!',
+            variant: "destructive",
+            title: "Error",
+            description: "Please choose at least one NFT to burn first!",
           });
         }
       } catch (error) {
@@ -355,9 +348,9 @@ const BurnNftToken = () => {
         setIsBurning(false);
         console.log(error);
         toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: 'An error occured, please try again later!',
+          variant: "destructive",
+          title: "Error",
+          description: "An error occured, please try again later!",
         });
       }
     }
@@ -386,7 +379,7 @@ const BurnNftToken = () => {
           <Button
             size="sm"
             variant="default"
-            className="!bg-[#8BD796]"
+            className="guac-bg"
             onClick={() => {
               setIsSelected(true);
               toBurn.push(data);
@@ -398,6 +391,7 @@ const BurnNftToken = () => {
           <Button
             size="sm"
             variant="destructive"
+            className="earn-bg"
             onClick={() => {
               setIsSelected(false);
               toBurn.splice(toBurn.indexOf(data), 1);
@@ -417,7 +411,7 @@ const BurnNftToken = () => {
         handleBurn={BurnTokens}
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/burn-solana-nft"
       />
-     <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
+      <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
         {userNFT &&

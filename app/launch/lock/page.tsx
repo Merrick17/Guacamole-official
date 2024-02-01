@@ -17,14 +17,61 @@ import { LockerProvider, useLockerTools } from "@/context/locker.context";
 import { PoolProvider } from "@/hooks/use-pool-list";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-
+import { useEffect } from "react";
+import numeral from "numeral";
+const LockerHeader = () => {
+  const { totalValueLocked, vaultsData } = useLockerTools();
+  useEffect(() => {
+    console.log("Total", totalValueLocked);
+  }, [vaultsData]);
+  return (
+    <Container className="lg:max-w-5xl justify-center items-center   max-sm:w-full bg-cover  bg-[url('/images/launch/Liquidity_Locker_Banner_Guacamole_Simple_1.png')]  min-h-[200px] border border-[rgba(168, 168, 168, 0.10)] ">
+      <div className="flex w-full h-full flex-col items-start justify-center gap-4 text-center mt-3">
+        <h5 className=" text-2xl font-medium tracking-tight text-center ">
+          Introducing Liquidity Lockers
+        </h5>
+        <p className="text-muted-foreground ">
+          Explore other locks or verifiably lock your liquidity tokens in
+          time-vested contracts or forever!
+        </p>
+        {totalValueLocked !== 0 ? (
+          <p className="text-[18px] text-muted-foreground">
+            Total Program TVL: $ {numeral(totalValueLocked).format("0,0.000")}
+          </p>
+        ) : (
+          <Skeleton className="w-full min-h-[50px] my-3" />
+        )}
+        <Button variant="link" className="px-0">
+          <Link
+            href={
+              "https://docs.guacamole.gg/products-and-features/launch/liquidity-lockers"
+            }
+            className="flex justify-center items-center"
+            target="_blank"
+          >
+            Click Here To Learn More
+            <svg
+              className="w-3.5 h-3.5 ml-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              />
+            </svg>
+          </Link>{" "}
+        </Button>
+      </div>
+    </Container>
+  );
+};
 export default function Lock() {
-  const {
-    //getTotalVaults,
-
-    vaultsData,
-    getPaginatedData,
-  } = useLockerTools();
   return (
     <TerminalLayout>
       <PoolProvider>
@@ -35,43 +82,7 @@ export default function Lock() {
             )}
           >
             <section className="flex flex-1  items-center flex-col my-3 gap-5">
-              <Container className="lg:max-w-5xl justify-center items-center   max-sm:w-full bg-cover  bg-[url('/images/launch/Liquidity_Locker_Banner_Guacamole_Simple_1.png')] border border-transparent min-h-[200px] ">
-                <div className="flex w-full h-full flex-col items-start justify-center gap-4 text-center mt-3">
-                  <h5 className=" text-2xl font-medium tracking-tight text-center ">
-                    Introducing Liquidity Lockers
-                  </h5>
-                  <p className="text-muted-foreground ">
-                    Explore other locks or verifiably lock your liquidity tokens
-                    in time-vested contracts or forever!
-                  </p>
-                  <Button variant="link" className="px-0">
-                    <Link
-                      href={
-                        "https://docs.guacamole.gg/products-and-features/launch/liquidity-lockers"
-                      }
-                      className="flex justify-center items-center"
-                      target="_blank"
-                    >
-                      Click Here To Learn More
-                      <svg
-                        className="w-3.5 h-3.5 ml-2"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 14 10"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M1 5h12m0 0L9 1m4 4L9 9"
-                        />
-                      </svg>
-                    </Link>{" "}
-                  </Button>
-                </div>
-              </Container>
+              <LockerHeader />
               <LockerList />
               {/* {vaultsData.length != 0 ? (
                 

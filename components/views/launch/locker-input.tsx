@@ -25,7 +25,7 @@ interface LockerInputProps {
 }
 const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   const [lockerList, setLockerList] = useState([]);
-  const { tokenList } = useJupiterApiContext();
+ 
   const [mintAdr, setMintAdr] = useState("");
 
   const { initNewVault, getAllVaults, getLocksByMint } = useLockerTools();
@@ -106,7 +106,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
   }, [publicKey, mintAdr, selectedPool]);
   return (
     <>
-      <Container className="bg-[#0F0F0F] px-3 py-5 flex gap-3 flex-col">
+      <Container className="bg-[#0F0F0F] px-3 py-5 flex gap-3 flex-col border border-[rgba(168, 168, 168, 0.10)] ">
         <span className="text-muted-foreground text-xs">
           Use the locker to prove to your community that you have locked
           liquidity. This tool is mainly for token developers. Please read our
@@ -123,7 +123,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
           Included relocking mechanims
         </span>
       </Container>
-      <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col">
+      <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col border border-[rgba(168, 168, 168, 0.10)] ">
         <span className="text-[#FCFCFC] uppercase text-xs">
           Enter the Raydium OR METEORA pair address.
         </span>
@@ -136,7 +136,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
           }}
         />
       </Container>
-      <Container className="bg-[#0F0F0F] p-3 flex gap-3 flex-col">
+      <Container className="bg-[#0F0F0F] p-3 flex gap-3 flex-col border border-[rgba(168, 168, 168, 0.10)] ">
         {baseToken && quoteToken && tokenBalance && (
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
@@ -170,7 +170,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
         )}
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <Button
-            className="bg-primary rounded-lg h-[50px] w-full mt-3"
+            className="bg-primary launch-bg rounded-lg h-[50px] w-full mt-3"
             disabled={mintAdr == "" || tokenBalance == 0}
             onClick={async () => {
               const vault = await getLocksByMint(mintAdr.replace(/\s/g, ""));
@@ -222,7 +222,7 @@ const LockerInput: FC<LockerInputProps> = ({ handleStepChange }) => {
               </div>
               <div className="flex justify-start gap-3 items-start  w-full mt-3 border-t-[1px] pt-3">
                 <Button
-                  className="bg-[#8BD796]"
+                  className="guac-bg"
                   onClick={() => {
                     handleCreateVault();
                   }}

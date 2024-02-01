@@ -5,13 +5,13 @@ import {
   STAGING_BONK_CONFIG,
   DEV_BONK_CONFIG,
   ParimutuelConfig,
-  STAGING_CONFIG,
-} from "@hxronetwork/parimutuelsdk";
+  STAGING_CONFIG,MAINNET_GUAC_CONFIG
+} from "../node_modules/@hxronetwork/parimutuelsdk/dist";
 import { clusterApiUrl } from "@solana/web3.js";
 
 // eslint-disable-next-line
 export const getWeb3Config = (
-  selectedNetwork: string = "BONK"
+  selectedNetwork: string = "GUAC"
 ): ParimutuelConfig => {
   // const {
   //   publicRuntimeConfig: { APP_ENV },
@@ -23,7 +23,7 @@ export const getWeb3Config = (
     if (APP_ENV === ConfigEnum.STAGING) c = STAGING_BONK_CONFIG;
   } else {
     if (APP_ENV === ConfigEnum.DEV) c = DEV_CONFIG;
-    if (APP_ENV === ConfigEnum.STAGING) c = STAGING_CONFIG;
+    if (APP_ENV === ConfigEnum.STAGING) c = MAINNET_GUAC_CONFIG;
   }
 
   return c as ParimutuelConfig;

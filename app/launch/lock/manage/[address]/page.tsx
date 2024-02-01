@@ -116,10 +116,10 @@ const Page = () => {
 
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-xl ">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md  border border-[rgba(168, 168, 168, 0.10)]">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <Button
-            className="rounded-lg h-[30px] flex flex-2 gap-2"
+            className="rounded-lg h-[30px] flex flex-2 gap-2 launch-bg"
             onClick={() => {
               router.back();
             }}
@@ -140,11 +140,11 @@ const Page = () => {
             </svg>
             <span> Back To Lockers</span>
           </Button>
-          <Button className="rounded-lg h-[30px]">Lock liquidity</Button>
+          <Button className="rounded-lg h-[30px] launch-bg">Lock liquidity</Button>
         </div>
         <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="flex flex-col gap-4  md:justify-between md:items-center">
-          <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center h-[60px]">
+          <Container className="bg-[#0F0F0F] p-2 flex gap-3 justify-center items-center h-[60px] border border-[rgba(168, 168, 168, 0.10)]">
             <span className="text-[#FCFCFC] text-[16px] font-medium">
               Manage Your Liquidity Locker
             </span>
@@ -189,7 +189,7 @@ const Page = () => {
               )}
             </div>
           </Container>
-          <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col min-h-[50px] my-1">
+          <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col min-h-[50px] my-1 border border-[rgba(168, 168, 168, 0.10)]">
             <span className="text-muted-foreground text-xs uppercase">
               LOCKED AMOUNT
             </span>
@@ -217,7 +217,7 @@ const Page = () => {
             </p>
           </Container>
           <Button
-            className="my-1 min-h-[50px] w-full"
+            className="my-1 min-h-[50px] w-full launch-bg"
             onClick={() => {
               if (selectedPool) {
                 router.push(`/launch/lock/view/${selectedPool.poolId}`);
@@ -229,7 +229,7 @@ const Page = () => {
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger className="w-full">
               <Button
-                className="my-1 min-h-[50px] w-full"
+                className="my-1 min-h-[50px] w-full launch-bg"
                 onClick={() => {
                   setIsDialogOpen(true);
                 }}
@@ -245,7 +245,7 @@ const Page = () => {
                   Relock Liquidity
                 </span>
               </DialogTitle>
-              <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col min-h-[50px] my-1">
+              <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col min-h-[50px] my-1 border border-[rgba(168, 168, 168, 0.10)]">
                 <span className="text-muted-foreground text-xs uppercase">
                   LOCKED AMOUNT
                 </span>

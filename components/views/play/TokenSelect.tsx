@@ -75,7 +75,9 @@ export default function TokenSelect() {
             Place Bets In {selectedToken.symbol}
           </p>
           <p className="text-xs text-muted-foreground">
-            Min Bet: {currentPool.minWager} Max Payout:{" "}
+            Min Bet:{" "}
+            {currentPool.minWager / Math.pow(10, selectedToken.decimals)} Max
+            Payout:{" "}
             {selectedToken.symbol == "SOL"
               ? currentPool.maxPayout / LAMPORTS_PER_SOL
               : currentPool.maxPayout / Math.pow(10, selectedToken.decimals)}

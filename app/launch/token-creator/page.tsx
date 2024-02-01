@@ -7,9 +7,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 dayjs.extend(relativeTime);
 const Page = () => {
   const searchParams = useSearchParams();
@@ -18,12 +17,11 @@ const Page = () => {
   useEffect(() => {
     const selected = Number(params);
     setSelectedScreen(selected);
-    console.log("Selected Screen", selectedScreen);
   }, [params]);
 
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md border border-[rgba(168, 168, 168, 0.10)] shadow-lg">
         <LaunchHeader tutorialLink="" />
         <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="flex items-center gap-4 w-full">
@@ -73,7 +71,13 @@ const Page = () => {
                   Excited to create your own token and need some guidance? We
                   have you covered.
                 </p>
-                <Link href={""} className="flex items-start  gap-2">
+                <Link
+                  href={
+                    "https://docs.guacamole.gg/products-and-features/launch/create-your-own-token/guide"
+                  }
+                  target="_blank"
+                  className="flex items-start  gap-2"
+                >
                   <span className="text-[#D77668] text-[16px]">
                     Open Documentation
                   </span>

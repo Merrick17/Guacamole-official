@@ -17,7 +17,8 @@ const ManageYourPortfolioCardContent: FunctionComponent<
 }) => {
   return (
     <Link
-      href={"/trade/swap"}
+      href={"https://guac.gg/portfolio-tracker"}
+      target="_blank"
       className={cn(
         "flex flex-col p-4 bg-[#141414] md:p-8 transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-12 relative overflow-hidden",
         className
@@ -100,7 +101,7 @@ const ManageYourPortfolioCardContent: FunctionComponent<
           </svg>
         </div>
         <h1 className="tools-text-color  text-lg md:text-2xl lg:text-[32px] font-medium">
-          Manage Your Portfolio
+          Track With Pitfolio
         </h1>
       </header>
       <p className="max-w-xs text-muted-foreground text-sm z-10">

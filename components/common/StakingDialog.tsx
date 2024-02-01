@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
@@ -50,43 +51,48 @@ const StakingDialog = () => {
         </Link>
       </DialogTrigger>
 
-      <DialogContent>
-        <DialogTitle>
-          <span className="text-[#FCFCFC] text-[16px] font-medium">
+      <DialogContent className="min-w-[672px]">
+        <DialogTitle className="border-b pb-5">
+          <span className="text-[#FCFCFC] text-[16px] font-medium flex flex-col gap-1">
             {" "}
             Proceed To Dual Finance
           </span>
+          
         </DialogTitle>
         <Container className="bg-[#0F0F0F] p-2 flex gap-3 flex-col min-h-[50px] my-1 ">
-          <span className="text-muted-foreground text-xs uppercase">
-            LGUAC Staking Options are currently available via the Dual Finance
+          <span className="text-[#A8A8A8] text-[16px] font-[400]">
+            GUAC Staking Options are currently available via the Dual Finance
             interface. Please note that this is a third-party interface and
             program which is not Guacamole.
           </span>
-          <span className="text-muted-foreground text-xs uppercase">
+          <span className="text-[#A8A8A8] text-[16px] font-[400]">
             Staking option availability depends on many factors. Pools are
             funded via DAO proposals and the subscription period often fills up
             within the first few minutes.
           </span>
-          <span className="text-muted-foreground text-xs uppercase">
+          <span className="text-[#A8A8A8] text-[16px] font-[400] ">
             We recommend checking the official Guacamole Discord server for
             information and pool availability schedules. You can also check out
             our official documentation regarding how Staking Options work and
             how they are beneficial to loyal community members and the AvocaDAO.
           </span>
-          <div className="flex w-full justify-start items-start mt-3">
-            <Button className="guac-bg">
-              <Link
-                rel="noopener noreferrer"
-                href={
-                  "https://docs.guacamole.gg/products-and-features/earn/staking-options"
-                }
-                target="_blank"
-              >
-                Open Dual Finance
-              </Link>
-            </Button>
-          </div>
+
+          <DialogFooter className="flex flex-col border-t pt-1">
+           
+            <div className="flex w-full justify-start items-start">
+              <Button className="guac-bg mt-2">
+                <Link
+                  rel="noopener noreferrer"
+                  href={
+                    "https://beta.dual.finance/?product=staking-options"
+                  }
+                  target="_blank"
+                >
+                  Open Dual Finance
+                </Link>
+              </Button>
+            </div>
+          </DialogFooter>
         </Container>
       </DialogContent>
     </Dialog>

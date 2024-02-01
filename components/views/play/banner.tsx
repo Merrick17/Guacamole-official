@@ -33,7 +33,7 @@ const Banner: FC<BannerProps> = ({
           style={{ backgroundImage: 'url(' + image + ')' }}
         />
         <div className="absolute bottom-[10px] left-[10px] z-20">
-          <Button className={cn('font-semibold uppercase', btnClassName)}>
+          <Button className={cn('font-semibold uppercase tools-bg', btnClassName)}>
             {title}
           </Button>
         </div>

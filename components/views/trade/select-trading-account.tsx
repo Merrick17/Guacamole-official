@@ -102,9 +102,9 @@ const SelectTradingAccount = () => {
     if (trader) {
       trader.connect(updateAccountInfo, updateAccountInfo);
 
-      return () => {
-        trader.disconnect();
-      };
+      // return () => {
+      //   trader.disconnect();
+      // };
     }
   }, [updateAccountInfo, trader, mpgPubkey]);
 
@@ -235,7 +235,7 @@ const SelectTradingAccount = () => {
   }, [publicKey]);
 
   return (
-    <Container className="bg-foreground p-3 bg-background flex flex-col gap-4">
+    <Container className="bg-foreground p-3 bg-background flex flex-col gap-4 border border-[rgba(168, 168, 168, 0.10)]">
       <div className="flex flex-col gap-3">
         <p className="text-xs font-medium text-muted-foreground">
           Select A Trading Account
@@ -246,7 +246,7 @@ const SelectTradingAccount = () => {
         <p className="text-xs font-medium text-muted-foreground">
           Withdraw or Deposit {"(USDC)"}
         </p>
-        <div className="bg-foreground px-5 rounded-lg">
+        <div className="bg-foreground px-5 rounded-lg h-11 border border-[rgba(168, 168, 168, 0.10)]">
           <Input
             value={amount}
             type="number"

@@ -29,23 +29,23 @@ const DisclaimerConfirm: FC<DisclaimerConfirmProps> = ({
   };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className=" lg:min-w-[672px] ">
-        <div className="w-full h-full relative overflow-hidden">
-          <FallbackImage
+      <DialogContent className=" lg:min-w-[700px] p-0">
+        <div className="w-full h-full relative p-4 overflow-hidden flex flex-col gap-2">
+        <FallbackImage
             alt=""
             src={"/images/toast/success.png"}
-            className="absolute z-0 top-[0px] opacity-10 -translate-y-1/3"
+            className="absolute z-0 top-[0px] opacity-10 -translate-y-[15%]"
             width={600}
-            height={500}
+            height={400}
           />
           <DialogHeader className="z-20">
             <DialogTitle>
               {" "}
-              <h1 className="text-[24px] text-[#FCFCFC] leading-7 text-center">
+              <h1 className="text-[24px] text-[#FCFCFC] leading-7 text-center font-[500]">
                 Please Read Before Using
               </h1>
             </DialogTitle>
-            <hr />
+            <hr className="mt-2"/>
             <DialogDescription className="relative overflow-y-auto  h-[35vh] max-h-[50vh]  text-xs text-muted-foreground flex flex-col items-center gap-1">
               <p className="text-[16px] text-[#A8A8A8] mt-4 z-20 leading-7">
                 This website-hosted user interface (this "Interface") is an open
@@ -63,7 +63,7 @@ const DisclaimerConfirm: FC<DisclaimerConfirmProps> = ({
               </p>
             </DialogDescription>
             <div className="flex items-center space-x-2 z-20">
-              <Checkbox
+              <Checkbox className="h-[30px] w-[30px]"
                 id="terms"
                 checked={isAccepted}
                 onCheckedChange={() => setIsAccepted((s) => !s)}

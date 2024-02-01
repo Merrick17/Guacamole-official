@@ -11,7 +11,7 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import React from "react";
 import "./globals.css";
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 //bg-[url('/images/home/Guacamole_BG_Image_v2_1.png')] bg-cover bg-no-repeat"
 export const metadata: Metadata = {
   title: " A Fresh Solana Experience | Guacamole",
@@ -27,6 +27,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+ 
   return (
     <html lang="en">
       <head></head>

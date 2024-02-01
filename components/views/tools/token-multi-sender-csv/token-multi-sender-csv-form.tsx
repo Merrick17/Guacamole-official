@@ -335,7 +335,7 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
       {!file ? (
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
-          <Button type="button" className="w-full py-4 font-medium">
+          <Button type="button" className="w-full py-4 font-medium tools-bg">
             Select File To Upload
           </Button>
         </div>
@@ -344,7 +344,7 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
           <Button
             type="button"
             variant="destructive"
-            className="w-full py-4 font-medium capitalize"
+            className="w-full py-4 font-medium capitalize earn-bg"
             onClick={() => setFile(null)}
           >
             remove file

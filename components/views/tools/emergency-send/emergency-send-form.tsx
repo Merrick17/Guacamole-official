@@ -279,7 +279,7 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
           control={form.control}
           name="walletAddress"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="border rounded-md">
               <FormLabel className="uppercase">Wallet Address</FormLabel>
               <FormControl>
                 <Input
@@ -291,7 +291,7 @@ const EmergencySendForm: FC<EmergencySendFormProps> = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full  !py-4">
+        <Button type="submit" className="w-full tools-bg  !py-4">
           <span className="text-base font-medium capitalize">
             Send All Tokens To New Address
           </span>

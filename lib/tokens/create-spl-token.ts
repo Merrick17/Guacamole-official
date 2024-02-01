@@ -230,13 +230,14 @@ export async function createSPLToken(
   metadataMethod: string
 ): Promise<string> {
   try {
+    
     const metaplex = Metaplex.make(connection)
       .use(walletAdapterIdentity(wallet))
       .use(
         bundlrStorage({
-          address: "https://devnet.bundlr.network",
-          providerUrl: "https://solana-devnet.g.alchemy.com/v2/DjYXduI63_lr9Vh7oz0cQ3bpPPQY-6SW",
-          timeout: 60000,
+          // address: "https://devnet.bundlr.network",
+          // providerUrl: "https://solana-devnet.g.alchemy.com/v2/DjYXduI63_lr9Vh7oz0cQ3bpPPQY-6SW",
+          // timeout: 60000,
         })
       );
     const sftBuilder = await metaplex
@@ -248,6 +249,7 @@ export async function createSPLToken(
         decimals: decimals,
         mintAuthority: metaplex.identity(),
         updateAuthority: metaplex.identity(),
+      
         tokenOwner: owner,
         creators: [
           {

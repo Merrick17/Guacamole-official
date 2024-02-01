@@ -26,7 +26,6 @@ const Page = () => {
             <Select
               defaultValue="shop"
               onValueChange={(val) => {
-               
                 switch (val) {
                   case "token":
                     router.push("/explore/guac-token");
@@ -125,8 +124,9 @@ const Page = () => {
             army of followers with friends in our social tracking features!
           </p>
           <Link
-            href={"https://guac.gg/pitfolio"}
+            href={"https://guac.gg/portfolio-tracker"}
             className="flex items-start  gap-2"
+            target="_blank"
           >
             <span className="text-[#70D87D] text-[16px]">Visit Website</span>
             <svg
@@ -189,8 +189,8 @@ const Page = () => {
           <p className="text-[#A8A8A8] text-[14px] w-[369px]">
             Almost everything you do on GUAC.GG earns you redeemable points!
             We’ve even partnered with platforms like
-            <span className="text-[#70D87D]">Bybit</span> and{" "}
-            <span className="text-[#70D87D]">OKX</span>!
+            <span className="text-[#70D87D] px-1">Bybit</span> and
+            <span className="text-[#70D87D] px-1">OKX</span>!
           </p>
           <Link
             href={"https://guac.gg/rewards"}

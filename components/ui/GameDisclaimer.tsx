@@ -56,6 +56,7 @@ const GameDisclaimer = () => {
         <AlertDialogFooter>
           <div className="flex items-center space-x-2">
             <Checkbox
+              className="h-[25px] w-[25px]"
               id="terms"
               checked={isAccepted}
               onCheckedChange={() => setIsAccepted((s) => !s)}

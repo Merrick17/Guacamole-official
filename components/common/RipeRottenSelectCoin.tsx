@@ -1,4 +1,5 @@
 import { useProduct } from "@/context/dexterity";
+import { useSetting } from "@/context/setting";
 import { cn } from "@/lib/utils";
 import { FC, Fragment, useMemo, useState } from "react";
 
@@ -11,6 +12,7 @@ const RipeRottenSelectCoin: FC<RipeRottenSelectCoinProps> = ({
   coin,
   onClick,
 }) => {
+  const { selectedNetwork, selectedParimutuel } = useSetting();
   return (
     <div className="flex flex-col items-start w-full " onClick={onClick}>
       <p className="left-align text-muted-foreground font-medium">
@@ -25,7 +27,7 @@ const RipeRottenSelectCoin: FC<RipeRottenSelectCoinProps> = ({
       </p>
 
       <p className="text-muted-foreground text-[10px] ">
-        SETTLLEMENT: <span>GUAC </span>
+        SETTLLEMENT: <span>{selectedNetwork} </span>
       </p>
     </div>
   );

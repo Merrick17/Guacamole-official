@@ -33,6 +33,7 @@ const NftCard: FC<NftCardProps> = ({ token, SelectButton, className }) => {
         </Button> */}
         <Button
           size="sm"
+          className="tools-bg"
           onClick={() => {
             if (typeof window !== "undefined" && token) {
               window.open(`https://solscan.io/address/${token.mint}`);

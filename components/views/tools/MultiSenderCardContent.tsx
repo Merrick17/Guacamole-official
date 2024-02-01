@@ -14,7 +14,7 @@ const MultiSenderCardContent: FunctionComponent<
 }) => {
   return (
     <Link
-      href={"/trade/bridge"}
+      href={"/tools/token-multi-sender"}
       className={cn(
         "flex flex-col  min-h-[400px]  bg-[#141414] transition-all duration-300 ease-in-out  border border-transparen hover:border-primary rounded-xl shadow-md gap-2 relative overflow-hidden",
         className

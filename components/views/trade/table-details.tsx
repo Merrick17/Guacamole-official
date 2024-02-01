@@ -1,7 +1,7 @@
-import Container from '@/components/common/container';
-import { useProduct, useTrader } from '@/context/dexterity';
-import { cn, timeSince } from '@/lib/utils';
-import { useCallback, useEffect } from 'react';
+import Container from "@/components/common/container";
+import { useProduct, useTrader } from "@/context/dexterity";
+import { cn, timeSince } from "@/lib/utils";
+import { useCallback, useEffect } from "react";
 
 const TableDetails = () => {
   const { selectedProduct } = useProduct();
@@ -27,12 +27,12 @@ const TableDetails = () => {
     accountLeverage,
     setPositionsData,
   } = useTrader();
-  
+
   return (
-    <Container className="bg-foreground p-3 flex flex-col gap-4 bg-background text-muted-foreground rounded-xl">
+    <Container className=" p-3 py-4 flex flex-col gap-4 bg-background text-muted-foreground rounded-xl border border-[rgba(168, 168, 168, 0.10)] min-h-[385px]">
       {updated && (
         <>
-          {' '}
+          {" "}
           <div className="flex items-center justify-between">
             <p>Cash Balance</p>
             <p>${cashBalance.toLocaleString()}</p>
@@ -65,7 +65,7 @@ const TableDetails = () => {
             <p>All Time PnL</p>
             <p
               className={cn(
-                allTimePnl < 0 ? 'text-destructive' : 'text-[#8BD796]'
+                allTimePnl < 0 ? "text-destructive" : "text-[#8BD796]"
               )}
             >
               ${allTimePnl.toLocaleString()}

@@ -1,14 +1,14 @@
-import React, { FC, useState, useEffect, useCallback } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
+import React, { FC, useState, useEffect, useCallback } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import {
   useManifest,
   useTrader,
   dexterity,
   useProduct,
-} from '../../context/dexterity';
-import { PublicKey } from '@solana/web3.js';
-import { Button } from '../ui/button';
-import { formatPubKey, handleCopy } from '@/lib/utils';
+} from "../../context/dexterity";
+import { PublicKey } from "@solana/web3.js";
+import { Button } from "../ui/button";
+import { formatPubKey, handleCopy } from "@/lib/utils";
 //import { notify } from "../utils/notifications";
 //import { formatPubKey, handleCopy } from 'utils/util';
 
@@ -20,8 +20,16 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { toast } from '@/hooks/use-toast';
+} from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Group, GroupPubkeyMap } from "../views/trade/perpetual-constants";
+import { BsChevronDown } from "react-icons/bs";
 
 type TraderAccount = {
   pubkey: PublicKey;
@@ -46,7 +54,7 @@ export const TraderAccountDropdown: FC<TraderAccountDropdownProps> = ({
 
     // </select>
     <Select onValueChange={(value) => onSelect(value)}>
-      <SelectTrigger className="w-full bg-foreground h-12 rounded-md px-5 ">
+      <SelectTrigger className="w-full bg-foreground h-12 rounded-md px-5 border border-[rgba(168, 168, 168, 0.10)]">
         <SelectValue placeholder="Select An Account" />
       </SelectTrigger>
       <SelectContent className="w-full">
@@ -67,10 +75,12 @@ export const SelectTraderAccounts: FC = () => {
   const { publicKey } = useWallet();
   const { manifest } = useManifest(); // Assuming createTRG is the function to create a new TRG
   const [trgsArr, setTrgsArr] = useState<TraderAccount[]>([]);
-  const [selectedTrg, setSelectedTrg] = useState<string>('');
+  const [selectedTrg, setSelectedTrg] = useState<string>("");
   const { setTrader } = useTrader();
-  const { mpgPubkey } = useProduct();
-
+  const { mpgPubkey, setMpgPubkey } = useProduct();
+  const [selectedGroup, setSelectedGroup] = useState<Group>(
+    GroupPubkeyMap.get(0)
+  );
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey, mpgPubkey]);
@@ -92,7 +102,7 @@ export const SelectTraderAccounts: FC = () => {
       //console.log("TGRS", trgs.map((elm)=>elm.pubkey.toBase58()));
     } catch (error: any) {
       toast({
-        variant: 'destructive',
+        variant: "destructive",
         title: `Selecting Trader Account failed!`,
         description: error?.message,
       });
@@ -104,15 +114,15 @@ export const SelectTraderAccounts: FC = () => {
       const newTrg = await manifest.createTrg(new PublicKey(mpgPubkey));
       if (newTrg) {
         toast({
-          variant: 'success',
-          title: 'Successfully created new Trader Account!',
-          description: `Trader Account PublicKey: ${newTrg.toBase58()}`
-        })
+          variant: "success",
+          title: "Successfully created new Trader Account!",
+          description: `Trader Account PublicKey: ${newTrg.toBase58()}`,
+        });
       }
       fetchTraderAccounts();
     } catch (error: any) {
       toast({
-        variant: 'destructive',
+        variant: "destructive",
         title: `Creating Trader Account failed!`,
         description: error?.message,
       });
@@ -121,7 +131,7 @@ export const SelectTraderAccounts: FC = () => {
 
   const handleSelection = useCallback(
     async (selectedValue: string) => {
-      if (selectedValue == 'default') return;
+      if (selectedValue == "default") return;
       setSelectedTrg(selectedValue);
       const trader = new dexterity.Trader(
         manifest,
@@ -134,32 +144,50 @@ export const SelectTraderAccounts: FC = () => {
     },
     [manifest, setTrader, mpgPubkey]
   );
-
+  const handleSelectGroup = (group: Group) => {
+    setSelectedGroup(group);
+    setMpgPubkey(group.pubkey);
+  };
+  const renderGroupOptions = () => {
+    return Array.from(GroupPubkeyMap.values()).map((group) => (
+      <DropdownMenuItem
+        className="w-full"
+        key={group.pubkey}
+        onClick={() => handleSelectGroup(group)}
+      >
+        {group.name}
+      </DropdownMenuItem>
+    ));
+  };
+  const renderGroupDropdown = () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button className="w-full text-[#FFFF] bg-foreground h-12 rounded-md px-5 border border-[rgba(168, 168, 168, 0.10)] flex justify-between">
+          <span>{selectedGroup?.name || "Select Group"}</span> <BsChevronDown color="#FFF" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-full">
+        {renderGroupOptions()}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
   return (
     <div className="flex flex-col  justify-center  rounded-lg  mt-4 gap-5">
       <h1 className="text-sm mb-4 text-muted-foreground">
         Select or create a trading account
       </h1>
+      <div className="w-full  flex flex-col items-center space-y-4">
+        {renderGroupDropdown()}
+        <TraderAccountDropdown accounts={trgsArr} onSelect={handleSelection} />
 
-      {trgsArr.length > 0 ? (
-        <div className="w-full  flex flex-col items-center space-y-4">
-          <TraderAccountDropdown
-            accounts={trgsArr}
-            onSelect={handleSelection}
-          />
-          {/* <span
-              className="ml-5 cursor-pointer"
-              onClick={() => {
-                handleCopy(selectedTrg, 'Trg Pubkey');
-              }}
-            ></span> */}
+        <div className="flex justify-between items-center gap-2 w-full">
           <Button
             onClick={handleCreateTRG}
             disabled={!publicKey}
             className={`w-full trade-bg`}
             size="lg"
           >
-            Create New Trader Account
+            CREATE
           </Button>
           <Button
             onClick={fetchTraderAccounts}
@@ -167,38 +195,20 @@ export const SelectTraderAccounts: FC = () => {
             size="lg"
             className="w-full trade-bg"
           >
-            Load Trader Accounts
+            LOAD
           </Button>
         </div>
-      ) : (
-        <div className="w-full flex flex-col items-center space-y-4">
-          <Button
-            onClick={fetchTraderAccounts}
-            disabled={!publicKey}
-            className="w-full trade-bg"
-            size="lg"
-          >
-            Load Trader Accounts
-          </Button>
-          <Button
-            onClick={handleCreateTRG}
-            disabled={!publicKey}
-            className={`w-full trade-bg `}
-            size="lg"
-          >
-            Create New Trader Account
-          </Button>
-        </div>
-      )}
-      <div className="bg-foreground p-5 rounded-lg">
+      </div>
+
+      <div className="bg-foreground p-5 rounded-lg border border-[rgba(168, 168, 168, 0.10)]">
         <h3 className="text-muted-foreground text-sm">Step 1</h3>
         <p className="text-xs">Create or load a trading account.</p>
       </div>
-      <div className="bg-foreground p-5 rounded-lg">
+      <div className="bg-foreground p-5 rounded-lg border border-[rgba(168, 168, 168, 0.10)]">
         <h3 className="text-muted-foreground text-sm">Step 2</h3>
         <p className="text-xs">Fund your trading collateral.</p>
       </div>
-      <div className="bg-foreground p-5 rounded-lg">
+      <div className="bg-foreground p-5 rounded-lg border border-[rgba(168, 168, 168, 0.10)]">
         <h3 className="text-muted-foreground text-sm">Step 3</h3>
         <p className="text-xs">Place trades on supported markets.</p>
       </div>

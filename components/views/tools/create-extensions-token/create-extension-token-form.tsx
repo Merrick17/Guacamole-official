@@ -37,8 +37,8 @@ const formSchema = z.object({
     }),
   metadataUrl: z.string().optional(),
   authority: z.boolean(),
-  fee: z.string().optional(),
-  maxFee: z.string().optional(),
+  fee: z.number().optional(),
+  maxFee: z.number().optional(),
   withdrawAuthority: z.string().optional(),
   configAuthority: z.string().optional(),
   rate: z.string().optional(),
@@ -64,12 +64,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AccountState,
+  createTransferCheckedInstruction,
+} from "../../../../node_modules/@solana/spl-token";
+import { PublicKey } from "@metaplex-foundation/js";
+import { useTokenAccounts } from "@bonfida/hooks";
+import { getTokenAccount } from "@/lib/get-ata";
+import { Transaction } from "@solana/web3.js";
 interface CreateExtensionTokenFormProps {}
 
 const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
   // web 3
   const wallet = useWallet();
-  const { publicKey } = wallet;
+  const { publicKey, connected } = wallet;
   const { connection } = useConnection();
 
   const { toast } = useToast();
@@ -80,7 +88,40 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
   const [isPermanentDelegate, setIsPermanentDelegate] =
     useState<boolean>(false);
   const [isNonTransferable, setIsNonTransferable] = useState<boolean>(false);
-
+  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
+    connection,
+    publicKey
+  );
+  const guacTokenAccount = tokenAccounts
+    ? tokenAccounts?.getByMint(
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR")
+      )
+    : null;
+  const guacBalance =
+    guacTokenAccount && guacTokenAccount.decimals
+      ? Number(guacTokenAccount.account.amount) /
+        Math.pow(10, guacTokenAccount.decimals)
+      : 0;
+  const handleSendFees = async () => {
+    const { pubkey: feeGuacAta } = await getTokenAccount(
+      connection,
+      new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"),
+      publicKey,
+      new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
+      true
+    );
+    let tx = new Transaction().add(
+      createTransferCheckedInstruction(
+        guacTokenAccount.pubkey, // from (should be a token account)
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"), // mint
+        feeGuacAta, // to (should be a token account)
+        publicKey, // from's owner
+        10_000_000 * Math.pow(10, 5), // amount, if your deciamls is 8, send 10^8 for 1 token
+        5 // decimals
+      )
+    );
+    const sig = await wallet.sendTransaction(tx, connection);
+  };
   // 1- .
   const [tokenIcon, setTokenIcon] = useState<File | null>(null);
   // 2- form.
@@ -94,12 +135,17 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
       description: "",
       metadataUrl: "",
       authority: false,
-      defaultState: "Uninitialized",
+      defaultState: null,
       delegateAdr: "",
+      fee: 0,
+      maxFee: 0,
+      withdrawAuthority: connected ? publicKey.toBase58() : "",
+      configAuthority: connected ? publicKey.toBase58() : "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("Value", values);
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
@@ -110,8 +156,8 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
 
     try {
       let uri: string;
-
-      // Assuming metadataUrl is used when createUrl is false
+      await handleSendFees();
+      //Assuming metadataUrl is used when createUrl is false
       uri = await uploadMetaData(
         wallet,
         connection,
@@ -122,20 +168,6 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
       );
       // Ensure that uri is available before proceeding with createSPLToken
       if (uri) {
-        // const res = await createSPLToken(
-        //   publicKey,
-        //   wallet,
-        //   connection,
-        //   values.tokenSupply,
-        //   values.tokenDecimals,
-        //   values.authority,
-        //   values.tokenName,
-        //   values.tokenSymbol,
-        //   uri,
-        //   values.description,
-        //   undefined,
-        //   "url"
-        // );
         const res = await createNewToken(
           publicKey,
           wallet,
@@ -145,7 +177,13 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
           uri,
           values.tokenSupply,
           values.tokenDecimals,
-          wallet.publicKey,wallet.publicKey,100,1000
+          new PublicKey(values.configAuthority),
+          new PublicKey(values.withdrawAuthority),
+          values.fee,
+          values.maxFee,
+          values.defaultState as any,
+          isNonTransferable,
+          isTax
         );
         toast({
           variant: "success",
@@ -346,7 +384,7 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
             />
           </>
         )}
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <Checkbox
             id="interest"
             checked={isInterestBearing}
@@ -358,7 +396,7 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
           >
             Interest Bearing
           </label>
-        </div>
+        </div> */}
         {isInterestBearing && (
           <FormField
             control={form.control}
@@ -394,12 +432,16 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
             render={({ field }) => (
               <Select {...field}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Default Value" />
+                  <SelectValue
+                    placeholder="Default Value"
+                    defaultValue={null}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Uninitialized">Uninitialized</SelectItem>
+                    <SelectItem value={null}>None </SelectItem>
                     <SelectItem value="Initialized">Initialized</SelectItem>
+                    <SelectItem value="Uninitialized">Uninitialized</SelectItem>
                     <SelectItem value="Frozen">Frozen</SelectItem>
                   </SelectGroup>
                 </SelectContent>
@@ -407,7 +449,7 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
             )}
           />
         )}
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <Checkbox
             id="delegate"
             checked={isPermanentDelegate}
@@ -419,7 +461,7 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
           >
             Permanent Delegate
           </label>
-        </div>
+        </div> */}
         {isPermanentDelegate && (
           <FormField
             control={form.control}
@@ -507,7 +549,11 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
             </FormItem>
           )}
         /> */}
-        <Button type="submit" className="launch-bg w-full">
+        <Button
+          type="submit"
+          className="launch-bg w-full" 
+          disabled={!connected || guacBalance < 10_000_000}
+        >
           Fill In Applicable Fields
         </Button>
         {/* <p className="text-center text-muted-foreground text-sm ">

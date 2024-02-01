@@ -85,15 +85,15 @@ const Swap = () => {
                 </svg>
               </Button>
             </div>
-            <Button
+            {/* <Button
               size="icon"
               className="absolute top-1/2 w-6 h-12 -translate-y-1/2 left-full rounded-lg rounded-tl-none rounded-bl-none  z-10"
               onClick={() => setShowCharts((s) => !s)}
             >
               <AiFillCaretRight className={cn(showCharts && "rotate-180 ")} />
-            </Button>
+            </Button> */}
           </div>
-          {showCharts && <SwapCharts />}
+          {/* {showCharts && <SwapCharts />} */}
         </div>
       </main>
     </>

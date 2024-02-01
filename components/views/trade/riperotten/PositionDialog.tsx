@@ -22,6 +22,7 @@ import { PublicKey } from "@solana/web3.js";
 import numeral from "numeral";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 type PositionDialogProps = {
   isDialogOpen: boolean;
   onOpenChange?: (x: boolean) => void;
@@ -72,10 +73,20 @@ const PositionDialog: FC<PositionDialogProps> = ({
         new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR")
       )
     : null;
+  const usdcTokenAccount = tokenAccounts
+    ? tokenAccounts?.getByMint(
+        new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
+      )
+    : null;
   const guacBalance =
     guacTokenAccount && guacTokenAccount.decimals
       ? Number(guacTokenAccount.account.amount) /
         Math.pow(10, guacTokenAccount.decimals)
+      : 0;
+  const usdcBalance =
+    guacTokenAccount && usdcTokenAccount.decimals
+      ? Number(usdcTokenAccount.account.amount) /
+        Math.pow(10, usdcTokenAccount.decimals)
       : 0;
   const handleEnterPosition = useCallback(async () => {
     const transactionId = await web3?.placePosition(
@@ -109,7 +120,7 @@ const PositionDialog: FC<PositionDialogProps> = ({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="!bg-foreground">
         <DialogTitle>
           <span className="text-[#FCFCFC] text-[16px] font-medium">
             {" "}
@@ -166,20 +177,58 @@ const PositionDialog: FC<PositionDialogProps> = ({
                 />
               </svg>
               <span className="text-xs text-muted-foreground">
-                {numeral(guacBalance).format("0,0")}
+                {selectedNetwork == "USDC"
+                  ? numeral(guacBalance).format("0,0")
+                  : numeral(usdcBalance).format("0,0")}{" "}
+                {selectedNetwork }
               </span>
+              <Button className="bg-[#141414]  w-full h-7 p-2 rounded-lg text-xs">
+                <Link
+                  href={
+                    selectedNetwork == "GUAC"
+                      ? `/trade/swap?outputMint=AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR&inputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`
+                      : "/trade/swap?outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&inputMint=So11111111111111111111111111111111111111112"
+                  }
+                  className="text-[#BBB0DB]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  BUY {selectedNetwork}
+                </Link>
+              </Button>
             </div>
           </div>
           <div className="bg-[#0F1010] border border-[rgba(168, 168, 168, 0.10)] px-2 rounded-[8px] w-full flex justify-between items-center">
-            <Input
-              value={amount.toString()}
-              onChange={(e) => setAmount(parseFloat(e.target.value))}
-            />
             <div className="flex items-center justify-center p-2 gap-2">
-              <Button className="bg-[#141414]" size="sm" variant="secondary">
+              {selectedNetwork == "GUAC" ? (
+                <img src="/images/guac_token.png" className="w-6 h-6  " />
+              ) : (
+                <img src="/images/usdc.svg" className="w-6 h-6 " />
+              )}
+              <Input
+                value={amount.toString()}
+                onChange={(e) => setAmount(parseFloat(e.target.value))}
+              />
+            </div>
+            <div className="flex items-center justify-center p-2 gap-2">
+              <Button
+                className="bg-[#141414]"
+                size="sm"
+                variant="secondary"
+                onClick={(e) => {
+                  setAmount((x) => x / 2);
+                }}
+              >
                 1/2
               </Button>
-              <Button className="bg-[#141414]" size="sm" variant="secondary">
+              <Button
+                className="bg-[#141414]"
+                size="sm"
+                variant="secondary"
+                onClick={(e) => {
+                  setAmount((x) => x * 2);
+                }}
+              >
                 x2
               </Button>
             </div>

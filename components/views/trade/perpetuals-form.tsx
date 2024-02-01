@@ -39,10 +39,22 @@ import { useWebSocket } from "@/context/websocket";
 import { useToast } from "@/hooks/use-toast";
 import { PublicKey } from "@solana/web3.js";
 import Link from "next/link";
-import { Product, ProductMap } from "./perpetual-constants";
+import {
+  Product,
+  ProductMap,
+  GroupPubkeyMap,
+  Group,
+} from "./perpetual-constants";
 import useWalletTokens from "@/lib/tokens/useWalletTokens";
 import { useRouter } from "next/navigation";
 import FallbackImage from "@/components/common/FallbackImage";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -66,8 +78,13 @@ const PerpetualsForm = () => {
   const { toast } = useToast();
   const { candles } = useWebSocket();
   const [isOpen, setIsOpen] = useState(false);
-  const { selectedProduct, setIndexPrice, setMarkPrice, markPrice } =
-    useProduct();
+  const {
+    selectedProduct,
+    setIndexPrice,
+    setMarkPrice,
+    markPrice,
+    setMpgPubkey,
+  } = useProduct();
   const [guac, setGuac] = useState(null);
   const [guacBalance, setGuacBalance] = useState(0);
   const [marketPrice, setMarketPrice] = useState(0);
@@ -75,6 +92,7 @@ const PerpetualsForm = () => {
   const [tradeQuantity, setTradeQuantity] = useState(
     selectedProduct.minSize.toString()
   );
+
   const getFeesBps = (number: number) => {
     switch (true) {
       case number > 4000000000 && number < 10000000000:
@@ -125,11 +143,6 @@ const PerpetualsForm = () => {
   useEffect(() => {
     setSize((selectedProduct.minSize * marketPrice).toString());
   }, [selectedProduct, marketPrice]);
-  useEffect(() => {
-    if (candles.length > 0) {
-      setMarketPrice(Number(candles[candles.length - 1].o));
-    }
-  }, [trader, setIndexPrice, candles, markPrice]);
 
   const callbacks = {
     onGettingBlockHashFn: () =>
@@ -167,6 +180,7 @@ const PerpetualsForm = () => {
 
   const selectedMarketPrice = useMemo(() => {
     if (!markPrice || !selectedProduct || !(markPrice.length > 0)) return 0;
+    console.log("MArket PRICE", markPrice);
     return markPrice.find((p) => p.index === selectedProduct.index).price;
   }, [selectedProduct, markPrice]);
 
@@ -298,6 +312,7 @@ const PerpetualsForm = () => {
   const [product, setProduct] = useState<Product>(ProductMap.get(0).get(0));
 
   useMemo(() => {
+    console.log("Product", product);
     setProduct(ProductMap.get(0).get(selectedProduct.index));
     setTradeQuantity(selectedProduct.minSize.toString());
   }, [selectedProduct]);
@@ -347,7 +362,7 @@ const PerpetualsForm = () => {
                       " rounded-lg text-sm w-full uppercase gap-2",
                       upOrDown
                         ? "guac-bg hover:!bg-[#8bd796]"
-                        : "bg-[#141414]  text-white hover:!bg-[#141414] "
+                        : "bg-[#141414]  text-white hover:!bg-[#141414] border border-[rgba(168, 168, 168, 0.10)] "
                     )}
                     size="lg"
                     onClick={() => {
@@ -365,7 +380,7 @@ const PerpetualsForm = () => {
                       " rounded-lg text-sm w-full uppercase ",
                       !upOrDown
                         ? "earn-bg hover:!bg-destructive"
-                        : "bg-[#141414] text-white  hover:!bg-[#141414] "
+                        : "bg-[#141414] text-white  hover:!bg-[#141414] border border-[rgba(168, 168, 168, 0.10)]"
                     )}
                     size="lg"
                     onClick={() => {
@@ -384,24 +399,25 @@ const PerpetualsForm = () => {
                 control={form.control}
                 name="tradeQuantity"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="!p-0">
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
                       <p> Trade Size {`(${product.base})`}</p>{" "}
                       <p> Min. Trade: {product.minSize}</p>
                     </FormLabel>
-                    <FormControl className="bg-foreground px-4 py-2 h-10">
+                    <FormControl className="bg-foreground px-4 py-4  border border-[rgba(168, 168, 168, 0.10)] rounded-lg w-full">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-5">
-                          <div className="w-5 h-5 shrink-0">
+                          <div className="w-8 h-8 shrink-0">
                             <FallbackImage
                               width={20}
                               height={20}
                               src={product.baseLogo}
                               alt={product.base}
-                              className="w-5 h-5"
+                              className="w-8 h-8"
                             />
                           </div>
                           <Input
+                            className="h-[25px]"
                             min={product.minSize}
                             type="text"
                             placeholder="0"
@@ -418,7 +434,7 @@ const PerpetualsForm = () => {
                         <div className="flex items-center gap-1">
                           <Button
                             size="icon"
-                            className="text-accent bg-background text-xs h-6 w-9 py-1 px-[10px]"
+                            className="text-accent bg-background text-xs h-8 w-12 py-1 px-[10px]"
                             onClick={() =>
                               // form.setValue(
                               //   "tradeQuantity",
@@ -439,7 +455,7 @@ const PerpetualsForm = () => {
                           </Button>
                           <Button
                             size="icon"
-                            className="text-accent bg-background text-xs h-6 w-9  py-1 px-[10px]"
+                            className="text-accent bg-background text-xs h-8 w-12  py-1 px-[10px]"
                             onClick={() => {
                               setTradeQuantity((prevVal) =>
                                 (Number(prevVal) * 2).toString()
@@ -463,11 +479,11 @@ const PerpetualsForm = () => {
                 control={form.control}
                 name="slippage"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="p-0">
                     <FormLabel className="text-muted-foreground  mb-3">
                       Slippage Tolerance (%)
                     </FormLabel>
-                    <FormControl className="bg-foreground px-4 py-2 h-10 w-max">
+                    <FormControl className="bg-foreground px-4 py-2 h-13 w-max border border-[rgba(168, 168, 168, 0.10] rounded-lg">
                       <div className="w-full flex items-center gap-4">
                         <div className="flex items-center ">
                           <Input
@@ -477,6 +493,7 @@ const PerpetualsForm = () => {
                             type="number"
                             placeholder="0"
                             value={slippage}
+                            className="h-[25px]"
                             onChange={(e) => {
                               setSlippage(e.target.value);
                             }}
@@ -515,14 +532,14 @@ const PerpetualsForm = () => {
                 control={form.control}
                 name="size"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="p-0">
                     <FormLabel className="flex items-center text-muted-foreground justify-between  mb-3">
                       <p>Estimated {`(${product.quote})`}</p>{" "}
                       <p className="text-accent">
                         Cash Balance: {(cashBalance ?? 0).toLocaleString()}
                       </p>
                     </FormLabel>
-                    <FormControl className="bg-foreground px-4 py-2 h-10">
+                    <FormControl className="bg-foreground px-4 py-2 h-15 border border-[rgba(168, 168, 168, 0.10] rounded-lg">
                       <div className=" flex items-center gap-5">
                         <div className="w-5 h-5">
                           <img

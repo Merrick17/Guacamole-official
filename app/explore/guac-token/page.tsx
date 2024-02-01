@@ -25,7 +25,7 @@ const Page = () => {
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <div className="w-[153px] text-black font-semibold">
             <Select
-              defaultValue="avotars"
+              defaultValue="token"
               onValueChange={(val) => {
                 switch (val) {
                   case "token":
@@ -42,7 +42,7 @@ const Page = () => {
                 }
               }}
             >
-              <SelectTrigger className="rounded-lg h-[30px] flex flex-2 gap-2 guac-btn">
+              <SelectTrigger className="rounded-lg h-[30px] flex flex-2 gap-2 guac-btn" >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

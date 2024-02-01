@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 const TokenMultiSenderCSV = () => {
   return (
-    <Container className=" mx-auto flex w-full max-w-lg bg-foreground flex-col gap-6 rounded-lg  px-6 py-5  shadow-md">
+    <Container className=" mx-auto flex w-full max-w-lg bg-foreground flex-col gap-6 rounded-lg  px-6 py-5  shadow-md border">
       <ToolHeader
         title="Token Multi Sender By CSV"
         tutorialLink="https://docs.guacamole.gg/products-and-features/tools/token-multi-sender"

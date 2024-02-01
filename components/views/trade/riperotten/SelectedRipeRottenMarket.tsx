@@ -29,9 +29,9 @@ const SelectedRipeRottenMarket: FC<SelectedRipeRottenMarketProps> = ({
         ))}
       </p>
 
-      <p className="text-muted-foreground text-[10px] ">
+      {/* <p className="text-muted-foreground text-[10px] ">
         SETTLEMENT: <span>{selectedNetwork} </span>
-      </p>
+      </p> */}
     </div>
   );
 };

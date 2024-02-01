@@ -16,15 +16,27 @@ import { useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import CoinPrice from "./riperotten/CoinPrice";
 import { SelectedRipeRottenMarket } from "./riperotten/SelectedRipeRottenMarket";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 const RipeRottenHeader = () => {
   const { width } = useWindowSize();
   const { web3 } = useParimutuel();
 
-  const { setSelectedMarketPair, setSelectedMarketKey, selectedMarketPair } =
-    useSetting();
+  const {
+    setSelectedMarketPair,
+    setSelectedMarketKey,
+    selectedMarketPair,
+    selectedNetwork,
+    setSelectedNetwork,
+  } = useSetting();
   const [selectedMarket, setSelectedMarket] = useState({
     coin: ["SOL", "Solana"],
-    logo: "/images/trade/sol_guac.png",
+    logo: "/images/launch/sol.png",
     name: "SOL-USD",
     market_pair: MarketPairEnum.SOLUSD,
   });
@@ -56,7 +68,7 @@ const RipeRottenHeader = () => {
     // },
     {
       coin: ["SOL", "Solana"],
-      logo: "/images/trade/sol_guac.png",
+      logo: "/images/launch/sol.png",
       name: "SOL-USD",
     },
     // Add other market options here
@@ -86,11 +98,24 @@ const RipeRottenHeader = () => {
       {width > 1000 ? (
         <>
           <div className="flex flex-row items-center gap-2">
-            <img
-              src={selectedMarket.logo}
-              alt={selectedMarket.name}
-              className="w-10 h-10"
-            />
+            <div className="relative flex w-full h-full">
+              <img
+                src={selectedMarket.logo}
+                alt={selectedMarket.name}
+                className="w-10 h-10 rounded-md"
+              />
+              {selectedNetwork == "GUAC" ? (
+                <img
+                  src="/images/guac_token.png"
+                  className="w-4 h-4 absolute bottom-0 right-0"
+                />
+              ) : (
+                <img
+                  src="/images/usdc.svg"
+                  className="w-4 h-4 absolute bottom-0 right-0"
+                />
+              )}
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex flex-col lg:flex-row items-center justify-between gap-4 w-full bg-[#141414] p-3 rounded-[10px] border-[1px] border-[rgba(168, 168, 168, 0.10)] min-w-[240px]">
                 <SelectedRipeRottenMarket {...selectedMarket} />
@@ -102,6 +127,20 @@ const RipeRottenHeader = () => {
                 {renderDropdownMenuItems()}
               </DropdownMenuContent>
             </DropdownMenu>
+            <Select
+              defaultValue={selectedNetwork}
+              onValueChange={(e) => {
+                setSelectedNetwork(e);
+              }}
+            >
+              <SelectTrigger className="bg-[#141414] p-3 rounded-[10px] border-[1px] border-[rgba(168, 168, 168, 0.10)]  !h-[65px]">
+                <SelectValue placeholder="Settlement" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="USDC">USDC</SelectItem>
+                <SelectItem value="GUAC" disabled>GUAC</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <p className="text-[#8BD796] text-3xl font-medium">

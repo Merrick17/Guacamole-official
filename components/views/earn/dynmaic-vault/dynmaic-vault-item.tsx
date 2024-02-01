@@ -89,11 +89,9 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
   const [userTokenBalanceInLamports, setUserTokenBalanceInLamports] =
     useState(0);
 
-  // User interaction
-  const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
+  useEffect(() => {
+    console.log("Item", item);
+  }, []);
 
   const initVaultImpl = useCallback(async () => {
     if (token && connection) {
@@ -288,7 +286,7 @@ const DynmaicVaultItem: FC<DynmaicVaultItemProps> = ({
       <Separator className="bg-foreground" />
       <div>
         <h1 className="text-[32px] font-medium">
-          {item.average_apy.toFixed(3)}%
+          {item.long_apy.toFixed(3)}%
         </h1>
         <div className="flex items-center gap-1 justify-center text-muted-foreground">
           <h2 className="text-sm">Estimated APY</h2>

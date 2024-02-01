@@ -1,23 +1,15 @@
-'use client';
-import Container from '@/components/common/container';
-import NftCard from '@/components/common/nft-card';
-import ToolHeader from '@/components/common/tool-header';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-import {
-  Metaplex
-} from '@metaplex-foundation/js';
-import {
-  TOKEN_PROGRAM_ID,
-  Token
-} from '@solana/spl-token-v1';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import {
-  PublicKey,
-  Transaction
-} from '@solana/web3.js';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+"use client";
+import Container from "@/components/common/container";
+import NftCard from "@/components/common/nft-card";
+import ToolHeader from "@/components/common/tool-header";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Metaplex } from "@metaplex-foundation/js";
+import { TOKEN_PROGRAM_ID, Token } from "@solana/spl-token-v1";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey, Transaction } from "@solana/web3.js";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const BurnSplToken = () => {
   const { connection } = useConnection();
@@ -31,7 +23,7 @@ const BurnSplToken = () => {
   const [currentTx, setCurrentTx] = useState<number | null>(null);
   const [totalTx, setTotalTx] = useState<number | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>("");
   const [toBurn, setToBurn] = useState<any>([]);
 
   async function getUserSPLToken() {
@@ -45,12 +37,12 @@ const BurnSplToken = () => {
     const allTokens: any = [];
 
     const myHeaders = new Headers();
-    myHeaders.append('x-api-key', 'AwM0UoO6r1w8XNOA');
+    myHeaders.append("x-api-key", "AwM0UoO6r1w8XNOA");
 
     const tokenResponse = await fetch(
-      'https://api.shyft.to/sol/v1/wallet/all_tokens?network=mainnet-beta&wallet=' +
+      "https://api.shyft.to/sol/v1/wallet/all_tokens?network=mainnet-beta&wallet=" +
         publickey.toBase58(),
-      { method: 'GET', headers: myHeaders, redirect: 'follow' }
+      { method: "GET", headers: myHeaders, redirect: "follow" }
     );
     const tokenInfo = (await tokenResponse.json()).result;
 
@@ -62,14 +54,14 @@ const BurnSplToken = () => {
     tokens.map((token: any) => {
       const mint = token.address;
       const logoURI =
-        token.info.image != ''
+        token.info.image != ""
           ? token.info.image
-          : '/images/Guacamole_Image_Unknown.png';
+          : "/images/Guacamole_Image_Unknown.png";
       const tokenAccount = token.associated_account;
       const amount = token.balance;
       let name = token.info.name.trim();
-      if (name == '') {
-        name = mint.slice(0, 4) + '...' + mint.slice(-4);
+      if (name == "") {
+        name = mint.slice(0, 4) + "..." + mint.slice(-4);
       }
       allTokens.push({
         name: name,
@@ -92,7 +84,7 @@ const BurnSplToken = () => {
 
     setUserSPL(allTokens);
     setIsFetched(true);
-    console.log('user SPL tokens', allTokens);
+    console.log("user SPL tokens", allTokens);
   }
 
   useEffect(() => {
@@ -105,7 +97,7 @@ const BurnSplToken = () => {
       if (toBurn[0] != undefined && publickey) {
         setIsBurning(true);
         setSuccess(false);
-        setMessage('');
+        setMessage("");
         const nbPerTx = 5;
         let nbTx: number;
         if (toBurn.length % nbPerTx == 0) {
@@ -159,12 +151,12 @@ const BurnSplToken = () => {
           const signature = await wallet.sendTransaction(Tx, connection);
           const confirmed = await connection.confirmTransaction(
             signature,
-            'processed'
+            "processed"
           );
-          console.log('confirmation', signature);
+          console.log("confirmation", signature);
           toast({
-            variant: 'success',
-            title: 'Success',
+            variant: "success",
+            title: "Success",
             description: (
               <div className="flex flex-col gap-2">
                 <p>Your token have been burned!</p>
@@ -185,7 +177,7 @@ const BurnSplToken = () => {
         setSuccess(true);
         await getUserSPLToken();
       } else {
-        setMessage('Please choose at least one token to burn first!');
+        setMessage("Please choose at least one token to burn first!");
         setSuccess(false);
       }
     } catch (error) {
@@ -208,7 +200,7 @@ const BurnSplToken = () => {
           <Button
             size="sm"
             variant="default"
-            className="!bg-[#8BD796]"
+            className="guac-bg"
             onClick={() => {
               setIsSelected(true);
               toBurn.push(data);
@@ -220,6 +212,7 @@ const BurnSplToken = () => {
           <Button
             size="sm"
             variant="destructive"
+            className="earn-bg"
             onClick={() => {
               setIsSelected(false);
               toBurn.splice(toBurn.indexOf(data), 1);

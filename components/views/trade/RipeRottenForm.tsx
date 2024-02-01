@@ -1,29 +1,16 @@
 import FallbackImage from "@/components/common/FallbackImage";
 import Container from "@/components/common/container";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import NavigationList from "@/components/ui/navigation-list";
-import { getWeb3Config } from "@/constants/config";
 import { useParimutuel } from "@/context/parimutuel";
 import { useSetting } from "@/context/setting";
 import { MarketBoardItem, useMarket } from "@/hooks/use-market";
 import { AmountFormating } from "@/lib/utils";
-import {
-  MarketPairEnum,
-  ParimutuelWeb3,
-  PositionSideEnum,
-  calculateNetOdd,
-} from "@hxronetwork/parimutuelsdk";
+import { PositionSideEnum, calculateNetOdd } from "@hxronetwork/parimutuelsdk";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import React, { useEffect, useMemo, useState } from "react";
-import { useInterval } from "react-use";
 import _get from "lodash/get";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useEffect, useMemo, useState } from "react";
+import { useInterval } from "react-use";
 import PositionDialog from "./riperotten/PositionDialog";
 function truncateToThirdDecimal(num: number): string {
   const truncatedNum = Math.floor(num * 1000) / 1000;
@@ -329,7 +316,11 @@ const RipeRottenForm = () => {
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Pool</span>
             <FallbackImage
-              src={"/icons/earn/usd-coin-usdc-logo.svg"}
+              src={
+                selectedNetwork == "GUAC"
+                  ? "/images/guac_token.png"
+                  : "/images/usdc.svg"
+              }
               height={16}
               width={16}
               className="rounded-full"
@@ -355,7 +346,11 @@ const RipeRottenForm = () => {
               />
               <div className="flex justify-center items-center gap-1 z-10 pt-10">
                 <FallbackImage
-                  src={"/icons/earn/usd-coin-usdc-logo.svg"}
+                  src={
+                    selectedNetwork == "GUAC"
+                      ? "/images/guac_token.png"
+                      : "/images/usdc.svg"
+                  }
                   height={16}
                   width={16}
                 />
@@ -422,7 +417,11 @@ const RipeRottenForm = () => {
               />
               <div className="flex justify-center items-center gap-1 z-10 pb-10">
                 <FallbackImage
-                  src={"/icons/earn/usd-coin-usdc-logo.svg"}
+                  src={
+                    selectedNetwork == "GUAC"
+                      ? "/images/guac_token.png"
+                      : "/images/usdc.svg"
+                  }
                   height={16}
                   width={16}
                 />
@@ -454,7 +453,11 @@ const RipeRottenForm = () => {
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Pool</span>
             <FallbackImage
-              src={"/icons/earn/usd-coin-usdc-logo.svg"}
+              src={
+                selectedNetwork == "GUAC"
+                  ? "/images/guac_token.png"
+                  : "/images/usdc.svg"
+              }
               height={16}
               width={16}
               className="rounded-full"
@@ -473,7 +476,11 @@ const RipeRottenForm = () => {
           <div className="flex justify-center items-center gap-5">
             <div className="flex justify-center items-center gap-1 z-10 ">
               <FallbackImage
-                src={"/icons/earn/usd-coin-usdc-logo.svg"}
+                src={
+                  selectedNetwork == "GUAC"
+                    ? "/images/guac_token.png"
+                    : "/images/usdc.svg"
+                }
                 height={16}
                 width={16}
               />
@@ -520,7 +527,11 @@ const RipeRottenForm = () => {
           <div className="flex justify-center items-center gap-5">
             <div className="flex justify-center items-center gap-1 z-10 ">
               <FallbackImage
-                src={"/icons/earn/usd-coin-usdc-logo.svg"}
+                src={
+                  selectedNetwork == "GUAC"
+                    ? "/images/guac_token.png"
+                    : "/images/usdc.svg"
+                }
                 height={16}
                 width={16}
               />
@@ -536,6 +547,12 @@ const RipeRottenForm = () => {
             </div>
             <span className="text-[#FFF]">
               {shortLockedPayout ? shortLockedPayout : 0} Payout
+            </span>
+          </div>
+          <div className="flex justify-between items-center w-full">
+            <span className="text-[#A8A8A8]">Your Position</span>
+            <span className="text-[#A8A8A8]">
+              {userPosition ? userLockedPosition : "-"}
             </span>
           </div>
         </div>

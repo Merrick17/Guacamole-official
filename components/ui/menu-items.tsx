@@ -9,9 +9,7 @@ import { Fragment, useEffect } from "react";
 export function MenuItems() {
   const pathname = usePathname();
   const router = useRouter();
-  useEffect(() => {
-    
-  }, [pathname]);
+  useEffect(() => {}, [pathname]);
   return (
     <div className="flex items-center gap-[30px] text-muted-foreground p-2  rounded-lg">
       {Links.filter((item) => !item.hide).map((item, index) => {
@@ -23,7 +21,7 @@ export function MenuItems() {
                 <Menu>
                   <Menu.Button
                     className={cn(
-                      "flex items-center gap-3 text-base font-medium capitalize rounded-lg transition justify-center ",
+                      "flex items-center gap-3 text-base font-medium capitalize rounded-lg transition justify-center text-[#FCFCFC] ",
                       isActive && `!text-primary`
                     )}
                     onClick={() => router.push(item.href)}
@@ -36,7 +34,7 @@ export function MenuItems() {
               <Link
                 href={item.href}
                 className={cn(
-                  " text-base font-medium capitalize",
+                  " text-base font-medium capitalize text-[#FCFCFC]",
                   item.href == pathname && "!text-primary"
                 )}
                 // activeClassName="!text-gray-900 dark:!text-white"

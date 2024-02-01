@@ -29,7 +29,7 @@ const PerceptualMarketHeader = () => {
     GroupPubkeyMap.get(0)
   );
 
-  useEffect(() => {}, [candles, markPrice]);
+  
 
   const selectedIndexPrice = useMemo(() => {
     return indexPrice?.find((p) => p.index === selectedProduct?.index)?.price;

@@ -17,7 +17,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "./dropdown-menu";
 import Hamburger from "./hamburger";
 import { MenuItems } from "./menu-items";
@@ -42,7 +42,6 @@ const Header: FC<HeaderProps> = () => {
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
 
- 
   const { tokenList } = useJupiterApiContext();
   const [selectedSearch, setSelectedSearch] = useState<TokenInfo | undefined>(
     undefined
@@ -53,7 +52,7 @@ const Header: FC<HeaderProps> = () => {
   return (
     <>
       {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
-  
+
       <header className="sticky top-0 z-40 flex-none w-full mx-auto bg-foreground border-b ">
         <div
           id="banner"
@@ -206,7 +205,6 @@ const Header: FC<HeaderProps> = () => {
                         router.push(
                           `/terminal/coin/${tkn.address}?outputMint=${tkn.address}`
                         );
-                      
                       }}
                     >
                       <FallbackImage
@@ -250,13 +248,11 @@ function HeaderRightArea({
   openDrawer: () => void;
   closeDrawer: () => void;
 }) {
-
   const { data, isLoading } = useTokenPrice("GUAC");
 
   return (
     <div className="order-last flex shrink-0 items-center">
       <div className="hidden gap-2 lg:flex 2xl:gap-2">
-      
         <DropdownMenu>
           <DropdownMenuTrigger>
             <svg
@@ -271,7 +267,6 @@ function HeaderRightArea({
                 fill="#A8A8A8"
               />
             </svg>
-         
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
@@ -294,7 +289,7 @@ function HeaderRightArea({
                 className="shrink-0 flex items-center justify-center  gap-2"
               >
                 <FaTelegramPlane className="text-[#A8A8A8]" />
-               
+
                 <span className="text-[#A8A8A8]">Telegram</span>
               </Link>
             </DropdownMenuItem>
@@ -308,9 +303,7 @@ function HeaderRightArea({
               >
                 <BsTwitterX className="text-[#A8A8A8]" />
                 <span className="text-[#A8A8A8]">Twitter (X) </span>
-               
               </Link>{" "}
-          
             </DropdownMenuItem>
             <DropdownMenuItem>
               {" "}
@@ -321,18 +314,21 @@ function HeaderRightArea({
                 className="shrink-0 flex items-center justify-center  gap-2"
               >
                 <FaBookOpen className="text-[#A8A8A8]" />
-                
+
                 <span className="text-[#A8A8A8]">Docs </span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <div className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
+        <Link
+          className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]"
+          href={"/terminal/coin/AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"}
+        >
           <Image width={18} height={18} alt="logo" src={"/images/logo.png"} />
-          <span className="text-muted-foreground text-xs">
+          <span className="text-muted-foreground text-sm">
             $ {!isLoading && data ? data["data"]["GUAC"].price : 0}
           </span>
-        </div>
+        </Link>
         <WalletMultiButtonDynamic
           className={" text-black rounded-lg guac-btn h-[40px]"}
           startIcon={undefined}
@@ -341,19 +337,21 @@ function HeaderRightArea({
 
       <div className="flex items-center  lg:hidden  ">
         <div className=" hidden sm:flex items-center">
-          <div className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
+          <Link
+            href={"/terminal/coin/AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"}
+            className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]"
+          >
             <Image width={18} height={18} alt="logo" src={"/images/logo.png"} />
-            <span className="text-muted-foreground text-xs">
+            <span className="text-muted-foreground text-sm">
               $ {!isLoading && data ? data["data"]["GUAC"].price : 0}
             </span>
-          </div>
+          </Link>
           <WalletMultiButtonDynamic
             className={" text-black rounded-lg guac-btn h-[40px]"}
             startIcon={undefined}
           />
         </div>
 
-      
         <Hamburger
           isOpen={isOpen}
           onClick={() => (isOpen ? closeDrawer() : openDrawer())}

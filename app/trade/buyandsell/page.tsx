@@ -145,25 +145,25 @@ const Page = () => {
               </Link>
             </DialogTrigger>
 
-            <DialogContent>
-              <DialogTitle>
+            <DialogContent className="min-w-[672px]">
+              <DialogTitle className="border-b pb-3">
                 <span className="text-[#FCFCFC] text-[16px] font-medium">
                   Proceed To Zebec
                 </span>
               </DialogTitle>
               <Container className=" p-2 flex gap-3 flex-col min-h-[50px] my-1">
-                <p className="text-sm text-muted-foreground">
+                <p className="text-[16px] font-[400] text-[#A8A8A8]">
                   The instant card program is offered in partnership with Zebec
                   Protocol!
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-[16px] font-[400] text-[#A8A8A8]">
                   Please note that Zebec is a third-party platform and has their
                   own terms and conditions, programs, and systems. You will
                   solely be interacting with Zebec and Guacamole is not
                   responsible for any “detrimental actions.”
                 </p>
               </Container>
-              <DialogFooter className="border-t-2 py-3 justify-start items-start flex w-full border-[#FFFFF] sm:justify-start md:justify-start">
+              <DialogFooter className="border-t py-3 justify-start items-start flex w-full  sm:justify-start md:justify-start">
                 <Button
                   className="w-[160px] guac-bg"
                   onClick={() => {

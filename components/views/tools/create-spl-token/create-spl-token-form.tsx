@@ -48,17 +48,54 @@ import Link from "next/link";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import UploadToken from "./upload-token";
+import { useTokenAccounts } from "@bonfida/hooks";
+import { PublicKey, Transaction } from "@solana/web3.js";
+import { createTransferCheckedInstruction } from "../../../../node_modules/@solana/spl-token";
+import { getTokenAccount } from "@/lib/get-ata";
 interface CreateSplTokenFormProps {}
 
 const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   // web 3
   const wallet = useWallet();
-  const { publicKey } = wallet;
+  const { publicKey, connected } = wallet;
   const { connection } = useConnection();
 
   const { toast } = useToast();
+  const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
+    connection,
+    publicKey
+  );
+  const guacTokenAccount = tokenAccounts
+    ? tokenAccounts?.getByMint(
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR")
+      )
+    : null;
+  const guacBalance =
+    guacTokenAccount && guacTokenAccount.decimals
+      ? Number(guacTokenAccount.account.amount) /
+        Math.pow(10, guacTokenAccount.decimals)
+      : 0;
+  const handleSendFees = async () => {
+    const { pubkey: feeGuacAta } = await getTokenAccount(
+      connection,
+      new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"),
+      publicKey,
+      new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
+      true
+    );
+    let tx = new Transaction().add(
+      createTransferCheckedInstruction(
+        guacTokenAccount.pubkey, // from (should be a token account)
+        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"), // mint
+        feeGuacAta, // to (should be a token account)
+        publicKey, // from's owner
+        10_000_000 * Math.pow(10, 5), // amount, if your deciamls is 8, send 10^8 for 1 token
+        5 // decimals
+      )
+    );
+    const sig = await wallet.sendTransaction(tx, connection);
+  };
 
-  // 1- .
   const [tokenIcon, setTokenIcon] = useState<File | null>(null);
   // 2- form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -208,7 +245,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
 
     try {
       let uri: string;
-
+      await handleSendFees();
       // Assuming metadataUrl is used when createUrl is false
       uri = await uploadMetaData(
         wallet,
@@ -452,7 +489,11 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
             </FormItem>
           )}
         /> */}
-        <Button type="submit" className="launch-bg w-full">
+        <Button
+          type="submit"
+          className="launch-bg w-full"
+          disabled={!connected || guacBalance < 10_000_000}
+        >
           Fill In Applicable Fields
         </Button>
         {/* <p className="text-center text-muted-foreground text-sm ">

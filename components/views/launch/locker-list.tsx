@@ -195,7 +195,7 @@ const RenderItem = ({
                 fill="#D6776A"
               />
             </svg>
-            ${numeral(liquidity).format("0,0.00")}%
+            ${numeral(liquidity).format("0,0.000")}
           </span>
           <span className="text-muted-foreground">
             Next{" "}
@@ -291,9 +291,9 @@ const LockerList = () => {
   };
 
   return (
-    <Container className="bg-foreground rounded-md lg:max-w-5xl">
+    <Container className="bg-foreground rounded-md lg:max-w-5xl border border-[rgba(168, 168, 168, 0.10)]">
       <div className="w-full flex flex-col mb-5  md:flex-row   md:justify-between items-center text-black  gap-2 py-3">
-        <Select
+        <Select 
           defaultValue="tpp"
           onValueChange={(value) => {
             if (value == "token") {
@@ -301,7 +301,7 @@ const LockerList = () => {
             }
           }}
         >
-          <SelectTrigger className="w-full lg:w-[250px] h-[30px] max-sm:w-full  font-medium ">
+          <SelectTrigger className="w-full lg:w-[250px] h-[30px] max-sm:w-full  font-medium launch-bg">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -322,7 +322,11 @@ const LockerList = () => {
             />
           </div>
 
-          <Button onClick={() => push("/launch/lock/create")} size="sm">
+          <Button
+            onClick={() => push("/launch/lock/create")}
+            size="sm"
+            className="launch-bg"
+          >
             Manage Lockers
           </Button>
         </div>
@@ -339,20 +343,18 @@ const LockerList = () => {
 
         <TableBody>
           {lockerList.length != 0 ? (
-            lockerList.map(
-              ({ lock, pool, quote, base, lockedLiquidity, ratio }, ind) => (
-                <RenderItem
-                  lock={lock}
-                  pool={pool}
-                  quote={quote}
-                  base={base}
-                  checkRemainder={checkRemainder}
-                  index={ind}
-                  liquidity={lockedLiquidity}
-                  ratio={ratio}
-                />
-              )
-            )
+            lockerList.map((elm, ind) => (
+              <RenderItem
+                lock={elm.lock}
+                pool={elm.pool}
+                quote={elm.quote}
+                base={elm.base}
+                checkRemainder={checkRemainder}
+                index={ind}
+                liquidity={elm.lockedLiquidity}
+                ratio={elm.ratio}
+              />
+            ))
           ) : (
             <TableRow>
               <TableCell>

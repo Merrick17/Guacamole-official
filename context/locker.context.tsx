@@ -26,16 +26,24 @@ const LockerProvider = ({ children }) => {
   const { toast } = useToast();
   const anchorWallet = useAnchorWallet();
   const program = getProgram(connection, anchorWallet);
+  const [totalValueLocked, setTotalValueLocked] = useState(0);
 
   const [vaultsData, setVaultsData] = useState([]);
   const initVaults = async () => {
     const vaults = await getAllVaultsParsed();
     setVaultsData(vaults);
+    getTotalLockedValue(vaults);
   };
   useEffect(() => {
     initVaults();
   }, []);
-
+  const getTotalLockedValue = (vaults) => {
+    let total: number = 0;
+    vaults.forEach((elm) => {
+      total = total + elm.lockedLiquidity;
+    });
+    setTotalValueLocked(total);
+  };
   const getPoolInfo = async (lock) => {
     let pool = await getPoolByLpMint(lock.mint);
 
@@ -103,6 +111,10 @@ const LockerProvider = ({ children }) => {
     const mappedVaults = await Promise.all(
       allVaults.map(async (lock) => {
         const { pool, base, quote } = await getPoolInfo(lock);
+        if (pool.poolId == "41QgurJkpFTnLxaMAKVytj9FBu48Mhrm6DUmsPF1Pire") {
+          console.log("Pool ID", pool);
+          console.log("LOCKED USD", lock.lockedLiquidityUSD);
+        }
 
         return {
           lock,
@@ -485,7 +497,7 @@ const LockerProvider = ({ children }) => {
         { memcmp: { offset: 16, bytes: mintPublicKey.toBase58() } },
       ];
       const locks = await program.account.deposit.all(filters);
-      console.log("lock", locks[0].account.mint.toBase58());
+
       return locks;
     } catch (error) {
       toast({
@@ -745,6 +757,8 @@ const LockerProvider = ({ children }) => {
     getAllVaultsParsedAndPaginated,
     vaultsData,
     getPaginatedData,
+    getTotalLockedValue,
+    totalValueLocked,
   };
 
   return (

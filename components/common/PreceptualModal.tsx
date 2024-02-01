@@ -203,7 +203,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
               min={0}
               value={amount}
               onChange={(e) => setAmount(parseFloat(e.target.value))}
-              className="bg-black h-[40px] rounded-[8px] mb-4 pl-5 text-left text-lg font-bold focus:outline-none"
+              className="bg-black  rounded-[8px] mb-4 pl-5 text-left text-lg font-bold focus:outline-none border border-[rgba(168, 168, 168, 0.10] !h-[40px]"
             />
             <>
               <Button

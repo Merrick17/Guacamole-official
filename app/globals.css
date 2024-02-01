@@ -418,19 +418,19 @@ input[type="number"] {
   flex-shrink: 0;
   border-radius: 8px;
   border: 1px solid rgba(168, 168, 168, 0.1);
-  background-color: #0f0f0f !important;
+  background-color: #141414 !important;
   padding: 3px;
 }
 
-button.sc-beySPh.kXRVmL {
-  border-radius: 10px;
-  border: 1px solid #fff9bf;
-  background: linear-gradient(180deg, #fff9c6 0%, #ffe60c 100%);
-  height: 41px;
+button.sc-beySPh {
+  border-radius: 10px !important;
+  border: 1px solid #fff9bf !important;
+  background: linear-gradient(180deg, #fff9c6 0%, #ffe60c 100%) !important;
+  height: 41px !important;
 
-  width: 150px;
-  text-align: center;
-  color: #000;
+  width: 150px !important;
+  text-align: center !important;
+  color: #000 !important;
 }
 button.iVRAcF {
   border-radius: 6px;

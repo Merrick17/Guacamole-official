@@ -90,10 +90,10 @@ const Page = () => {
   };
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md border border-[rgba(168, 168, 168, 0.10)]">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <Button
-            className="rounded-lg h-[30px] flex flex-2 gap-2"
+            className="rounded-lg h-[30px] flex flex-2 gap-2 launch-bg"
             onClick={() => {
               router.back();
             }}
@@ -115,7 +115,7 @@ const Page = () => {
             <span> Back To Lockers</span>
           </Button>
           <Button
-            className="rounded-lg h-[30px]"
+            className="rounded-lg h-[30px] launch-bg"
             onClick={() => {
               router.push("/launch/lock/create");
             }}
@@ -154,7 +154,7 @@ const Page = () => {
             </Link>{" "}
           </div>
         </div>
-        <Container className="bg-[#0F0F0F] flex-col items-center flex">
+        <Container className="bg-[#0F0F0F] flex-col items-center flex border border-[rgba(168, 168, 168, 0.10)]">
           <h5 className="text-muted-foreground text-[12px] uppercase">
             Locked Liquidity
           </h5>
@@ -171,8 +171,8 @@ const Page = () => {
                     ? baseToken.logoURI
                     : "/images/No_Logo_Found_Guacamole-min.png"
                 }
-                height={"100%"}
-                width={"100%"}
+                height={100}
+                width={100}
                 className="w-full h-full object-cover transform scale-[2] opacity-25 absolute top-0 bottom-0 left-0 right-0 z-0"
                 alt="Guac Image"
               />
@@ -256,7 +256,7 @@ const Page = () => {
             </div>
           )}
         </div>
-        <div className="w-full h-[40px] flex rounded-lg  justify-evenly items-center  bg-[#0F0F0F] ">
+        <div className="w-full h-[40px] flex rounded-lg  justify-evenly items-center  bg-[#0F0F0F] border border-[rgba(168, 168, 168, 0.10)]">
           <Button className="bg-transparent" onClick={fetchPoolData}>
             <svg
               width="24"

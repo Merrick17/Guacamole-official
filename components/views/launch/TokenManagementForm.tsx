@@ -1,7 +1,39 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { SearchInput } from "@/components/ui/search-input";
+import {
+  Metaplex,
+  Nft,
+  NftWithToken,
+  Sft,
+  SftWithToken,
+} from "@metaplex-foundation/js";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { SearchIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import React from "react";
-
+import FallbackImage from "@/components/FallBackImage";
+import { BiCross, BiPencil } from "react-icons/bi";
+import TokenManagerDialog from "./TokenManagerDialog";
 const TokenManagementForm = () => {
+  const { connected, publicKey } = useWallet();
+  const { connection } = useConnection();
+  const metaplex = new Metaplex(connection);
+  const [mintAdr, setMintAdr] = useState("");
+  const [asset, setAsset] = useState<Sft | Nft | SftWithToken | NftWithToken>(
+    undefined
+  );
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+  const getAllAssets = async () => {
+    const nfts = await metaplex
+      .nfts()
+      .findByMint({ mintAddress: new PublicKey(mintAdr) });
+    setAsset(nfts);
+    console.log("NFT", nfts);
+  };
+
   return (
     <div className="w-full flex flex-col gap-5">
       {" "}
@@ -29,12 +61,55 @@ const TokenManagementForm = () => {
         The following SPL token update authorities are associated with this
         account.
       </p>
-      <div className="w-full min-h-[60px] p-4 flex justify-between items-center bg-[#0F0F0F] rounded-lg  border-[1px] border-[rgba(168, 168, 168, 0.10)] shadow-2xl">
-        <div className="flex justify-center items-center gap-3">
-          <Image src={"/images/launch/sol.png"} alt="" height={30} width={30} className="rounded-full" />
-          <span className="text-[#FAFAFA]">GUACAMOLE (GUAC)</span>
-        </div>
+      <div className="flex justify-center items-center gap-2">
+        <SearchInput
+          placeholder="Search For Token By Token Address"
+          disabled={!connected}
+          value={mintAdr}
+          onChange={(e) => {
+            setMintAdr(e.target.value);
+          }}
+        />
+        <Button className="launch-bg" onClick={getAllAssets}>
+          Search{" "}
+        </Button>
+        <TokenManagerDialog
+          isOpen={isDialogOpen}
+          setIsOpen={setIsDialogOpen}
+          token={asset}
+        />
       </div>
+      {asset && (
+        <div className="w-full min-h-[60px] p-4 flex justify-between items-center bg-[#0F0F0F] rounded-lg  border-[1px] border-[rgba(168, 168, 168, 0.10)] shadow-2xl ">
+          <div className="flex justify-center items-center gap-3">
+            <FallbackImage
+              src={asset.json.image}
+              alt={asset.symbol}
+              height={30}
+              width={30}
+              className="rounded-full"
+            />
+            <span className="text-[#FAFAFA]">
+              {asset.name} ({asset.symbol})
+            </span>
+          </div>
+          {asset &&
+          asset.updateAuthorityAddress.toBase58() == publicKey.toBase58() ? (
+            <Button
+              className="guac-bg"
+              onClick={() => {
+                setIsDialogOpen(true);
+              }}
+            >
+              <BiPencil />
+            </Button>
+          ) : (
+            <Button disabled className="launch-bg">
+              <BiCross />
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

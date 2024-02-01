@@ -1,27 +1,13 @@
-import BackgroundSplash from "@/components/common/background-splash";
 import ColorBlocks from "@/components/common/color-block";
-import HeroHeadline from "@/components/common/hero-headline";
-import HeroList from "@/components/common/hero-list";
-import { Button } from "@/components/ui/button";
-import DynamicVaultStatistics from "@/components/views/earn/dynmaic-vault-statistics";
 import AirdropSvgCardContent from "@/components/views/tools/AirdropSvgCardContent";
 import BurnNftTokenCardContent from "@/components/views/tools/BurnNftTokenCardContent";
 import EmergencyCardContent from "@/components/views/tools/EmergencyCardContent";
 import ManageYourPortfolioCardContent from "@/components/views/tools/ManageYourPortfolioCardContent";
 import MultiSenderCardContent from "@/components/views/tools/MultiSenderCardContent";
 import SecureWith3DefendersCardContent from "@/components/views/tools/SecureWith3DefendersCardContent";
-import LearnMoreAboutSolana from "@/components/views/tools/learn-more-about-solana";
-import BridgeSwapContent from "@/components/views/trade/BridgeSwapContent";
-import BuyCryptoContentCard from "@/components/views/trade/BuyCryptoContentCard";
-import FutureContentCard from "@/components/views/trade/FutureContentCard";
-import LiquidityContentCard from "@/components/views/trade/LiquidityContentCard";
-import MainTradeContentCard from "@/components/views/trade/MainTradeContentCard";
-import PeerToPeerContentCard from "@/components/views/trade/PeerToPeerContent";
-import RipRottenCard from "@/components/views/trade/RipRottenCard";
 
 import routes from "@/config/routes";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { FC } from "react";
 
 interface ToolsProps {}

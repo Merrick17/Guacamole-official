@@ -45,11 +45,14 @@ const LaunchHeader: FunctionComponent<LaunchHeaderProps> = ({
           onValueChange={(val) => {
             switch (val) {
               case "token":
-                router.push("/explore/guac-token");
-              case "avotars":
-                router.push("/explore/avotars");
+                router.push("/launch/token-creator?active=1");
+                break;
+              case "token_manager":
+                router.push("/launch/token-creator?active=2");
+                break;
               case "shop":
-                router.push("/explore/shop");
+                router.push("/launch/lock");
+                break;
 
               default:
                 break;
@@ -60,9 +63,9 @@ const LaunchHeader: FunctionComponent<LaunchHeaderProps> = ({
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="token">Token Manager </SelectItem>
-            <SelectItem value="avotars">The Avotars </SelectItem>
-            <SelectItem value="shop">Earn & Shop</SelectItem>
+            <SelectItem value="token">Token Creator</SelectItem>
+            <SelectItem value="token_manager">Token Manager </SelectItem>
+            <SelectItem value="lock">Liquidity Lockers</SelectItem>
           </SelectContent>
         </Select>
       </div>

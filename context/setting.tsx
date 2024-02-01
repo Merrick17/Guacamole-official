@@ -39,7 +39,7 @@ const defaultContext: SettingContextProps = {
   decimalPlaces: 5,
   selectedMarketKey: "",
   livePrice: 0,
-  selectedNetwork: "USDC",
+  selectedNetwork: "GUAC",
   setSelectedMarketPair: () => null,
   setSelectedDurations: () => null,
   setSelectedParimutuel: () => null,

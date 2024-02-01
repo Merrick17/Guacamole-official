@@ -1,13 +1,6 @@
 import StakingDialog from "@/components/common/StakingDialog";
 import Container from "@/components/common/container";
 import EarnHeader from "@/components/common/earn-header";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,7 +16,7 @@ export const metadata: Metadata = {
 const Page = () => {
   return (
     <main className="container mx-auto  items-center flex flex-col  gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12  max-w-2xl ">
-      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md ">
+      <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg bg-foreground px-6 py-5  shadow-md border border-[rgba(168, 168, 168, 0.10)]">
         <EarnHeader
           title="Dynamic SOL Vault"
           tutorialLink="https://docs.guacamole.gg/products-and-features/earn#guacamole-staking-pools"

@@ -21,8 +21,8 @@ const MainTradeContentCard: FunctionComponent<MainTradeContentCardProps> = ({
       )}
       {...props}
     >
-      <Button className="max-w-[134.75px] absolute right-2 z-30 trade-bg h-[32px] top-3 font-[500]">
-        fast And Simple!
+      <Button className="max-w-[140px] absolute right-2 z-30 trade-bg h-[32px] top-3 font-[500]">
+        Fast And Simple!
       </Button>
       <Image
         src="/images/trade/bg/main.gif"

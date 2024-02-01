@@ -238,7 +238,7 @@ const StatisticsForms: FC<StatisticsFormsProps> = ({
               <header className="text-muted-foreground ">
                 Enter withdraw amount:
               </header>
-              <form className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background ">
+              <form className="rounded-lg p-4 flex flex-row gap-4 items-center bg-background max-h-[70px] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
                 {token && (
                   <Image
                     src={token.logoURI}

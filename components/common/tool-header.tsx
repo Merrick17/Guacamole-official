@@ -34,10 +34,10 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
       <h1 className="font-medium text-base text-muted-foreground">{title}</h1>
       <div className="flex  flex-col gap-4 sm:flex-row  items-center sm:gap-5">
         {burnAll && (
-          <Button
+          <Button 
             size="sm"
             variant="destructive"
-            className="text-sm font-medium capitalize py-[6px] h-[32px]"
+            className="earn-bg text-sm font-medium capitalize py-[6px] h-[32px]"
             onClick={handleBurn}
           >
             <span className="text-sm font-medium ">Burn All Selected</span>
@@ -47,7 +47,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
           <Button
             size="sm"
             variant="destructive"
-            className="text-sm font-medium capitalize py-[6px] h-[32px]"
+            className="text-sm earn-bg font-medium capitalize py-[6px] h-[32px]"
             onClick={handleBurn}
           >
             <span className="text-sm font-medium ">Close All Selected</span>
@@ -57,7 +57,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
           <Button
             size="sm"
             variant="destructive"
-            className="text-sm font-medium capitalize py-[6px] h-[32px]"
+            className="text-sm earn-bg font-medium capitalize py-[6px] h-[32px]"
             onClick={handleBurn}
           >
             <span className="text-sm font-medium ">Revoke All Selected</span>
@@ -65,7 +65,7 @@ const ToolHeader: FunctionComponent<ToolHeaderProps> = ({
         )}
         <Link href={tutorialLink} target="_blank" rel="noopener noreferrer">
           <Button
-            className={`text-sm font-medium capitalize py-[6px] h-[32px] `}
+            className={`text-sm tools-bg font-medium capitalize py-[6px] h-[32px] `}
             size="sm"
           >
             View tutorial

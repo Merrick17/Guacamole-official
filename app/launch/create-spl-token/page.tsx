@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const CreateSplToken = () => {
   return (
     <main className="container mx-auto  items-center flex flex-col gap-14 px-3 lg:px-8 py-6 md:px-16 md:py-12   max-w-[1440px]">
-      <Container className=" mx-auto flex w-full max-w-lg flex-col gap-6 bg-forground rounded-lg px-6 py-5 bg-foreground shadow-md">
+      <Container className=" mx-auto flex w-full max-w-lg flex-col gap-6 bg-forground rounded-lg px-6 py-5 bg-foreground shadow-md border border-[rgba(168, 168, 168, 0.10)] shadow-lg">
         {/* <ToolHeader
           title="Create SPL Token"
           tutorialLink="https://docs.guacamole.gg/products-and-features/tools/create-spl-token"

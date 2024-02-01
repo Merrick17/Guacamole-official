@@ -50,7 +50,8 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
     high: "25,901.41",
     low: "25,534.37",
     coin: ["SOL", "Solana", "HXRO:SOLUSD"],
-    coinLogo: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
+    coinLogo:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
   });
   const [marketList, setMarketList] = useState<Market[]>([
     {
@@ -97,27 +98,32 @@ export const WebSocketProvider = ({ children }: { children: any }) => {
 
   useEffect(() => {
     if (selectedMarket) {
-      ws.current = new WebSocket(
-        `wss://hloc-dexterity.up.railway.app/${selectedMarket.name.toLowerCase()}?api-key=${apiKey}`
-      );
+      // ws.current = new WebSocket(
+      //   "wss://price-dev.bitbloxrgs.com/ws"
+      //   // `wss://hloc-dexterity.up.railway.app/${selectedMarket.name.toLowerCase()}?api-key=${apiKey}`
+      // );
 
-      ws.current.onmessage = (message) => {
-        const data = JSON.parse(message.data);
-        if (data.candles) {
-          setCandles(data.candles);
-        }
-      };
+      // ws.current.onmessage = (message) => {
+      //   const data = JSON.parse(message.data);
+      //   console.log("Selected Market", selectedMarket);
+      //   if (data.from_sym == selectedMarket.name.split("-")[0]) {
+      //     console.log("Data", data);
+      //   }
+      //   // if (data.candles) {
+      //   //   setCandles(data.candles);
+      //   // }
+      // };
 
-      ws.current.onopen = () => {
-        ws.current?.send(
-          JSON.stringify({ command: "stream", params: { newTime: "10_m" } })
-        );
-      };
+      // ws.current.onopen = () => {
+      //   ws.current?.send(
+      //     JSON.stringify({ command: "stream", params: { newTime: "10_m" } })
+      //   );
+      // };
 
-      return () => {
-        ws.current?.close();
-        ws.current = null;
-      };
+      // return () => {
+      //   ws.current?.close();
+      //   ws.current = null;
+      // };
     }
   }, [selectedMarket]);
 

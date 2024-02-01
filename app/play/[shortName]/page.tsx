@@ -18,8 +18,13 @@ import TokenSelect from "@/components/views/play/TokenSelect";
 import Featured from "@/components/views/play/featured";
 import { useTokenAccounts } from "@bonfida/hooks";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
-import { GambaUi, useGambaAudioStore, useUserBalance } from "gamba-react-ui-v2";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import {
+  GambaUi,
+  useCurrentToken,
+  useGambaAudioStore,
+  useUserBalance,
+} from "gamba-react-ui-v2";
 import { useGamba } from "gamba-react-v2";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -39,14 +44,12 @@ function CustomError() {
   );
 }
 function CustomRenderer() {
-  const gamba = useGamba();
   const { game } = GambaUi.useGame();
   const [info, setInfo] = React.useState(false);
   const balance = useUserBalance();
   const [provablyFair, setProvablyFair] = React.useState(false);
-  const audioStore = useGambaAudioStore();
   const { connected } = useWallet();
-  const [modal, setModal] = useState(false);
+  const selectedToken = useCurrentToken();
   const { publicKey } = useWallet();
   const { connection } = useConnection();
   const pathname = usePathname();
@@ -85,12 +88,12 @@ function CustomRenderer() {
 
         <div
           className={`flex flex-col flex-1  gap-6 items-start min-h-[400px] h-full max-w-[700px] bg-foreground p-6 border border-[rgba(168, 168, 168, 0.10)] rounded-md ${
-            pathname.includes("flip") ? "h-[500px]" : ""
+            pathname.includes("flip") ? " !min-h-[500px]" : ""
           }`}
         >
           <TokenSelect />
           <div
-            className="  w-full z-10   rounded-lg min-h-[60px] flex items-center justify-evenly p-5   gap-2  backdrop:blur-[50px] shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] px-1 flex-wrap"
+            className="  w-full z-10 bg-[#0F0F0F]  rounded-lg min-h-[60px] flex items-center justify-evenly p-5   gap-2  backdrop:blur-[50px] shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] px-1 flex-wrap"
             id="gamba-controls"
           >
             <div className="flex items-center justify-center gap-1">
@@ -189,18 +192,24 @@ function CustomRenderer() {
                   />
                 </svg>
                 <span className="text-xs text-muted-foreground">
-                  {numeral(guacBalance).format("0,0")}
+                  {selectedToken.symbol == "SOL"
+                    ? numeral(balance.balance / LAMPORTS_PER_SOL).format(
+                        "0,0.000"
+                      )
+                    : numeral(
+                        balance.balance / Math.pow(10, selectedToken.decimals)
+                      ).format("0,0")}
                 </span>
               </div>
 
               <Button className="bg-[#141414] text-[#8BD796] w-full h-7 p-2 rounded-lg text-xs">
                 <Link
-                  href={`/trade/swap?outputMint=AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR&inputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+                  href={`/trade/swap?outputMint=${selectedToken.mint.toBase58()}&inputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
                   className="text-[#8BD796]"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  BUY GUAC
+                  BUY {selectedToken.symbol}
                 </Link>
               </Button>
             </div>
