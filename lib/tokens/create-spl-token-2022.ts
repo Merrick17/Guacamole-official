@@ -1,16 +1,15 @@
-import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { mplCandyMachine } from "@metaplex-foundation/mpl-candy-machine";
 import {
-  CreateMetadataAccountV3InstructionAccounts,
-  CreateMetadataAccountV3InstructionArgs,
-  createMetadataAccountV3,
-  mplTokenMetadata,
-  createV1,
   TokenStandard,
-  mintV1,
+  createV1,
+  mplTokenMetadata
 } from "@metaplex-foundation/mpl-token-metadata";
+import { percentAmount } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { walletAdapterIdentity as UmiWalletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
+import {
+  toWeb3JsPublicKey
+} from "@metaplex-foundation/umi-web3js-adapters";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import {
   Connection,
@@ -21,24 +20,18 @@ import {
 } from "@solana/web3.js";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
+  AccountState,
   ExtensionType,
   TOKEN_2022_PROGRAM_ID,
   createAssociatedTokenAccountInstruction,
+  createInitializeDefaultAccountStateInstruction,
   createInitializeMintInstruction,
+  createInitializeNonTransferableMintInstruction,
   createInitializeTransferFeeConfigInstruction,
   createMintToInstruction,
-  getAssociatedTokenAddress,
   getAssociatedTokenAddressSync,
-  getMintLen,
-  AccountState,
-  createInitializeNonTransferableMintInstruction,
-  createInitializeDefaultAccountStateInstruction,
+  getMintLen
 } from "../../node_modules/@solana/spl-token";
-import {
-  fromWeb3JsPublicKey,
-  toWeb3JsPublicKey,
-} from "@metaplex-foundation/umi-web3js-adapters";
-import { percentAmount } from "@metaplex-foundation/umi";
 // export const createNewToken = async (
 //   owner: PublicKey,
 //   wallet: WalletContextState,

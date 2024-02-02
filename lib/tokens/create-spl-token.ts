@@ -2,14 +2,13 @@ import {
   Metaplex,
   MetaplexFileTag,
   bundlrStorage,
+  toBigNumber,
   token,
   walletAdapterIdentity,
 } from "@metaplex-foundation/js";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import {
-  Connection,
-  PublicKey
-} from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { BN } from "bn.js";
 
 // export async function createSPLToken(
 //   owner: PublicKey,
@@ -211,26 +210,12 @@ export async function createSPLToken(
   connection: Connection,
   quantity: number,
   decimals: number,
-  isChecked: boolean,
   tokenName: string,
   symbol: string,
   metadataURL: string,
-  description: string,
-  file:
-    | Readonly<{
-        buffer: Buffer;
-        fileName: string;
-        displayName: string;
-        uniqueName: string;
-        contentType: string | null;
-        extension: string | null;
-        tags: MetaplexFileTag[];
-      }>
-    | undefined,
-  metadataMethod: string
+  description: string
 ): Promise<string> {
   try {
-    
     const metaplex = Metaplex.make(connection)
       .use(walletAdapterIdentity(wallet))
       .use(
@@ -249,7 +234,7 @@ export async function createSPLToken(
         decimals: decimals,
         mintAuthority: metaplex.identity(),
         updateAuthority: metaplex.identity(),
-      
+
         tokenOwner: owner,
         creators: [
           {
@@ -275,7 +260,7 @@ export async function createSPLToken(
       .mint({
         nftOrSft: sft,
         toOwner: owner,
-        amount: token(quantity * decimals),
+        amount: token(toBigNumber(quantity), decimals),
       });
     const resp = await metaplex
       .rpc()

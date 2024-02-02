@@ -158,6 +158,7 @@ function RecentPlay({ event }: { event: GambaTransaction<"GameSettled"> }) {
   const profit = payout - wager;
 
   const { game } = extractMetadata(event);
+  console.log("Game", game);
 
   return (
     <>
@@ -190,7 +191,7 @@ function RecentPlay({ event }: { event: GambaTransaction<"GameSettled"> }) {
           )}
         </>
       )}
-      <span>in {game.meta.name}</span>
+      <span>in {game ? game.meta.name : "Unknow Game"}</span>
     </>
   );
 }

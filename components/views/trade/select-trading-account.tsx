@@ -229,13 +229,32 @@ const SelectTradingAccount = () => {
       setIsLoading(false);
     }
   }, [amount, publicKey, manifest, trader, selectedProduct]);
-
+  const handleCloseAccount = useCallback(async () => {
+    if (!publicKey || !manifest || !trader) return;
+    try {
+      await manifest.closeTrg(
+        new PublicKey(selectedTrg),
+        new PublicKey(mpgPubkey)
+      );
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Trader Account closed!",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    }
+  }, [publicKey, manifest, trader]);
   useEffect(() => {
     fetchTraderAccounts();
   }, [publicKey]);
 
   return (
-    <Container className="bg-foreground p-3 bg-background flex flex-col gap-4 border border-[rgba(168, 168, 168, 0.10)]">
+    <Container className=" p-3 bg-background flex flex-col gap-4 border border-[rgba(168, 168, 168, 0.10)]">
       <div className="flex flex-col gap-3">
         <p className="text-xs font-medium text-muted-foreground">
           Select A Trading Account
@@ -294,8 +313,7 @@ const SelectTradingAccount = () => {
           size="lg"
           variant="destructive"
           className="font-extrabold uppercase text-xs w-full earn-bg "
-          onClick={handleDeposit}
-          disabled
+          onClick={handleCloseAccount}
         >
           Close Account
         </Button>

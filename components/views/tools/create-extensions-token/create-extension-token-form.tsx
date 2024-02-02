@@ -48,14 +48,6 @@ const formSchema = z.object({
 
 import Container from "@/components/common/container";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
-import { createNewToken } from "@/lib/tokens/create-spl-token-2022";
-import { uploadMetaData } from "@/lib/tokens/upload-token-metadata";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import Link from "next/link";
-import { FC, useState } from "react";
-import { useForm } from "react-hook-form";
-import UploadToken from "./upload-token";
 import {
   Select,
   SelectContent,
@@ -64,14 +56,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AccountState,
-  createTransferCheckedInstruction,
-} from "../../../../node_modules/@solana/spl-token";
-import { PublicKey } from "@metaplex-foundation/js";
-import { useTokenAccounts } from "@bonfida/hooks";
+import { useToast } from "@/hooks/use-toast";
 import { getTokenAccount } from "@/lib/get-ata";
+import { createNewToken } from "@/lib/tokens/create-spl-token-2022";
+import { uploadMetaData } from "@/lib/tokens/upload-token-metadata";
+import { useTokenAccounts } from "@bonfida/hooks";
+import { PublicKey } from "@metaplex-foundation/js";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
+import Link from "next/link";
+import { FC, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { createTransferCheckedInstruction } from "../../../../node_modules/@solana/spl-token";
+import UploadToken from "./upload-token";
+import numeral from "numeral";
+import { Loader2 } from "lucide-react";
 interface CreateExtensionTokenFormProps {}
 
 const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
@@ -79,6 +78,7 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
   const wallet = useWallet();
   const { publicKey, connected } = wallet;
   const { connection } = useConnection();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const [isTax, setIsTax] = useState<boolean>(false);
@@ -135,7 +135,7 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
       description: "",
       metadataUrl: "",
       authority: false,
-      defaultState: null,
+      defaultState: "",
       delegateAdr: "",
       fee: 0,
       maxFee: 0,
@@ -143,18 +143,26 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
       configAuthority: connected ? publicKey.toBase58() : "",
     },
   });
+  console.log(form.formState.errors);
+  useEffect(() => {
+    if (connected) {
+      form.setValue("withdrawAuthority", publicKey.toBase58());
+      form.setValue("configAuthority", publicKey.toBase58());
+    }
+  }, [connected]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Value", values);
+
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
     if (!tokenIcon) {
-      // Handle the case when tokenIcon is not available.
-      return;
+      throw new Error("You need to add image ");
     }
 
     try {
+      setIsLoading(true);
       let uri: string;
       await handleSendFees();
       //Assuming metadataUrl is used when createUrl is false
@@ -181,7 +189,9 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
           new PublicKey(values.withdrawAuthority),
           values.fee,
           values.maxFee,
-          values.defaultState as any,
+          (values.defaultState as any) != ""
+            ? (values.defaultState as any)
+            : undefined,
           isNonTransferable,
           isTax
         );
@@ -218,6 +228,8 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
         title: "Error",
         description: error.message,
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -335,7 +347,11 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
                 <FormItem className="border-[1px] border-[rgba(168, 168, 168, 0.10)]">
                   <FormLabel className="uppercase">Fee %*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Fee" {...field} />
+                    <Input
+                      placeholder="Fee"
+                      {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -348,7 +364,11 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
                 <FormItem className="border-[1px] border-[rgba(168, 168, 168, 0.10)]">
                   <FormLabel className="uppercase">Max Fee</FormLabel>
                   <FormControl>
-                    <Input placeholder="Max Fee" {...field} />
+                    <Input
+                      placeholder="Max Fee"
+                      {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -405,7 +425,11 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
               <FormItem className="border-[1px] border-[rgba(168, 168, 168, 0.10)]">
                 <FormLabel className="uppercase">Rate</FormLabel>
                 <FormControl>
-                  <Input placeholder="Rate" {...field} />
+                  <Input
+                    placeholder="Rate"
+                    {...field}
+                    onChange={(e) => field.onChange(parseInt(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -432,14 +456,11 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
             render={({ field }) => (
               <Select {...field}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue
-                    placeholder="Default Value"
-                    defaultValue={null}
-                  />
+                  <SelectValue placeholder="Default Value" defaultValue={""} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value={null}>None </SelectItem>
+                    <SelectItem value={""}>None </SelectItem>
                     <SelectItem value="Initialized">Initialized</SelectItem>
                     <SelectItem value="Uninitialized">Uninitialized</SelectItem>
                     <SelectItem value="Frozen">Frozen</SelectItem>
@@ -510,7 +531,9 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
                     fill-opacity="0.5"
                   />
                 </svg>
-                <span className="text-xs text-muted-foreground"></span>
+                <span className="text-xs text-muted-foreground">
+                  {numeral(guacBalance).format("0,0.000")}
+                </span>
               </div>
 
               <Button className="bg-[#141414] text-[#8BD796] w-full h-7 p-2 rounded-lg text-xs">
@@ -551,10 +574,10 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
         /> */}
         <Button
           type="submit"
-          className="launch-bg w-full" 
+          className="launch-bg w-full"
           disabled={!connected || guacBalance < 10_000_000}
         >
-          Fill In Applicable Fields
+          {!isLoading ? " Fill In Applicable Fields" : <Loader2 />}
         </Button>
         {/* <p className="text-center text-muted-foreground text-sm ">
           This interface makes creating your own SPL token easy! Make sure to

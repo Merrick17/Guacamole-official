@@ -52,6 +52,8 @@ import { useTokenAccounts } from "@bonfida/hooks";
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { createTransferCheckedInstruction } from "../../../../node_modules/@solana/spl-token";
 import { getTokenAccount } from "@/lib/get-ata";
+import numeral from "numeral";
+import { Loader2 } from "lucide-react";
 interface CreateSplTokenFormProps {}
 
 const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
@@ -59,6 +61,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
   const wallet = useWallet();
   const { publicKey, connected } = wallet;
   const { connection } = useConnection();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const { data: tokenAccounts, refresh: refreshToken } = useTokenAccounts(
@@ -239,11 +242,11 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
     // ✅ This will be type-safe and validated.
 
     if (!tokenIcon) {
-      // Handle the case when tokenIcon is not available.
-      return;
+      throw new Error("You need to add image ");
     }
 
     try {
+      setIsLoading(true);
       let uri: string;
       await handleSendFees();
       // Assuming metadataUrl is used when createUrl is false
@@ -263,13 +266,10 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
           connection,
           values.tokenSupply,
           values.tokenDecimals,
-          values.authority,
           values.tokenName,
           values.tokenSymbol,
           uri,
-          values.description,
-          undefined,
-          "url"
+          values.description
         );
 
         toast({
@@ -305,6 +305,8 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
         title: "Error",
         description: error.message,
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -450,7 +452,10 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
                     fill-opacity="0.5"
                   />
                 </svg>
-                <span className="text-xs text-muted-foreground"></span>
+                <span className="text-xs text-muted-foreground">
+                  {" "}
+                  {numeral(guacBalance).format("0,0.000")}
+                </span>
               </div>
 
               <Button className="bg-[#141414] text-[#8BD796] w-full h-7 p-2 rounded-lg text-xs">
@@ -492,9 +497,9 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
         <Button
           type="submit"
           className="launch-bg w-full"
-          disabled={!connected || guacBalance < 10_000_000}
+          disabled={!connected || guacBalance < 10_000_000 || isLoading}
         >
-          Fill In Applicable Fields
+          {!isLoading ? " Fill In Applicable Fields" : <Loader2 />}
         </Button>
         {/* <p className="text-center text-muted-foreground text-sm ">
           This interface makes creating your own SPL token easy! Make sure to

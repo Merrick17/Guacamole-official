@@ -23,6 +23,12 @@ import numeral from "numeral";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+  { ssr: false }
+);
 type PositionDialogProps = {
   isDialogOpen: boolean;
   onOpenChange?: (x: boolean) => void;
@@ -37,7 +43,7 @@ const PositionDialog: FC<PositionDialogProps> = ({
 }) => {
   const { selectedParimutuel, positionSide, decimalPlaces, selectedNetwork } =
     useSetting();
-  const { publicKey } = useWallet();
+  const { publicKey, connected } = useWallet();
   const wallet = useWallet();
   const { connection } = useConnection();
   const { parimutuels, getPositions, markets, web3 } = useParimutuel();
@@ -160,29 +166,36 @@ const PositionDialog: FC<PositionDialogProps> = ({
           </span>
         </Container>
         <div className="w-full flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Enter Amount</span>
-            <div className="flex gap-1 items-center">
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M2.27539 10H9.77539V2.5H8.21289V0H2.27539C1.23963 0 0.400391 0.839235 0.400391 1.875V8.125C0.400391 9.16073 1.23963 10 2.27539 10ZM8.52539 3.75V8.75H2.27539C1.92994 8.75 1.65039 8.47046 1.65039 8.125V3.64078C1.8512 3.7128 2.06237 3.74943 2.27539 3.75004L8.52539 3.75ZM2.27539 1.25H6.96289V2.5H2.27539C1.92994 2.5 1.65039 2.22045 1.65039 1.875C1.65039 1.52955 1.92994 1.25 2.27539 1.25Z"
-                  fill="#A8A8A8"
-                  fill-opacity="0.5"
-                />
-              </svg>
-              <span className="text-xs text-muted-foreground">
-                {selectedNetwork == "USDC"
-                  ? numeral(guacBalance).format("0,0")
-                  : numeral(usdcBalance).format("0,0")}{" "}
-                {selectedNetwork }
-              </span>
-              <Button className="bg-[#141414]  w-full h-7 p-2 rounded-lg text-xs">
+          <div className="flex justify-between w-full ">
+            <span className="text-muted-foreground text-[12px] font-[400]">
+              Enter Amount
+            </span>
+            <div className="flex items-center justify-center gap-3">
+              <div className="flex gap-1 items-center">
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2.27539 10H9.77539V2.5H8.21289V0H2.27539C1.23963 0 0.400391 0.839235 0.400391 1.875V8.125C0.400391 9.16073 1.23963 10 2.27539 10ZM8.52539 3.75V8.75H2.27539C1.92994 8.75 1.65039 8.47046 1.65039 8.125V3.64078C1.8512 3.7128 2.06237 3.74943 2.27539 3.75004L8.52539 3.75ZM2.27539 1.25H6.96289V2.5H2.27539C1.92994 2.5 1.65039 2.22045 1.65039 1.875C1.65039 1.52955 1.92994 1.25 2.27539 1.25Z"
+                    fill="#A8A8A8"
+                    fill-opacity="0.5"
+                  />
+                </svg>
+                <span className="text-xs text-muted-foreground">
+                  {" "}
+                  {connected
+                    ? selectedNetwork == "GUAC"
+                      ? numeral(guacBalance).format("0,0.000")
+                      : numeral(usdcBalance).format("0,0.000")
+                    : "Wallet not connected"}
+                </span>
+              </div>
+
+              <Button className="bg-[#141414] text-[#8BD796] w-full h-7 p-2 rounded-lg text-xs">
                 <Link
                   href={
                     selectedNetwork == "GUAC"
@@ -234,12 +247,16 @@ const PositionDialog: FC<PositionDialogProps> = ({
             </div>
           </div>
         </div>
-        <Button
-          onClick={handleEnterPosition}
-          className={`${isLong ? "guac-bg" : "earn-bg"}`}
-        >
-          Place Position
-        </Button>
+        {!connected ? (
+          <WalletMultiButtonDynamic className="w-full" />
+        ) : (
+          <Button
+            onClick={handleEnterPosition}
+            className={`${isLong ? "guac-bg" : "earn-bg"}`}
+          >
+            Place Position
+          </Button>
+        )}
       </DialogContent>
     </Dialog>
   );
