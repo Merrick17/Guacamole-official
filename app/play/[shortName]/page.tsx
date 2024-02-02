@@ -215,6 +215,7 @@ function CustomRenderer() {
             </div>
           </div>
           <Featured />
+         
         </div>
       </div>
     </>

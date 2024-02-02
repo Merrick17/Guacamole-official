@@ -12,6 +12,10 @@ import _get from "lodash/get";
 import { useEffect, useMemo, useState } from "react";
 import { useInterval } from "react-use";
 import PositionDialog from "./riperotten/PositionDialog";
+import { ConfigEnum } from "@hxronetwork/parimutuelsdk";
+import { getWeb3Config } from "@/constants/config";
+import { ParimutuelWeb3 } from "@hxronetwork/parimutuelsdk";
+import { MarketPairEnum } from "@hxronetwork/parimutuelsdk";
 function truncateToThirdDecimal(num: number): string {
   const truncatedNum = Math.floor(num * 1000) / 1000;
   let formattedNum = truncatedNum.toFixed(3);
@@ -23,30 +27,25 @@ function truncateToThirdDecimal(num: number): string {
   return formattedNum;
 }
 const RipeRottenForm = () => {
-  const networksArr = ["USDC", "BONK"];
-  const usdcMarkets = ["BTC-USD", "SOL-USD"];
   const bonkMarkets = ["SOL-USD"];
-
-  const { connection } = useConnection();
-
-  const { parimutuels, getPositions, markets, web3 } = useParimutuel();
+  const APP_ENV = process.env.NEXT_PUBLIC_APP_ENV;
+  const { parimutuels, web3 } = useParimutuel();
   const {
     selectedMarketPair,
-    setSelectedMarketPair,
+
     setSelectedParimutuel,
-    setPositionSide,
-    setDecimalPlaces,
+
     setSelectedMarketKey,
     livePrice,
-    setSelectedNetwork,
+    setSelectedMarketPair,
     selectedNetwork,
     selectedParimutuel,
+    setDecimalPlaces,
   } = useSetting();
-
-  const { connected, publicKey } = useWallet();
+  const { setWeb3 } = useParimutuel();
   const { nextFiveUpcomingParimuels, liveParimutuels, lastParimutuel } =
     useMarket();
-
+  const { connection } = useConnection();
   const [ourParimutuel, setOurParimutuel] = useState<
     MarketBoardItem | undefined
   >(undefined);
@@ -287,6 +286,31 @@ const RipeRottenForm = () => {
     }
     setCountDownTime(formattedTime);
   }, 1000);
+
+  useEffect(() => {
+    const config = getWeb3Config(selectedNetwork);
+    const myWeb3 = new ParimutuelWeb3(config, connection);
+    setWeb3(myWeb3);
+    let myMarket = "SOL-USD";
+    if (selectedNetwork === "GUAC") {
+      setDecimalPlaces(5);
+      myMarket = "SOL-USD";
+      setFixedNetworkDigits(0);
+    } else if (selectedNetwork === "USDC") {
+      setDecimalPlaces(6);
+      myMarket = "SOL-USD";
+      if (APP_ENV === ConfigEnum.DEV) setDecimalPlaces(9);
+      setFixedNetworkDigits(2);
+    }
+    const market_pair =
+      myMarket === "BTC-USD" ? MarketPairEnum.BTCUSD : MarketPairEnum.SOLUSD;
+    setSelectedMarketPair(market_pair);
+    const market_key = myWeb3
+      ? _get(myWeb3?.config.markets, [market_pair, "MARKET_60S"])?.toString()
+      : "";
+    setSelectedMarketKey(market_key);
+    setFixedMarketDigits(selectedMarketPair === MarketPairEnum.SOLUSD ? 3 : 2);
+  }, [selectedNetwork]);
   return (
     <Container className="bg-background px-5 py-7  flex flex-col gap-5 col-span-2 border ">
       <div className="flex items-center justify-between">
@@ -326,9 +350,10 @@ const RipeRottenForm = () => {
               className="rounded-full"
             />
             <span className="text-muted-foreground">
-              {ourLockedParimutuel &&
+              {nextFiveUpcomingParimuels &&
+                nextFiveUpcomingParimuels[0] &&
                 AmountFormating(
-                  ourLockedParimutuel.pool.poolSize,
+                  nextFiveUpcomingParimuels[0].pool.poolSize,
                   fixedNetworkDigits
                 )}
             </span>

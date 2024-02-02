@@ -165,17 +165,7 @@ const TrendingItem: FC<TrendingItemProps> = ({
         setMarketPrice(data["data"][token.address]["price"]);
       }
     };
-    const getMarketCap = async () => {
-      console.log("TOKEN", token);
-      if (token && token.extensions) {
-        const { data } = await axios.get(
-          "https://api.coingecko.com/api/v3/coins/" +
-            token.extensions.coingeckoId
-        );
 
-        setMarketPrice(data.market_data.current_price.usd);
-      }
-    };
     // getMarketCap();
     getMarketCapV2();
   }, [token]);

@@ -11,10 +11,8 @@ const SelectedRipeRottenMarket: FC<SelectedRipeRottenMarketProps> = ({
   coin,
   onClick,
 }) => {
-  const { selectedNetwork } = useSetting();
-  useEffect(()=>{
-    console.log("selected netwrook init",selectedNetwork)
-  },[selectedNetwork])
+  
+
 
   return (
     <div className="flex flex-col items-start w-full " onClick={onClick}>

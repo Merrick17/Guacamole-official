@@ -95,7 +95,7 @@ const Page = () => {
   const initUserLocks = useCallback(async () => {
     if (connected) {
       const lockers = await getLocksByOwner(publicKey.toBase58());
-      console.log("Lockers", lockers);
+     
       setUserLocks(lockers);
     }
   }, [publicKey, connected]);

@@ -5,12 +5,8 @@ import routes from "@/config/routes";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Token Multi Sender | Guacamole",
-  description:
-    "Multiple airdrop and multi-send options to send tokens to Solana addresses and domains. Connect your wallet, enter the addresses, and airdrop your tokens!",
-  openGraph: {
-    images: ["images/seo/tools.png"],
-  },
+  title: "Send Tokens To Multiple Addresses | Guacamole",
+ 
 };
 const TokenMultiSender = () => {
   return (

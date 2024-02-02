@@ -33,6 +33,7 @@ const RipeRottenHeader = () => {
     selectedMarketPair,
     selectedNetwork,
     setSelectedNetwork,
+    setDecimalPlaces,
   } = useSetting();
   const [selectedMarket, setSelectedMarket] = useState({
     coin: ["SOL", "Solana"],
@@ -131,6 +132,11 @@ const RipeRottenHeader = () => {
               defaultValue={selectedNetwork}
               onValueChange={(e) => {
                 setSelectedNetwork(e);
+                if (e == "GUAC") {
+                  setDecimalPlaces(5);
+                } else {
+                  setDecimalPlaces(6);
+                }
               }}
             >
               <SelectTrigger className="bg-[#141414] p-3 rounded-[10px] border-[1px] border-[rgba(168, 168, 168, 0.10)]  !h-[65px]">
@@ -138,7 +144,7 @@ const RipeRottenHeader = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="USDC">USDC</SelectItem>
-                <SelectItem value="GUAC" disabled>GUAC</SelectItem>
+                <SelectItem value="GUAC">GUAC</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -151,7 +157,7 @@ const RipeRottenHeader = () => {
       ) : (
         <div className="flex flex-col">
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex flex-row items-center justify-between gap-2 w-full min-w-[244px]">
+            <DropdownMenuTrigger className="flex flex-row items-center justify-between gap-4 w-full bg-[#141414] p-3 rounded-[10px] border-[1px] border-[rgba(168, 168, 168, 0.10)] min-w-[240px]">
               <SelectedRipeRottenMarket {...selectedMarket} />
               <Button size="icon">
                 <BsChevronDown />
@@ -161,6 +167,25 @@ const RipeRottenHeader = () => {
               {renderDropdownMenuItems()}
             </DropdownMenuContent>
           </DropdownMenu>
+          <Select
+            defaultValue={selectedNetwork}
+            onValueChange={(e) => {
+              setSelectedNetwork(e);
+              if (e == "GUAC") {
+                setDecimalPlaces(5);
+              } else {
+                setDecimalPlaces(6);
+              }
+            }}
+          >
+            <SelectTrigger className="bg-[#141414] p-3 mt-2 rounded-[10px] border-[1px] border-[rgba(168, 168, 168, 0.10)]  !h-[65px]">
+              <SelectValue placeholder="Settlement" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="USDC">USDC</SelectItem>
+              <SelectItem value="GUAC">GUAC</SelectItem>
+            </SelectContent>
+          </Select>
           <div className="flex flex-col items-start mt-3">
             <p className="text-[#8BD796] text-3xl font-medium">
               {" "}

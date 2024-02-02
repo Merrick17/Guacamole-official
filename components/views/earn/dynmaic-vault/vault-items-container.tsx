@@ -20,51 +20,53 @@ const VaultItemsContainer = () => {
 
   return (
     <Container className="flex flex-col gap-4">
-      <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent>
-            <DialogTitle>
-              <span className="text-[#FCFCFC] text-[16px] font-medium">
-                Proceed To MarginFi
-              </span>
-            </DialogTitle>
-            <Container className=" p-2 flex gap-3 flex-col min-h-[50px] my-1">
-              <p className="text-sm text-muted-foreground">
-                You can currently lend and borrow GUAC on platforms like
-                MarginFi! We love seeing new third-party integrations and use
-                cases for our native token.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Please note that MarginFi is a third-party platform and has
-                their own terms and conditions, programs, and systems. You will
-                solely be interacting with MarginFi and Guacamole is not
-                responsible for any “detrimental actions.”
-              </p>
-              <p className="text-sm text-muted-foreground">
-                In transparency, by pressing “Open MarginFi” below you will
-                access MarginFi using a referral code that benefits our DAO and
-                community growth wallets!
-              </p>
-            </Container>
-            <DialogFooter className="border-t-2 py-3 justify-start items-start flex w-full border-[#FFFFF] sm:justify-start md:justify-start">
-              <Button
-                className="w-[160px] guac-bg"
-                onClick={() => {
-                  if (typeof window !== "undefined") {
-                    window.open(
-                      "https://www.mfi.gg/refer/44ad3297-9ee0-4879-bd05-a7d7e7e333a3",
-                      "blank"
-                    );
-                  }
-                }}
-              >
-                Open MarginFi
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>{" "}
-        <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[16px] pt-0">
-          You can now lend and borrow GUAC on MarginFi!{" "}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogTitle>
+            <span className="text-[#FCFCFC] text-[16px] font-medium">
+              Proceed To MarginFi
+            </span>
+          </DialogTitle>
+          <Container className=" p-2 flex gap-3 flex-col min-h-[50px] my-1">
+            <p className="text-sm text-muted-foreground">
+              You can currently lend and borrow GUAC on platforms like MarginFi!
+              We love seeing new third-party integrations and use cases for our
+              native token.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Please note that MarginFi is a third-party platform and has their
+              own terms and conditions, programs, and systems. You will solely
+              be interacting with MarginFi and Guacamole is not responsible for
+              any “detrimental actions.”
+            </p>
+            <p className="text-sm text-muted-foreground">
+              In transparency, by pressing “Open MarginFi” below you will access
+              MarginFi using a referral code that benefits our DAO and community
+              growth wallets!
+            </p>
+          </Container>
+          <DialogFooter className="border-t-2 py-3 justify-start items-start flex w-full border-[#FFFFF] sm:justify-start md:justify-start">
+            <Button
+              className="w-[160px] guac-bg"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.open(
+                    "https://www.mfi.gg/refer/44ad3297-9ee0-4879-bd05-a7d7e7e333a3",
+                    "blank"
+                  );
+                }
+              }}
+            >
+              Open MarginFi
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <div className="w-full sm:h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
+        <div className="text-[#A8A8A8] max-w-[350px] sm:w-auto sm:max-w-3xl flex flex-col sm:flex-row items-center justify-center gap-1 text-[16px] p-2">
+          <span className="text-center sm:text-left">
+            You can now lend and borrow GUAC on MarginFi!
+          </span>{" "}
           <Button
             variant="link"
             className="p-0 text-[#8BD796]"
@@ -74,7 +76,7 @@ const VaultItemsContainer = () => {
           >
             Click Here
           </Button>{" "}
-          To Get Started.
+          <span className="text-center sm:text-right">To Get Started.</span>
         </div>
       </div>
       <Container

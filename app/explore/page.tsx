@@ -7,7 +7,11 @@ import DaoCardContent from "@/components/views/explore/DaoCardContent";
 import EarnRewardShop from "@/components/views/explore/EarnRewardShop";
 import ExploreCardContent from "@/components/views/explore/ExploreCardContent";
 import ColorBlocks from "@/components/common/color-block";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Explore The Guacamole Ecosystem & Beyond | Guacamole",
+};
 export default function Explore() {
   return (
     <>

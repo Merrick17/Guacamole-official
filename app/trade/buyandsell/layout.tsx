@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import React from "react";
 export const metadata: Metadata = {
-  title: "On-Chain Perpetual Crypto Futures | Guacamole",
+  title: "Buy Crypto With Card | Guacamole",
 };
-const layout = ({ children }) => {
+const layout = ({ children }: { children: any }) => {
   return <>{children}</>;
 };
 

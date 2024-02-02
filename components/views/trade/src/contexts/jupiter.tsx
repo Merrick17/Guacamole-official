@@ -192,7 +192,7 @@ export const JupiterApiProvider: React.FC<{ children: React.ReactNode }> = ({
   const [tokenList, setTokenList] = useState<TokenInfo[]>([]);
   const [allTokens, setAllTokens] = useState<TokenInfo[]>([]);
   const { connection } = useConnection();
-  const defaultPreferredTokenListMode = "all";
+  const defaultPreferredTokenListMode = "strict";
   const [preferredTokenListMode, setPreferredTokenListMode] =
     useState<PreferredTokenListMode>(defaultPreferredTokenListMode);
 

@@ -14,9 +14,9 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 //bg-[url('/images/home/Guacamole_BG_Image_v2_1.png')] bg-cover bg-no-repeat"
 export const metadata: Metadata = {
-  title: " A Fresh Solana Experience | Guacamole",
+  title: "The Freshest DeFi Experience On Solana | Guacamole",
   description:
-    "Experience a fresh take on Solana DeFi with Guacamole. Trade, earn, create, and play effortlessly, while enjoying a seamless and user-friendly experience. Get started and unlock a world of possibilities!",
+    "Dive into a fresh adventure across Solana with Guacamole, your gateway to trade, earn, create, play, and more. Enjoy a DEX platform designed with user-experience at its core, and embark on a journey to unlock endless opportunities. What are you waiting for? Jump into crypto and scoop the dip with Guacamole!",
 };
 const kanit = Kanit({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -27,10 +27,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
- 
   return (
     <html lang="en">
-      <head></head>
+      <head>
+        <title>The Freshest DeFi Experience On Solana | Guacamole</title>
+      
+      </head>
       <body className={kanit.className}>
         <Themes>
           <TransitionContextProvider>

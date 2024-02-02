@@ -8,8 +8,12 @@ import SecureWith3DefendersCardContent from "@/components/views/tools/SecureWith
 
 import routes from "@/config/routes";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 import { FC } from "react";
+export const metadata: Metadata = {
+  title: 'A Variety Of Useful Solana Tools | Guacamole' ,
 
+}
 interface ToolsProps {}
 
 const Tools: FC<ToolsProps> = () => {

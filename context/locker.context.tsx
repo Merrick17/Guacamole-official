@@ -111,10 +111,7 @@ const LockerProvider = ({ children }) => {
     const mappedVaults = await Promise.all(
       allVaults.map(async (lock) => {
         const { pool, base, quote } = await getPoolInfo(lock);
-        if (pool.poolId == "41QgurJkpFTnLxaMAKVytj9FBu48Mhrm6DUmsPF1Pire") {
-          console.log("Pool ID", pool);
-          console.log("LOCKED USD", lock.lockedLiquidityUSD);
-        }
+       
 
         return {
           lock,

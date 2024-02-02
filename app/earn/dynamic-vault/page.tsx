@@ -4,17 +4,12 @@ import VaultItemsContainer from "@/components/views/earn/dynmaic-vault/vault-ite
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dynamic Lending Vaults For Solana | Guacamole",
-  description:
-    "Unlock the potential of your crypto assets with our dynamic lending vaults. Effortlessly optimize yields by automatically rebalancing between the top lending protocols.",
-  openGraph: {
-    images: "/images/seo/earn.png",
-  },
+  title: "Lend In Dynamic Vaults | Guacamole",
 };
 
 const Page = () => {
   return (
-    <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px] lg:min-w-[980px] w-max h-full">
+    <main className="container mx-auto my-auto flex flex-col justify-center min-h-[calc(100vh-160px)] gap-14 px-8 py-6 md:px-16 md:py-12  max-w-[1440px]  w-max h-full">
       <div className=" mx-auto flex w-full  flex-col gap-6 rounded-lg  px-6 py-5 bg-foreground shadow-md border  border-[rgba(168, 168, 168, 0.10)]">
         <EarnHeader
           title="Dynamic Vaults"
@@ -23,7 +18,7 @@ const Page = () => {
         />
         <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <VaultItemsContainer />
-        <EarnFooter />
+        {/* <EarnFooter /> */}
       </div>
     </main>
   );

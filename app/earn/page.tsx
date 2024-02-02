@@ -9,12 +9,7 @@ import { Metadata } from "next";
 import { FC } from "react";
 
 export const metadata: Metadata = {
-  title: "Useful Tools For All Solana Users | Guacamole",
-  description:
-    "Find a variety of easy to use tools in our suite that can instantly help improve your quality of life while interacting with the Solana blockchain or starting your own project!",
-  openGraph: {
-    images: "/images/seo/earn.png",
-  },
+  title: "Earn Passive Income And Stake | Guacamole",
 };
 const Earn: FC = () => {
   return (

@@ -24,7 +24,7 @@ const uploadMetaData = async (
         // address: "https://devnet.bundlr.network",
         // providerUrl:
         //   "https://solana-devnet.g.alchemy.com/v2/DjYXduI63_lr9Vh7oz0cQ3bpPPQY-6SW",
-        timeout: 60000,
+        // timeout: 60000,
       })
     );
   const metaplexFile: MetaplexFile = await toMetaplexFileFromBrowser(file);

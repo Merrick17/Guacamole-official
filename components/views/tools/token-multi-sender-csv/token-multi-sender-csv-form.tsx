@@ -62,7 +62,7 @@ const TokenMultiSenderCsvForm: FC<TokenMultiSenderCsvFormProps> = () => {
       complete: function (results) {
         const data = results.data;
         const keys = Object.keys(data[0]);
-        console.log("Keys", keys);
+       
         if (
           !keys.includes("address") ||
           !keys.includes("token") ||

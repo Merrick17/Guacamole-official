@@ -20,6 +20,8 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
 import { BsChevronDown } from "react-icons/bs";
 import TerminalLayout from "../../terminal";
+import { Metadata } from "next";
+
 export default function CoinDetails() {
   const { selectedToken, poolDetails, selectToken } = useSelectedToken();
   const { tokenList } = useJupiterApiContext();

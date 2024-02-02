@@ -12,7 +12,7 @@ export const getTokenAccount = async (
   owner: PublicKey,
   onCurve? = false
 ) => {
-  console.log("On Curve", onCurve);
+
   const ata = await getAssociatedTokenAddress(mint, owner, true);
   const info = await connection.getAccountInfo(ata);
 

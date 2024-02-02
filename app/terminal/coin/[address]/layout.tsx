@@ -1,8 +1,9 @@
-"use client"
-import { JupiterApiProvider } from "@/components/views/trade/src/contexts";
-import { SelectedTokenProvider } from "@/context/coin-details";
-import React from "react";
 
+import { SelectedTokenProvider } from "@/context/coin-details";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Trade Solana Tokens With Charts & Data | Guacamole",
+};
 const Layout = ({ children }: { children: any }) => {
   return (
     <>

@@ -4,12 +4,8 @@ import EmergencySendForm from "@/components/views/tools/emergency-send/emergency
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Emergency Send | Guacamole",
-  description:
-    " Fearing that your wallet is compromised? Guacamole’s emergency send tool allows you to send everything from one wallet to a new wallet of your choice with one click.    ",
-  openGraph: {
-    images: ["images/seo/tools.png"],
-  },
+  title: "Emergency Send Wallet Tool | Guacamole",
+  
 };
 const EmergencySend = () => {
   return (

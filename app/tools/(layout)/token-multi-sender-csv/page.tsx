@@ -4,12 +4,8 @@ import TokenMultiSenderCsvForm from "@/components/views/tools/token-multi-sender
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Airdrop Tokens Via CSV | Guacamole",
-  description:
-    "Upload your csv file to easily populate a list of Solana addresses to airdrop tokens to.    ",
-  openGraph: {
-    images: ["images/seo/tools.png"],
-  },
+  title: "Send Tokens To Addresses Via CSV | Guacamole",
+  
 };
 const TokenMultiSenderCSV = () => {
   return (

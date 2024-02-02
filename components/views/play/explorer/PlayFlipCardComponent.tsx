@@ -28,7 +28,6 @@ const PlayFlipCardComponent: FunctionComponent<PlayFlipCardComponentProps> = ({
               height={24}
               alt="trade logo"
             />
-            
           </div>
           <h1 className=" text-lg md:text-xl font-medium">Play Flip</h1>
         </header>
@@ -38,7 +37,7 @@ const PlayFlipCardComponent: FunctionComponent<PlayFlipCardComponentProps> = ({
       </div>
       <div className="relative ">
         <Image
-          src="/images/play/bg/slots_bg.png"
+          src="/images/flip/Coin_Flip.png"
           height={295}
           width={300}
           alt="guac background"

@@ -84,7 +84,7 @@ const BurnSplToken = () => {
 
     setUserSPL(allTokens);
     setIsFetched(true);
-    console.log("user SPL tokens", allTokens);
+
   }
 
   useEffect(() => {
@@ -153,7 +153,7 @@ const BurnSplToken = () => {
             signature,
             "processed"
           );
-          console.log("confirmation", signature);
+     
           toast({
             variant: "success",
             title: "Success",

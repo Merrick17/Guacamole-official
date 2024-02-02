@@ -21,9 +21,7 @@ import { useEffect } from "react";
 import numeral from "numeral";
 const LockerHeader = () => {
   const { totalValueLocked, vaultsData } = useLockerTools();
-  useEffect(() => {
-    console.log("Total", totalValueLocked);
-  }, [vaultsData]);
+
   return (
     <Container className="lg:max-w-5xl justify-center items-center   max-sm:w-full bg-cover  bg-[url('/images/launch/Liquidity_Locker_Banner_Guacamole_Simple_1.png')]  min-h-[200px] border border-[rgba(168, 168, 168, 0.10)] ">
       <div className="flex w-full h-full flex-col items-start justify-center gap-4 text-center mt-3">

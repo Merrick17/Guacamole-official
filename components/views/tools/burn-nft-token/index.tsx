@@ -133,7 +133,7 @@ const BurnNftToken = () => {
     });
     setUserNFT(userNFTMetadata);
     setIsFetched(true);
-    console.log("user NFTs", userNFTMetadata);
+    
   }
 
   useEffect(() => {

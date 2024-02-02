@@ -1,11 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Trade from "@/components/views/trade/src/Trade";
-import SwapCharts from "@/components/views/trade/swap-charts";
 import TrendingSwap from "@/components/views/trade/trending-swap";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { AiFillCaretRight } from "react-icons/ai";
 
 const Swap = () => {
   const [showCharts, setShowCharts] = useState(false);

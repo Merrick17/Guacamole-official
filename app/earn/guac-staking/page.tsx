@@ -5,12 +5,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 export const metadata: Metadata = {
-  title: "Dynamic Vault | Guacamole",
-  description:
-    "Put your crypto to work for you in various ways and enjoy the fruit of its labor.",
-  openGraph: {
-    images: "/images/seo/earn.png",
-  },
+  title: "Explore GUAC Staking | Guacamole",
 };
 
 const Page = () => {

@@ -39,7 +39,7 @@ const PlayPlinkoCardComponent: FunctionComponent<
       </div>
       <div className="relative ">
         <Image
-          src="/images/play/bg/slots_bg.png"
+          src="/images/flip/plinko_save_main.png"
           height={295}
           width={300}
           alt="guac background"

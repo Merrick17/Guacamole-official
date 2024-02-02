@@ -1,20 +1,13 @@
 import Container from "@/components/common/container";
 import EarnHeader from "@/components/common/earn-header";
-import GuacStakeForm from "@/components/views/earn/guac-stake/guac-stake-guac";
 import LiquidityStackingForm from "@/components/views/earn/liquidity-staking/liquidity-staking-form";
-import useMarinadeData from "@/hooks/use-marinade-data";
 import fetchMarinadeData from "@/lib/marinade-data";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Liquid Solana Staking | Guacamole",
-  description:
-    "Elevate your DeFi experience with our liquid staking solution for Solana. Stake your SOL and continue to earn rewards while retaining the freedom to swap and partake in DeFi activities. Get the best of both worlds—growth and liquidity with Solana liquid staking.    ",
-  openGraph: {
-    images: "/images/seo/earn.png",
-  },
+  title: "Liquid Staking With Marinade | Guacamole",
 };
 
 const Page = async () => {
@@ -27,11 +20,13 @@ const Page = async () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/earn/liquid-solana-staking"
           hideSecondBtn
         />
-       <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <div className="w-full h-[40px] flex rounded-lg justify-center items-center bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]">
           <div className="text-[#A8A8A8] w-full flex items-center justify-center gap-1 text-[14px]">
             Explore The Benefits of Liquid Staking:{" "}
-            <Link href={"#"} className="text-[#8BD796]">Click Here</Link>
+            <Link href={"#"} className="text-[#8BD796]">
+              Click Here
+            </Link>
           </div>
         </div>
         <Container className="p-5 font-medium bg-background relative overflow-hidden border-[1px] border-[rgba(168, 168, 168, 0.10)]">

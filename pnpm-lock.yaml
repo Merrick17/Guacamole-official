@@ -24,8 +24,8 @@ dependencies:
     specifier: ^1.6.20
     version: 1.6.20(encoding@0.1.13)
   '@hxronetwork/parimutuelsdk':
-    specifier: 1.0.36
-    version: 1.0.36(bn.js@5.2.1)(borsh@0.7.0)(bs58@4.0.1)(encoding@0.1.13)
+    specifier: 1.0.37
+    version: 1.0.37(bn.js@5.2.1)(borsh@0.7.0)(bs58@4.0.1)(encoding@0.1.13)
   '@jup-ag/api':
     specifier: ^6.0.10
     version: 6.0.10(encoding@0.1.13)
@@ -140,6 +140,9 @@ dependencies:
   '@solana/wallet-adapter-base':
     specifier: ^0.9.23
     version: 0.9.23(@solana/web3.js@1.89.1)
+  '@solana/wallet-adapter-bitkeep':
+    specifier: ^0.3.20
+    version: 0.3.20(@solana/web3.js@1.89.1)
   '@solana/wallet-adapter-coin98':
     specifier: ^0.5.20
     version: 0.5.20(@solana/web3.js@1.89.1)
@@ -2774,8 +2777,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@hxronetwork/parimutuelsdk@1.0.36(bn.js@5.2.1)(borsh@0.7.0)(bs58@4.0.1)(encoding@0.1.13):
-    resolution: {integrity: sha512-hwnmGb0IDVh5jcRFyJ+o6eM0zOHkH8c+kLu91sczQlwqQOeN3Ihx2hr/HGUM1roLhKYtavW+wIjrouRInjadLA==}
+  /@hxronetwork/parimutuelsdk@1.0.37(bn.js@5.2.1)(borsh@0.7.0)(bs58@4.0.1)(encoding@0.1.13):
+    resolution: {integrity: sha512-zSP6dbRZixrtC+pJuv/rI7Bvu6mEEgACbgmc9JuzZpjxEn8oUFoQcGXJ5rYC033qHZmA44tz3juQ4+e5wZpAoA==}
     engines: {node: '>=10'}
     peerDependencies:
       bn.js: ^5.2.0

@@ -1,17 +1,11 @@
 import Container from "@/components/common/container";
 import EarnHeader from "@/components/common/earn-header";
-import GuacStakeForm from "@/components/views/earn/guac-stake/guac-stake-guac";
 import NftStakeForm from "@/components/views/earn/nft-staking/nft-staking-form";
-import Image from "next/image";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Tokenized NFT Farms | Guacamole",
-  description:
-    "Stake your tokens on our revolutionary platform and accumulate points to unlock exclusive access to vaulted NFTs. Transform your staked assets into valuable digital collectibles as you redeem points for rare NFTs.",
-  openGraph: {
-    images: "/images/seo/earn.png",
-  },
+  title: "Earn NFTS With Token Staking | Guacamole",
 };
 
 const Page = () => {
@@ -23,7 +17,7 @@ const Page = () => {
           tutorialLink="https://docs.guacamole.gg/products-and-features/earn/tokenized-nft-farms"
           hideSecondBtn
         />
-       <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
+        <hr className="border border-[rgba(168, 168, 168, 0.10)] " />
         <Container className="p-5 font-medium bg-background text-center h-[40px] flex justify-center items-center">
           <p className="text-[#FAFAFA] text-[24px]">Guacamole Avotar Farm</p>
           {/* <h1 className="text-3xl">Coming Soon...</h1> */}

@@ -11,6 +11,8 @@ import Trade from "@/components/views/trade/src/Trade";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import TerminalLayout from "./terminal";
+import type { Metadata } from 'next'
+ 
 
 export default function Terminal() {
   const [selection, setSelection] = useState("1D");

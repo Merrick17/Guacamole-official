@@ -8,7 +8,6 @@ interface GuacContentCardProps extends React.HTMLAttributes<any> {}
 
 const GuacContentCard: FunctionComponent<GuacContentCardProps> = ({
   className,
-
   ...props
 }) => {
   return (
@@ -36,7 +35,7 @@ const GuacContentCard: FunctionComponent<GuacContentCardProps> = ({
             alt="guac logo"
           />
         </div>
-        <h1 className="guac-text-color text-lg md:text-2xl lg:text-[32px] font-medium">
+        <h1 className=" text-lg md:text-2xl lg:text-[32px] font-medium">
           Explore With Guacamole
         </h1>
       </header>

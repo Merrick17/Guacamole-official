@@ -14,12 +14,12 @@ import { Metadata } from "next";
 import { FC } from "react";
 
 export const metadata: Metadata = {
-  title: "Let's Play Some Games | Guacamole",
-  description:
-    "Take a chance in fun games where you can win some Solana and some of your favorite coins and tokens. Flips, mines, and more await for you to play on Guacamole!",
-  openGraph: {
-    images: "/images/seo/play.png",
-  },
+  title: "Play Games, Win SOL and Tokens | Guacamole",
+  // description:
+  //   "Take a chance in fun games where you can win some Solana and some of your favorite coins and tokens. Flips, mines, and more await for you to play on Guacamole!",
+  // openGraph: {
+  //   images: "/images/seo/play.png",
+  // },
 };
 
 const Page: FC = () => {

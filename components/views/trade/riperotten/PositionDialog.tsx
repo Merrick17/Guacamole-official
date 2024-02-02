@@ -89,7 +89,7 @@ const PositionDialog: FC<PositionDialogProps> = ({
         Math.pow(10, usdcTokenAccount.decimals)
       : 0;
   const handleEnterPosition = useCallback(async () => {
-    const transactionId = await web3?.placePosition(
+    const transactionId = await web3?.placePositionWithOperator(
       wallet as WalletSigner,
       new PublicKey(selectedParimutuel),
       //@ts-ignore

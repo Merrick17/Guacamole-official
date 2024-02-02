@@ -1,15 +1,3 @@
-import {
-  ParimutuelAccount,
-  ParimutuelMarket,
-  ParimutuelNetwork,
-  ParimutuelPosition,
-  ParimutuelTraderFeePayerAccount,
-  ParimutuelWeb3,
-  decodeAccount,
-  getMarketPubkeys,
-} from "@hxronetwork/parimutuelsdk";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
 import React, {
   useCallback,
   useContext,
@@ -18,11 +6,25 @@ import React, {
   useState,
 } from "react";
 import { useInterval } from "react-use";
+import {
+  decodeAccount,
+  getMarketPubkeys,
+  ParimutuelAccount,
+  ParimutuelMarket,
+  ParimutuelNetwork,
+  ParimutuelPosition,
+  ParimutuelTraderFeePayerAccount,
+  ParimutuelWeb3,
+  STAGING_BONK_CONFIG,
+} from "@hxronetwork/parimutuelsdk";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 
 import _isEmpty from "lodash/isEmpty";
 
+import { useSetting } from "@/context/setting";
+import getConfig from "next/config";
 import { getWeb3Config } from "@/constants/config";
-import { useSetting } from "./setting";
 
 export interface ParimutuelContextProps {
   traderFeePayerAccount?: ParimutuelTraderFeePayerAccount;
@@ -60,32 +62,19 @@ const ParimutuelContext = React.createContext<ParimutuelContextProps>({
   ...defaultContext,
 });
 
-export const ParimutuelProvider = ({ children }: { children: any }) => {
-  // const { selectedMarketPair, selectedNetwork } = useSetting();
-  // const { connection } = useConnection();
-  // const config = getWeb3Config(selectedNetwork);
-  // const [web3, setWeb3] = useState<ParimutuelWeb3>(
-  //   useMemo(() => new ParimutuelWeb3(config, connection), [connection, config])
-  // );
-  // const wallet = useWallet();
-  // const { publicKey: walletPubkey } = wallet;
-
-  // const [traderFeePayerAccount, setTraderFeePayerAccount] = useState<
-  //   ParimutuelTraderFeePayerAccount | undefined
-  // >(undefined);
+export const ParimutuelProvider: React.FC = ({
+  children,
+}: {
+  children: any;
+}) => {
   const { selectedMarketPair, selectedNetwork } = useSetting();
   const { connection } = useConnection();
+  const config = getWeb3Config(selectedNetwork);
+  const [web3, setWeb3] = useState<ParimutuelWeb3>(
+    useMemo(() => new ParimutuelWeb3(config, connection), [connection, config])
+  );
   const wallet = useWallet();
   const { publicKey: walletPubkey } = wallet;
-
-  const config = useMemo(
-    () => getWeb3Config(selectedNetwork),
-    [selectedNetwork]
-  );
-  const web3 = useMemo(
-    () => new ParimutuelWeb3(config, connection),
-    [connection, config]
-  );
 
   const [traderFeePayerAccount, setTraderFeePayerAccount] = useState<
     ParimutuelTraderFeePayerAccount | undefined
@@ -104,27 +93,17 @@ export const ParimutuelProvider = ({ children }: { children: any }) => {
   );
   const [settled, setSettled] = useState<string[]>(defaultContext.settled);
 
-  // const fetchPositions = useCallback(async () => {
-  //   if (!web3 || !walletPubkey || _isEmpty(markets)) return;
-  //   const positions = await web3.getUserPositions(walletPubkey, markets);
-  //   setPositions(positions);
-  // }, [markets, walletPubkey, web3]);
   const fetchPositions = useCallback(async () => {
     if (!web3 || !walletPubkey || _isEmpty(markets)) return;
     const positions = await web3.getUserPositions(walletPubkey, markets);
     setPositions(positions);
   }, [markets, walletPubkey, web3]);
+
   const fetchParimutuels = useCallback(async () => {
-    if (!web3) {
-      console.log("Web 3 not working !");
-    }
-    console.log("Selected Network", selectedNetwork);
+  
     const current_config = getWeb3Config(selectedNetwork);
-    console.log("Current Config", current_config);
     const marketPubkeys = getMarketPubkeys(current_config, selectedMarketPair);
-    console.log("Public Keys", marketPubkeys);
     const parimutuels = await web3.getParimutuels(marketPubkeys, 5);
-    console.log("Parimituels", parimutuels);
     if (parimutuels.length > 0) setParimutuels(parimutuels);
   }, [selectedMarketPair, web3, config]);
 
@@ -214,6 +193,7 @@ export const ParimutuelProvider = ({ children }: { children: any }) => {
   }, [fetchPositions, fetchFeeAccounts]);
 
   useEffect(() => {
+    
     fetchParimutuels();
   }, [selectedNetwork, selectedMarketPair]);
 
@@ -232,7 +212,7 @@ export const ParimutuelProvider = ({ children }: { children: any }) => {
   };
 
   const setWeb3SDK = (value: ParimutuelWeb3) => {
-    //setWeb3(value);
+    setWeb3(value);
   };
 
   return (

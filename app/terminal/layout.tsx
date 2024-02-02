@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import React from "react";
 export const metadata: Metadata = {
-  title: " Solana Market Data & Insights | Guacamole",
+  title: " View Solana Token, Protocol, & NFT Data | Guacamole",
   description:
     "The Guacamole Solana terminal provides an all-in-one cryptocurrency hub for easy token trading and tracking. Swap leading tokens, monitor real-time performance charts, and access indepth market data on everything from protocols to NFT performance.",
   openGraph: {

@@ -31,6 +31,7 @@ const routes = {
     hilo: "/play/hilo",
     mines: "/play/mines",
     dice: "/play/dice",
+    plinko: "/play/plinko",
   },
 
   tools: {

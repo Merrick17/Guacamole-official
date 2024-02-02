@@ -3,6 +3,7 @@ import RecentPlays from "@/components/common/recent-plays";
 
 import type { Metadata, ResolvingMetadata } from "next";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type Props = {
   params: { shortName: string };
@@ -19,59 +20,32 @@ export async function generateMetadata(
   switch (shortName) {
     case "Dice":
       return {
-        title: "Play On-Chain Dice | Guacamole",
-        description:
-          "Roll into excitement with our on-chain Solana dice game, where you control the stakes. Adjust your settings, place your bet, and let the dice decide your fate. Experience the thrill of a random roll and the chance to win big on Guacamole.",
-        openGraph: {
-          images: "/images/seo/play.png",
-        },
+        title: "Roll The Dice | Guacamole",
       };
     case "Flip":
       return {
-        title: "Play On-Chain Dice | Guacamole",
-        description:
-          "Roll into excitement with our on-chain Solana dice game, where you control the stakes. Adjust your settings, place your bet, and let the dice decide your fate. Experience the thrill of a random roll and the chance to win big on Guacamole.",
-        openGraph: {
-          images: "/images/seo/play.png",
-        },
+        title: "Double Your SOL With A Coin Flip | Guacamole",
       };
     case "Hilo":
       return {
-        title: "Play On-Chain Hilo | Guacamole",
-        description:
-          "Looking for an invigorating experience? Bet on whether the next number will be higher or lower in the sequence! All fresh and fair on the Solana network!",
-        openGraph: {
-          images: "/images/seo/play.png",
-        },
+        title: "Try To Keep Your Streak Going | Guacamole",
       };
     case "Mines":
       return {
-        title: "Play On-Chain Mines | Guacamole",
-        description:
-          "Choose your steps wisely! Play a game of mines on the Solana network and see if you can survive the mine field for a prize.",
-        openGraph: {
-          images: "/images/seo/play.png",
-        },
+        title: "Navigate The Mine Field To Win | Guacamole",
       };
     case "Roulette":
       return {
-        title: "Play On-Chain Roulette | Guacamole",
-        description:
-          "Place your bets on the digital board, predict where the ball will land on the spinning wheel, and experience the rush of blockchain gaming. Spin your way to potential rewards in a transparent and fair environment, all on the Solana network.",
-        openGraph: {
-          images: "/images/seo/play.png",
-        },
+        title: "Place Your Chips And Spin The Wheel | Guacamole",
       };
     case "Slots":
       return {
-        title: "Play On-Chain Slots  | Guacamole",
-        description:
-          "Bet on a combination of symbols with the goal of receiving specific winning combinations. All fresh and fair on the Solana network!",
-        openGraph: {
-          images: "/images/seo/play.png",
-        },
+        title: "Pull The Lever And Test Your Luck With Slots | Guacamole",
       };
-
+    case "Plinko":
+      return {
+        title: "Play Plinko | Guacamole",
+      };
     default:
       return {
         title: "Play On-Chain Dice | Guacamole",
@@ -98,7 +72,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     >
       {" "}
       {children}
-      <RecentPlays /> 
+      <RecentPlays />
+      <Link
+        href={"https://v2.gamba.so/#/user"}
+        className="text-[#A8A8A8] text-[16px] font-[400]"
+      >
+        Debug Current User
+      </Link>
     </main>
   );
 }

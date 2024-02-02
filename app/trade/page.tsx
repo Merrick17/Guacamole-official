@@ -12,12 +12,7 @@ import { Metadata } from "next";
 import { FC } from "react";
 
 export const metadata: Metadata = {
-  title: "Solana Swap Aggregator | Guacamole",
-  description:
-    "Our Solana Swap page is designed to help you discover the most efficient trading routes. Guarantee top value for every transaction with our easy-to-navigate platform that simplifies finding the best swap deals. Start trading smarter on Solana today!",
-  openGraph: {
-    images: "/images/seo/trade.png",
-  },
+  title: "Trade, Swap, Bridge & Buy Crypto | Guacamole",
 };
 
 const Page: FC = () => {

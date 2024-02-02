@@ -87,33 +87,19 @@
 
 // export default Page;
 import ColorBlocks from "@/components/common/color-block";
-import HeroHeadline from "@/components/common/hero-headline";
 
-import BackgroundSplash from "@/components/common/background-splash";
-import HeroList from "@/components/common/hero-list";
-import TrendingToday from "@/components/views/home/trending-today";
-import routes from "@/config/routes";
-import { AccentColors } from "@/config/themes";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import GuacContentCard from "@/components/views/home/guac-content-card";
-import TradeContentCard from "@/components/views/home/trade-content-card";
-import EarnContentCard from "@/components/views/home/earn-content-card";
-import PlayContentCard from "@/components/views/home/play-content-card";
 
-import LaunchContentCard from "@/components/views/home/launch-content-card";
-import ManageContentCard from "@/components/views/home/manage-content-card";
-import ExploreCardContent from "@/components/views/explore/ExploreCardContent";
-import DaoCardContent from "@/components/views/explore/DaoCardContent";
-import AvocadoCardContent from "@/components/views/explore/AvocadoCardContent";
-import EarnRewardShop from "@/components/views/explore/EarnRewardShop";
-import NoCodeTokenCreatorCard from "@/components/views/launch/NoCodeTokenCreatorCard";
-import LiquidityCardContent from "@/components/views/launch/LiquidityCardContent";
-import TokenManagerContentCard from "@/components/views/launch/TokenManagerContentCard";
-import TokenLocksContentCard from "@/components/views/launch/TokenLocksContentCard";
 import LaunchNftFarmCard from "@/components/views/launch/LaunchNftFarmCard";
 import LaunchPoolsFarm from "@/components/views/launch/LaunchPoolsFarm";
-
+import LiquidityCardContent from "@/components/views/launch/LiquidityCardContent";
+import NoCodeTokenCreatorCard from "@/components/views/launch/NoCodeTokenCreatorCard";
+import TokenLocksContentCard from "@/components/views/launch/TokenLocksContentCard";
+import TokenManagerContentCard from "@/components/views/launch/TokenManagerContentCard";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Create And Launch Your Own Solana Tokens | Guacamole",
+};
 export default function Page() {
   return (
     <>

@@ -5,8 +5,7 @@ import Link from "next/link";
 import { FunctionComponent } from "react";
 import { FaCheck } from "react-icons/fa6";
 
-interface ExploreCardContentProps
-  extends React.HTMLAttributes<any> {}
+interface ExploreCardContentProps extends React.HTMLAttributes<any> {}
 
 const ExploreCardContent: FunctionComponent<ExploreCardContentProps> = ({
   className,
@@ -83,11 +82,11 @@ const ExploreCardContent: FunctionComponent<ExploreCardContentProps> = ({
         </li>
         <li className="flex items-center gap-1">
           <FaCheck color="#ACD8AF" />
-          <p>Helps Spread Risk Threshold</p>
+          <p>Performance Charts</p>
         </li>
         <li className="flex items-center gap-1">
           <FaCheck color="#ACD8AF" />
-          <p>Advanced Data & Details</p>
+          <p>Advanced Data & Details </p>
         </li>
       </ul>
     </Link>

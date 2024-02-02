@@ -36,10 +36,10 @@ const defaultContext: SettingContextProps = {
   selectedParimutuel: "",
   positionSide: PositionSideEnum.LONG,
   positionSummaryOption: PositionSummaryOptionEnum.ALL,
-  decimalPlaces: 5,
+  decimalPlaces: 6,
   selectedMarketKey: "",
   livePrice: 0,
-  selectedNetwork: "GUAC",
+  selectedNetwork: "USDC",
   setSelectedMarketPair: () => null,
   setSelectedDurations: () => null,
   setSelectedParimutuel: () => null,
@@ -84,7 +84,7 @@ export const SettingProvider = ({ children }: { children: any }) => {
     }
   };
 
-  const [decimalPlaces, setDecimalPlaces] = useState<number>(5);
+  const [decimalPlaces, setDecimalPlaces] = useState<number>(6);
 
   const [selectedMarketKey, setSelectedMarketKey] = useState<string>("");
 

@@ -55,16 +55,16 @@ export const Links: {
         name: "Ripe Or Rotten",
         href: routes.trade.ripeRotten,
       },
-      {
-        name: "Limit",
-        href: "",
-        disabled: true,
-      },
-      {
-        name: "Liquidity",
-        href: "",
-        disabled: true,
-      },
+      // {
+      //   name: "Limit",
+      //   href: "",
+      //   disabled: true,
+      // },
+      // {
+      //   name: "Liquidity",
+      //   href: "",
+      //   disabled: true,
+      // },
     ],
   },
   {
@@ -99,10 +99,10 @@ export const Links: {
     Icon: BiGame,
     color: "#FFF281",
     dropdownItems: [
-      {
-        name: "Explore All Games",
-        href: routes.play.explore,
-      },
+      // {
+      //   name: "Explore All Games",
+      //   href: routes.play.explore,
+      // },
       {
         name: "Roulette",
         href: routes.play.roulette,
@@ -122,6 +122,14 @@ export const Links: {
       {
         name: "Dice",
         href: routes.play.dice,
+      },
+      {
+        name: "Flip",
+        href: routes.play.coinFlip,
+      },
+      {
+        name: "Plinko",
+        href: routes.play.plinko,
       },
     ],
   },
@@ -149,10 +157,10 @@ export const Links: {
     color: "#FFEFDC",
 
     dropdownItems: [
-      {
-        name: "Explore All Tools",
-        href: routes.tools.explore,
-      },
+      // {
+      //   name: "Explore All Tools",
+      //   href: routes.tools.explore,
+      // },
 
       {
         name: "Multi-Sender & Airdrops",
@@ -160,15 +168,15 @@ export const Links: {
         href: routes.tools.tokenMultiSender,
       },
       {
-        name: "Burn Unwanted NFTs",
+        name: "Burn Unwanted NFTs & Tokens",
 
         href: routes.tools.burnNftToken,
       },
-      {
-        name: "Burn Unwanted Tokens",
+      // {
+      //   name: "Burn Unwanted Tokens",
 
-        href: routes.tools.burnSplToken,
-      },
+      //   href: routes.tools.burnSplToken,
+      // },
       {
         name: "Close Token Accounts",
         href: routes.tools.closeTokenAccounts,
@@ -191,10 +199,10 @@ export const Links: {
   //   Icon: GoInfo,
   //   color: "#FCFCFC",
   // },
-  {
-    name: "Info",
-    href: routes.info.root,
-    Icon: GoInfo,
-    hide: true,
-  },
+  // {
+  //   name: "Info",
+  //   href: routes.info.root,
+  //   Icon: GoInfo,
+  //   hide: true,
+  // },
 ];
