@@ -14,7 +14,7 @@
     "@coral-xyz/anchor": "0.28.1-beta.1",
     "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^3.3.4",
-    "@hxronetwork/dexterity-ts": "^1.6.20",
+    "@hxronetwork/dexterity-ts": "^1.6.24",
     "@hxronetwork/parimutuelsdk": "1.0.37",
     "@jup-ag/api": "^6.0.10",
     "@jup-ag/math": "4.0.0-beta.21",

@@ -209,7 +209,7 @@ const SelectTradingAccount = () => {
     try {
       setIsLoading(true);
       setWithdrawStatus("processing");
-      await trader.withdraw(dexterity.Fractional.New(amount, 0));
+      await trader.withdraw(dexterity.Fractional.New(Math.floor(amount * 100), 2));
       setWithdrawStatus("success");
     } catch (error: any) {
       setWithdrawStatus("failed");
@@ -233,8 +233,8 @@ const SelectTradingAccount = () => {
     if (!publicKey || !manifest || !trader) return;
     try {
       await manifest.closeTrg(
-        new PublicKey(selectedTrg),
-        new PublicKey(mpgPubkey)
+        new PublicKey(mpgPubkey),
+        new PublicKey(selectedTrg)
       );
       toast({
         variant: "success",
@@ -269,7 +269,6 @@ const SelectTradingAccount = () => {
           <Input
             value={amount}
             type="number"
-            step="0.1"
             onChange={(e) => setAmount(parseFloat(e.target.value))}
             placeholder="Enter Amount"
             className="placeholder:text-[#FCFCFC] placeholder:text-sm placeholder:font-medium "

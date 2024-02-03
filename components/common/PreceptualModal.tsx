@@ -150,7 +150,8 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
     try {
       setIsLoading(true);
       setWithdrawStatus("processing");
-      await trader.withdraw(dexterity.Fractional.New(amount, 0));
+      alert(amount)
+      await trader.withdraw(dexterity.Fractional.New(Math.floor(amount * 100), 2));
       setWithdrawStatus("success");
     } catch (error: any) {
       setWithdrawStatus("failed");
@@ -200,8 +201,7 @@ const PreceptualModal = ({ isOpen, handleClose }: PerceptuaModalProps) => {
               </span>
             </div>
             <Input
-              max={100}
-              min={0}
+              min={0.01}
               value={amount}
               onChange={(e) => setAmount(parseFloat(e.target.value))}
               className="bg-black  rounded-[8px] mb-4 pl-5 text-left text-lg font-bold focus:outline-none border border-[rgba(168, 168, 168, 0.10] !h-[40px]"
