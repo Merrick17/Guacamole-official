@@ -110,17 +110,18 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
       new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
       true
     );
-    let tx = new Transaction().add(
-      createTransferCheckedInstruction(
-        guacTokenAccount.pubkey, // from (should be a token account)
-        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"), // mint
-        feeGuacAta, // to (should be a token account)
-        publicKey, // from's owner
-        10_000_000 * Math.pow(10, 5), // amount, if your deciamls is 8, send 10^8 for 1 token
-        5 // decimals
-      )
+    return createTransferCheckedInstruction(
+      guacTokenAccount.pubkey, // from (should be a token account)
+      new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"), // mint
+      feeGuacAta, // to (should be a token account)
+      publicKey, // from's owner
+      10_000_000 * Math.pow(10, 5), // amount, if your deciamls is 8, send 10^8 for 1 token
+      5 // decimals
     );
-    const sig = await wallet.sendTransaction(tx, connection);
+    // let tx = new Transaction().add(
+
+    // );
+    // const sig = await wallet.sendTransaction(tx, connection);
   };
   // 1- .
   const [tokenIcon, setTokenIcon] = useState<File | null>(null);
@@ -164,7 +165,7 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
     try {
       setIsLoading(true);
       let uri: string;
-      await handleSendFees();
+      //await handleSendFees();
       //Assuming metadataUrl is used when createUrl is false
       uri = await uploadMetaData(
         wallet,
@@ -176,7 +177,9 @@ const CreateExtensionTokenForm: FC<CreateExtensionTokenFormProps> = () => {
       );
       // Ensure that uri is available before proceeding with createSPLToken
       if (uri) {
+        const feeIx = await handleSendFees(); 
         const res = await createNewToken(
+          feeIx,
           publicKey,
           wallet,
           connection,

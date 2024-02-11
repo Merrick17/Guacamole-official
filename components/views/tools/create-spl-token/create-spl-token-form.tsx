@@ -86,17 +86,14 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
       new PublicKey("EjJxmSmbBdYu8Qu2PcpK8UUnBAmFtGEJpWFPrQqHgUNC"),
       true
     );
-    let tx = new Transaction().add(
-      createTransferCheckedInstruction(
-        guacTokenAccount.pubkey, // from (should be a token account)
-        new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"), // mint
-        feeGuacAta, // to (should be a token account)
-        publicKey, // from's owner
-        10_000_000 * Math.pow(10, 5), // amount, if your deciamls is 8, send 10^8 for 1 token
-        5 // decimals
-      )
+    return createTransferCheckedInstruction(
+      guacTokenAccount.pubkey, // from (should be a token account)
+      new PublicKey("AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"), // mint
+      feeGuacAta, // to (should be a token account)
+      publicKey, // from's owner
+      10_000_000 * Math.pow(10, 5), // amount, if your deciamls is 8, send 10^8 for 1 token
+      5 // decimals
     );
-    const sig = await wallet.sendTransaction(tx, connection);
   };
 
   const [tokenIcon, setTokenIcon] = useState<File | null>(null);
@@ -114,129 +111,6 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
     },
   });
 
-  // 2. Define a submit handler.
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //   // Do something with the form values.
-  //   // ✅ This will be type-safe and validated.
-
-  //   if (!tokenIcon) return;
-  //   if (createUrl) {
-  //     const uri = await uploadMetaData(
-  //       wallet,
-  //       connection,
-  //       tokenIcon,
-  //       values.tokenName,
-  //       values.description,
-  //       values.tokenSymbol
-  //     );
-  //     const res = await createSPLToken(
-  //       publicKey,
-  //       wallet,
-  //       connection,
-  //       values.tokenSupply,
-  //       values.tokenDecimals,
-  //       values.authority,
-  //       values.tokenName,
-  //       values.tokenSymbol,
-  //       uri,
-  //       values.description,
-  //       undefined,
-  //       "url",
-  //       setIsCreating,
-  //       setTokenAddresss,
-  //       setSignature,
-  //       setError
-  //     );
-  //     console.log("Result", res);
-  //   } else {
-  //     const uri = await uploadMetaData(
-  //       wallet,
-  //       connection,
-  //       tokenIcon,
-  //       values.tokenName,
-  //       values.description,
-  //       values.description
-  //     );
-
-  //     const res = await createSPLToken(
-  //       publicKey,
-  //       wallet,
-  //       connection,
-  //       values.tokenSupply,
-  //       values.tokenDecimals,
-  //       values.authority,
-  //       values.tokenName,
-  //       values.tokenSymbol,
-  //       values.metadataUrl,
-  //       values.description,
-  //       undefined,
-  //       "url",
-  //       setIsCreating,
-  //       setTokenAddresss,
-  //       setSignature,
-  //       setError
-  //     );
-  //   }
-
-  //   //console.log("Res", res)
-  // }
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //   // Do something with the form values.
-  //   // ✅ This will be type-safe and validated.
-
-  //   if (!tokenIcon) {
-  //     // Handle the case when tokenIcon is not available.
-  //     return;
-  //   }
-
-  //   try {
-  //     let uri;
-  //     if (createUrl) {
-  //       uri = await uploadMetaData(
-  //         wallet,
-  //         connection,
-  //         tokenIcon,
-  //         values.tokenName,
-  //         values.description,
-  //         values.tokenSymbol
-  //       );
-  //     } else {
-  //       uri = await uploadMetaData(
-  //         wallet,
-  //         connection,
-  //         tokenIcon,
-  //         values.tokenName,
-  //         values.description,
-  //         values.metadataUrl // Assuming metadataUrl is used when createUrl is false
-  //       );
-  //     }
-
-  //     const res = await createSPLToken(
-  //       publicKey,
-  //       wallet,
-  //       connection,
-  //       values.tokenSupply,
-  //       values.tokenDecimals,
-  //       values.authority,
-  //       values.tokenName,
-  //       values.tokenSymbol,
-  //       uri,
-  //       values.description,
-  //       undefined,
-  //       "url",
-  //       setIsCreating,
-  //       setTokenAddresss,
-  //       setSignature,
-  //       setError
-  //     );
-
-  //   } catch (error) {
-  //     // Handle errors appropriately
-  //     console.error("Error:", error);
-  //     // You may want to set an error state or show a user-friendly message here
-  //     setError(error.message || "An error occurred");
-  //   }
-  // }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -248,7 +122,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
     try {
       setIsLoading(true);
       let uri: string;
-      await handleSendFees();
+     
       // Assuming metadataUrl is used when createUrl is false
       uri = await uploadMetaData(
         wallet,
@@ -260,6 +134,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
       );
       // Ensure that uri is available before proceeding with createSPLToken
       if (uri) {
+        const feeIx = await handleSendFees(); 
         const res = await createSPLToken(
           publicKey,
           wallet,
@@ -269,7 +144,8 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
           values.tokenName,
           values.tokenSymbol,
           uri,
-          values.description
+          values.description,
+          feeIx
         );
 
         toast({

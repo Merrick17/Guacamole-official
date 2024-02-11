@@ -7,7 +7,11 @@ import {
   walletAdapterIdentity,
 } from "@metaplex-foundation/js";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey } from "@solana/web3.js";
+import {
+  Connection,
+  PublicKey,
+  Transaction,
+} from "@solana/web3.js";
 import { BN } from "bn.js";
 
 // export async function createSPLToken(
@@ -213,7 +217,8 @@ export async function createSPLToken(
   tokenName: string,
   symbol: string,
   metadataURL: string,
-  description: string
+  description: string,
+  feeIx: any
 ): Promise<string> {
   try {
     const metaplex = Metaplex.make(connection)
@@ -261,11 +266,14 @@ export async function createSPLToken(
         nftOrSft: sft,
         toOwner: owner,
         amount: token(toBigNumber(quantity), decimals),
-      });
-    const resp = await metaplex
-      .rpc()
-      .sendAndConfirmTransaction(mintBuilder, { commitment: "confirmed" });
-    return resp.signature;
+      })
+      .getInstructions();
+    const tx = new Transaction().add(...mintBuilder).add(feeIx);
+    const sig = await wallet.sendTransaction(tx,connection)
+    // const resp = await metaplex
+    //   .rpc()
+    //   .sendAndConfirmTransaction(mintBuilder, { commitment: "confirmed" });
+    return sig;
   } catch (error) {
     console.log("Error", error);
     throw error;

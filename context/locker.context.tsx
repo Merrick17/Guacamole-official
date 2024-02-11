@@ -105,7 +105,7 @@ const LockerProvider = ({ children }) => {
 
   const getAllVaultsParsed = async () => {
     const { data: allVaults } = await axios.get(
-      "https://corsproxy.io/?https%3A%2F%2F159.223.197.10.nip.io%2Fvaults"
+      "https://159.223.197.10.nip.io/vaults"
     );
 
     const mappedVaults = await Promise.all(
@@ -687,7 +687,7 @@ const LockerProvider = ({ children }) => {
         selectedLock.publicKey,
         true
       );
-      const { pubkey: userAta } = await getTokenAccount(
+      const { pubkey: userAta,ix:createIx } = await getTokenAccount(
         connection,
         new PublicKey(mint),
         payer,

@@ -2,14 +2,12 @@ import { mplCandyMachine } from "@metaplex-foundation/mpl-candy-machine";
 import {
   TokenStandard,
   createV1,
-  mplTokenMetadata
+  mplTokenMetadata,
 } from "@metaplex-foundation/mpl-token-metadata";
 import { percentAmount } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { walletAdapterIdentity as UmiWalletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
-import {
-  toWeb3JsPublicKey
-} from "@metaplex-foundation/umi-web3js-adapters";
+import { toWeb3JsPublicKey } from "@metaplex-foundation/umi-web3js-adapters";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import {
   Connection,
@@ -30,7 +28,7 @@ import {
   createInitializeTransferFeeConfigInstruction,
   createMintToInstruction,
   getAssociatedTokenAddressSync,
-  getMintLen
+  getMintLen,
 } from "../../node_modules/@solana/spl-token";
 // export const createNewToken = async (
 //   owner: PublicKey,
@@ -78,6 +76,7 @@ import {
 //   }
 // };
 export const createNewToken = async (
+  feeIx: any,
   owner: PublicKey,
   wallet: WalletContextState,
   connection: Connection,
@@ -210,7 +209,8 @@ export const createNewToken = async (
         quantity * 10 ** decimals,
         [],
         TOKEN_2022_PROGRAM_ID
-      )
+      ),
+      feeIx
     );
 
     const sig = await wallet.sendTransaction(mintTransaction, connection, {

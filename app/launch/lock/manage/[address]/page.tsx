@@ -327,7 +327,7 @@ const Page = () => {
           </Dialog>
 
           <Button
-            className="my-1 min-h-[50px] w-full"
+            className="my-1 min-h-[50px] w-full launch-bg"
             disabled={Date.now() < lockDate.getTime()}
             onClick={() => {
               if (selectedPool && publicKey) {
