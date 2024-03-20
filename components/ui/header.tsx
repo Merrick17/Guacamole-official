@@ -22,6 +22,8 @@ import {
 import Hamburger from "./hamburger";
 import { MenuItems } from "./menu-items";
 import { SearchInput } from "./search-input";
+import { Button } from "./button";
+import { NewMenuItems } from "./new-menu-items";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -54,7 +56,7 @@ const Header: FC<HeaderProps> = () => {
       {isOpen && <DrawerMenu closeDrawer={closeDrawer} />}
 
       <header className="sticky top-0 z-40 flex-none w-full mx-auto bg-foreground border-b ">
-        <div
+        {/* <div
           id="banner"
           tabIndex={-1}
           className="z-50 flex bg-foreground justify-center w-full px-4 py-3 border border-b  lg:py-4"
@@ -90,31 +92,57 @@ const Header: FC<HeaderProps> = () => {
               </Link>
             </p>
           </div>
-        </div>
-        <div className="flex items-center justify-between w-full px-3 py-3 mx-auto max-w-8xl lg:px-4 max-w-[1400px]">
+        </div> */}
+        <div className="flex items-center justify-between w-full px-3 py-3 mx-auto max-w-8xl ">
           <div className="flex items-center">
             <div className="flex items-center justify-between">
-              <Link href={routes.home} className="flex items-center gap-2 ">
+              <Link href={routes.home} className="flex items-center gap-4 ">
                 <Logo />
-                <h1 className="hidden xl:block lg:block text-2xl font-medium uppercase">
-                  Guacamole
-                </h1>
+                <div className="flex flex-col justify-start items-start">
+                  <h1 className="hidden xl:block lg:block text-2xl font-[600] uppercase">
+                    Guacamole
+                  </h1>
+                  <span className="text-white hidden xl:block lg:block  font-medium  text-[10px]">
+                    A Fresh Scoop On Solana DeFi
+                  </span>
+                </div>
               </Link>
+              <div className="lg:flex items-center justify-center mx-5 hidden lg:visible">
+                <Button variant="outline" className="h-[26px]" onClick={()=>{
+                  if( typeof window!=="undefined") {
+                   
+                    window.open("https://guac.gg/")
+                  }
+                  
+                }}>
+                  DAPP
+                </Button>
+                <Button className="guac-bg h-[26px] ">DEX</Button>
+              </div>
+              <div className="w-[1px] h-[40px] border border-[rgba(168, 168, 168, 0.10)] ml-2"></div>
+              <div className={"hidden 2xl:block"}>
+                {/* <MenuItems /> */}
+                <NewMenuItems />
+              </div>
             </div>
+          </div>
 
+          <div className="flex items-center">
             <div
-              id="docsearch"
-              className="hidden md:flex ml-2 xl:ml-6 min-w-[300px]"
+              id="docsearch-mobile"
+              className="md:hidden lg:hidden xl:hidden ml-3  "
             >
-              <div className="relative">
+              {" "}
+              <div className="relative mr-3">
                 <SearchInput
+                  className="w-full "
                   value={search || ""}
                   onChange={(e) => {
                     setIsFocused(true);
                     setSearch(e.target.value);
                   }}
                   ref={inputRef}
-                  placeholder="Search For Tokens, Markets, & More"
+                  placeholder="Search For Tokens"
                 />
                 <div
                   className={`absolute bg-foreground border border-[#141414] shadow-sm mt-10 top-2 z-50 py-2 rounded-lg w-64 max-h-[300px] items-start gap-2 flex flex-col overflow-y-auto ${
@@ -144,7 +172,6 @@ const Header: FC<HeaderProps> = () => {
                           router.push(
                             `/terminal/coin/${tkn.address}?outputMint=${tkn.address}`
                           );
-                          // console.log("SEARCH", search);
                         }}
                       >
                         <FallbackImage
@@ -162,69 +189,129 @@ const Header: FC<HeaderProps> = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            id="docsearch-mobile"
-            className="md:hidden lg:hidden xl:hidden ml-3  "
-          >
-            {" "}
-            <div className="relative">
-              <SearchInput
-                className="w-full "
-                value={search || ""}
-                onChange={(e) => {
-                  setIsFocused(true);
-                  setSearch(e.target.value);
-                }}
-                ref={inputRef}
-                placeholder="Search For Tokens, Markets, & More"
-              />
-              <div
-                className={`absolute bg-foreground border border-[#141414] shadow-sm mt-10 top-2 z-50 py-2 rounded-lg w-64 max-h-[300px] items-start gap-2 flex flex-col overflow-y-auto ${
-                  !isFocused ? "hidden" : ""
-                } `}
-              >
-                {tokenList
-                  .filter((tkn) => {
-                    if (search === "") return tkn;
-                    if (
-                      tkn.symbol.toUpperCase().includes(search.toUpperCase()) ||
-                      tkn.name.toUpperCase().includes(search.toUpperCase())
-                    ) {
-                      return tkn;
-                    }
-                  })
-                  .map((tkn, ind) => (
-                    <div
-                      key={ind.toString()}
-                      className="flex items-center justify-start rounded-md gap-2 p-2 cursor-pointer hover:border-primary hover:border-2 w-full"
-                      onClick={(e) => {
-                        setSearch(tkn.name);
-                        setSelectedSearch(tkn);
-                        setIsFocused(false);
-                        router.push(
-                          `/terminal/coin/${tkn.address}?outputMint=${tkn.address}`
-                        );
-                      }}
+            <div id="docsearch" className="hidden md:flex ml-2 xl:ml-6 ">
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="0 0 40 40"
+                    fill="none"
+                  >
+                    <path
+                      d="M20.3195 16C21.4195 16 22.3195 15.1 22.3195 14C22.3195 12.9 21.4195 12 20.3195 12C19.2195 12 18.3195 12.9 18.3195 14C18.3195 15.1 19.2195 16 20.3195 16ZM20.3195 18C19.2195 18 18.3195 18.9 18.3195 20C18.3195 21.1 19.2195 22 20.3195 22C21.4195 22 22.3195 21.1 22.3195 20C22.3195 18.9 21.4195 18 20.3195 18ZM20.3195 24C19.2195 24 18.3195 24.9 18.3195 26C18.3195 27.1 19.2195 28 20.3195 28C21.4195 28 22.3195 27.1 22.3195 26C22.3195 24.9 21.4195 24 20.3195 24Z"
+                      fill="#A8A8A8"
+                    />
+                  </svg>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    <Link
+                      href="https://discord.com/invite/MjdtaGXCVY"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="shrink-0 flex items-center justify-center gap-2"
                     >
-                      <FallbackImage
-                        src={tkn.logoURI}
-                        width={30}
-                        height={30}
-                        className=" rounded-full"
-                      />
-                      <div className="text-xs  flex flex-col gap-2">
-                        <h1 className="font-medium">{tkn.symbol}</h1>
-                        <p className="text-muted-foreground ">{tkn.name}</p>
+                      <BsDiscord className="text-[#A8A8A8]" />
+                      <span className="text-[#A8A8A8]">Discord</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {" "}
+                    <Link
+                      href="https://t.me/guacgg"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="shrink-0 flex items-center justify-center  gap-2"
+                    >
+                      <FaTelegramPlane className="text-[#A8A8A8]" />
+
+                      <span className="text-[#A8A8A8]">Telegram</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {" "}
+                    <Link
+                      href="https://x.com/guac_gg"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="shrink-0 flex items-center justify-center  gap-2"
+                    >
+                      <BsTwitterX className="text-[#A8A8A8]" />
+                      <span className="text-[#A8A8A8]">Twitter (X) </span>
+                    </Link>{" "}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {" "}
+                    <Link
+                      href="https://docs.guacamole.gg/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="shrink-0 flex items-center justify-center  gap-2"
+                    >
+                      <FaBookOpen className="text-[#A8A8A8]" />
+
+                      <span className="text-[#A8A8A8]">Docs </span>
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <div className="relative mx-2">
+                <SearchInput
+                  value={search || ""}
+                  onChange={(e) => {
+                    setIsFocused(true);
+                    setSearch(e.target.value);
+                  }}
+                  ref={inputRef}
+                  placeholder="Search For Tokens"
+                  className="max-w-[130px]"
+                />
+                <div
+                  className={`absolute bg-foreground border border-[#141414] shadow-sm mt-10 top-2 z-50 py-2 rounded-lg w-64 max-h-[300px] items-start gap-2 flex flex-col overflow-y-auto ${
+                    !isFocused ? "hidden" : ""
+                  } `}
+                >
+                  {tokenList
+                    .filter((tkn) => {
+                      if (search === "") return tkn;
+                      if (
+                        tkn.symbol
+                          .toUpperCase()
+                          .includes(search.toUpperCase()) ||
+                        tkn.name.toUpperCase().includes(search.toUpperCase())
+                      ) {
+                        return tkn;
+                      }
+                    })
+                    .map((tkn, ind) => (
+                      <div
+                        key={ind.toString()}
+                        className="flex items-center justify-start rounded-md gap-2 p-2 cursor-pointer hover:border-primary hover:border-2 w-full"
+                        onClick={(e) => {
+                          setSearch(tkn.name);
+                          setSelectedSearch(tkn);
+                          setIsFocused(false);
+                          router.push(
+                            `/terminal/coin/${tkn.address}?outputMint=${tkn.address}`
+                          );
+                        }}
+                      >
+                        <FallbackImage
+                          src={tkn.logoURI}
+                          width={30}
+                          height={30}
+                          className=" rounded-full"
+                        />
+                        <div className="text-xs  flex flex-col gap-2">
+                          <h1 className="font-medium">{tkn.symbol}</h1>
+                          <p className="text-muted-foreground ">{tkn.name}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <div className={"hidden lg:block"}>
-              <MenuItems />
             </div>
             <HeaderRightArea
               isOpen={isOpen}
@@ -253,75 +340,8 @@ function HeaderRightArea({
   return (
     <div className="order-last flex shrink-0 items-center">
       <div className="hidden gap-2 lg:flex 2xl:gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              viewBox="0 0 40 40"
-              fill="none"
-            >
-              <path
-                d="M20.3195 16C21.4195 16 22.3195 15.1 22.3195 14C22.3195 12.9 21.4195 12 20.3195 12C19.2195 12 18.3195 12.9 18.3195 14C18.3195 15.1 19.2195 16 20.3195 16ZM20.3195 18C19.2195 18 18.3195 18.9 18.3195 20C18.3195 21.1 19.2195 22 20.3195 22C21.4195 22 22.3195 21.1 22.3195 20C22.3195 18.9 21.4195 18 20.3195 18ZM20.3195 24C19.2195 24 18.3195 24.9 18.3195 26C18.3195 27.1 19.2195 28 20.3195 28C21.4195 28 22.3195 27.1 22.3195 26C22.3195 24.9 21.4195 24 20.3195 24Z"
-                fill="#A8A8A8"
-              />
-            </svg>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Link
-                href="https://discord.com/invite/MjdtaGXCVY"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="shrink-0 flex items-center justify-center gap-2"
-              >
-                <BsDiscord className="text-[#A8A8A8]" />
-                <span className="text-[#A8A8A8]">Discord</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              {" "}
-              <Link
-                href="https://t.me/guacgg"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="shrink-0 flex items-center justify-center  gap-2"
-              >
-                <FaTelegramPlane className="text-[#A8A8A8]" />
-
-                <span className="text-[#A8A8A8]">Telegram</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              {" "}
-              <Link
-                href="https://x.com/guac_gg"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="shrink-0 flex items-center justify-center  gap-2"
-              >
-                <BsTwitterX className="text-[#A8A8A8]" />
-                <span className="text-[#A8A8A8]">Twitter (X) </span>
-              </Link>{" "}
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              {" "}
-              <Link
-                href="https://docs.guacamole.gg/"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="shrink-0 flex items-center justify-center  gap-2"
-              >
-                <FaBookOpen className="text-[#A8A8A8]" />
-
-                <span className="text-[#A8A8A8]">Docs </span>
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
         <Link
-          className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]"
+          className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]  hidden min-[1550px]:flex"
           href={"/terminal/coin/AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"}
         >
           <Image width={18} height={18} alt="logo" src={"/images/logo.png"} />
@@ -329,14 +349,17 @@ function HeaderRightArea({
             $ {!isLoading && data ? data["data"]["GUAC"].price : 0}
           </span>
         </Link>
+        <div className="w-[1px] h-[40px] border border-[rgba(168, 168, 168, 0.10)] mx-2"></div>
+        <div className="hidden 2xl:block ">
         <WalletMultiButtonDynamic
-          className={" text-black rounded-lg guac-btn h-[40px]"}
+          className={" text-black rounded-lg guac-btn h-[40px] hidden "}
           startIcon={undefined}
         />
+        </div>
       </div>
 
-      <div className="flex items-center  lg:hidden  ">
-        <div className=" hidden sm:flex items-center">
+      <div className="flex items-center  2xl:hidden  ">
+        <div className=" hidden sm:flex items-center mx-1">
           <Link
             href={"/terminal/coin/AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR"}
             className="p-[9px] flex justify-center items-center gap-1 rounded-lg bg-[#0F0F0F] border-[1px] border-[rgba(168, 168, 168, 0.10)]"
@@ -347,7 +370,7 @@ function HeaderRightArea({
             </span>
           </Link>
           <WalletMultiButtonDynamic
-            className={" text-black rounded-lg guac-btn h-[40px]"}
+            className={" text-black rounded-lg guac-btn h-[40px] mx-1"}
             startIcon={undefined}
           />
         </div>

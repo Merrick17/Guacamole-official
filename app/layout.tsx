@@ -12,16 +12,25 @@ import { Kanit } from "next/font/google";
 import React from "react";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-poppins',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+});
+
 //bg-[url('/images/home/Guacamole_BG_Image_v2_1.png')] bg-cover bg-no-repeat"
 export const metadata: Metadata = {
   title: "The Freshest DeFi Experience On Solana | Guacamole",
   description:
     "Dive into a fresh adventure across Solana with Guacamole, your gateway to trade, earn, create, play, and more. Enjoy a DEX platform designed with user-experience at its core, and embark on a journey to unlock endless opportunities. What are you waiting for? Jump into crypto and scoop the dip with Guacamole!",
 };
-const kanit = Kanit({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-});
+// const kanit = Kanit({
+//   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+//   subsets: ["latin"],
+// });
 export default function RootLayout({
   children,
 }: {
@@ -33,7 +42,7 @@ export default function RootLayout({
         <title>The Freshest DeFi Experience On Solana | Guacamole</title>
       
       </head>
-      <body className={kanit.className}>
+      <body className={poppins.className}>
         <Themes>
           <TransitionContextProvider>
             {/* <Disclaimer /> */}

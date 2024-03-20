@@ -26,6 +26,7 @@ const StyledToken = styled.div`
     height: 20px;
   }
 `;
+import numeral from "numeral";
 
 const TokenImage = styled.img`
   height: 20px;
@@ -75,12 +76,18 @@ export default function TokenSelect() {
             Place Bets In {selectedToken.symbol}
           </p>
           <p className="text-xs text-muted-foreground">
-            Min Bet:{" "}
-            {currentPool.minWager / Math.pow(10, selectedToken.decimals)} Max
-            Payout:{" "}
-            {selectedToken.symbol == "SOL"
-              ? currentPool.maxPayout / LAMPORTS_PER_SOL
-              : currentPool.maxPayout / Math.pow(10, selectedToken.decimals)}
+            Jackpot:{" "}
+            <span className="text-[#8BD796]">
+              {selectedToken.symbol == "SOL"
+                ? numeral(currentPool.jackpotBalance / LAMPORTS_PER_SOL).format(
+                    "0,0.000"
+                  )
+                : numeral(
+                    currentPool.jackpotBalance /
+                      Math.pow(10, selectedToken.decimals)
+                  ).format("0,0.000")}{" "}
+              {selectedToken.symbol}
+            </span>
           </p>
         </div>
       </div>

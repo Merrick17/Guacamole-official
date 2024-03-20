@@ -21,6 +21,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import {
   GambaUi,
+  useCurrentPool,
   useCurrentToken,
   useGambaAudioStore,
   useUserBalance,
@@ -50,6 +51,7 @@ function CustomRenderer() {
   const [provablyFair, setProvablyFair] = React.useState(false);
   const { connected } = useWallet();
   const selectedToken = useCurrentToken();
+  const currentPool = useCurrentPool();
   const { publicKey } = useWallet();
   const { connection } = useConnection();
   const pathname = usePathname();
@@ -175,7 +177,25 @@ function CustomRenderer() {
               <WalletMultiButtonDynamic />
             )}
           </div>
-          <div className="flex justify-end items-center w-full">
+          <div className="flex justify-between items-center w-full flex-wrap">
+            <div className="flex items-center justify-center gap-1">
+              <div className="text-muted-foreground font-[400] text-[12px] flex items-center justify-center gap-1">
+                <span>
+                  {" "}
+                  Min Bet:{" "}
+                  {selectedToken.symbol == "SOL"
+                    ? currentPool.minWager / LAMPORTS_PER_SOL
+                    : currentPool.minWager / 10 ** selectedToken.decimals}
+                </span>
+                <span>|</span>{" "}
+                <span>
+                  Max Payout:{" "}
+                  {selectedToken.symbol == "SOL"
+                    ? currentPool.maxPayout / LAMPORTS_PER_SOL
+                    : currentPool.maxPayout / 10 ** selectedToken.decimals}
+                </span>
+              </div>
+            </div>
             <div className="flex items-center justify-end gap-3  ">
               <div className="flex gap-1 items-center">
                 <svg
@@ -215,7 +235,6 @@ function CustomRenderer() {
             </div>
           </div>
           <Featured />
-         
         </div>
       </div>
     </>

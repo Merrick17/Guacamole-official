@@ -117,8 +117,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   // const endpoint =
   //   "https://solana-devnet.g.alchemy.com/v2/DjYXduI63_lr9Vh7oz0cQ3bpPPQY-6SW";
  const endpoint ="https://rpc.helius.xyz/?api-key=9591f472-d97d-435c-a19c-d2514202d6d7";
-  // const endpoint =
-  //   "https://solana-mainnet.g.alchemy.com/v2/bYvXTPXDlkcg7JxAUXywhMnFHqq6oi1K";
+   //const endpoint = "https://solana-mainnet.g.alchemy.com/v2/bYvXTPXDlkcg7JxAUXywhMnFHqq6oi1K";
   //const endpoint =      "https://mainnet.helius-rpc.com/?api-key=cc1594d9-3636-48e9-9014-b072380feccb";
   const wallets = useMemo(
     () => [

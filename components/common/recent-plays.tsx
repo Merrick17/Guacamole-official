@@ -236,7 +236,7 @@ export default function RecentPlays({
               player={transaction.event.gameResult!.player}
             />
           ))} */}
-          {events.map((tx) => (
+          {events.slice(0, 10).map((tx) => (
             <Recent key={tx.signature} href={`${VERIFY_URL}/${tx.signature}`}>
               <div
                 style={{ display: "flex", alignItems: "center", gap: ".5em" }}

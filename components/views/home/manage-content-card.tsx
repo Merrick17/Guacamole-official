@@ -29,7 +29,7 @@ const ManageContentCard: FunctionComponent<ManageContentCardProps> = ({
               alt="manage logo"
             />
           </div>
-          <h1 className=" text-lg md:text-xl font-medium">
+          <h1 className=" text-lg md:text-xl font-medium text-center">
             Manage Your Portfolio
           </h1>
         </header>

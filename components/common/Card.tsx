@@ -17,20 +17,20 @@ export function Card({
       className="group relative bg-background shadow-md border-[1px] border-[rgba(168, 168, 168, 0.10)] shadow-lg rounded-[10px] flex flex-col  max-h-full transition-[height] duration-200 ease-in-out overflow-hidden flex-grow-0 flex-shrink-0 items-center justify-center"
       style={{ width, height }}
     >
-      {children}
-      {/* {backgroundImage && (
+      {/* {children} */}
+      {backgroundImage && (
         <div
-          className="group-hover:scale-110 absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-200 ease-in-out"
+          className="group-hover:scale-110 absolute bottom-0 inset-0 translate-y-1/4 w-full bg-cover bg-center transition-transform duration-200 ease-in-out opacity-30"
           style={{
             backgroundImage: 'url(' + backgroundImage + ')',
             backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
           }}
         />
-      )} */}
-      {/* <div className="opacity-0  group-hover:opacity-100 absolute text-center w-[90%] px-5 py-1 bottom-2 left-1/2 -translate-x-1/2 bg-black text-white rounded-[5px] font-semibold text-sm transition-opacity duration-200 ease-in-out">
+      )}
+      <div className=" absolute text-center w-[90%] px-5 py-1 bottom-2 left-1/2 -translate-x-1/2  text-white font-[500] text-sm transition-opacity duration-200 ease-in-out">
         {children}
-      </div> */}
+      </div>
     </div>
   );
 }

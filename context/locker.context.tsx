@@ -194,11 +194,13 @@ const LockerProvider = ({ children }) => {
   };
   const getLocksByOwner = async (owner: string) => {
     try {
+      console.log("owner",owner); 
       const locks = (await program.account.deposit.all()).filter(
         (elm) => elm.account.owner.toBase58() == owner
       );
       return locks;
     } catch (error) {
+      console.log('error',error); 
       toast({
         variant: "destructive",
         title: "Error",

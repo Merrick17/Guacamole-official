@@ -179,7 +179,7 @@ const CreateSplTokenForm: FC<CreateSplTokenFormProps> = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: error,
       });
     } finally {
       setIsLoading(false);

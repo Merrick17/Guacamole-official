@@ -37,7 +37,6 @@ export function MenuItems() {
                   " text-base font-medium capitalize text-[#FCFCFC]",
                   item.href == pathname && "!text-primary"
                 )}
-                // activeClassName="!text-gray-900 dark:!text-white"
               >
                 {item.name}
               </Link>
